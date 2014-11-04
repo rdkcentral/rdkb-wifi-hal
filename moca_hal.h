@@ -312,25 +312,49 @@ typedef struct {
 } moca_cpe_t;
 
 typedef struct {
-    UCHAR                           MACAddress[18];
-    ULONG                           NodeID;
-    BOOL                            PreferredNC;
-    CHAR                            HighestVersion[64];
-    ULONG                           PHYTxRate;
-    ULONG                           PHYRxRate;
-    ULONG                           TxPowerControlReduction;
-    ULONG                           RxPowerLevel;
-    ULONG                           TxBcastRate;
-    ULONG                           RxBcastPowerLevel;
-    ULONG                           TxPackets;
-    ULONG                           RxPackets;
-    ULONG                           RxErroredAndMissedPackets;
-    BOOL                            QAM256Capable;
-    ULONG                           PacketAggregationCapability;
-    ULONG                           RxSNR;
-    BOOL                            Active;
+	/* This Data Structure corresponds to information of 
+		the associated device on the network. The term 
+		'this Node' pertains to that particulard device for
+		which the information in this data structure is 
+		valid */ 
 
+	/* MAC Address of the Associated Device */
+    UCHAR                           MACAddress[18];
+	/* Node ID of the Associated Device */
+    ULONG                           NodeID;
+	/* Whether this Node is a Preferred NC. */
+    BOOL                            PreferredNC;
+	/* Highest MoCA Protocol Version that this Node supports */
+    CHAR                            HighestVersion[64];
+	/* Tx PHY Rate of this Node */
+    ULONG                           PHYTxRate;
+	/* Rx PHY Rate of this Node */
+    ULONG                           PHYRxRate;
+	/* Tx Power Reduced by this Node */
+    ULONG                           TxPowerControlReduction;
+	/* Rx Power Level read by this Node */
+    ULONG                           RxPowerLevel;
+	/* Tx Broadcast PHY Rate */
+    ULONG                           TxBcastRate;
+	/* Rx Broadcast Power Level read by this Node */
+    ULONG                           RxBcastPowerLevel;
+	/* Number of Transmitted Packets from this Node */
+    ULONG                           TxPackets;
+	/* Number of Recieved Packets by this Node */
+    ULONG                           RxPackets;
+	/* Number of (Rx) Error or Missed Packets by this Node */
+    ULONG                           RxErroredAndMissedPackets;
+	/* Flag if this Node is capable of QAM-256 */
+    BOOL                            QAM256Capable;
+	/* Flag if this Node is capable of Packet Aggregation */
+    BOOL                           PacketAggregationCapability;
+	/* Receive Signal to Noise Ration */
+    ULONG                           RxSNR;
+	/* Flag if this Node is Active */
+    BOOL                            Active;
+	/* Recevie Broadcast PHY Rate */
     ULONG                           RxBcastRate;
+	/* Number of Clients connected to this Node */
     ULONG                           NumberOfClients;
 } moca_associated_device_t;
 
@@ -606,9 +630,79 @@ INT moca_IfGetExtAggrCounter(ULONG ifIndex, moca_aggregate_counters_t *pmoca_agg
 */
 INT moca_GetMocaCPEs(ULONG ifIndex, moca_cpe_t *cpes, INT *pnum_cpes);
 
-/* TODO: Add description to the following APIs */
-INT moca_GetAssociatedDevices(moca_associated_device_t **ppDeviceArray);
+/* moca_GetAssociatedDevices() function */
+/**
+* Description: Get Information on all the associated Devices on the network.
+* Parameters : 
+*    ifIndex - Index of the MoCA Interface.
+*    ppdevice_array - Array of set of information for each Node on the network.
+*		* MAC Address of the Associated Device 
+*		* Node ID of the Associated Device
+*		* Whether this Node is a Preferred NC.
+*		* Highest MoCA Protocol Version that this Node supports
+*		* Tx PHY Rate of this Node
+*		* Rx PHY Rate of this Node
+*		* Tx Power Reduced by this Node
+*		* Rx Power Level read by this Node
+*		* Tx Broadcast PHY Rate
+*		* Rx Broadcast Power Level read by this Node
+*		* Number of Transmitted Packets from this Node
+*		* Number of Recieved Packets by this Node
+*		* Number of (Rx) Error or Missed Packets by this Node
+*		* Flag if this Node is capable of QAM-256
+*		* Flag if this Node is capable of Packet Aggregation
+*		* Receive Signal to Noise Ration
+*		* Flag if this Node is Active
+*		* Recevie Broadcast PHY Rate
+*		* Number of Clients connected to this Node
+*
+* @return The status of the operation.
+* @retval STATUS_SUCCESS if successful.
+* @retval STATUS_FAILURE if any error is detected 
+* 
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
+INT moca_GetAssociatedDevices(ULONG ifIndex, moca_associated_device_t **ppdevice_array);
+
+
+/* moca_FreqMaskToValue() function */
+/**
+* Description: A utility function that converts Mask Value to Frequency Number.
+* Parameters : 
+*    mask - Bit Mask of the Frequency.
+*
+* @return Frequency Value for the given Mask.
+* 
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
 INT moca_FreqMaskToValue(UINT mask);
+
+/* moca_HardwareEquipped() function */
+/**
+* Description: Functio that returns whether the MoCA Hardware is Equipped or Not.
+* Parameters : None.
+*
+* @return Flag Indicating whether the Hardware is Equipped or not.
+* @retval TRUE if Hardware is present.
+* @retval FALSE if Hardware is not present.
+* 
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
 BOOL moca_HardwareEquipped(void);
 
 #endif

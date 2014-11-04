@@ -706,7 +706,7 @@ INT cm_hal_GetCPEList(PCMMGMT_DML_CPE_LIST * ppCPEList, ULONG* InstanceNum, CHAR
 
 /*  cm_hal_GetMarket : */
 /**
-* Description: Retrieve list of CPEs connected to the CM
+* Description: Retrieve the market of this modem
 * Parameters : 
 *     CHAR* market - Name of the market for this modem, "US" or "EURO", to be returned 
 *
@@ -725,7 +725,7 @@ INT cm_hal_GetMarket(CHAR* market);
 
 /*  docsis_GetCert : */
 /**
-* Description: Retrieve list of CPEs connected to the CM
+* Description: Retrieve the location of the certificate
 * Parameters : 
 *     CHAR* pCert - certificate location, to be returned
 *
@@ -744,7 +744,7 @@ INT docsis_GetCert(CHAR* pCert);
 
 /*  docsis_GetCertStatus : */
 /**
-* Description: Retrieve list of CPEs connected to the CM
+* Description: Retrieve status of the certificate 
 * Parameters : 
 *    ULONG *pVal - certificate status, to be returned
 *

@@ -125,9 +125,58 @@
          }
 #endif
 
+/* dect */
+typedef enum 
+{
+    SNMPA_REQ_USER_HANDLER,
+    SNMPA_REQ_GET_VAL_BY_OID,
+    SNMPA_REQ_GETNEXT_VAL_BY_OID,
+    SNMPA_REQ_SET_STRING_BY_OID,
+    SNMPA_REQ_SET_BYTE_BY_OID,
+    SNMPA_REQ_SET_OID_BY_OID,
+    SNMPA_REQ_SET_INT_BY_OID,
+    SNMPA_REQ_SET_UINT_BY_OID,
+    SNMPA_REQ_SET_SHORT_BY_OID,
+    SNMPA_REQ_SET_USHORT_BY_OID,
+    SNMPA_REQ_SET_IP_BY_OID,
+    SNMPA_REQ_ENGINE_GET_MY_ID,
+    SNMPA_REQ_ENGINE_GET_MY_BOOTS,
+    SNMPA_REQ_ENGINE_GET_MY_TIME,
+    SNMPA_REQ_TLV11_CONF,
+    SNMPA_REQ_TLV64_CONF,
+    SNMPA_REQ_SET_MY_ENGINE_INFO,
+}  SnmpaIfRequest_e;
+
+#define DECT_MAX_HANDSETS 5
+
 /**********************************************************************
                 STRUCTURE DEFINITIONS
 **********************************************************************/
+
+typedef struct
+_MTAMGMT_MTA_DECT 
+{
+    ULONG                           RegisterDectHandset;
+    ULONG                           DeregisterDectHandset;
+    char                            HardwareVersion[64];
+    char                            RFPI[64];
+    char                            SoftwareVersion[64];
+    char                            PIN[64];
+}
+MTAMGMT_MTA_DECT, *PMTAMGMT_MTA_DECT;
+
+typedef  struct
+_MTAMGMT_MTA_HANDSETS_INFO
+{
+    ULONG                           InstanceNumber;
+    BOOLEAN                         Status;
+    char                            LastActiveTime[64];
+    char                            HandsetName[64];
+    char                            HandsetFirmware[64];
+    char                            OperatingTN[64];
+    char                            SupportedTN[64];
+}
+MTAMGMT_MTA_HANDSETS_INFO,  *PMTAMGMT_MTA_HANDSETS_INFO;
 
 typedef  struct
 _MTAMGMT_MTA_DHCP_INFO
@@ -181,68 +230,68 @@ _MTAMGMT_MTA_CALLS
     CHAR                            RemoteCodec[64];              /* remote side codec used for the call */
     CHAR                            CallStartTime[64];            /* start time of a call */
     CHAR                            CallEndTime[64];              /* end time of a call */
-    CHAR                            CWErrorRate[64];              /* ratio of useful signal to background noise */
-    CHAR                            PktLossConcealment[64];       /* ratio of pkt lost to total expected */
+    CHAR                            CWErrorRate[16];              /* ratio of useful signal to background noise */
+    CHAR                            PktLossConcealment[16];       /* ratio of pkt lost to total expected */
     BOOLEAN                         JitterBufferAdaptive;         /* JBA used or not */
     BOOLEAN                         Originator;                   /* originating side of the call or not */
     ANSC_IPV4_ADDRESS               RemoteIPAddress;              /* remote IP */
     ULONG                           CallDuration;                 /* length of the call in minutes */
-    ULONG                           CWErrors;                     /* code word errors on this channel */
-    ULONG                           SNR;                          /* signal to noise ratio * 256 */
-    ULONG                           MicroReflections;             /* return loss measurement */
-    ULONG                           DownstreamPower;              /* downstream power in dbmv */
-    ULONG                           UpstreamPower;                /* upstream power in dbmv */
-    ULONG                           EQIAverage;                   /* EQI average */    
-    ULONG                           EQIMinimum;                   /* EQI minimum */
-    ULONG                           EQIMaximum;                   /* EQI maximum */
-    ULONG                           EQIInstantaneous;             /* EQI instantaneous */
-    ULONG                           MOS_LQ;                       /* mean opinion score of listening quality, 10-50 */
-    ULONG                           MOS_CQ;                       /* mean opinion score of conversational quality, 10-50 */
-    ULONG                           EchoReturnLoss;               /* residual echo return loss, in db */
-    ULONG                           SignalLevel;                  /* voice signal relative level, in db */
-    ULONG                           NoiseLevel;                   /* noise relative level, in db */
-    ULONG                           LossRate;                     /* fraction of RTP data packet loss * 256 */
-    ULONG                           DiscardRate;                  /* fraction of RTP data packet discarded * 256 */
-    ULONG                           BurstDensity;                 /* fraction of bursting data packet * 256 */
-    ULONG                           GapDensity;                   /* fraction of packets within inter-burst gap * 256 */
-    ULONG                           BurstDuration;                /* mean duration of bursts, in milliseconds */
-    ULONG                           GapDuration;                  /* mean duration of gaps, in milliseconds */
-    ULONG                           RoundTripDelay;               /* most recent measured RTD, in milliseconds */
-    ULONG                           Gmin;                         /* local gap threshold */
-    ULONG                           RFactor;                      /* voice quality evaluation for this RTP session */
-    ULONG                           ExternalRFactor;              /* voice quality evaluation for segment on network external to this RTP session */
-    ULONG                           JitterBufRate;                /* adjustment rate of jitter buffer, in milliseconds */
-    ULONG                           JBNominalDelay;               /* nominal jitter buffer length, in milliseconds */
-    ULONG                           JBMaxDelay;                   /* maximum jitter buffer length, in milliseconds */
-    ULONG                           JBAbsMaxDelay;                /* absolute maximum delay, in milliseconds */
-    ULONG                           TxPackets;                    /* count of transmitted packets */
-    ULONG                           TxOctets;                     /* count of transmitted octet packets */
-    ULONG                           RxPackets;                    /* count of received packets */
-    ULONG                           RxOctets;                     /* count of received octet packets */
-    ULONG                           PacketLoss;                   /* count of lost packets */
-    ULONG                           IntervalJitter;               /* stat variance of packet interarrival time, in milliseconds */
-    ULONG                           RemoteIntervalJitter;         /* remote sie IntervalJitter (see local side) */
-    ULONG                           RemoteMOS_LQ;                 /* remote side MOS_LQ (see local side) */
-    ULONG                           RemoteMOS_CQ;                 /* remote side MOS_CQ (see local side) */
-    ULONG                           RemoteEchoReturnLoss;         /* remote side EchoReturnLoss (see local side) */
-    ULONG                           RemoteSignalLevel;            /* remote side SignalLevel (see local side) */
-    ULONG                           RemoteNoiseLevel;             /* remote side NoiseLevel (see local side) */
-    ULONG                           RemoteLossRate;               /* remote side LossRate (see local side) */
-    CHAR                            RemotePktLossConcealment[64]; /* remote side PktLossConcealment (see local side) */
-    ULONG                           RemoteDiscardRate;            /* remote side DiscardRate (see local side) */
-    ULONG                           RemoteBurstDensity;           /* remote side BurstDensity (see local side) */
-    ULONG                           RemoteGapDensity;             /* remote side GapDensity (see local side) */
-    ULONG                           RemoteBurstDuration;          /* remote side BurstDuration (see local side) */
-    ULONG                           RemoteGapDuration;            /* remote side GapDuration (see local side) */
-    ULONG                           RemoteRoundTripDelay;         /* remote side RoundTripDelay (see local side) */
-    ULONG                           RemoteGmin;                   /* remote side Gmin (see local side) */
-    ULONG                           RemoteRFactor;                /* remote side RFactore (see local side) */
-    ULONG                           RemoteExternalRFactor;        /* remote side ExternalRFactor (see local side) */
+    CHAR                            CWErrors[16];                     /* code word errors on this channel */
+    CHAR                            SNR[16];                          /* signal to noise ratio * 256 */
+    CHAR                            MicroReflections[16];             /* return loss measurement */
+    CHAR                            DownstreamPower[16];              /* downstream power in dbmv */
+    CHAR                            UpstreamPower[16];                /* upstream power in dbmv */
+    CHAR                            EQIAverage[16];                   /* EQI average */    
+    CHAR                            EQIMinimum[16];                   /* EQI minimum */
+    CHAR                            EQIMaximum[16];                   /* EQI maximum */
+    CHAR                            EQIInstantaneous[16];             /* EQI instantaneous */
+    CHAR                            MOS_LQ[16];                       /* mean opinion score of listening quality, 10-50 */
+    CHAR                            MOS_CQ[16];                       /* mean opinion score of conversational quality, 10-50 */
+    CHAR                            EchoReturnLoss[16];               /* residual echo return loss, in db */
+    CHAR                            SignalLevel[16];                  /* voice signal relative level, in db */
+    CHAR                            NoiseLevel[16];                   /* noise relative level, in db */
+    CHAR                            LossRate[16];                     /* fraction of RTP data packet loss * 256 */
+    CHAR                            DiscardRate[16];                  /* fraction of RTP data packet discarded * 256 */
+    CHAR                            BurstDensity[16];                 /* fraction of bursting data packet * 256 */
+    CHAR                            GapDensity[16];                   /* fraction of packets within inter-burst gap * 256 */
+    CHAR                            BurstDuration[16];                /* mean duration of bursts, in milliseconds */
+    CHAR                            GapDuration[16];                  /* mean duration of gaps, in milliseconds */
+    CHAR                            RoundTripDelay[16];               /* most recent measured RTD, in milliseconds */
+    CHAR                            Gmin[16];                         /* local gap threshold */
+    CHAR                            RFactor[16];                      /* voice quality evaluation for this RTP session */
+    CHAR                            ExternalRFactor[16];              /* voice quality evaluation for segment on network external to this RTP session */
+    CHAR                            JitterBufRate[16];                /* adjustment rate of jitter buffer, in milliseconds */
+    CHAR                            JBNominalDelay[16];               /* nominal jitter buffer length, in milliseconds */
+    CHAR                            JBMaxDelay[16];                   /* maximum jitter buffer length, in milliseconds */
+    CHAR                            JBAbsMaxDelay[16];                /* absolute maximum delay, in milliseconds */
+    CHAR                            TxPackets[16];                    /* count of transmitted packets */
+    CHAR                            TxOctets[16];                     /* count of transmitted octet packets */
+    CHAR                            RxPackets[16];                    /* count of received packets */
+    CHAR                            RxOctets[16];                     /* count of received octet packets */
+    CHAR                            PacketLoss[16];                   /* count of lost packets */
+    CHAR                            IntervalJitter[16];               /* stat variance of packet interarrival time, in milliseconds */
+    CHAR                            RemoteIntervalJitter[16];         /* remote sie IntervalJitter (see local side) */
+    CHAR                            RemoteMOS_LQ[16];                 /* remote side MOS_LQ (see local side) */
+    CHAR                            RemoteMOS_CQ[16];                 /* remote side MOS_CQ (see local side) */
+    CHAR                            RemoteEchoReturnLoss[16];         /* remote side EchoReturnLoss (see local side) */
+    CHAR                            RemoteSignalLevel[16];            /* remote side SignalLevel (see local side) */
+    CHAR                            RemoteNoiseLevel[16];             /* remote side NoiseLevel (see local side) */
+    CHAR                            RemoteLossRate[16];               /* remote side LossRate (see local side) */
+    CHAR                            RemotePktLossConcealment[16];     /* remote side PktLossConcealment (see local side) */
+    CHAR                            RemoteDiscardRate[16];            /* remote side DiscardRate (see local side) */
+    CHAR                            RemoteBurstDensity[16];           /* remote side BurstDensity (see local side) */
+    CHAR                            RemoteGapDensity[16];             /* remote side GapDensity (see local side) */
+    CHAR                            RemoteBurstDuration[16];          /* remote side BurstDuration (see local side) */
+    CHAR                            RemoteGapDuration[16];            /* remote side GapDuration (see local side) */
+    CHAR                            RemoteRoundTripDelay[16];         /* remote side RoundTripDelay (see local side) */
+    CHAR                            RemoteGmin[16];                   /* remote side Gmin (see local side) */
+    CHAR                            RemoteRFactor[16];                /* remote side RFactore (see local side) */
+    CHAR                            RemoteExternalRFactor[16];        /* remote side ExternalRFactor (see local side) */
     BOOLEAN                         RemoteJitterBufferAdaptive;   /* remote side JitterBufferAdaptive (see local side) */
-    ULONG                           RemoteJitterBufRate;          /* remote side JitterBufRate (see local side) */
-    ULONG                           RemoteJBNominalDelay;         /* remote side JBNominalDelay (see local side) */
-    ULONG                           RemoteJBMaxDelay;             /* remote side JBMaxDelay (see local side) */
-    ULONG                           RemoteJBAbsMaxDelay;          /* remote side JBAbsMaxDelay (see local side) */
+    CHAR                            RemoteJitterBufRate[16];          /* remote side JitterBufRate (see local side) */
+    CHAR                            RemoteJBNominalDelay[16];         /* remote side JBNominalDelay (see local side) */
+    CHAR                            RemoteJBMaxDelay[16];             /* remote side JBMaxDelay (see local side) */
+    CHAR                            RemoteJBAbsMaxDelay[16];          /* remote side JBAbsMaxDelay (see local side) */
 }
 MTAMGMT_MTA_CALLS, *PMTAMGMT_MTA_CALLS;
 
@@ -326,8 +375,8 @@ MTAMGMT_MTA_BATTERY_INFO,  *PMTAMGMT_MTA_BATTERY_INFO;
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_InitDB(void);
@@ -345,8 +394,8 @@ INT   mta_hal_InitDB(void);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_GetDHCPInfo(PMTAMGMT_MTA_DHCP_INFO pInfo);
@@ -363,8 +412,8 @@ INT mta_hal_GetDHCPInfo(PMTAMGMT_MTA_DHCP_INFO pInfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 ULONG mta_hal_LineTableGetNumberOfEntries(void);
@@ -383,8 +432,8 @@ ULONG mta_hal_LineTableGetNumberOfEntries(void);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_LineTableGetEntry(ULONG Index, PMTAMGMT_MTA_LINETABLE_INFO pEntry);
@@ -402,8 +451,8 @@ INT   mta_hal_LineTableGetEntry(ULONG Index, PMTAMGMT_MTA_LINETABLE_INFO pEntry)
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_TriggerDiagnostics(ULONG Index);
@@ -422,8 +471,8 @@ INT   mta_hal_TriggerDiagnostics(ULONG Index);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetServiceFlow(ULONG* Count, PMTAMGMT_MTA_SERVICE_FLOW *ppCfg);
@@ -441,8 +490,8 @@ INT   mta_hal_GetServiceFlow(ULONG* Count, PMTAMGMT_MTA_SERVICE_FLOW *ppCfg);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_DectGetEnable(BOOLEAN *pBool);
@@ -462,8 +511,8 @@ INT   mta_hal_DectGetEnable(BOOLEAN *pBool);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetCalls(ULONG InstanceNumber, ULONG *Count, PMTAMGMT_MTA_CALLS *ppCfg);
@@ -482,8 +531,8 @@ INT   mta_hal_GetCalls(ULONG InstanceNumber, ULONG *Count, PMTAMGMT_MTA_CALLS *p
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetCALLP(ULONG LineNumber, PMTAMGMT_MTA_CALLP pCallp);
@@ -502,8 +551,8 @@ INT   mta_hal_GetCALLP(ULONG LineNumber, PMTAMGMT_MTA_CALLP pCallp);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetDSXLogs(ULONG *Count, PMTAMGMT_MTA_DSXLOG *ppDSXLog);
@@ -521,8 +570,8 @@ INT   mta_hal_GetDSXLogs(ULONG *Count, PMTAMGMT_MTA_DSXLOG *ppDSXLog);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetDSXLogEnable(BOOLEAN *pBool);
@@ -540,8 +589,8 @@ INT   mta_hal_GetDSXLogEnable(BOOLEAN *pBool);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_SetDSXLogEnable(BOOLEAN Bool);
@@ -560,8 +609,8 @@ INT   mta_hal_SetDSXLogEnable(BOOLEAN Bool);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetMtaLog(ULONG *Count, PMTAMGMT_MTA_MTALOG_FULL *ppCfg);
@@ -579,8 +628,8 @@ INT   mta_hal_GetMtaLog(ULONG *Count, PMTAMGMT_MTA_MTALOG_FULL *ppCfg);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetInstalled(BOOLEAN* Val);
@@ -598,8 +647,8 @@ INT mta_hal_BatteryGetInstalled(BOOLEAN* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetTotalCapacity(ULONG* Val);
@@ -617,8 +666,8 @@ INT mta_hal_BatteryGetTotalCapacity(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetActualCapacity(ULONG* Val);
@@ -636,8 +685,8 @@ INT mta_hal_BatteryGetActualCapacity(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetRemainingCharge(ULONG* Val);
@@ -655,8 +704,8 @@ INT mta_hal_BatteryGetRemainingCharge(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetRemainingTime(ULONG* Val);
@@ -674,8 +723,8 @@ INT mta_hal_BatteryGetRemainingTime(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetNumberofCycles(ULONG* Val);
@@ -694,8 +743,8 @@ INT mta_hal_BatteryGetNumberofCycles(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetPowerStatus(CHAR *Val, ULONG *len);
@@ -714,8 +763,8 @@ INT mta_hal_BatteryGetPowerStatus(CHAR *Val, ULONG *len);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetCondition(CHAR *Val, ULONG *len);
@@ -735,8 +784,8 @@ INT mta_hal_BatteryGetCondition(CHAR *Val, ULONG *len);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetStatus(CHAR* Val, ULONG *len);
@@ -755,8 +804,8 @@ INT mta_hal_BatteryGetStatus(CHAR* Val, ULONG *len);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetLife(CHAR* Val, ULONG *len);
@@ -775,11 +824,30 @@ INT mta_hal_BatteryGetLife(CHAR* Val, ULONG *len);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetInfo(PMTAMGMT_MTA_BATTERY_INFO pInfo);
+
+/*  mta_hal_BatteryGetPowerSavingModeStatus: */
+/**
+* Description: Get the battery Power Saving Mode Status
+* Parameters : 
+*    ULONG *pValue- Values of 1 for Enabled, 2 for Disabled
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_BatteryGetPowerSavingModeStatus(ULONG *pValue);
 
 #endif /* __MTA_HAL_H__ */
  
