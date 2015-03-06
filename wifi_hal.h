@@ -138,6 +138,9 @@ typedef struct _wifi_device
      UCHAR wifi_devMacAddress[6];
      CHAR wifi_devIPAddress[64];
      BOOL wifi_devAssociatedDeviceAuthentiationState;
+     INT  wifi_devSignalStrength;
+     INT  wifi_devTxRate;
+     INT  wifi_devRxRate;
 } wifi_device_t;
 
 
@@ -228,6 +231,28 @@ INT wifi_down();                                                    // turns off
 */
 INT wifi_factoryReset();                                            // clears internal variables to implement a factory reset of the wifi subsystem
 
+/* wifi_factoryResetRadios() function */
+/**
+
+* Description: 
+*  Resets Implementation specifics may dictate some functionality since 
+*  different hardware implementations may have different requirements.
+*  Parameters : None
+* 
+
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected 
+* 
+* @execution Synchronous.
+
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
+INT wifi_factoryResetRadios();
 
 /* wifi_createInitialConfigFiles() function */
 /**

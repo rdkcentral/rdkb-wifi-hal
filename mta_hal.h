@@ -125,28 +125,6 @@
          }
 #endif
 
-/* dect */
-typedef enum 
-{
-    SNMPA_REQ_USER_HANDLER,
-    SNMPA_REQ_GET_VAL_BY_OID,
-    SNMPA_REQ_GETNEXT_VAL_BY_OID,
-    SNMPA_REQ_SET_STRING_BY_OID,
-    SNMPA_REQ_SET_BYTE_BY_OID,
-    SNMPA_REQ_SET_OID_BY_OID,
-    SNMPA_REQ_SET_INT_BY_OID,
-    SNMPA_REQ_SET_UINT_BY_OID,
-    SNMPA_REQ_SET_SHORT_BY_OID,
-    SNMPA_REQ_SET_USHORT_BY_OID,
-    SNMPA_REQ_SET_IP_BY_OID,
-    SNMPA_REQ_ENGINE_GET_MY_ID,
-    SNMPA_REQ_ENGINE_GET_MY_BOOTS,
-    SNMPA_REQ_ENGINE_GET_MY_TIME,
-    SNMPA_REQ_TLV11_CONF,
-    SNMPA_REQ_TLV64_CONF,
-    SNMPA_REQ_SET_MY_ENGINE_INFO,
-}  SnmpaIfRequest_e;
-
 #define DECT_MAX_HANDSETS 5
 
 /**********************************************************************
@@ -495,6 +473,159 @@ INT   mta_hal_GetServiceFlow(ULONG* Count, PMTAMGMT_MTA_SERVICE_FLOW *ppCfg);
 *
 */
 INT   mta_hal_DectGetEnable(BOOLEAN *pBool);
+
+/*  mta_hal_DectSetEnable: */
+/**
+* Description: Set Dect to boolean value passed in
+* Parameters : 
+*     BOOLEAN* bBool - boolean value for enabled or not, to be returned
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system�
+* calls. It should probably just send a message to a driver event handler task.�
+*
+*/
+INT mta_hal_DectSetEnable(BOOLEAN bBool);
+
+/*  mta_hal_DectGetRegistrationMode: */
+/**
+* Description: Set Dect to boolean value passed in
+* Parameters : 
+*     BOOLEAN* bBool - boolean value for enabled or not, to be returned
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_DectGetRegistrationMode(BOOLEAN* pBool);
+
+/*  mta_hal_DectSetRegistrationMode: */
+/**
+* Description: Set Dect registration mode
+* Parameters : 
+*     BOOLEAN* bBool - boolean value for enabled or not, to be returned
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_DectSetRegistrationMode(BOOLEAN bBool);
+
+/*  mta_hal_DectDeregisterDectHandset: */
+/**
+* Description: Deregister Dect Handset
+* Parameters : 
+*     ULONG* uValue - unsigned long value for 
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_DectDeregisterDectHandset(ULONG uValue);
+
+/*  mta_hal_GetDect: */
+/**
+* Description: 
+* Parameters : 
+*     PMTAMGMT_MTA_DECT* pDect - 
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_GetDect(PMTAMGMT_MTA_DECT pDect);
+
+/*  mta_hal_GetDectPIN: */
+/**
+* Description: 
+* Parameters : 
+*     char* pPINString -  
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_GetDectPIN(char* pPINString);
+
+/*  mta_hal_SetDectPIN: */
+/**
+* Description: 
+* Parameters : 
+*     char* pPINString - 
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_SetDectPIN(char* pPINString);
+
+/*  mta_hal_GetHandsets: */
+/**
+* Description: 
+* Parameters : 
+*     ULONG* pulCount  - 
+*     PMTAMGMT_MTA_HANDSETS_INFO* ppHandsets -
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_GetHandsets(ULONG* pulCount, PMTAMGMT_MTA_HANDSETS_INFO* ppHandsets);
 
 /*  mta_hal_GetCalls : */
 /**

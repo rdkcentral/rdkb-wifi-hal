@@ -127,6 +127,7 @@ INT platform_hal_GetWebAccessLevel(INT userIndex, INT ifIndex, ULONG *pValue);
 INT platform_hal_SetWebAccessLevel(INT userIndex, INT ifIndex, ULONG value);
 
 INT platform_hal_PandMDBInit(void);
+INT platform_hal_DocsisParamsDBInit(void);
 INT platform_hal_GetModelName(CHAR* pValue);
 INT platform_hal_GetSerialNumber(CHAR* pValue);
 INT platform_hal_GetHardwareVersion(CHAR* pValue);
