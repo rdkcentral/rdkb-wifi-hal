@@ -215,8 +215,8 @@ CCSP_HAL_ETHSW_ADMIN_STATUS, *PCCSP_HAL_ETHSW_ADMIN_STATUS;
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system?
+* calls. It should probably just send a message to a driver event handler task.?
 *
 */
 INT
@@ -245,8 +245,8 @@ CcspHalEthSwInit
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system?
+* calls. It should probably just send a message to a driver event handler task.?
 *
 */
 INT
@@ -277,8 +277,8 @@ CcspHalEthSwGetPortStatus
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system?
+* calls. It should probably just send a message to a driver event handler task.?
 *
 */
 INT
@@ -308,8 +308,8 @@ CcspHalEthSwGetPortCfg
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system?
+* calls. It should probably just send a message to a driver event handler task.?
 *
 */
 INT
@@ -338,8 +338,8 @@ CcspHalEthSwSetPortCfg
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system?
+* calls. It should probably just send a message to a driver event handler task.?
 *
 */
 INT
@@ -366,8 +366,8 @@ CcspHalEthSwGetPortAdminStatus
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system?
+* calls. It should probably just send a message to a driver event handler task.?
 *
 */
 INT
@@ -394,8 +394,8 @@ CcspHalEthSwSetPortAdminStatus
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system?
+* calls. It should probably just send a message to a driver event handler task.?
 *
 */
 INT
@@ -405,6 +405,33 @@ CcspHalEthSwSetAgingSpeed
         INT                         AgingSpeed
     );
 
+/* CcspHalEthSwLocatePortByMacAddress :  */
+/**
+* Description: Retrieve the port number that the specificed MAC address is associated with (seen)
+
+* Parameters :
+    pMacAddr    -- Specifies the MAC address -- 6 bytes
+    pPortId     -- Receives the found port number that the MAC address is seen on
+
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+
+*
+* @note This function must not suspend and must not invoke any blocking system?
+* calls. It should probably just send a message to a driver event handler task.?
+*
+*/
+INT
+CcspHalEthSwLocatePortByMacAddress
+    (
+        UCHAR*                      pMacAddr,
+        PCCSP_HAL_ETHSW_PORT        pPortId
+    );
 
 #endif /* __CCSP_HAL_ETHSW_H__ */
  
