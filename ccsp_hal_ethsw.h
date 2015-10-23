@@ -234,8 +234,13 @@ CCSP_HAL_ETHSW_ADMIN_STATUS, *PCCSP_HAL_ETHSW_ADMIN_STATUS;
 * @sideeffect None.
 
 *
+<<<<<<< HEAD
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
+=======
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+>>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 *
 */
 INT
@@ -264,8 +269,13 @@ CcspHalEthSwInit
 * @sideeffect None.
 
 *
+<<<<<<< HEAD
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
+=======
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+>>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 *
 */
 INT
@@ -296,8 +306,13 @@ CcspHalEthSwGetPortStatus
 * @sideeffect None.
 
 *
+<<<<<<< HEAD
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
+=======
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+>>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 *
 */
 INT
@@ -327,8 +342,13 @@ CcspHalEthSwGetPortCfg
 * @sideeffect None.
 
 *
+<<<<<<< HEAD
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
+=======
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+>>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 *
 */
 INT
@@ -357,8 +377,13 @@ CcspHalEthSwSetPortCfg
 * @sideeffect None.
 
 *
+<<<<<<< HEAD
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
+=======
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+>>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 *
 */
 INT
@@ -385,8 +410,13 @@ CcspHalEthSwGetPortAdminStatus
 * @sideeffect None.
 
 *
+<<<<<<< HEAD
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
+=======
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+>>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 *
 */
 INT
@@ -413,8 +443,13 @@ CcspHalEthSwSetPortAdminStatus
 * @sideeffect None.
 
 *
+<<<<<<< HEAD
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
+=======
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+>>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 *
 */
 INT
@@ -424,33 +459,42 @@ CcspHalEthSwSetAgingSpeed
         INT                         AgingSpeed
     );
 
-/* CcspHalEthSwLocatePortByMacAddress :  */
+/* CcspHalEthSwLocatePortByMacAddress  :  */
 /**
 * Description: Query Moca and External switch port for the given MAC address
 
 * Parameters :
+<<<<<<< HEAD
     pMacAddr    -- Specifies the MAC address to search for -- 6 bytes
     pPortId     -- Receives the found port number that the MAC address is seen on values are: 0: MoCA, 1-4: Ethernet port
 
+=======
+    mac      -- MAC address to search for
+    port      -- The return values are: 0: MoCA, 1-4: Ethernet port 
+>>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
-* @retval RETURN_ERR if any error is detected
+* @retval RETURN_ERR if any error is detected or MAC address is not found
 *
 * @execution Synchronous.
 * @sideeffect None.
 
 *
+<<<<<<< HEAD
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
+=======
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+>>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 *
 */
-INT
+INT 
 CcspHalEthSwLocatePortByMacAddress
-    (
-        UCHAR*                      pMacAddr,
-        PCCSP_HAL_ETHSW_PORT        pPortId
-    );
-
+	(
+		unsigned char * mac, 
+		INT * port
+	);
 #endif /* __CCSP_HAL_ETHSW_H__ */
  

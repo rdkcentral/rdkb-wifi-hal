@@ -124,6 +124,7 @@
 #endif
 
 #define kMoca_MaxCpeList		256
+#define kMoca_MaxMocaNodes              16
 
 /**********************************************************************
                 ENUMERATION DEFINITIONS
@@ -377,6 +378,64 @@ typedef struct {
     ULONG                           NumberOfClients;
 } moca_associated_device_t;
 
+typedef struct {
+    /* This data structure represents teh MoCA mesh PHY rate table.
+       This table contains the unicast transmit PHY rate between all
+       pair of nodes in the MoCA Network.*/
+    
+    /* The node ID of the receive MoCA node is used as one of the
+    index to order the mesh PHY rate table.*/ 
+    ULONG                           RxNodeID;
+
+    /* The node ID of the transmit MoCA node is used as one of the
+    index to order the mesh PHY rate table.*/
+    ULONG                           TxNodeID;
+
+    /*Indicate the transmit PHY rate in Mbps from the MoCA node
+    identified by 'mocaMeshTxNodeIndex' to the MoCA node identified
+    by 'mocaMeshRxNodeIndex'.*/
+    ULONG                           TxRate;
+
+} moca_mesh_table_t;
+
+typedef struct {
+    /* This Data Structure respresents the MoCA interface flow statistics
+       table.  This table provides statistics of ingress PQoS flow in the
+       MoCA interface.*/ 
+
+    /* Indicate the flow ID of a PQoS flow. */
+    ULONG                           FlowID;
+    /* Indicate the flow ID of a Ingress PQoS flow. */
+    ULONG                           IngressNodeID;
+    /* Indicate the flow ID of a Egress PQoS flow. */
+    ULONG                           EgressNodeID;
+    /* Indicate the LEASE_TIME_LEFT of the PQoS flow identified by
+    'mocaIfFlowID' in which this MoCA interface is an ingress node
+    for this PQoS flow.*/
+    ULONG                           FlowTimeLeft;
+    /* Indicate the Destination Address (DA) of Ethernet packets of
+    the PQoS Flow for which this node is the ingress node */
+    char                            DestinationMACAddress[18];
+    /* Indicate the number of MoCA aggregation MoCA frames.*/
+    ULONG                           PacketSize;
+    /* Indicate the T_PEAK_DATA_RATE of the PQoS flow identified by
+    'mocaIfFlowID' in which this MoCA interface is an ingress node
+    for the PQoS flow.*/
+    ULONG                           PeakDataRate;
+    /* Indicate the T_BURST_SIZE of the PQoS flow identified by
+    'mocaIfFlowID' in which this MoCA interface is an ingress node
+    for this PQoS flow.*/
+    ULONG                           BurstSize;
+    /* Indicate the FLOW_TAG of the PQoS flow identified by
+    'mocaIfFlowID' in which this MoCA interface is an ingress node
+    for this PQoS flow. The FLOW_TAG carries application specific
+    content of this PQoS flow.*/
+    ULONG                           FlowTag;
+    /* Indicate the T_LEASE_TIME of the PQoS flow identified by
+    'mocaIfFlowID' in which this MoCA interface is an ingress node
+    for this PQoS flow.*/
+    ULONG                           LeaseTime;
+} moca_flow_table_t;
 
 /**********************************************************************************
  *
@@ -704,7 +763,8 @@ INT moca_GetAssociatedDevices(ULONG ifIndex, moca_associated_device_t **ppdevice
 * calls. It should probably just send a message to a driver event handler task. 
 *
 */
-INT moca_FreqMaskToValue(UINT mask);
+//INT moca_FreqMaskToValue(UINT mask);
+INT moca_FreqMaskToValue(UCHAR *mask);
 
 /* moca_HardwareEquipped() function */
 /**
@@ -723,6 +783,46 @@ INT moca_FreqMaskToValue(UINT mask);
 *
 */
 BOOL moca_HardwareEquipped(void);
+
+/* moca_IfGetMeshTable() function */
+/**
+* Description: Gets the MoCA Mesh Table.
+* Parameters : 
+*    ifIndex - Index of the MoCA Interface.
+*    moca_mesh_table_t - pointer to a mesh table entry
+*    pulCount - number of entries in the table
+* @return The status of the operation.
+* @retval STATUS_SUCCESS if successful.
+* @retval STATUS_FAILURE if any error is detected 
+* 
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
+INT moca_GetFullMeshRates(ULONG ifIndex, moca_mesh_table_t *pDeviceArray, ULONG *pulCount);
+
+/* moca_GetFlowStatistics() function */
+/**
+* Description: Gets the MoCA Flow Table.
+* Parameters : 
+*    ifIndex - Index of the MoCA Interface.
+*    moca_flow_table_t - pointer to a flow table entry
+*    pulCount - number of entries in the table
+* @return The status of the operation.
+* @retval STATUS_SUCCESS if successful.
+* @retval STATUS_FAILURE if any error is detected 
+* 
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
+INT moca_GetFlowStatistics(ULONG ifIndex, moca_flow_table_t *pDeviceArray, ULONG *pulCount);
 
 #endif
  
