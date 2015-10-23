@@ -108,6 +108,10 @@
 #define INT   int
 #endif
 
+#ifndef LONG
+#define LONG   long
+#endif
+
 #ifndef UINT
 #define UINT  unsigned int
 #endif
@@ -741,6 +745,131 @@ INT cm_hal_GetCPEList(PCMMGMT_DML_CPE_LIST * ppCPEList, ULONG* InstanceNum, CHAR
 *
 */
 INT cm_hal_GetMarket(CHAR* market);
+/* HTTP Download HAL API Prototype */
+
+/* cm_hal_Set_HTTP_DL_Url  - 1 */
+
+/* Description: Set Http Download Settings
+Parameters : char* pHttpUrl;
+Parameters : char* pfilename;
+
+@return the status of the operation
+@retval RETURN_OK if successful.
+@retval RETURN_ERR if any Downloading is in process or Url string is invalided.
+*/
+INT cm_hal_Set_HTTP_Download_Url (char* pHttpUrl, char* pfilename);
+
+/* cm_hal_Get_HTTP_Download_Url: */
+
+/* Description: Get Http Download Url
+Parameters : char* pHttpUrl
+Parameters : char* pfilename;
+@return the status of the operation.
+@retval RETURN_OK if successful.
+@retval RETURN_ERR if http url string is empty.
+*/
+INT cm_hal_Get_HTTP_Download_Url (char *pHttpUrl, char* pfilename);
+
+/* interface=0 for wan0, interface=1 for erouter0 */
+INT cm_hal_Set_HTTP_Download_Interface(unsigned int interface);
+
+/* interface=0 for wan0, interface=1 for erouter0 */
+INT cm_hal_Get_HTTP_Download_Interface(unsigned int* pinterface);
+
+/* cm_hal_HTTP_Download - 3 */
+/**
+Description: Start Http Download
+Parameters: <None>
+@return the status of the operation.
+@retval RETURN_OK if successful.
+@retval RETURN_ERR if any Downloading is in process.
+
+*/
+INT cm_hal_HTTP_Download ();
+
+/* cm_hal_ Get_HTTP_Download _Status ? 4 */
+/**
+Description: Get the HTTP Download Status
+Parameters : <None>
+@return the status of the HTTP Download.
+?	0 ? Download is not started.
+?	Number between 0 to 100: Values of percent of download.
+?	200 ? Download is completed and waiting for reboot.
+?	400 -  Invalided Http server Url
+?	401 -  Cannot connect to Http server
+?	402 -  File is not found on Http server
+?	403 -  HW_Type_DL_Protection Failure
+?	404 -  HW Mask DL Protection Failure
+?	405 -  DL Rev Protection Failure
+?	406 -  DL Header Protection Failure
+?	407 -  DL CVC Failure
+?	500 -  General Download Failure
+?	*/
+INT cm_hal_Get_HTTP_Download_Status();
+
+/* cm_hal_Reboot_Ready - 5 */
+/*
+Description: Get the Reboot Ready Status
+Parameters:
+ULONG *pValue- Values of 1 for Ready, 2 for Not Ready
+@return the status of the operation.
+@retval RETURN_OK if successful.
+@retval RETURN_ERR if any error is detected
+
+*/
+INT cm_hal_Reboot_Ready(ULONG *pValue);
+
+/* cm_hal_HTTP_DL_Reboot_Now - 6*/
+/*
+Description:  Http Download Reboot Now
+Parameters : <None>
+@return the status of the reboot operation.
+@retval RETURN_OK if successful.
+@retval RETURN_ERR if any reboot is in process.
+*/
+INT cm_hal_HTTP_Download_Reboot_Now();
+
+/*  cm_hal_ReinitMac : */
+/**
+* Description: Reinit CM.  Performs reinit MAC only to same DS/US
+* Parameters :
+*     None
+*
+
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system�
+* calls. It should probably just send a message to a driver event handler task.�
+*
+
+*/
+INT cm_hal_ReinitMac();
+
+/*  docsis_GetProvIpType : */
+/**
+* Description: Retrieve the provisioned wan0 IP type
+* Parameters :
+*     CHAR* pValue - ip type currently provisioned on wan0
+*           values are "IPv4", "IPv6", or "unknown"
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system�
+* calls. It should probably just send a message to a driver event handler task.�
+*
+*/
+INT docsis_GetProvIpType(CHAR *pValue);
+
 
 /*  docsis_GetCert : */
 /**
@@ -779,6 +908,87 @@ INT docsis_GetCert(CHAR* pCert);
 *
 */
 INT docsis_GetCertStatus(ULONG *pVal);
+
+/*  cm_hal_Get_CableModemResetCount : */
+/**
+* Description: Retrieve the count of cable modem reset
+* Parameters :
+*    ULONG *resetcnt - Count to be returned
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+
+*
+* @note This function must not suspend and must not invoke any blocking system�
+* calls. It should probably just send a message to a driver event handler task.�
+*
+*/
+INT cm_hal_Get_LocalResetCount(ULONG *resetcnt);
+
+/*  cm_hal_Get_LocalResetCount : */
+/**
+* Description: Retrieve the count of local reset
+* Parameters :
+*    ULONG *resetcnt - Count to be returned
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system�
+* calls. It should probably just send a message to a driver event handler task.�
+*
+*/
+
+INT cm_hal_Get_LocalResetCount(ULONG *resetcnt);
+
+/*  cm_hal_Get_DocsisResetCount : */
+/**
+* Description: Retrieve the count of docsis reset
+* Parameters :
+*    ULONG *resetcnt - Count to be returned
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system�
+* calls. It should probably just send a message to a driver event handler task.�
+*
+*/
+
+INT cm_hal_Get_DocsisResetCount(ULONG *resetcnt);
+
+/*  cm_hal_Get_ErouterResetCount : */
+/**
+* Description: Retrieve the count of erouter reset
+* Parameters :
+*    ULONG *resetcnt - Count to be returned
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system�
+* calls. It should probably just send a message to a driver event handler task.�
+*
+*/
+
+INT cm_hal_Get_ErouterResetCount(ULONG *resetcnt);
+
 
 #endif
  

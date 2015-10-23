@@ -105,6 +105,7 @@ typedef struct
     char dhcp_status[kSnooper_MaxStatusLen];
     char hostname[kSnooper_MaxHostNameLen];
     int rssi;
+	int noOfTriesForOnlineCheck;
 } snooper_client_list;
 
 typedef struct

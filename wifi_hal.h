@@ -162,6 +162,31 @@ typedef struct _wifi_device
      INT  wifi_devRxRate;
 } wifi_device_t;
 
+typedef struct _wifi_radioTrafficStats
+{
+     ULONG wifi_ErrorsSent;	//The total number of outbound packets that could not be transmitted because of errors.
+     ULONG wifi_ErrorsReceived;    //The total number of inbound packets that contained errors preventing them from being delivered to a higher-layer protocol.
+     ULONG wifi_DiscardPacketsSent; //The total number of outbound packets which were chosen to be discarded even though no errors had been detected to prevent their being transmitted. One possible reason for discarding such a packet could be to free up buffer space.
+     ULONG wifi_DiscardPacketsReceived; //The total number of inbound packets which were chosen to be discarded even though no errors had been detected to prevent their being delivered. One possible reason for discarding such a packet could be to free up buffer space.
+     ULONG wifi_PLCPErrorCount;	//The number of packets that were received with a detected Physical Layer Convergence Protocol (PLCP) header error.
+     ULONG wifi_FCSErrorCount;	//The number of packets that were received with a detected FCS error. This parameter is based on dot11FCSErrorCount from [Annex C/802.11-2012].
+     ULONG wifi_InvalidMACCount;	//The number of packets that were received with a detected invalid MAC header error.
+     ULONG wifi_PacketsOtherReceived;	//The number of packets that were received, but which were destined for a MAC address that is not associated with this interface.
+     INT   wifi_Noise; 	//The noise floor for this radio channel where a recoverable signal can be obtained. Expressed as a signed integer in the range (-110:0).  Measurement should capture all energy (in dBm) from sources other than Wi-Fi devices as well as interference from Wi-Fi devices too weak to be decoded. Measured in dBm
+
+} wifi_radioTrafficStats_t;	//for radio only
+
+typedef struct _wifi_ssidTrafficStats
+{
+     ULONG wifi_RetransCount;
+     ULONG wifi_FailedRetransCount;
+     ULONG wifi_RetryCount;
+     ULONG wifi_MultipleRetryCount;
+     ULONG wifi_ACKFailureCount;
+     ULONG wifi_AggregatedPacketCount;
+
+} wifi_ssidTrafficStats_t;  //for ssid only
+
 
 /**********************************************************************************
  *
@@ -249,6 +274,41 @@ INT wifi_down();                                                    // turns off
 *
 */
 INT wifi_factoryReset();                                            // clears internal variables to implement a factory reset of the wifi subsystem
+
+/* wifi_factoryResetRadio(int radioIndex) function */
+/**
+* Description:
+*  Resets radio parameters for specified radio, and do NOT restart wifi (NO apup at the end)
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_factoryResetRadio(int radioIndex);
+
+
+/* wifi_factoryResetAP(int apIndex) function */
+/**
+* Description:
+*  Resets AP (SSID) parameters for specified radio, and do NOT restart wifi (NO apup at the end)
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected�
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_factoryResetAP(int apIndex);
+
+
 
 /* wifi_factoryResetRadios() function */
 /**
@@ -583,6 +643,9 @@ INT wifi_setAuthMode(INT apIndex, INT mode);                        // set the a
 
 INT wifi_getBasicTrafficStats(INT apIndex, wifi_basicTrafficStats_t *output_struct);  // outputs basic traffic stats per AP
 INT wifi_getWifiTrafficStats(INT apIndex, wifi_trafficStats_t *output_struct); // outputs more detailed traffic stats per AP
+
+INT wifi_getSSIDTrafficStats(INT ssidIndex, wifi_ssidTrafficStats_t *output_struct); //outputs packet retransmission stats per AP
+
 INT wifi_getNumDevicesAssociated(INT apIndex, ULONG *output_ulong); // outputs the number of stations assocated per AP
 INT wifi_getAllAssociatedDeviceDetail(INT apIndex, ULONG *output_ulong, wifi_device_t ***output_struct); // Outputs the number of assocated devcies and the device details
 INT wifi_getAssociatedDeviceDetail(INT apIndex, INT devIndex, wifi_device_t *output_struct); // Outputs device details of a single device with index devIndex 
@@ -642,6 +705,72 @@ INT wifi_createHostApdConfig(INT apIndex, BOOL createWpsCfg);       // creates c
 INT wifi_startHostApd();                                            // starts hostapd, uses the variables in the hostapd config with format compatible with the specific hostapd implementation
 INT wifi_stopHostApd();                                             // stops hostapd
 
+INT wifi_getReverseDirectionGrantEnable(INT radioIndex, BOOL *output_bool);
+INT wifi_setReverseDirectionGrantEnable(INT radioIndex, BOOL enable);
+INT wifi_getDeclineBARequestEnable(INT radioIndex, BOOL *output_bool);
+INT wifi_setDeclineBARequestEnable(INT radioIndex, BOOL enable);
+INT wifi_getAutoBlockAckEnable(INT radioIndex, BOOL *output_bool);
+INT wifi_setAutoBlockAckEnable(INT radioIndex, BOOL enable);
+INT wifi_get11nGreenfieldEnable(INT radioIndex, BOOL *output_bool);
+INT wifi_set11nGreenfieldEnable(INT radioIndex, BOOL enable);
+INT wifi_getIGMPSnoopingEnable(INT radioIndex, BOOL *output_bool);
+INT wifi_setIGMPSnoopingEnable(INT radioIndex, BOOL enable);
+INT wifi_getDfsSupport(INT radioIndex, UINT *output_uint);
+INT wifi_getDfsEnable(INT radioIndex, BOOL *output_bool);
+INT wifi_setDfsEnable(INT radioIndex, BOOL enabled);
+
+INT wifi_setLED(INT apIndex, BOOL enable);
+//Device.WiFi.Radio.{i}.X_COMCAST-COM_CarrierSenseThresholdRange
+//Indicates the Carrier Sense ranges supported by the radio. It is measured in dBm. Refer section A.2.3.2 of CableLabs Wi-Fi MGMT Specification.
+INT wifi_getRadioCarrierSenseThresholdRange(INT radioIndex, INT *output);
+
+//Device.WiFi.Radio.{i}.X_COMCAST-COM_CarrierSenseThresholdInUse
+//The RSSI signal level at which CS/CCA detects a busy condition. This attribute enables APs to increase minimum sensitivity to avoid detecting busy condition from multiple/weak Wi-Fi sources in dense Wi-Fi environments. It is measured in dBm. Refer section A.2.3.2 of CableLabs Wi-Fi MGMT Specification.
+INT wifi_getRadioCarrierSenseThresholdInUse(INT radioIndex, INT *output);
+INT wifi_setRadioCarrierSenseThresholdInUse(INT radioIndex, INT threshold);
+
+INT wifi_getRadioBeaconPeriod(INT radioIndex, UINT *output);
+INT wifi_setRadioBeaconPeriod(INT radioIndex, UINT BeaconPeriod);
+
+INT wifi_getRadioBasicDataTransmitRates(INT radioIndex, CHAR *output);
+INT wifi_setRadioBasicDataTransmitRates(INT radioIndex, CHAR *TransmitRates);
+//Device.WiFi.Radio.{i}.Stats.
+
+//Device.WiFi.Radio.{i}.Stats.ErrorsSent
+//Device.WiFi.Radio.{i}.Stats.ErrorsReceived
+//Device.WiFi.Radio.{i}.Stats.DiscardPacketsSent
+//Device.WiFi.Radio.{i}.Stats.DiscardPacketsReceived
+//Device.WiFi.Radio.{i}.Stats.PLCPErrorCount
+//Device.WiFi.Radio.{i}.Stats.FCSErrorCount
+//Device.WiFi.Radio.{i}.Stats.InvalidMACCount
+//Device.WiFi.Radio.{i}.Stats.PacketsOtherReceived
+//Device.WiFi.Radio.{i}.Stats.Noise //X_COMCAST-COM_NoiseFloor
+INT wifi_getRadioWifiTrafficStats(INT radioIndex, wifi_radioTrafficStats_t *output_struct); //Tr181
+INT wifi_getRadioStatsChannelUtilization(INT radioIndex, ULONG *output);
+INT wifi_getRadioStatsActivityFactor(INT radioIndex, INT *output);
+INT wifi_getRadioStatsCarrierSenseThreshold_Exceeded(INT radioIndex, INT *output);
+INT wifi_getRadioStatsRetransmissionMetirc(INT radioIndex, INT *output);
+INT wifi_getRadioStatsMaximumNoiseFloorOnChannel(INT radioIndex, INT *output);
+INT wifi_getRadioStatsMinimumNoiseFloorOnChannel(INT radioIndex, INT *output);
+INT wifi_getRadioStatsMedianNoiseFloorOnChannel(INT radioIndex, INT *output);
+INT wifi_getRadioStatsRadioStatisticsMeasuringRate(INT radioIndex, INT *output); //Tr181
+INT wifi_setRadioStatsRadioStatisticsMeasuringRate(INT radioIndex, INT rate); //Tr181
+INT wifi_getRadioStatsRadioStatisticsMeasuringInterval(INT radioIndex, INT *output);
+INT wifi_setRadioStatsRadioStatisticsMeasuringInterval(INT radioIndex, INT interval);
+INT wifi_getRadioStatsStatisticsStartTime(INT radioIndex, INT *timeInSeconds);
+INT wifi_getRadioStatsReceivedSignalLevel(INT radioIndex, INT signalIndex, INT *SignalLevel);
+INT wifi_getAPMaxAssociatedDevices(INT apIndex, UINT *output);
+INT wifi_setAPMaxAssociatedDevices(INT apIndex, UINT number);
+INT wifi_getAPAssociatedDevicesHighWatermarkThreshold(INT apIndex, UINT *output);
+INT wifi_setAPAssociatedDevicesHighWatermarkThreshold(INT apIndex, UINT Threshold);
+INT wifi_getAPAssociatedDevicesHighWatermarkThresholdReached(INT apIndex, UINT *output);
+INT wifi_getAPAssociatedDevicesHighWatermark(INT apIndex, UINT *output); //Tr181
+INT wifi_getAPAssociatedDevicesHighWatermarkDate(INT apIndex, ULONG *output_in_seconds);
+
+/*INT wifi_getInterworkingServiceCapability(INT apIndex, BOOL *output); //Tr181
+INT wifi_getInterworkingServiceEnable(INT apIndex, BOOL *output); //Tr181
+INT wifi_setInterworkingServiceEnable(INT apIndex, BOOL enable); //Tr181
+*/
 
 
 #else
