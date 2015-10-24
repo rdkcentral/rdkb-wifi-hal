@@ -356,7 +356,6 @@ typedef struct _wifi_device
 } wifi_device_t;
 //<<
 
-<<<<<<< HEAD
 typedef struct _wifi_radioTrafficStats
 {
      ULONG wifi_ErrorsSent;	//The total number of outbound packets that could not be transmitted because of errors.
@@ -550,7 +549,6 @@ INT wifi_factoryResetRadios();
 *
 */
 INT wifi_createInitialConfigFiles();                                // creates initial implementation dependent configuration files that are later used for variable storage.  Not all implementations may need this function.  If not needed for a particular implementation simply return no-error (0)
-=======
 //Please do not edit the elements for this data structure 
 typedef struct _wifi_associated_dev
 {
