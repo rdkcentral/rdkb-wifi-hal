@@ -606,7 +606,6 @@ typedef struct _wifi_radius_setting_t
 //     INT AIFS;        // AIFS
 //     ULONG TxOpLimit;  // TXOP Limit
 //} wifi_AC_parameters_record_t;
->>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 
 
 //typedef struct _wifi_qos
@@ -1171,12 +1170,10 @@ INT wifi_resetApVlanCfg(INT apIndex);                                 // reset t
 //INT wifi_getApRouterEnable(INT apIndex, BOOL *output_bool);           //P4 // Outputs a bool that indicates if router is enabled for this ap
 //INT wifi_setApRouterEnable(INT apIndex, BOOL routerEnabled);          //P4 // sets the routerEnabled variable for this ap
 
->>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 INT wifi_createHostApdConfig(INT apIndex, BOOL createWpsCfg);       // creates configuration variables needed for WPA/WPS.  These variables are implementation dependent and in some implementations these variables are used by hostapd when it is started.  Specific variables that are needed are dependent on the hostapd implementation. These variables are set by WPA/WPS security functions in this wifi HAL.  If not needed for a particular implementation this function may simply return no error.
 INT wifi_startHostApd();                                            // starts hostapd, uses the variables in the hostapd config with format compatible with the specific hostapd implementation
 INT wifi_stopHostApd();                                             // stops hostapd
 
-<<<<<<< HEAD
 INT wifi_getReverseDirectionGrantEnable(INT radioIndex, BOOL *output_bool);
 INT wifi_setReverseDirectionGrantEnable(INT radioIndex, BOOL enable);
 INT wifi_getDeclineBARequestEnable(INT radioIndex, BOOL *output_bool);
@@ -1574,7 +1571,6 @@ void wifi_newApAssociatedDevice_callback_register(wifi_newApAssociatedDevice_cal
 //INT wifi_setDownLinkQueuePriority(INT apIndex, INT priorityLevel); // this sets the queue priority level for each AP/SSID in the downlink direction.  It is used with the downlink QOS api to manage priority access to airtime in the downlink direction.  This set must take affect when the api wifi_applySSIDSettings() is called.
 
 //<< ------------------------------ wifi_ap_hal -----------------------
->>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 
 #else
 #error "! __WIFI_HAL_H__"
