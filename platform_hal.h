@@ -155,14 +155,10 @@ INT platform_hal_GetBootloaderVersion(CHAR* pValue, ULONG maxSize);
 INT platform_hal_GetFirmwareName(CHAR* pValue, ULONG maxSize);
 INT platform_hal_GetBaseMacAddress(CHAR *pValue);
 INT platform_hal_GetHardware(CHAR *pValue);
-<<<<<<< HEAD
-
-=======
->>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 INT platform_hal_GetHardware_MemUsed(CHAR *pValue);
 INT platform_hal_GetHardware_MemFree(CHAR *pValue);
 INT platform_hal_GetTotalMemorySize(ULONG *pulSize);
 INT platform_hal_GetUsedMemorySize(ULONG *pulSize);
 INT platform_hal_GetFreeMemorySize(ULONG *pulSize);
 #endif
-
+ 
