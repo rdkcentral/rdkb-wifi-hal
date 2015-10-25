@@ -153,8 +153,6 @@
 #endif
 
 /* dect */
-<<<<<<< HEAD
-=======
 /*
  *  DH  This is not the right place to place platform/HAL
  *      implementation specific definitions here.
@@ -163,7 +161,6 @@
  *
  *  Fix the other RDK-B vendor's code!!!
  *
->>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 typedef enum
 {
     SNMPA_REQ_USER_HANDLER,
@@ -184,16 +181,12 @@ typedef enum
     SNMPA_REQ_TLV64_CONF,
     SNMPA_REQ_SET_MY_ENGINE_INFO,
 }  SnmpaIfRequest_e;
-<<<<<<< HEAD
-
-=======
  */
 
 /*
  *  DH  This is also questionable why we have to define this kind of
  *      platform specific capacility in the hal header file
  */
->>>>>>> ARRISXB3-3443 : hal patches from RDKB to yocto branch
 #define DECT_MAX_HANDSETS 5
 
 /**********************************************************************
