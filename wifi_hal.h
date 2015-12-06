@@ -78,7 +78,15 @@
         zhicheng_qiu@cable.comcast.com 
         Charles Moreman, moremac@cisco.com
 		
+    ---------------------------------------------------------------
 
+	Notes:
+
+	What is new for 2.2.0
+	  1. Add Country Code support
+	  2. Add more DCS function
+	  3. Move RadiusSecret from struct wifi_radius_setting_t to wifi_getApSecurityRadiusServer function
+	  4. Add wifi_getApSecuritySecondaryRadiusServer
 **********************************************************************/
 
 #ifndef __WIFI_HAL_H__
@@ -151,10 +159,10 @@
 #define AP_INDEX_16 16
 #endif
 
-//defines for HAL version 2.1.1
+//defines for HAL version 2.2.0
 #define WIFI_HAL_MAJOR_VERSION 2   // This is the major verion of this HAL.
-#define WIFI_HAL_MINOR_VERSION 1   // This is the minor verson of the HAL.
-#define WIFI_HAL_MAINTENANCE_VERSION 1   // This is the maintenance version of the HAL.
+#define WIFI_HAL_MINOR_VERSION 2   // This is the minor verson of the HAL.
+#define WIFI_HAL_MAINTENANCE_VERSION 0   // This is the maintenance version of the HAL.
 
 /**********************************************************************
                 STRUCTURE DEFINITIONS
@@ -402,7 +410,7 @@ typedef struct _wifi_radius_setting_t
 	 INT  BlacklistTableTimeout; 		//Time interval in seconds for which a client will continue to be blacklisted once it is marked so.	
 	 INT  IdentityRequestRetryInterval; //Time Interval in seconds between identity requests retries. A value of 0 (zero) disables it.	
 	 INT  QuietPeriodAfterFailedAuthentication;  //The enforced quiet period (time interval) in seconds following failed authentication. A value of 0 (zero) disables it.	
-	 UCHAR RadiusSecret[64];			//The secret used for handshaking with the RADIUS server [RFC2865]. When read, this parameter returns an empty string, regardless of the actual value.
+	 //UCHAR RadiusSecret[64];			//The secret used for handshaking with the RADIUS server [RFC2865]. When read, this parameter returns an empty string, regardless of the actual value.
 		 
 } wifi_radius_setting_t;	
 
@@ -446,7 +454,7 @@ INT wifi_factoryResetRadios(); //RDKB
 INT wifi_factoryResetRadio(int radioIndex); 	//RDKB
 
 //Set the system LED status
-//INT wifi_setLED(INT apIndex, BOOL enable);	//RDKB
+INT wifi_setLED(INT radioIndex, BOOL enable);	//RDKB
 
 // Initializes the wifi subsystem (all radios)
 INT wifi_init();                              //RDKB
@@ -459,6 +467,10 @@ INT wifi_down();                       		//RDKB
 
 // creates initial implementation dependent configuration files that are later used for variable storage.  Not all implementations may need this function.  If not needed for a particular implementation simply return no-error (0)
 INT wifi_createInitialConfigFiles();                                                                                    
+
+// outputs the country code to a max 64 character string
+INT wifi_getRadioCountryCode(INT radioIndex, CHAR *output_string);   
+INT wifi_setRadioCountryCode(INT radioIndex, CHAR *CountryCode);       
 
 
 //---------------------------------------------------------------------------------------------------
@@ -571,6 +583,14 @@ INT wifi_getRadioDCSSupported(INT radioIndex, BOOL *output_bool); 	//RDKB
 //Device.WiFi.Radio.{i}.X_COMCAST-COM_DCSEnable
 INT wifi_getRadioDCSEnable(INT radioIndex, BOOL *output_bool);		//RDKB
 INT wifi_setRadioDCSEnable(INT radioIndex, BOOL enable);			//RDKB
+
+//The output_string is a max length 256 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
+//The value of this parameter is a comma seperated list of channel number
+INT wifi_getRadioDCSChannelPool(INT radioIndex, CHAR *output_pool);			//RDKB
+INT wifi_setRadioDCSChannelPool(INT radioIndex, CHAR *pool);			//RDKB
+
+INT wifi_getRadioDCSScanTime(INT radioIndex, INT *output_interval_seconds, INT *output_dwell_milliseconds);
+INT wifi_setRadioDCSScanTime(INT radioIndex, INT interval_seconds, INT dwell_milliseconds);
 
 //Device.WiFi.Radio.{i}.X_COMCAST-COM_DfsSupported
 //Get radio DFS support
@@ -934,7 +954,7 @@ INT wifi_getApStatus(INT apIndex, CHAR *output_string);  				// Outputs the AP "
 //Indicates whether or not beacons include the SSID name.
 INT wifi_getApSsidAdvertisementEnable(INT apIndex, BOOL *output_bool);// outputs a 1 if SSID on the AP is enabled, else ouputs 0
 INT wifi_setApSsidAdvertisementEnable(INT apIndex, BOOL enable);      // sets an internal variable for ssid advertisement.  Set to 1 to enable, set to 0 to disable
-//INT wifi_pushApSsidAdvertisementEnable(INT apIndex, BOOL enable);     // push the ssid advertisement enable variable to the hardware //Applying changs with wifi_applyRadioSettings()
+INT wifi_pushApSsidAdvertisementEnable(INT apIndex, BOOL enable);     // push the ssid advertisement enable variable to the hardware //Applying changs with wifi_applyRadioSettings()
 
 //Device.WiFi.AccessPoint.{i}.RetryLimit		
 //The maximum number of retransmission for a packet. This corresponds to IEEE 802.11 parameter dot11ShortRetryLimit.
@@ -1050,9 +1070,12 @@ INT wifi_setApSecurityReset(INT apIndex);
 //-----------------------------------------------------------------------------------------------
 //Device.WiFi.AccessPoint.{i}.Security.RadiusServerIPAddr	
 //Device.WiFi.AccessPoint.{i}.Security.RadiusServerPort	
-//The IP Address and port number of the RADIUS server used for WLAN security. RadiusServerIPAddr is only applicable when ModeEnabled is an Enterprise type (i.e. WPA-Enterprise, WPA2-Enterprise or WPA-WPA2-Enterprise).
-INT wifi_getApSecurityRadiusServer(INT apIndex, CHAR *IP_output, UINT *Port_output); //Tr181	
-INT wifi_setApSecurityRadiusServer(INT apIndex, CHAR *IPAddress, UINT port); //Tr181	
+//Device.WiFi.AccessPoint.{i}.Security.RadiusSecret
+//The IP Address and port number of the RADIUS server used for WLAN security. RadiusServerIPAddr is only applicable when ModeEnabled is an Enterprise type (i.e. WPA-Enterprise, WPA2-Enterprise or WPA-WPA2-Enterprise).  String is 64 bytes max
+INT wifi_getApSecurityRadiusServer(INT apIndex, CHAR *IP_output, UINT *Port_output, CHAR *RadiusSecret_output); //Tr181	
+INT wifi_setApSecurityRadiusServer(INT apIndex, CHAR *IPAddress, UINT port, CHAR *RadiusSecret); //Tr181	
+INT wifi_getApSecuritySecondaryRadiusServer(INT apIndex, CHAR *IP_output, UINT *Port_output, CHAR *RadiusSecret_output); //Tr181	
+INT wifi_setApSecuritySecondaryRadiusServer(INT apIndex, CHAR *IPAddress, UINT port, CHAR *RadiusSecret); //Tr181	
 
 //Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_RadiusSettings.		
 //Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_RadiusSettings.RadiusServerRetries	int	W	
@@ -1063,8 +1086,7 @@ INT wifi_setApSecurityRadiusServer(INT apIndex, CHAR *IPAddress, UINT port); //T
 //Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_RadiusSettings.MaxAuthenticationAttempts	int	W	
 //Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_RadiusSettings.BlacklistTableTimeout	int	W	
 //Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_RadiusSettings.IdentityRequestRetryInterval	int	W	
-//Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_RadiusSettings.QuietPeriodAfterFailedAuthentication	int	W	
-//Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_RadiusSettings.RadiusSecret	
+//Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_RadiusSettings.QuietPeriodAfterFailedAuthentication	int	W		
 INT wifi_getApSecurityRadiusSettings(INT apIndex, wifi_radius_setting_t *output); //Tr181	
 INT wifi_setApSecurityRadiusSettings(INT apIndex, wifi_radius_setting_t *input); //Tr181	
 

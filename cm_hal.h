@@ -108,10 +108,6 @@
 #define INT   int
 #endif
 
-#ifndef LONG
-#define LONG   long
-#endif
-
 #ifndef UINT
 #define UINT  unsigned int
 #endif
