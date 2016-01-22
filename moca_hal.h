@@ -824,5 +824,23 @@ INT moca_GetFullMeshRates(ULONG ifIndex, moca_mesh_table_t *pDeviceArray, ULONG 
 */
 INT moca_GetFlowStatistics(ULONG ifIndex, moca_flow_table_t *pDeviceArray, ULONG *pulCount);
 
+/* moca_GetResetCount() function */
+/**
+* Description: Gets the MoCA reset count.
+*    resetcnt - number of reset 
+* @return The status of the operation.
+* @retval STATUS_SUCCESS if successful.
+* @retval STATUS_FAILURE if any error is detected 
+* 
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
+
+INT moca_GetResetCount(ULONG *resetcnt);
+
 #endif
  

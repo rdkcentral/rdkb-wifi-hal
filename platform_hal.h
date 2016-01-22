@@ -160,5 +160,7 @@ INT platform_hal_GetHardware_MemFree(CHAR *pValue);
 INT platform_hal_GetTotalMemorySize(ULONG *pulSize);
 INT platform_hal_GetUsedMemorySize(ULONG *pulSize);
 INT platform_hal_GetFreeMemorySize(ULONG *pulSize);
+INT platform_hal_GetFactoryResetCount(ULONG *pulSize);
+INT platform_hal_ClearResetCount(BOOLEAN bFlag);
 #endif
  
