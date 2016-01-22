@@ -87,6 +87,8 @@
 	  2. Add more DCS function
 	  3. Move RadiusSecret from struct wifi_radius_setting_t to wifi_getApSecurityRadiusServer function
 	  4. Add wifi_getApSecuritySecondaryRadiusServer
+	What is new for 2.2.1
+	  1. Add wifi_setRadioTrafficStatsMeasure, wifi_setRadioTrafficStatsRadioStatisticsEnable
 **********************************************************************/
 
 #ifndef __WIFI_HAL_H__
@@ -159,10 +161,10 @@
 #define AP_INDEX_16 16
 #endif
 
-//defines for HAL version 2.2.0
+//defines for HAL version 2.2.1
 #define WIFI_HAL_MAJOR_VERSION 2   // This is the major verion of this HAL.
 #define WIFI_HAL_MINOR_VERSION 2   // This is the minor verson of the HAL.
-#define WIFI_HAL_MAINTENANCE_VERSION 0   // This is the maintenance version of the HAL.
+#define WIFI_HAL_MAINTENANCE_VERSION 1   // This is the maintenance version of the HAL.
 
 /**********************************************************************
                 STRUCTURE DEFINITIONS
@@ -711,8 +713,10 @@ INT wifi_getRadioTrafficStats2(INT radioIndex, wifi_radioTrafficStats2_t *output
 //Device.WiFi.Radio.{i}.Stats.X_COMCAST-COM_RadioStatisticsMeasuringRate
 //Device.WiFi.Radio.{i}.Stats.X_COMCAST-COM_RadioStatisticsMeasuringInterval
 //Set radio traffic static Measureing rules
-//INT wifi_setRadioTrafficStatsMeasure(INT radioIndex, wifi_radioTrafficStatsMeasure_t *input_struct); //Tr181
+INT wifi_setRadioTrafficStatsMeasure(INT radioIndex, wifi_radioTrafficStatsMeasure_t *input_struct); //Tr181
 
+//Device.WiFi.Radio.{i}.Stats.X_COMCAST-COM_RadioStatisticsEnable bool writable
+INT wifi_setRadioTrafficStatsRadioStatisticsEnable(INT radioIndex, BOOL enable);
 
 //-----------------------------------------------------------------------------------------------
 //Device.WiFi.Radio.{i}.Stats.X_COMCAST-COM_ReceivedSignalLevel.{i}.
@@ -725,6 +729,10 @@ INT wifi_getRadioStatsReceivedSignalLevel(INT radioIndex, INT signalIndex, INT *
 //This API is used to apply (push) all previously set radio level variables and make these settings active in the hardware
 //Not all implementations may need this function.  If not needed for a particular implementation simply return no-error (0)
 INT wifi_applyRadioSettings(INT radioIndex);  
+
+
+//Radio reset count
+INT wifi_getRadioResetCount(INT radioIndex, ULONG *output_int);
 
 //---------------------------------------------------------------------------------------------------
 //
