@@ -89,8 +89,6 @@
 	  4. Add wifi_getApSecuritySecondaryRadiusServer
 	What is new for 2.2.1
 	  1. Add wifi_setRadioTrafficStatsMeasure, wifi_setRadioTrafficStatsRadioStatisticsEnable
-	What is new for 2.2.2
-	  1. Add Band Steering HAL
 **********************************************************************/
 
 #ifndef __WIFI_HAL_H__
@@ -859,37 +857,6 @@ INT wifi_getAllAssociatedDeviceDetail(INT apIndex, ULONG *output_ulong, wifi_dev
 // Additional Wifi radio level APIs used for RDKB Access Point devices
 //
 //---------------------------------------------------------------------------------------------------
-
-//Device.WiFi.X_RDKCENTRAL-COM_BandSteering object
-//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.Capability bool r/o
-//To get Band Steering Capability
-INT wifi_getBandSteeringCapability(BOOL *support); 
-
-//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.Enable bool r/w
-//To get Band Steering enable status
-INT wifi_getBandSteeringEnable(BOOL *enable);
-
-//To turn on/off Band steering
-INT wifi_setBandSteeringEnable(BOOL enable);
-
-//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.UtilizationThreshold int r/w
-//to set and read the band steering BandUtilizationThreshold parameters 
-INT wifi_getBandSteeringBandUtilizationThreshold (INT radioIndex, INT *pBuThreshold);
-INT wifi_setBandSteeringBandUtilizationThreshold (INT radioIndex, INT buThreshold);
-
-//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.RSSIThreshold int r/w
-//to set and read the band steering RSSIThreshold parameters 
-INT wifi_getBandSteeringRSSIThreshold (INT radioIndex, INT *pRssiThreshold);
-INT wifi_setBandSteeringRSSIThreshold (INT radioIndex, INT rssiThreshold);
-
-//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.PhyRateThreshold int r/w
-//to set and read the band steering physical modulation rate threshold parameters 
-INT wifi_getBandSteeringPhyRateThreshold (INT radioIndex, INT *pPrThreshold); //If chip is not support, return -1
-INT wifi_setBandSteeringPhyRateThreshold (INT radioIndex, INT prThreshold); //If chip is not support, return -1
-
-//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.History string r/o
-INT wifi_getBandSteeringLog(INT record_index, ULONG *pSteeringTime, CHAR *pClientMAC, INT *pSourceSSIDIndex, INT *pDestSSIDIndex, INT *pSteeringReason); //if no steering or redord_index is out of boundary, return -1. pSteeringTime returns the UTC time in seconds. pClientMAC is pre allocated as 64bytes. pSteeringReason returns the predefined steering trigger reason 
-	
 
 INT wifi_factoryResetAP(int apIndex); 	//Restore AP paramters to default without change other AP nor Radio parameters (No need to reboot wifi)
 INT wifi_setRadioCtsProtectionEnable(INT apIndex, BOOL enable);          //P3 // enables CTS protection for the radio used by this AP
