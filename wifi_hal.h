@@ -89,6 +89,8 @@
 	  4. Add wifi_getApSecuritySecondaryRadiusServer
 	What is new for 2.2.1
 	  1. Add wifi_setRadioTrafficStatsMeasure, wifi_setRadioTrafficStatsRadioStatisticsEnable
+	What is new for 2.2.2
+	  1. Add Band Steering HAL
 **********************************************************************/
 
 #ifndef __WIFI_HAL_H__
@@ -161,10 +163,10 @@
 #define AP_INDEX_16 16
 #endif
 
-//defines for HAL version 2.2.1
+//defines for HAL version 2.2.2
 #define WIFI_HAL_MAJOR_VERSION 2   // This is the major verion of this HAL.
 #define WIFI_HAL_MINOR_VERSION 2   // This is the minor verson of the HAL.
-#define WIFI_HAL_MAINTENANCE_VERSION 1   // This is the maintenance version of the HAL.
+#define WIFI_HAL_MAINTENANCE_VERSION 2   // This is the maintenance version of the HAL.
 
 /**********************************************************************
                 STRUCTURE DEFINITIONS
@@ -858,6 +860,37 @@ INT wifi_getAllAssociatedDeviceDetail(INT apIndex, ULONG *output_ulong, wifi_dev
 //
 //---------------------------------------------------------------------------------------------------
 
+//Device.WiFi.X_RDKCENTRAL-COM_BandSteering object
+//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.Capability bool r/o
+//To get Band Steering Capability
+INT wifi_getBandSteeringCapability(BOOL *support); 
+
+//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.Enable bool r/w
+//To get Band Steering enable status
+INT wifi_getBandSteeringEnable(BOOL *enable);
+
+//To turn on/off Band steering
+INT wifi_setBandSteeringEnable(BOOL enable);
+
+//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.UtilizationThreshold int r/w
+//to set and read the band steering BandUtilizationThreshold parameters 
+INT wifi_getBandSteeringBandUtilizationThreshold (INT radioIndex, INT *pBuThreshold);
+INT wifi_setBandSteeringBandUtilizationThreshold (INT radioIndex, INT buThreshold);
+
+//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.RSSIThreshold int r/w
+//to set and read the band steering RSSIThreshold parameters 
+INT wifi_getBandSteeringRSSIThreshold (INT radioIndex, INT *pRssiThreshold);
+INT wifi_setBandSteeringRSSIThreshold (INT radioIndex, INT rssiThreshold);
+
+//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.PhyRateThreshold int r/w
+//to set and read the band steering physical modulation rate threshold parameters 
+INT wifi_getBandSteeringPhyRateThreshold (INT radioIndex, INT *pPrThreshold); //If chip is not support, return -1
+INT wifi_setBandSteeringPhyRateThreshold (INT radioIndex, INT prThreshold); //If chip is not support, return -1
+
+//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.History string r/o
+INT wifi_getBandSteeringLog(INT record_index, ULONG *pSteeringTime, CHAR *pClientMAC, INT *pSourceSSIDIndex, INT *pDestSSIDIndex, INT *pSteeringReason); //if no steering or redord_index is out of boundary, return -1. pSteeringTime returns the UTC time in seconds. pClientMAC is pre allocated as 64bytes. pSteeringReason returns the predefined steering trigger reason 
+	
+
 INT wifi_factoryResetAP(int apIndex); 	//Restore AP paramters to default without change other AP nor Radio parameters (No need to reboot wifi)
 INT wifi_setRadioCtsProtectionEnable(INT apIndex, BOOL enable);          //P3 // enables CTS protection for the radio used by this AP
 INT wifi_setRadioObssCoexistenceEnable(INT apIndex, BOOL enable);        // enables OBSS Coexistence - fall back to 20MHz if necessary for the radio used by this ap
@@ -915,7 +948,7 @@ INT wifi_setApDTIMInterval(INT apIndex, INT dtimInterval);			  // Sets the DTIM 
 INT wifi_getApRtsThresholdSupported(INT apIndex, BOOL *output_bool);  // Get the packet size threshold supported. 
 INT wifi_setApRtsThreshold(INT apIndex, UINT threshold);              // sets the packet size threshold in bytes to apply RTS/CTS backoff rules. 
 
-INT wifi_getApWpaEncryptoinMode(INT apIndex, CHAR *output_string);    // ouputs up to a 32 byte string as either "TKIPEncryption", "AESEncryption", or "TKIPandAESEncryption"
+INT wifi_getApWpaEncryptionMode(INT apIndex, CHAR *output_string);    // ouputs up to a 32 byte string as either "TKIPEncryption", "AESEncryption", or "TKIPandAESEncryption"
 INT wifi_setApWpaEncryptionMode(INT apIndex, CHAR *encMode);          // sets the encyption mode enviornment variable.  Valid string format is "TKIPEncryption", "AESEncryption", or "TKIPandAESEncryption"
 INT wifi_removeApSecVaribles(INT apIndex);                            // deletes internal security varable settings for this ap
 INT wifi_disableApEncryption(INT apIndex);                            // changes the hardware settings to disable encryption on this ap
