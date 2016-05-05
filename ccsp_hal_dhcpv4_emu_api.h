@@ -80,6 +80,10 @@ ULONG CcspHalNoofClientConnected();
 /* checking the LAN connection*/
 bool checkLan();
 
+/* To Set New Gateway IP Address to Lighttpd Webserver */
+INT CcspHalUpdateInterfaceval(CHAR *newgatewayip);
+
+
 
 #endif
 
