@@ -1163,5 +1163,8 @@ INT mta_hal_Get_MTAResetCount(ULONG *resetcnt);
 
 INT mta_hal_Get_LineResetCount(ULONG *resetcnt);
 
+/* clear the VQM stats per line */
+INT mta_hal_ClearCalls(ULONG InstanceNumber);
+
 #endif /* __MTA_HAL_H__ */
  
