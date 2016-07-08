@@ -736,6 +736,9 @@ INT wifi_applyRadioSettings(INT radioIndex);
 //Radio reset count
 INT wifi_getRadioResetCount(INT radioIndex, ULONG *output_int);
 
+//Clear radio reset count
+INT wifi_clearRadioResetCount();
+
 //---------------------------------------------------------------------------------------------------
 //
 // Wifi SSID level APIs common to Client and Access Point devices.
