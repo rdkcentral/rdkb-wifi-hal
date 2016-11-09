@@ -129,6 +129,7 @@
 /**********************************************************************
                 ENUMERATION DEFINITIONS
 **********************************************************************/
+#ifndef MOCA_VAR
 typedef enum 
 {
     IF_STATUS_Up               = 1,
@@ -139,6 +140,7 @@ typedef enum
     IF_STATUS_LowerLayerDown,
     IF_STATUS_Error
 } moca_if_status_t;
+#endif
 
 /**********************************************************************
                 STRUCTURE DEFINITIONS
@@ -216,6 +218,7 @@ typedef struct {
     BOOL                           PacketAggregationCapability;
 } moca_static_info_t;
 
+#ifndef MOCA_VAR
 typedef struct {
 	/* Current Status of the LoCAL Interface (Up/Down etc.) */
     moca_if_status_t                Status;
@@ -265,6 +268,7 @@ typedef struct {
 	/* Network Coordinator MAC Address */
     CHAR                            NetworkCoordinatorMACAddress[18];
 } moca_dynamic_info_t;
+#endif
 
 typedef struct {
 	/* Number of Bytes Sent & Received */
@@ -378,6 +382,7 @@ typedef struct {
     ULONG                           NumberOfClients;
 } moca_associated_device_t;
 
+#ifndef MOCA_VAR
 typedef struct {
     /* This data structure represents teh MoCA mesh PHY rate table.
        This table contains the unicast transmit PHY rate between all
@@ -397,6 +402,7 @@ typedef struct {
     ULONG                           TxRate;
 
 } moca_mesh_table_t;
+#endif
 
 typedef struct {
     /* This Data Structure respresents the MoCA interface flow statistics
@@ -802,7 +808,9 @@ BOOL moca_HardwareEquipped(void);
 * calls. It should probably just send a message to a driver event handler task. 
 *
 */
+#ifndef MOCA_VAR
 INT moca_GetFullMeshRates(ULONG ifIndex, moca_mesh_table_t *pDeviceArray, ULONG *pulCount);
+#endif
 
 /* moca_GetFlowStatistics() function */
 /**
