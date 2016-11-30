@@ -163,5 +163,7 @@ INT platform_hal_GetFreeMemorySize(ULONG *pulSize);
 INT platform_hal_GetFactoryResetCount(ULONG *pulSize);
 INT platform_hal_ClearResetCount(BOOLEAN bFlag);
 INT platform_hal_getTimeOffSet(CHAR *timeOffSet);
+INT platform_hal_SetDeviceCodeImageTimeout(INT seconds);
+INT platform_hal_SetDeviceCodeImageValid(BOOLEAN flag);
 #endif
  
