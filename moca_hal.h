@@ -123,6 +123,11 @@
 #define STATUS_FAILURE     -1
 #endif
 
+#ifndef STATUS_NOT_AVAILABLE
+#define STATUS_NOT_AVAILABLE     -2
+#endif
+
+
 #define kMoca_MaxCpeList		256
 #define kMoca_MaxMocaNodes              16
 
