@@ -272,6 +272,11 @@ typedef struct {
 
 	/* Network Coordinator MAC Address */
     CHAR                            NetworkCoordinatorMACAddress[18];
+	/*Indicate  the length of time this node has been connected
+	to the MoCA network with at least one other node*/
+    ULONG 							LinkUpTime;
+
+
 } moca_dynamic_info_t;
 #endif
 

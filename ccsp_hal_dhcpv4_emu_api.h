@@ -26,17 +26,25 @@
 #define DHCP_STARTING_RANGE 4
 #define DHCP_ENDING_RANGE 8
 #define DHCP_LEASE_TIME 16
-#define UDHCPD_CONF_FILE_PATH "/etc/udhcpd.conf"
+#define DNSMASQ_CONF_FILE_PATH "/etc/dnsmasq.conf"
 #define FILE_SIZE 1024
 #define SPACE 32
 #define NEW_LINE 10
 #define BUFFER_ADJUSTMENT 128
+#define MAX_NUM_HOST 50
+#define COSA_DML_ALIAS_NAME_LENGTH 64
+#define IPV4_ADDRESS_SIZE 4
+#define COSA_DML_IF_NAME_LENGTH 64
 #define DHCP_PID "> /tmp/pidof"
 #define DHCP_PATH "/tmp/pidof"
 #define DHCPv4_PID "pidof "
 
 #ifndef ULONG
 #define ULONG unsigned long
+#endif
+
+#ifndef LONG
+#define LONG  long
 #endif
 
 #ifndef CHAR
@@ -55,53 +63,411 @@
 #define UINT  unsigned int
 #endif
 
+#ifndef ANSC_IPV4_ADDRESS
+/*
+ * While we're trying really hard to smooth the procedure of switch-over from IPv4 to IPv4, there
+ * are many places where using the IP address as an integer for comparision and calculation is much
+ * easier than array-based operation.
+ */
+#define  ANSC_IPV4_ADDRESS                                                                  \
+         union                                                                              \
+         {                                                                                  \
+            UCHAR                   Dot[IPV4_ADDRESS_SIZE];                                 \
+            ULONG                   Value;                                                  \
+         }
+#endif
+
 #include <stdbool.h>
 
-typedef struct config_values
+
+struct hostDetails   
 {
-        CHAR *gateway;
-        CHAR *subnet;
-        CHAR *start;
-        CHAR *end;
-        CHAR *lease_time;
-}ConfigValues;
+        char hostName[20];
+};
+
+struct ethernet_port_details
+{
+	char Name[64];
+	UCHAR Mac[6];
+};
+
+typedef  struct
+_HALCOSA_DML_ETH_STATS
+{
+    ULONG                           BytesSent;
+    ULONG                           BytesReceived;
+    ULONG                           PacketsSent;
+    ULONG                           PacketsReceived;
+    ULONG                           ErrorsSent;
+    ULONG                           ErrorsReceived;
+    ULONG                           UnicastPacketsSent;
+    ULONG                           UnicastPacketsReceived;
+    ULONG                           DiscardPacketsSent;
+    ULONG                           DiscardPacketsReceived;
+    ULONG                           MulticastPacketsSent;
+    ULONG                           MulticastPacketsReceived;
+    ULONG                           BroadcastPacketsSent;
+    ULONG                           BroadcastPacketsReceived;
+    ULONG                           UnknownProtoPacketsReceived;
+}
+HALCOSA_DML_ETH_STATS, *HALPCOSA_DML_ETH_STATS;
+
+typedef  enum
+_HALCOSA_DML_IF_STATUS
+{
+    HALCOSA_DML_IF_STATUS_Up               = 1,
+    HALCOSA_DML_IF_STATUS_Down,
+    HALCOSA_DML_IF_STATUS_Unknown,
+    HALCOSA_DML_IF_STATUS_Dormant,
+    HALCOSA_DML_IF_STATUS_NotPresent,
+    HALCOSA_DML_IF_STATUS_LowerLayerDown,
+    HALCOSA_DML_IF_STATUS_Error
+}
+HALCOSA_DML_IF_STATUS, *HALPCOSA_DML_IF_STATUS;
+
+struct
+_HALCOSA_DML_DHCPS_SADDR
+{
+    ULONG                           InstanceNumber;
+    char                            Alias[COSA_DML_ALIAS_NAME_LENGTH];
+
+    bool                            bEnabled;
+    UCHAR                           Chaddr[6];
+    ANSC_IPV4_ADDRESS               Yiaddr;
+    char                            DeviceName[COSA_DML_ALIAS_NAME_LENGTH];
+    char                            Comment[256];
+    bool                            ActiveFlag;
+};
+
+typedef  struct _HALCOSA_DML_DHCPS_SADDR HALCOSA_DML_DHCPS_SADDR,  *HALPCOSA_DML_DHCPS_SADDR;
+
+typedef  struct
+_HALCOSA_DML_ETH_PORT_CFG
+{
+    ULONG                           InstanceNumber;
+    char                            Alias[COSA_DML_IF_NAME_LENGTH];
+
+    bool                            bEnabled;
+    LONG                            MaxBitRate;
+}
+HALCOSA_DML_ETH_PORT_CFG,  *HALPCOSA_DML_ETH_PORT_CFG;
+
+/*
+ *  Static portion of Ethernet port info
+ */
+typedef  struct
+_HALCOSA_DML_ETH_PORT_SINFO
+{
+    char                            Name[COSA_DML_IF_NAME_LENGTH];
+    bool                            bUpstream;
+    UCHAR                           MacAddress[6];
+}
+HALCOSA_DML_ETH_PORT_SINFO,  *HALPCOSA_DML_ETH_PORT_SINFO;
 
 
-/*Getting the dhcpv4 configuration (starting and ending)values */
-INT CcspHalGetConfigValue(CHAR *key, CHAR *value, INT size);
+/*
+ *  Dynamic portion of Ethernet port info
+ */
+typedef  struct
+_HALCOSA_DML_ETH_PORT_DINFO
+{
+    HALCOSA_DML_IF_STATUS              Status;
+    ULONG                           CurrentBitRate;
+    ULONG                           LastChange;
+    ULONG                           AssocDevicesCount;
+}
+HALCOSA_DML_ETH_PORT_DINFO,  *HALPCOSA_DML_ETH_PORT_DINFO;
 
 
-/*Getting the dhcpv4 configuration(lease time)value */
-INT CcspHalGetConfigLeaseValue(CHAR *key, CHAR *value, INT size);
+typedef  struct
+_HALCOSA_DML_ETH_PORT_FULL
+{
+    HALCOSA_DML_ETH_PORT_CFG           Cfg;
+    HALCOSA_DML_ETH_PORT_SINFO         StaticInfo;
+    HALCOSA_DML_ETH_PORT_DINFO         DynamicInfo;
+}
+HALCOSA_DML_ETH_PORT_FULL, *HALPCOSA_DML_ETH_PORT_FULL;
 
 
-/*passing the inputs to  dhcpv4 configuration file */
-INT CcspHal_change_config_value(CHAR *field_name, CHAR *field_value, CHAR *buf, UINT *nbytes);
+/*
+ *  Procedure     : CcspHalGetConfigValues
+ *  Purpose       : To Get current DHCPv4 parameter values from dnsmasq configuration file
+ *
+ *  Parameters    : 
+ *     value_flag : To Get current value_flag status (subnet_mask,DHCP_starting & Ending Range,Lease Time)
+ *     value      : Current DHCP parameter value should be stored 
+ *     size       : size of value 
+ *  Return_values : 
+ *      value     : Current DHCP parameter value , to be returned
+ *      size      : size of value, to be returned
+ */
+
+void CcspHalGetConfigValues(INT value_flag,CHAR *value, INT size);
+
+/*
+ *  Procedure     : CcspHalSetDHCPConfigValues
+ *  Purpose       : To set current DHCPv4 parameter values to dnsmasq configuration file
+ *
+ *  Parameters    : 
+ *     value_flag : To Get current value_flag status (subnet_mask,DHCP_starting & Ending Range,Lease Time)
+ *     value      : Current DHCP parameter value should be stored 
+ *  Return_values : The status of the operation
+ *     @retval 0 , if successful
+ *     @retval<0 , if any error is detected
+ */
+
+INT CcspHalSetDHCPConfigValues(INT value_flag,CHAR *value);
 
 
-/*Setting the inputs values to dhcpv4 configuration value  */
-INT CcspHalSetDHCPConfigValues(UINT value_flag, ConfigValues *config_value);
+/*
+ *  Procedure     : CcspHalInterfacesetval
+ *  Purpose       : To set current DHCPv4 Router value to Emulator(Gateway)
+ *
+ *  Parameters    : 
+ *     name       : To Get Interface Name 
+ *     str        : To Get New Gateway IP Address
+ *  Return_values : The status of the operation
+ *     @retval 0 , if successful
+ *     @retval<0 , if any error is detected
+ */
 
-/* setting the eth1 interface(ip address) */
 INT CcspHalInterfacesetval(CHAR *name,CHAR *str);
 
-/*setting the eth1 interface(netmask) */
+/*
+ *  Procedure     : CcspHalNetmasksetvalue
+ *  Purpose       : To set current DHCPv4 Subnet value to Emulator
+ *
+ *  Parameters    : 
+ *     name       : To Get Interface Name 
+ *     str        : To Get New Subnet Mask Address
+ *  Return_values : The status of the operation
+ *     @retval 0 , if successful
+ *     @retval<0 , if any error is detected
+ */
+
 
 INT CcspHalNetmasksetvalue(CHAR *name,CHAR *str);
 
-/* Getting the process id of dhcp server */
+/*
+ *  Procedure     : CcspHalGetPIDbyName
+ *  Purpose       : To Get DHCPv4 server PID (to known ,it should be in Enable or Disable state)
+ *
+ *  Parameters    : 
+ *     pidName    : To get DHPCv4 server Name
+ *  Return_values : The status of the operation
+ *     @retval 0 , if successful
+ *     @retval<0 , if any error is detected
+ */
+
 INT CcspHalGetPIDbyName(CHAR* pidName);
 
-/* Getting number of client connected devices*/
+/*
+ *  Procedure     : CcspHalNoofClientConnected
+ *  Purpose       : To Get Total number of connected clients through Emulator(Gateway)
+ *
+ *  Parameters    : None
+ *  Return_values : The status of the operation
+ *     @retval 0 , if successful
+ *     @retval<0 , if any error is detected
+ */
+
 ULONG CcspHalNoofClientConnected();
 
-/* checking the LAN connection*/
+/*
+ *  Procedure     : checkLan
+ *  Purpose       : To check the Lan status
+ *
+ *  Parameters    : None
+ *  Return_values : The status of the operation
+ *     @retval TRUE , if successful
+ *     @retval FALSE , if any error is detected
+ */
+
 bool checkLan();
 
-/* To Set New Gateway IP Address to Lighttpd Webserver */
+/*
+ *  Procedure     : CcspHalUpdateInterfaceval
+ *  Purpose       : To set new Gateway IP address to Lighttpd WebServer
+ *
+ *  Parameters    : 
+ *   newgatewayip : Having New Gateway IP Address
+ *  Return_values : The status of the operation
+ *     @retval 0 , if successful
+ *     @retval<0 , if any error is detected
+ */
+
 INT CcspHalUpdateInterfaceval(CHAR *newgatewayip);
 
+/*
+ *  Procedure           : updateReservedIp
+ *  Purpose             : It will edit the Existing Reserved IP in static Table Entry
+ *
+ *  Parameters          : 
+ *   hostPtr            : Having connected clients details. 
+ *   pDhcpStaticAddress : Having static table entry details.
+ *  Return_values       : None
+ */
 
+
+void updateReservedIp(struct hostDetails *hostPtr,HALPCOSA_DML_DHCPS_SADDR pDhcpStaticAddress);
+
+/*
+ *  Procedure           : CcspHalDHCPv4ReservedClients
+ *  Purpose             : To set Reserved IP in Static Entry Table 
+ *
+ *  Parameters          : 
+ *   pDhcpStaticAddress : Having Static Table Entry.
+ *  Return_values       : None
+ */
+
+void CcspHalDHCPv4ReservedClients(HALPCOSA_DML_DHCPS_SADDR pDhcpStaticAddress);
+
+/*
+ *  Procedure           : CcspHalDHCPv4DeleteReservedClients
+ *  Purpose             : To delete Reserved IP in Static Entry Table 
+ *
+ *  Parameters          : 
+ *   pDhcpStaticAddress : Having Static Table Entry.
+ *  Return_values       : None
+ */
+
+void CcspHalDHCPv4DeleteReservedClients(HALPCOSA_DML_DHCPS_SADDR pDhcpStaticAddress);
+
+/*
+ *  Procedure           : RestartDnsmasq
+ *  Purpose             : Restart the dnsmasq with updated configuration
+ *
+ *  Parameters          : None
+ *  Return_values       : None
+ */
+
+void RestartDnsmasq();
+
+/*
+ *  Procedure           : GetInterfaceMacAddressValue
+ *  Purpose             : To Get NULL MAC Address,If that interface is not there
+ *
+ *  Parameters          : 
+ *   interface_details  : Having Mac Address Value is NULL
+ *  Return_values       : None
+ */
+
+void GetInterfaceMacAddressValue(struct ethernet_port_details *interface_details);
+
+/*
+ *  Procedure           : CcspHalGetInterfaceDetails
+ *  Purpose             : To Get all Interface Details(like Name,Mac Address).
+ *
+ *  Parameters          : 
+ *   interface_details  : Having Interface Details of Static Information.
+ *   ulIndex            : Instance Number of Interfaces
+ *  Return_values       : None
+ */
+
+void CcspHalGetInterfaceDetails(ULONG ulIndex,struct ethernet_port_details *interface_details);
+
+/*
+ *  Procedure           : CcspHalGetInterfaceStatusDetails
+ *  Purpose             : To Get all Interface Status Detail.
+ *
+ *  Parameters          : 
+ *   pInfo              : Having Interface Status Detail.
+ *   ulInstanceNumber   : Instance Number of Interfaces
+ *  Return_values       : None
+ */
+
+void CcspHalGetInterfaceStatusDetails(ULONG ulInstanceNumber,HALPCOSA_DML_ETH_PORT_DINFO pInfo);
+
+/*
+ *  Procedure         : CcspHalGetInterfaceEnableDetails
+ *  Purpose           : To check the LAN and WAN Enable Status in Emulator
+ *
+ *  Parameters        : 
+ *     InstanceNumber : Having Instance Number of Interface
+ *  Return_values     : The status of the operation
+ *     @retval true , if successful
+ *     @retval false , if any error is detected
+ */
+
+bool CcspHalGetInterfaceEnableDetails(ULONG InstanceNumber);
+
+/*
+ *  Procedure            : CcspHalGetBridgePortNames
+ *  Purpose              : To get Bridge Port Names
+ *
+ *  Parameters           : 
+ *   ulBrgInstanceNumber : Having Instance number of Bridge
+ *   ulIndex             : Having Instance number of port
+ *   string              : Having Bridge_Port Names
+ *  Return_values        : None
+ */
+
+void CcspHalGetBridgePortNames(ULONG ulBrgInstanceNumber,ULONG ulIndex,char *string);
+
+/*
+ *  Procedure         : GetBridgePortStatus
+ *  Purpose           : To Get Bridge Port Current Status
+ *
+ *  Parameters        : 
+ *     string         : Having Current Interface
+ *  Return_values     : The status of the operation
+ *     @retval up   , if successful
+ *     @retval down , if any error is detected
+ */
+
+HALCOSA_DML_IF_STATUS GetBridgePortStatus(char *string);
+
+/*
+ *  Procedure              : CcspHalGetBridgePortStatus
+ *  Purpose                : To Get Bridge Port Current Status
+ *
+ *  Parameters             : 
+ *     ulBrgInstanceNumber : Having Instance Number of Bridge
+ *     ulIndex             : Having Instance Number of Port
+ *  Return_values          : The status of the operation
+ *     @retval up    , if successful
+ *     @retval down  , if any error is detected
+ */
+
+HALCOSA_DML_IF_STATUS CcspHalGetBridgePortStatus(ULONG ulBrgInstanceNumber,ULONG ulIndex);
+
+/*
+ *  Procedure         : GetBridgePortEnable
+ *  Purpose           : To Get Bridge Port Enable Status
+ *
+ *  Parameters        : 
+ *     string         : Having current Interface
+ *  Return_values     : The status of the operation
+ *     @retval true , if successful
+ *     @retval false , if any error is detected
+ */
+
+bool GetBridgePortEnable(char *string);
+
+/*
+ *  Procedure              : CcspHalGetBridgePortEnable
+ *  Purpose                : To Get Bridge Port Enable Status
+ *
+ *  Parameters             : 
+ *     ulBrgInstanceNumber : Having Instance Number of Bridge
+ *     ulIndex             : Having Instance Number of Port
+ *  Return_values          : The status of the operation
+ *     @retval true , if successful
+ *     @retval false , if any error is detected
+ */
+
+bool CcspHalGetBridgePortEnable(ULONG ulIndex,ULONG ulBrgInstanceNumber);
+
+/*
+ *  Procedure           : CcspHalGetBridgePortStats
+ *  Purpose             : To get Bridge Port Status Value is NULL
+ *
+ *  Parameters          : 
+ *   pStats             : Having Bridge port stats details.
+ *  Return_values       : None
+ */
+
+void CcspHalGetBridgePortStats(HALPCOSA_DML_ETH_STATS pStats);
 
 #endif
 

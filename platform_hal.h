@@ -165,5 +165,12 @@ INT platform_hal_ClearResetCount(BOOLEAN bFlag);
 INT platform_hal_getTimeOffSet(CHAR *timeOffSet);
 INT platform_hal_SetDeviceCodeImageTimeout(INT seconds);
 INT platform_hal_SetDeviceCodeImageValid(BOOLEAN flag);
+INT platform_hal_getCMTSMac(CHAR *pValue);
+
+//temperature and fan control
+INT platform_hal_GetChipTemperature(UINT chipIndex, ULONG *pTempValue);  //chipIndex:0 for main CPU, 1 for wifi chip.  TempValue is in degrees Celcius 
+INT platform_hal_GetFanSpeed(ULONG *pSpeedValue);  //SpeedValue is in RPMs 
+INT platform_hal_SetFanSpeed(ULONG SpeeddInRpms);
+
 #endif
  

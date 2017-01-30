@@ -990,5 +990,24 @@ INT cm_hal_Get_DocsisResetCount(ULONG *resetcnt);
 
 INT cm_hal_Get_ErouterResetCount(ULONG *resetcnt);
 
+/*  cm_hal_HTTP_LED_Flash : */
+/**
+* Description: Enable/Disable HTTP LED Flashing
+* Parameters : 
+*    BOOLEAN *bLEDFlashState - Enable/Disable LED Flash
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system�
+* calls. It should probably just send a message to a driver event handler task.�
+*
+*/
+
+INT cm_hal_HTTP_LED_Flash( BOOLEAN LedFlash );
 #endif
  

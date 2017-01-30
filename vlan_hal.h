@@ -158,57 +158,237 @@ typedef struct _vlan_vlanidconfiguration
  *
 ***********************************************************************/
 
-//This HAL is used to creat an new vlan group, and assig default vlanID. 
-// If success, return 0
-// If group is already exist and has expected vlanID, this HAL return 0
+/**
+* @description This HAL is used to creat an new vlan group, and assig default vlanID.
+* @param const char *groupName - bridge name
+* @param const char *default_vlanID - default VLANID
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful (or) return RETURN_OK If group is already exist and has expected vlanID
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
 int vlan_hal_addGroup(const char *groupName, const char *default_vlanID);
 
-//This HAL is used to delete existing vlan group, and delete correspond interface association. 
-// If success, return 0
-// If group is not exist, return 0,
+/**
+* @description This HAL is used to delete existing vlan group, and delete correspond interface association.
+* @param const char *groupName - bridge name 
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful (or) RETURN_OK If group is not exist
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
 int vlan_hal_delGroup(const char *groupName);
 
-//This HAL is used to add interface to existing vlan group, and assign the vlanID. 
-// If success, return 0
-// If group is not exist, return -1
-// If interface is already in group, and has expected vlan ID, return 0
+/**
+* @description This HAL is used to add interface to existing vlan group, and assign the vlanID.
+* @param const char *groupName - bridge name 
+* @param const char *ifName - interface name
+* @param const char *vlanID - VLANID
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful (or) RETURN_OK If interface is already in group, and has expected vlan ID
+* @retval RETURN_ERR if group is not exist (or) if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
 int vlan_hal_addInterface(const char *groupName, const char *ifName, const char *vlanID);
 
-//This HAL is used to deassociate existing interface from group. 
-// If success, return 0
-// If interface is not exist, return 0,
+/**
+* @description This HAL is used to deassociate existing interface from group.
+* @param const char *groupName - bridge name 
+* @param const char *ifName - interface name
+* @param const char *vlanID - VLANID
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful (or) RETURN_OK If interface is not exist
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
 int vlan_hal_delInterface(const char *groupName, const char *ifName, const char *vlanID);
 
-//This HAL is used dump the group setting, for debug purpose
+/**
+* @description This HAL is used to dump the particular group setting, for debug purpose
+* @param const char *groupName - bridge name 
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
 int vlan_hal_printGroup(const char *groupName);
-//This HAL is used dump all group setting. 
+
+
+/**
+* @description This HAL is used dump all group setting, for debug purpose
+* @param None.
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
 int vlan_hal_printAllGroup();
 
-//This HAL is used to deassociate all existing interface from group. 
+/**
+* @description This HAL is used to deassociate all existing interface from group.
+* @param const char *groupName - bridge name 
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+
 int vlan_hal_delete_all_Interfaces(const char *groupName);
 
-//This HAL utility is used identify given bridge available in linux bridge
+/**
+* @description This HAL utility is used identify given bridge available in linux bridge.
+* @param const char * br_name - bridge name
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+
 int _is_this_group_available_in_linux_bridge(char * br_name);
 
-//This HAL utility is used identify given interface available in given bridge
+/**
+* @description This HAL utility is used identify given interface available in given bridge.
+* @param const char * br_name - bridge name
+* @param char *vlanID - VLAND ID
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+
 int _is_this_interface_available_in_linux_bridge(char * if_name, char *vlanID);
 
-//This HAL utility is used identify given interface available in anyone of linux bridge
+/**
+* @description This HAL utility is used identify given interface available in anyone of linux bridge.
+* @param char * if_name - interface name
+* @param const char * br_name - bridge name
+* @param char *vlanID - VLAND ID
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+
 int _is_this_interface_available_in_given_linux_bridge(char * if_name, char * br_name,char *vlanID);
 
-//This HAL utility is used get the buffer from shell output
+/**
+* @description This HAL utility is used get the buffer from shell output
+* @param char * cmd - linux shell command
+* @param char * out - construct the linux system command and copy in this parameter
+* @param int len - length of the output string
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+
 void _get_shell_outputbuffer(char * cmd, char * out, int len);
 
-//This HAL utility is used store the VLAN ID, Group Name configuration
+/**
+* @description This HAL utility is used store the VLAN ID, Group Name configuration.
+* @param char *groupName - bridge name
+* @param char *vlanID - VLAND ID
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+
 int insert_VLAN_ConfigEntry(char *groupName, char *vlanID);
 
-//This HAL utility is used delete the VLAN ID, Group Name configuration
+/**
+* @description This HAL utility is used delete the VLAN ID, Group Name configuration
+* @param char *groupName - bridge name
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+
 int delete_VLAN_ConfigEntry(char *groupName);
 
-//This HAL utility is used delete the VLAN ID, Group Name configuration from link
+
+/**
+* @description This HAL utility is used delete the VLAN ID, Group Name configuration from link
+* @param char *groupName - bridge name
+* @param char char *vlanID - VLANID
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+
 int get_vlanId_for_GroupName(const char *groupName, char *vlanID);
 
-//This HAL utility is used get the VLAN ID for corresponding Group Name from link
+/**
+* @description This HAL utility is used get the VLAN ID for corresponding Group Name from link
+* @param None.
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+
 int print_all_vlanId_Configuration(void);
 
 /*

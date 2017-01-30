@@ -70,6 +70,14 @@
 
 **********************************************************************/
 
+/**
+* @file dhcpv4c_api.h
+* @author Cisco
+* @brief For CCSP Component: DHCPV4-Client Status
+*
+* @description This header file gives the function call prototypes and structure definitions used for the RDK-Broadband DHCPv4Client Status abstraction layer.
+*/
+
 #ifndef __DHCPV4_CLIENT_API_H__
 #define __DHCPV4_CLIENT_API_H__
 
@@ -137,216 +145,216 @@ typedef struct {
 **********************************************************************************/
 /* dhcpv4c_get_ert_lease_time() function */
 /**
-* Description: Gets the E-Router Offered Lease Time
-* Parameters : 
+* @description Gets the E-Router Offered Lease Time
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_lease_time(UINT *pValue);
 
 /* dhcpv4c_get_ert_remain_lease_time() function */
 /**
-* Description: Gets the E-Router Remaining Lease Time
-* Parameters : 
+* @description Gets the E-Router Remaining Lease Time
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_remain_lease_time(UINT *pValue);
 
 /* dhcpv4c_get_ert_remain_renew_time() function */
 /**
-* Description: Gets the E-Router Interface Remaining Time to Renew
-* Parameters : 
+* @description Gets the E-Router Interface Remaining Time to Renew
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_remain_renew_time(UINT *pValue);
 
 /* dhcpv4c_get_ert_remain_rebind_time() function */
 /**
-* Description: Gets the E-Router Interface Remaining Time to Rebind
-* Parameters : 
+* @description Gets the E-Router Interface Remaining Time to Rebind
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_remain_rebind_time(UINT *pValue);
 
 /* dhcpv4c_get_ert_config_attempts() function */
 /**
-* Description: Gets the E-Router Number of Attemts to Configure.
-* Parameters : 
+* @description Gets the E-Router Number of Attemts to Configure.
+* @param
 *    pValue - Count.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_config_attempts(INT *pValue);
 
 /* dhcpv4c_get_ert_ifname() function */
 /**
-* Description: Gets the E-Router Interface Name.
-* Parameters : 
-*    pValue - Interface Name (e.g. ert0)
+* @description Gets the E-Router Interface Name.
+* @param
+*    pName - Interface Name (e.g. ert0)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_ifname(CHAR *pName);
 
 /* dhcpv4c_get_ert_fsm_state() function */
 /**
-* Description: Gets the E-Router DHCP State
-* Parameters : 
+* @description Gets the E-Router DHCP State
+* @param
 *    pValue - State of the DHCP (RENEW/ACQUIRED etc.)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_fsm_state(INT *pValue);
 
 /* dhcpv4c_get_ert_ip_addr() function */
 /**
-* Description: Gets the E-Router Interface IP Address
-* Parameters : 
+* @description Gets the E-Router Interface IP Address
+* @param
 *    pValue - IP Address (of the Interface)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_ip_addr(UINT *pValue);
 
 /* dhcpv4c_get_ert_mask() function */
 /**
-* Description: Gets the E-Router Subnet Mask.
-* Parameters : 
+* @description Gets the E-Router Subnet Mask.
+* @param
 *    pValue - Subnet Mask (bitmask)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_mask(UINT *pValue);
 
 /* dhcpv4c_get_ert_gw() function */
 /**
-* Description: Gets the E-Router Gateway IP Address
-* Parameters : 
+* @description Gets the E-Router Gateway IP Address
+* @param
 *    pValue - IP Address (of the Gateway)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_gw(UINT *pValue);
 
 /* dhcpv4c_get_ert_dns_svrs() function */
 /**
-* Description: Gets the E-Router List of DNS Servers
-* Parameters : 
-*    pValue - List of IP Address (of DNS Servers)
+* @description Gets the E-Router List of DNS Servers
+* @param
+*    pList - List of IP Address (of DNS Servers)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_dns_svrs(dhcpv4c_ip_list_t *pList);
 
 /* dhcpv4c_get_ert_dhcp_svr() function */
 /**
-* Description: Gets the E-Router DHCP Server IP Address
-* Parameters : 
+* @description Gets the E-Router DHCP Server IP Address
+* @param
 *    pValue - IP Address (of DHCP Server)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ert_dhcp_svr(UINT *pValue);
@@ -354,216 +362,216 @@ INT dhcpv4c_get_ert_dhcp_svr(UINT *pValue);
 
 /* dhcpv4c_get_ecm_lease_time() function */
 /**
-* Description: Gets the ECM Offered Lease Time.
-* Parameters : 
+* @description Gets the ECM Offered Lease Time.
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_lease_time(UINT *pValue);
 
 /* dhcpv4c_get_ecm_remain_lease_time() function */
 /**
-* Description: Gets the ECM Remaining Lease Time
-* Parameters : 
+* @description Gets the ECM Remaining Lease Time
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_remain_lease_time(UINT *pValue);
 
 /* dhcpv4c_get_ecm_remain_renew_time() function */
 /**
-* Description: Gets the ECM Interface Remaining time to Renew.
-* Parameters : 
+* @description Gets the ECM Interface Remaining time to Renew.
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_remain_renew_time(UINT *pValue);
 
 /* dhcpv4c_get_ecm_remain_rebind_time() function */
 /**
-* Description: Gets the ECM Interface Remaining time to Rebind.
-* Parameters : 
+* @description Gets the ECM Interface Remaining time to Rebind.
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_remain_rebind_time(UINT *pValue);
 
 /* dhcpv4c_get_ecm_config_attempts() function */
 /**
-* Description: Gets the ECM Configuration Number of Attemts.
-* Parameters : 
+* @description Gets the ECM Configuration Number of Attemts.
+* @param
 *    pValue - Count.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_config_attempts(INT *pValue);
 
 /* dhcpv4c_get_ecm_ifname() function */
 /**
-* Description: Gets the ECM Interface Name.
-* Parameters : 
-*    pValue - Name of the Interface (e.g doc0)
+* @description Gets the ECM Interface Name.
+* @param
+*    pName - Name of the Interface (e.g doc0)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_ifname(CHAR *pName);
 
 /* dhcpv4c_get_ecm_fsm_state() function */
 /**
-* Description: Gets the ECM DHCP State
-* Parameters : 
+* @description Gets the ECM DHCP State
+* @param
 *    pValue - State of the DHCP (RENEW/ACQUIRED etc)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_fsm_state(INT *pValue);
 
 /* dhcpv4c_get_ecm_ip_addr() function */
 /**
-* Description: Gets the ECM Interface IP Address
-* Parameters : 
+* @description Gets the ECM Interface IP Address
+* @param
 *    pValue - IP Address of the Interface.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_ip_addr(UINT *pValue);
 
 /* dhcpv4c_get_ecm_mask() function */
 /**
-* Description: Gets the ECM Interface Subnet Mask.
-* Parameters : 
+* @description Gets the ECM Interface Subnet Mask.
+* @param
 *    pValue - Subnet Mask (bitmask).
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_mask(UINT *pValue);
 
 /* dhcpv4c_get_ecm_gw() function */
 /**
-* Description: Gets the ECM Gateway IP Address
-* Parameters : 
+* @description Gets the ECM Gateway IP Address
+* @param
 *    pValue - IP Address of Gateway
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_gw(UINT *pValue);
 
 /* dhcpv4c_get_ecm_dns_svrs() function */
 /**
-* Description: Gets the ECM List of DNS Servers
-* Parameters : 
+* @description Gets the ECM List of DNS Servers
+* @param
 *    pList - List of IP Addresses (of DNS Servers)
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_dns_svrs(dhcpv4c_ip_list_t *pList);
 
 /* dhcpv4c_get_ecm_dhcp_svr() function */
 /**
-* Description: Gets the ECM DHCP Server IP Address
-* Parameters : 
+* @description Gets the ECM DHCP Server IP Address
+* @param
 *    pValue - IP Address 
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_ecm_dhcp_svr(UINT *pValue);
@@ -571,54 +579,54 @@ INT dhcpv4c_get_ecm_dhcp_svr(UINT *pValue);
 
 /* dhcpv4c_get_emta_remain_lease_time() function */
 /**
-* Description: Gets the E-MTA interface Least Time
-* Parameters : 
+* @description Gets the E-MTA interface Least Time
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_emta_remain_lease_time(UINT *pValue);
 
 /* dhcpv4c_get_emta_remain_renew_time() function */
 /**
-* Description: Gets the E-MTA interface Remaining Time to Renew
-* Parameters : 
+* @description Gets the E-MTA interface Remaining Time to Renew
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_emta_remain_renew_time(UINT *pValue);
 
 /* dhcpv4c_get_emta_remain_rebind_time() function */
 /**
-* Description: Gets the E-MTA interface Remaining Time to Rebind
-* Parameters : 
+* @description Gets the E-MTA interface Remaining Time to Rebind
+* @param
 *    pValue - Value in Seconds.
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
-* @retval STATUS_FAILURE if any error is detected 
-* 
+* @retval STATUS_FAILURE if any error is detected
+*
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT dhcpv4c_get_emta_remain_rebind_time(UINT *pValue);

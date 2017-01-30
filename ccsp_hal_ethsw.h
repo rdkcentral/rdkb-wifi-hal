@@ -450,5 +450,27 @@ CcspHalEthSwLocatePortByMacAddress
 		unsigned char * mac, 
 		INT * port
 	);
+
+
+//>>zqiu
+//Ethernet HAL for client association/disassociation notification. 
+
+typedef struct _eth_device {
+	UCHAR eth_devMacAddress[6];
+	INT  eth_port; 		//which exteranl port the device attached to. index start from 0
+	INT  eth_vlanid; 	//what vlan ID the the port tagged.
+	INT  eth_devTxRate; 	// optional
+	INT  eth_devRxRate; 	// optional
+	BOOLEAN eth_Active; 	//device is online/offline
+} eth_device_t;
+
+INT CcspHalExtSw_getAssociatedDevice(ULONG *output_array_size, eth_device_t **output_struct); //The HAL need to allowcate array and return the array size by output_array_size
+
+typedef INT ( * CcspHalExtSw_ethAssociatedDevice_callback)(eth_device_t *eth_dev); //This call back will be invoked when new Ethernet client come to associate to AP, or existing Ethernet client left. 
+
+void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociatedDevice_callback callback_proc); //Callback registration function.
+
+//<<
+
 #endif /* __CCSP_HAL_ETHSW_H__ */
  
