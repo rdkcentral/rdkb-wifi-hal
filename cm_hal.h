@@ -1,3 +1,13 @@
+/**
+* @file cm_hal.h
+* @author cisco
+* @brief For CCSP Component:  CcspCMAgent
+*
+*@description This header file gives the function call prototypes and 
+structure definitions used for the RDK-Broadband 
+hardware abstraction layer for Cable Modem 
+*/
+
 /*
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:
@@ -323,8 +333,8 @@ CMMGMT_DML_CPE_LIST,  *PCMMGMT_DML_CPE_LIST;
 
 /* cm_hal_InitDB :  */
 /**
-* Description: Retrieves the global information for all shared DBs and makes them accessible locally.
-* Parameters : None
+* @description Retrieves the global information for all shared DBs and makes them accessible locally.
+* @param None
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -333,16 +343,16 @@ CMMGMT_DML_CPE_LIST,  *PCMMGMT_DML_CPE_LIST;
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT cm_hal_InitDB(void);
 
 /* docsis_InitDS :  */
 /**
-* Description: Init global PHY level info and DBs and get direct access to DS HW.
-* Parameters : None
+* @description Init global PHY level info and DBs and get direct access to DS HW.
+* @param None
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -351,16 +361,16 @@ INT cm_hal_InitDB(void);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_InitDS(void);
 
 /* docsis_InitUS :  */
 /**
-* Description: Init global PHY level info and DBs and get direct access to US HW.
-* Parameters : None
+* @description Init global PHY level info and DBs and get direct access to US HW.
+* @param None
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -369,17 +379,16 @@ INT docsis_InitDS(void);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_InitUS(void);
 
 /*  docsis_getCMStatus : */
 /**
-* Description: Retrieve, format and output the Cable Modem DOCSIS status.
-* Parameters : 
-*     CHAR* cm_status - status string, to be returned
+* @description Retrieve, format and output the Cable Modem DOCSIS status.
+* @param CHAR* cm_status - status string, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -388,17 +397,16 @@ INT docsis_InitUS(void);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_getCMStatus(CHAR *cm_status);
 
 /*  docsis_GetDSChannel : */
 /**
-* Description: Retrieve all the relevant DS channel info from global DBs.
-* Parameters : 
-*     PCMMGMT_CM_DS_CHANNEL * ppinfo - all info of DS channel, to be returned
+* @description Retrieve all the relevant DS channel info from global DBs.
+* @param PCMMGMT_CM_DS_CHANNEL * ppinfo - all info of DS channel, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -407,18 +415,17 @@ INT docsis_getCMStatus(CHAR *cm_status);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetDSChannel(PCMMGMT_CM_DS_CHANNEL * ppinfo);
 
 /*  docsis_GetUsStatus : */
 /**
-* Description: Retrieve all the relevant US channel info from global DBs.
-* Parameters : 
-*    USHORT i - index to the US channel
-*    PCMMGMT_CM_US_CHANNEL pinfo - info of one US channel, to be returned
+* @description Retrieve all the relevant US channel info from global DBs.
+* @param USHORT i - index to the US channel
+* @param PCMMGMT_CM_US_CHANNEL pinfo - info of one US channel, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -427,17 +434,16 @@ INT docsis_GetDSChannel(PCMMGMT_CM_DS_CHANNEL * ppinfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetUsStatus(USHORT i, PCMMGMT_CM_US_CHANNEL pinfo);
 
 /*  docsis_GetUSChannel : */
 /**
-* Description:  Retrieve particular US channel information from global DBs.
-* Parameters : 
-*     PCMMGMT_CM_US_CHANNEL * ppinfo - all info of US channel, to be returned
+* @description Retrieve particular US channel information from global DBs.
+* @param PCMMGMT_CM_US_CHANNEL * ppinfo - all info of US channel, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -446,17 +452,16 @@ INT docsis_GetUsStatus(USHORT i, PCMMGMT_CM_US_CHANNEL pinfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetUSChannel(PCMMGMT_CM_US_CHANNEL * ppinfo);
 
 /*  docsis_GetDOCSISInfo : */
 /**
-* Description:  Retrieve current DOCSIS registration status and report it.
-* Parameters : 
-*     PCMMGMT_CM_DOCSIS_INFO pinfo - registration info, to be returned
+* @description Retrieve current DOCSIS registration status and report it.
+* @param PCMMGMT_CM_DOCSIS_INFO pinfo - registration info, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -465,17 +470,16 @@ INT docsis_GetUSChannel(PCMMGMT_CM_US_CHANNEL * ppinfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetDOCSISInfo(PCMMGMT_CM_DOCSIS_INFO pinfo);
 
 /*  docsis_GetNumOfActiveTxChannels : */
 /**
-* Description: Retrieve number of US channels actively in use in current registration.
-* Parameters : 
-*     ULONG * cnt - pointer to number, to be returned
+* @description Retrieve number of US channels actively in use in current registration.
+* @param ULONG * cnt - pointer to number, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -484,17 +488,16 @@ INT docsis_GetDOCSISInfo(PCMMGMT_CM_DOCSIS_INFO pinfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetNumOfActiveTxChannels(ULONG * cnt);
 
 /*  docsis_GetNumOfActiveRxChannels : */
 /**
-* Description: Retrieve number of DS channels actively in use in current registration.
-* Parameters : 
-*     ULONG * cnt - pointer to number, to be returned
+* @description Retrieve number of DS channels actively in use in current registration.
+* @Param ULONG * cnt - pointer to number, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -503,17 +506,16 @@ INT docsis_GetNumOfActiveTxChannels(ULONG * cnt);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetNumOfActiveRxChannels(ULONG * cnt);
 
 /*  docsis_GetErrorCodewords : */
 /**
-* Description: Scan all active DS channels and report errors in packets received.
-* Parameters : 
-*     PCMMGMT_CM_ERROR_CODEWORDS * ppinfo - error info retrieved
+* @description Scan all active DS channels and report errors in packets received.
+* @param PCMMGMT_CM_ERROR_CODEWORDS * ppinfo - error info retrieved
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -522,17 +524,16 @@ INT docsis_GetNumOfActiveRxChannels(ULONG * cnt);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetErrorCodewords(PCMMGMT_CM_ERROR_CODEWORDS * ppinfo);
 
 /*  docsis_GetMddIpModeOverride : */
 /**
-* Description: Retrieve the current MIMO status.
-* Parameters : 
-*     CHAR *pValue - status retrieved
+* @description Retrieve the current MIMO status.
+* @param CHAR *pValue - status retrieved
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -541,17 +542,16 @@ INT docsis_GetErrorCodewords(PCMMGMT_CM_ERROR_CODEWORDS * ppinfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetMddIpModeOverride(CHAR *pValue);
 
 /*  docsis_SetMddIpModeOverride : */
 /**
-* Description: Set the current global MIMO status.
-* Parameters : 
-*     CHAR *pValue - status to be set to
+* @description Set the current global MIMO status.
+* @param CHAR *pValue - status to be set to
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -560,100 +560,97 @@ INT docsis_GetMddIpModeOverride(CHAR *pValue);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_SetMddIpModeOverride(CHAR *pValue);
 
 /*  docsis_GetUSChannelId : */
 /**
-* Description: Retrieve the US channel ID in its MAC domain.
-* Parameters : none
+* @description Retrieve the US channel ID in its MAC domain.
+* @param none
 *
 * @return UINT8 - Channel ID
 *
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 UINT8 docsis_GetUSChannelId(void);
 
 /*  docsis_SetUSChannelId : */
 /**
-* Description: Set the US channel ID in its MAC domain.
-* Parameters : 
-*    INT index = Index to set the Upstream Channel ID to
+* @description Set the US channel ID in its MAC domain.
+* @param INT index = Index to set the Upstream Channel ID to
 *
 * @return None
 *
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 void docsis_SetUSChannelId(INT index);
 
 /*  docsis_GetDownFreq : */
 /**
-* Description: Retrieve the current primary channel DS channel frequency from the LKF table.
-* Parameters : None
+* @description Retrieve the current primary channel DS channel frequency from the LKF table.
+* @param None
 *
 * @return ULONG - channel frequency
 *
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 ULONG docsis_GetDownFreq(void);
 
 /*  docsis_SetStartFreq : */
 /**
-* Description: Change the DS primary channel frequency in the LKF table.
-* Parameters : 
-*     ULONG value - frequency to get set to 
+* @description Change the DS primary channel frequency in the LKF table.
+* @param ULONG value - frequency to get set to 
 *
 * @return None
 *
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 void docsis_SetStartFreq(ULONG value);
 
 /*  docsis_GetDownFreq : */
 /**
-* Description: Retrieve the DOCSIS event log entries and display it.
-* Parameters : 
-*    CMMGMT_CM_EventLogEntry_t *entryArray - entries to be returned
-*    INT len - length of log entries
+* @description Retrieve the DOCSIS event log entries and display it.
+* @param CMMGMT_CM_EventLogEntry_t *entryArray - entries to be returned
+* @param INT len - length of log entries
 *
 * @return INT - number of log entries retrieved
 *
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetDocsisEventLogItems(CMMGMT_CM_EventLogEntry_t *entryArray, INT len);
 
 /*  docsis_ClearDocsisEventLog : */
 /**
-* Description: Clear the DOCSIS event log.
-* Parameters : None
+* @description Clear the DOCSIS event log.
+* @param None
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -662,17 +659,16 @@ INT docsis_GetDocsisEventLogItems(CMMGMT_CM_EventLogEntry_t *entryArray, INT len
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_ClearDocsisEventLog(void);
 
 /*  cm_hal_GetDHCPInfo : */
 /**
-* Description: Retrieve all the relevant DHCP info for this CM.
-* Parameters : 
-*     PCMMGMT_CM_DHCP_INFO pInfo - all DHCP info for CM, to be returned
+* @description Retrieve all the relevant DHCP info for this CM.
+* @param PCMMGMT_CM_DHCP_INFO pInfo - all DHCP info for CM, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -681,17 +677,16 @@ INT docsis_ClearDocsisEventLog(void);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT cm_hal_GetDHCPInfo(PCMMGMT_CM_DHCP_INFO pInfo);
 
 /*  cm_hal_GetIPv6DHCPInfo : */
 /**
-* Description: Retrieve all the relevant IPv6 DHCP info for this CM.
-* Parameters : 
-*     PCMMGMT_CM_IPV6DHCP_INFO pInfo - all IPv6 DHCP info for CM, to be returned
+* @description Retrieve all the relevant IPv6 DHCP info for this CM.
+* @param PCMMGMT_CM_IPV6DHCP_INFO pInfo - all IPv6 DHCP info for CM, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -700,19 +695,18 @@ INT cm_hal_GetDHCPInfo(PCMMGMT_CM_DHCP_INFO pInfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT cm_hal_GetIPv6DHCPInfo(PCMMGMT_CM_IPV6DHCP_INFO pInfo);
 
 /*  cm_hal_GetCPEList : */
 /**
-* Description: Retrieve list of CPEs connected to the CM
-* Parameters : 
-*     PCMMGMT_DML_CPE_LIST * ppCPEList - List of all CPE, to be returned
-*     ULONG* InstnaceNum - Number of instances, to be returned
-*     CHAR* LanMode - input of "router" or "bridge" mode of the modem
+* @description Retrieve list of CPEs connected to the CM
+* @param PCMMGMT_DML_CPE_LIST * ppCPEList - List of all CPE, to be returned
+* @param ULONG* InstnaceNum - Number of instances, to be returned
+* @param CHAR* LanMode - input of "router" or "bridge" mode of the modem
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -721,17 +715,16 @@ INT cm_hal_GetIPv6DHCPInfo(PCMMGMT_CM_IPV6DHCP_INFO pInfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT cm_hal_GetCPEList(PCMMGMT_DML_CPE_LIST * ppCPEList, ULONG* InstanceNum, CHAR* LanMode);
 
 /*  cm_hal_GetMarket : */
 /**
-* Description: Retrieve the market of this modem
-* Parameters : 
-*     CHAR* market - Name of the market for this modem, "US" or "EURO", to be returned 
+* @description Retrieve the market of this modem
+* @param CHAR* market - Name of the market for this modem, "US" or "EURO", to be returned 
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -740,8 +733,8 @@ INT cm_hal_GetCPEList(PCMMGMT_DML_CPE_LIST * ppCPEList, ULONG* InstanceNum, CHAR
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT cm_hal_GetMarket(CHAR* market);
@@ -750,91 +743,112 @@ INT cm_hal_GetMarket(CHAR* market);
 
 /* cm_hal_Set_HTTP_DL_Url  - 1 */
 
-/* Description: Set Http Download Settings
-Parameters : char* pHttpUrl;
-Parameters : char* pfilename;
-
-@return the status of the operation
-@retval RETURN_OK if successful.
-@retval RETURN_ERR if any Downloading is in process or Url string is invalided.
+/**
+* @description Set Http Download Settings
+* @param char* pHttpUrl
+* @param char* pfilename
+*
+* @return the status of the operation
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any Downloading is in process or Url string is invalided.
 */
 INT cm_hal_Set_HTTP_Download_Url (char* pHttpUrl, char* pfilename);
 
 /* cm_hal_Get_HTTP_Download_Url: */
 
-/* Description: Get Http Download Url
-Parameters : char* pHttpUrl
-Parameters : char* pfilename;
-@return the status of the operation.
-@retval RETURN_OK if successful.
-@retval RETURN_ERR if http url string is empty.
+/**
+* @description Get Http Download Url
+* @param char* pHttpUrl
+* @param char* pfilename
+* @return the status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if http url string is empty.
 */
 INT cm_hal_Get_HTTP_Download_Url (char *pHttpUrl, char* pfilename);
 
+/* cm_hal_Set_HTTP_Download_Interface: */
+/**
+* @description Set the HTTP Download Interface
+* @param unsigned int interface - interface=0 for wan0, interface=1 for erouter0
+* @return the status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*/
 /* interface=0 for wan0, interface=1 for erouter0 */
 INT cm_hal_Set_HTTP_Download_Interface(unsigned int interface);
 
+/* cm_hal_Get_HTTP_Download_Interface: */
+/**
+* @description Get the HTTP Download Interface
+* @param unsigned int* pinterface - interface=0 for wan0, interface=1 for erouter0
+* @return the status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*/
 /* interface=0 for wan0, interface=1 for erouter0 */
 INT cm_hal_Get_HTTP_Download_Interface(unsigned int* pinterface);
 
 /* cm_hal_HTTP_Download - 3 */
 /**
-Description: Start Http Download
-Parameters: <None>
-@return the status of the operation.
-@retval RETURN_OK if successful.
-@retval RETURN_ERR if any Downloading is in process.
-
+* @description Start Http Download
+* @param <None>
+* @return the status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any Downloading is in process.
+*
+* @execution Synchronous.
+* @sideeffect None.
+* 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 */
 INT cm_hal_HTTP_Download ();
 
 /* cm_hal_ Get_HTTP_Download _Status ? 4 */
 /**
-Description: Get the HTTP Download Status
-Parameters : <None>
-@return the status of the HTTP Download.
-?	0 ? Download is not started.
-?	Number between 0 to 100: Values of percent of download.
-?	200 ? Download is completed and waiting for reboot.
-?	400 -  Invalided Http server Url
-?	401 -  Cannot connect to Http server
-?	402 -  File is not found on Http server
-?	403 -  HW_Type_DL_Protection Failure
-?	404 -  HW Mask DL Protection Failure
-?	405 -  DL Rev Protection Failure
-?	406 -  DL Header Protection Failure
-?	407 -  DL CVC Failure
-?	500 -  General Download Failure
-?	*/
+* @description Get the HTTP Download Status
+* @param <None>
+* @return the status of the HTTP Download.
+* @retval 0 -   Download is not started.
+* @retval 0-100 - Values of percent of download.
+* @retval 200 - Download is completed and waiting for reboot.
+* @retval 400 - Invalided Http server Url
+* @retval 401 - Cannot connect to Http server
+* @retval 402 - File is not found on Http server
+* @retval 403 - HW_Type_DL_Protection Failure
+* @retval 404 - HW Mask DL Protection Failure
+* @retval 405 - DL Rev Protection Failure
+* @retval 406 - DL Header Protection Failure
+* @retval 407 - DL CVC Failure
+* @retval 500 - General Download Failure
+* 	
+*/
 INT cm_hal_Get_HTTP_Download_Status();
 
 /* cm_hal_Reboot_Ready - 5 */
-/*
-Description: Get the Reboot Ready Status
-Parameters:
-ULONG *pValue- Values of 1 for Ready, 2 for Not Ready
-@return the status of the operation.
-@retval RETURN_OK if successful.
-@retval RETURN_ERR if any error is detected
-
+/**
+* @description Get the Reboot Ready Status
+* @param ULONG *pValue- Values of 1 for Ready, 2 for Not Ready
+* @return the status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
 */
 INT cm_hal_Reboot_Ready(ULONG *pValue);
 
 /* cm_hal_HTTP_DL_Reboot_Now - 6*/
-/*
-Description:  Http Download Reboot Now
-Parameters : <None>
-@return the status of the reboot operation.
-@retval RETURN_OK if successful.
-@retval RETURN_ERR if any reboot is in process.
+/**
+* @description Http Download Reboot Now
+* @param <None>
+* @return the status of the reboot operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any reboot is in process.
 */
 INT cm_hal_HTTP_Download_Reboot_Now();
 
 /*  cm_hal_ReinitMac : */
 /**
-* Description: Reinit CM.  Performs reinit MAC only to same DS/US
-* Parameters : 
-*     None 
+* @description Reinit CM.  Performs reinit MAC only to same DS/US
+* @param None
 *
 
 * @return The status of the operation.
@@ -844,8 +858,8 @@ INT cm_hal_HTTP_Download_Reboot_Now();
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 
 */
@@ -853,10 +867,9 @@ INT cm_hal_ReinitMac();
 
 /*  docsis_GetProvIpType : */
 /**
-* Description: Retrieve the provisioned wan0 IP type
-* Parameters : 
-*     CHAR* pValue - ip type currently provisioned on wan0
-*           values are "IPv4", "IPv6", or "unknown"
+* @description Retrieve the provisioned wan0 IP type
+* @param CHAR* pValue - ip type currently provisioned on wan0
+* values are "IPv4", "IPv6", or "unknown"
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -865,17 +878,16 @@ INT cm_hal_ReinitMac();
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetProvIpType(CHAR *pValue); 
 
 /*  docsis_GetCert : */
 /**
-* Description: Retrieve the location of the certificate
-* Parameters : 
-*     CHAR* pCert - certificate location, to be returned
+* @description Retrieve the location of the certificate
+* @param CHAR* pCert - certificate location, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -884,17 +896,16 @@ INT docsis_GetProvIpType(CHAR *pValue);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetCert(CHAR* pCert);
 
 /*  docsis_GetCertStatus : */
 /**
-* Description: Retrieve status of the certificate 
-* Parameters : 
-*    ULONG *pVal - certificate status, to be returned
+* @description Retrieve status of the certificate 
+* @param ULONG *pVal - certificate status, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -903,8 +914,8 @@ INT docsis_GetCert(CHAR* pCert);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT docsis_GetCertStatus(ULONG *pVal);
@@ -912,9 +923,8 @@ INT docsis_GetCertStatus(ULONG *pVal);
 
 /*  cm_hal_Get_CableModemResetCount : */
 /**
-* Description: Retrieve the count of cable modem reset
-* Parameters : 
-*    ULONG *resetcnt - Count to be returned
+* @description Retrieve the count of cable modem reset
+* @param ULONG *resetcnt - Count to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -924,17 +934,16 @@ INT docsis_GetCertStatus(ULONG *pVal);
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT cm_hal_Get_CableModemResetCount(ULONG *resetcnt);
 
 /*  cm_hal_Get_LocalResetCount : */
 /**
-* Description: Retrieve the count of local reset
-* Parameters : 
-*    ULONG *resetcnt - Count to be returned
+* @description Retrieve the count of local reset
+* @param ULONG *resetcnt - Count to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -943,8 +952,8 @@ INT cm_hal_Get_CableModemResetCount(ULONG *resetcnt);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 
@@ -952,9 +961,8 @@ INT cm_hal_Get_LocalResetCount(ULONG *resetcnt);
 
 /*  cm_hal_Get_DocsisResetCount : */
 /**
-* Description: Retrieve the count of docsis reset
-* Parameters : 
-*    ULONG *resetcnt - Count to be returned
+* @description Retrieve the count of docsis reset
+* @param ULONG *resetcnt - Count to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -963,8 +971,8 @@ INT cm_hal_Get_LocalResetCount(ULONG *resetcnt);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 
@@ -972,9 +980,8 @@ INT cm_hal_Get_DocsisResetCount(ULONG *resetcnt);
 
 /*  cm_hal_Get_ErouterResetCount : */
 /**
-* Description: Retrieve the count of erouter reset
-* Parameters : 
-*    ULONG *resetcnt - Count to be returned
+* @description Retrieve the count of erouter reset
+* @param ULONG *resetcnt - Count to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -983,8 +990,8 @@ INT cm_hal_Get_DocsisResetCount(ULONG *resetcnt);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 
@@ -992,9 +999,8 @@ INT cm_hal_Get_ErouterResetCount(ULONG *resetcnt);
 
 /*  cm_hal_HTTP_LED_Flash : */
 /**
-* Description: Enable/Disable HTTP LED Flashing
-* Parameters : 
-*    BOOLEAN *bLEDFlashState - Enable/Disable LED Flash
+*@description Enable/Disable HTTP LED Flashing
+* @param BOOLEAN *bLEDFlashState - Enable/Disable LED Flash
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.

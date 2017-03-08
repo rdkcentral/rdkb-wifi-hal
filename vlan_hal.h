@@ -1,3 +1,12 @@
+/**
+* @file vlan_hal.h
+* @author zhicheng_qiu@cable.comcast.com
+* @brief For CCSP Component:  VLAN_Provisioning_and_management
+*
+* @description This file gives the function prototypes used for the RDK-Broadband 
+* VLAN abstraction layer
+*/
+
 /*
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:

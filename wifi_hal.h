@@ -2379,9 +2379,6 @@ INT wifi_applyRadioSettings(INT radioIndex);
 //Radio reset count
 INT wifi_getRadioResetCount(INT radioIndex, ULONG *output_int);
 
-//Clear radio reset count
-INT wifi_clearRadioResetCount();
-
 //---------------------------------------------------------------------------------------------------
 //
 // Wifi SSID level APIs common to Client and Access Point devices.
@@ -2632,6 +2629,24 @@ INT wifi_getSSIDMACAddress(INT ssidIndex, CHAR *output_string); //Tr181
 //Get the basic SSID traffic static info
 INT wifi_getSSIDTrafficStats2(INT ssidIndex, wifi_ssidTrafficStats2_t *output_struct); //Tr181
 
+/* wifi_applySSIDSettings() function */
+/**
+* @description Apply SSID and AP (in the case of Acess Point devices) to the hardware.
+* Not all implementations may need this function.  If not needed for a particular implementation simply return no-error (0).
+*
+* @param ssidIndex - SSID index
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
 //Apply SSID and AP (in the case of Acess Point devices) to the hardware
 //Not all implementations may need this function.  If not needed for a particular implementation simply return no-error (0)
 INT wifi_applySSIDSettings(INT ssidIndex);
@@ -4516,7 +4531,6 @@ INT wifi_setApWmmOgAckPolicy(INT apIndex, INT class, BOOL ackPolicy);  //RDKB
 //Device.WiFi.AccessPoint.{i}.IsolationEnable	
 //Enables or disables device isolation.	A value of true means that the devices connected to the Access Point are isolated from all other devices within the home network (as is typically the case for a Wireless Hotspot).	
 INT wifi_getApIsolationEnable(INT apIndex, BOOL *output); //Tr181		
-INT wifi_setApIsolationEnable(INT apIndex, BOOL enable); //Tr181					
 
 /* wifi_setApIsolationEnable() function */
 /**

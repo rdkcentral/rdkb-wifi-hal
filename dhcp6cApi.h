@@ -1,3 +1,10 @@
+/**
+* @file dhcp6cApi.h
+* @brief For CCSP Component: DHCP6-Client Status
+*
+* @description This header file gives the function call prototypes and structure definitions used for the RDK-Broadband DHCP6Client Status abstraction layer.
+*/
+
 /*
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:

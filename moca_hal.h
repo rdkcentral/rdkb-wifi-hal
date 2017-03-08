@@ -460,29 +460,28 @@ typedef struct {
 **********************************************************************************/
 /* moca_GetIfConfig() function */
 /**
-* Description: Gets the MoCA Configuration Parameters that were previously set.
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    pmoca_config - Configuration Parameters
-*		* Instance Number when Multiple MoCA interfaces exist.
-*		*	0 - In the case of only one interface.
-*		* Get the Alias Name for the interface
-*		* Flag if the interface is Enabled.
-*		* Flag if the Local Node's preference to be Network Coordinator
-*		* Flag if Privacy is Enabled
-*		* Current Frequency Mask (bitmask)
-*		* Privacy password (Valid if Privacy is Enabled)
-*		* Maximum Tx Power Limit
-*		* AutoPowerControlPhyRate: PowerCtrlPhyTarget
-*		*  	Used as a reference to achieve the PHY rate by adjusting power.
-*		* Tx Power Limit for transmitting beacons
-*		* Maximum Ingress/Egress Bandwidth Thresholds
-*		* Reset Condition of the MoCA Node
-*		* Flag if the Node is configured to operate in mixed mode (both 1.0 & 1.1 versions).
-*		* Flag if the Node is Scanning
-*		* Flag if the Auto Power Control is Enabled
-*		* Node Taboo Mask (indicates what frequencies Node should avoid)
-*		* Channel Scan Mask (indicated what frequencies Node should scan for beacons)
+* @description Gets the MoCA Configuration Parameters that were previously set.
+* @param ifIndex - Index of the MoCA Interface.
+* @param pmoca_config - Configuration Parameters
+*		\n\n Instance Number when Multiple MoCA interfaces exist.
+*		\n 0 - In the case of only one interface.
+*		\n Get the Alias Name for the interface
+*		\n Flag if the interface is Enabled.
+*		\n Flag if the Local Node's preference to be Network Coordinator
+*		\n Flag if Privacy is Enabled
+*		\n Current Frequency Mask (bitmask)
+*		\n Privacy password (Valid if Privacy is Enabled)
+*		\n Maximum Tx Power Limit
+*		\n AutoPowerControlPhyRate: PowerCtrlPhyTarget
+*		\n Used as a reference to achieve the PHY rate by adjusting power.
+*		\n Tx Power Limit for transmitting beacons
+*		\n Maximum Ingress/Egress Bandwidth Thresholds
+*		\n Reset Condition of the MoCA Node
+*		\n Flag if the Node is configured to operate in mixed mode (both 1.0 & 1.1 versions).
+*		\n Flag if the Node is Scanning
+*		\n Flag if the Auto Power Control is Enabled
+*		\n Node Taboo Mask (indicates what frequencies Node should avoid)
+*		\n Channel Scan Mask (indicated what frequencies Node should scan for beacons)
 * 
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
@@ -499,29 +498,28 @@ INT moca_GetIfConfig(ULONG ifIndex, moca_cfg_t *pmoca_config);
 
 /* moca_SetIfConfig() function */
 /**
-* Description: Sets the MoCA Configuration Parameters.
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    pmoca_config - Configuration Parameters
-*		* Instance Number when Multiple MoCA interfaces exist.
-*		*	0 - In the case of only one interface.
-*		* Set the Alias Name for the interface
-*		* Enable/Disable the interface.
-*		* Enable/Disable the Node's preference to be Network Coordinator
-*		* Enable/Disable Privacy
-*		* Set of Frequencies that can be used for forming network (bitmask)
-*		* Privacy password (Valid if Privacy is Enabled)
-*		* Maximum Tx Power Limit
-*		* AutoPowerControlPhyRate: PowerCtrlPhyTarget
-*		*  	Used as a reference to achieve the PHY rate by adjusting power.
-*		* Tx Power Limit for transmitting beacons
-*		* Maximum Ingress/Egress Bandwidth Thresholds
-*		* Reset MoCA Node
-*		* Enable/Disable the Node to operate in mixed mode (both 1.0 & 1.1 versions).
-*		* Enable/Disable the Node to operate in single frequency mode or scanning mode.
-*		* Enable/Disable Auto Power Control.
-*		* Set of Frequencis to Avoid (bitmask)
-*		* Set of Frequencies to Scan for Beacons (bitmask)
+* @description Sets the MoCA Configuration Parameters.
+* @param ifIndex - Index of the MoCA Interface.
+* @param pmoca_config - Configuration Parameters
+*		\n\n Instance Number when Multiple MoCA interfaces exist.
+*		\n 0 - In the case of only one interface.
+*		\n Set the Alias Name for the interface
+*		\n Enable/Disable the interface.
+*		\n Enable/Disable the Node's preference to be Network Coordinator
+*		\n Enable/Disable Privacy
+*		\n Set of Frequencies that can be used for forming network (bitmask)
+*		\n Privacy password (Valid if Privacy is Enabled)
+*		\n Maximum Tx Power Limit
+*		\n AutoPowerControlPhyRate: PowerCtrlPhyTarget
+*		\n Used as a reference to achieve the PHY rate by adjusting power.
+*		\n Tx Power Limit for transmitting beacons
+*		\n Maximum Ingress/Egress Bandwidth Thresholds
+*		\n Reset MoCA Node
+*		\n Enable/Disable the Node to operate in mixed mode (both 1.0 & 1.1 versions).
+*		\n Enable/Disable the Node to operate in single frequency mode or scanning mode.
+*		\n Enable/Disable Auto Power Control.
+*		\n Set of Frequencis to Avoid (bitmask)
+*		\n Set of Frequencies to Scan for Beacons (bitmask)
 * 
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
@@ -538,28 +536,27 @@ INT moca_SetIfConfig(ULONG ifIndex, moca_cfg_t *pmoca_config);
 
 /* moca_IfGetDynamicInfo() function */
 /**
-* Description: Gets the Dynamic Status information on the interface & its 
+* @description Gets the Dynamic Status information on the interface & its 
 *				associated network.
-* Parameters: 
-*	ifIndex - Index of the MoCA Interface.
-* 	pmoca_dynamic_info_t - 
+* @param ifIndex - Index of the MoCA Interface.
+* @param pmoca_dynamic_info_t - 
 *		Dynamic Information on the interface and its associated network.
 *		The Following information is expected.
-* 		* Status of the Local Interface Inferface (Up/Down/ etc.)
-*		* Last Link Status Change (Up/Down/ etc.)
-*		* Maximum Ingress/Egress Bandwidth
-*		* Current Version of the MoCA Protocol
-*		* Node ID of the Network Coordinator
-*		* Local Interface Node ID
-*		* Node ID of the Backup Network Coordinator
-*		* If Privacy is enabled on the network
-*		* Current Frequency Mask
-*		* Current Operating Frequency
-*		* Last Operating Frequency
-*		* Tx Broadcast Rate
-*		* Flag if MaxIngress/MaxEgress Bandwidth Threshold Reached
-*		* Number of Client Devices Connected
-*		* Network Coordinator MAC Address
+* 		\n Status of the Local Interface Inferface (Up/Down/ etc.)
+*		\n Last Link Status Change (Up/Down/ etc.)
+*		\n Maximum Ingress/Egress Bandwidth
+*		\n Current Version of the MoCA Protocol
+*		\n Node ID of the Network Coordinator
+*		\n Local Interface Node ID
+*		\n Node ID of the Backup Network Coordinator
+*		\n If Privacy is enabled on the network
+*		\n Current Frequency Mask
+*		\n Current Operating Frequency
+*		\n Last Operating Frequency
+*		\n Tx Broadcast Rate
+*		\n Flag if MaxIngress/MaxEgress Bandwidth Threshold Reached
+*		\n Number of Client Devices Connected
+*		\n Network Coordinator MAC Address
 * 
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
@@ -576,20 +573,19 @@ INT moca_IfGetDynamicInfo(ULONG ifIndex, moca_dynamic_info_t *pmoca_dynamic_info
 
 /* moca_IfGetStaticInfo() function */
 /**
-* Description: Gets the Static Information from the Local Node
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    pmoca_static_info - Static Information of the interface
-*		* Interface Name (for example: moca0)
-*		* MAC Address of the Interface
-*		* Firmware Version of the MoCA Firmware
-*		* Maximum PHY rate in Mbps
-*		* Highest Version of MoCA Protocol that the Node Supports
-*		* Frequencies that Node can Operate on (Bit Mask)
-*		* Frequenies to Avoid on Network (Bit Mask)
-*		* Beacon Backoff in dB
-*		* Flag if Node is Capable of QAM-256.
-*		* Flag that indicates if Node is capable of Packet Aggregation.
+* @description Gets the Static Information from the Local Node
+* @param ifIndex - Index of the MoCA Interface.
+* @param pmoca_static_info - Static Information of the interface
+*		\n Interface Name (for example: moca0)
+*		\n MAC Address of the Interface
+*		\n Firmware Version of the MoCA Firmware
+*		\n Maximum PHY rate in Mbps
+*		\n Highest Version of MoCA Protocol that the Node Supports
+*		\n Frequencies that Node can Operate on (Bit Mask)
+*		\n Frequenies to Avoid on Network (Bit Mask)
+*		\n Beacon Backoff in dB
+*		\n Flag if Node is Capable of QAM-256.
+*		\n Flag that indicates if Node is capable of Packet Aggregation.
 * 
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
@@ -606,19 +602,18 @@ INT moca_IfGetStaticInfo(ULONG ifIndex, moca_static_info_t *pmoca_static_info);
 
 /* moca_IfGetStats() function */
 /**
-* Description: Gets the Statistics on the Interface at Network Layer
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    pmoca_stats - Statistics on the interface (Network layer)
-*		* Number of Bytes Sent & Received
-*		* Number of Packets Sent & Received
-*		* Number of Errors in Sent & Received Packets
-*		* Number of Unicast Packets Sent & Received
-*		* Number of Packets Discard (Tx & Rx side)
-*		* Number of Multicast Packets Sent & Received
-*		* Number of Broadcast Packets Sent & Received
-*		* Number of Unknown Protocol Packets Received
-*		* Aggregate Averages of Packet Counts (Tx & Rx)
+* @description Gets the Statistics on the Interface at Network Layer
+* @param ifIndex - Index of the MoCA Interface.
+* @param pmoca_stats - Statistics on the interface (Network layer)
+*		\n\n Number of Bytes Sent & Received
+*		\n Number of Packets Sent & Received
+*		\n Number of Errors in Sent & Received Packets
+*		\n Number of Unicast Packets Sent & Received
+*		\n Number of Packets Discard (Tx & Rx side)
+*		\n Number of Multicast Packets Sent & Received
+*		\n Number of Broadcast Packets Sent & Received
+*		\n Number of Unknown Protocol Packets Received
+*		\n Aggregate Averages of Packet Counts (Tx & Rx)
 * 
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
@@ -635,10 +630,9 @@ INT moca_IfGetStats(ULONG ifIndex, moca_stats_t *pmoca_stats);
 
 /* moca_GetNumAssociatedDevices() function */
 /**
-* Description: Gets the Number of Nodes on the MoCA network.
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    pulCount - Number of Nodes on the network.
+* @description Gets the Number of Nodes on the MoCA network.
+* @param ifIndex - Index of the MoCA Interface.
+* @param pulCount - Number of Nodes on the network.
 * 
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
@@ -655,16 +649,15 @@ INT moca_GetNumAssociatedDevices(ULONG ifIndex, ULONG *pulCount);
 
 /* moca_IfGetExtCounter() function */
 /**
-* Description: Gets the Statistics on the Interface at MoCA MAC Layer.
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    pmoca_mac_counters - MoCA MAC Layer Statiscs
-*		* Number of MAP packets
-*		* Number of Reservation Request Packets
-*		* Number of Link Control Packets
-*		* Number of Admission Request Packets
-*		* Number of Probes
-*		* Number of Beacons
+* @description Gets the Statistics on the Interface at MoCA MAC Layer.
+* @param ifIndex - Index of the MoCA Interface.
+* @param pmoca_mac_counters - MoCA MAC Layer Statiscs
+*		\n\n Number of MAP packets
+*		\n Number of Reservation Request Packets
+*		\n Number of Link Control Packets
+*		\n Number of Admission Request Packets
+*		\n Number of Probes
+*		\n Number of Beacons
 *	** Please Note that this API is valid only if the Node is 
 *		Network Coordinator.
 * 
@@ -683,12 +676,11 @@ INT moca_IfGetExtCounter(ULONG ifIndex, moca_mac_counters_t *pmoca_mac_counters)
 
 /* moca_IfGetExtAggrCounter() function */
 /**
-* Description: Gets the Aggregate DATA units Transferred (Tx & Rx)
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    pmoca_aggregate_counts - Aggregate Tx/Rx Counters
-*		* Aggregate Tx Payload Data Units (Not MoCA Control Packets).
-*		* Aggregate Rx Payload Data Units (Not MoCA Control Packets).
+* @description Gets the Aggregate DATA units Transferred (Tx & Rx)
+* @param ifIndex - Index of the MoCA Interface.
+* @param pmoca_aggregate_counts - Aggregate Tx/Rx Counters
+*		\n\n Aggregate Tx Payload Data Units (Not MoCA Control Packets).
+*		\n Aggregate Rx Payload Data Units (Not MoCA Control Packets).
 *
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
@@ -705,11 +697,10 @@ INT moca_IfGetExtAggrCounter(ULONG ifIndex, moca_aggregate_counters_t *pmoca_agg
 
 /* moca_GetMocaCPEs() function */
 /**
-* Description: Get MAC Address of all the Nodes Connected on MoCA Network.
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    pmoca_cpes - List of MAC Addresses of MoCA Nodes.
-*	 pnum_cpes - Number of MoCA Nodes in the List.
+* @description Get MAC Address of all the Nodes Connected on MoCA Network.
+* @param ifIndex - Index of the MoCA Interface.
+* @param pmoca_cpes - List of MAC Addresses of MoCA Nodes.
+* @param pnum_cpes - Number of MoCA Nodes in the List.
 *
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
@@ -726,29 +717,28 @@ INT moca_GetMocaCPEs(ULONG ifIndex, moca_cpe_t *cpes, INT *pnum_cpes);
 
 /* moca_GetAssociatedDevices() function */
 /**
-* Description: Get Information on all the associated Devices on the network.
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    ppdevice_array - Array of set of information for each Node on the network.
-*		* MAC Address of the Associated Device 
-*		* Node ID of the Associated Device
-*		* Whether this Node is a Preferred NC.
-*		* Highest MoCA Protocol Version that this Node supports
-*		* Tx PHY Rate of this Node
-*		* Rx PHY Rate of this Node
-*		* Tx Power Reduced by this Node
-*		* Rx Power Level read by this Node
-*		* Tx Broadcast PHY Rate
-*		* Rx Broadcast Power Level read by this Node
-*		* Number of Transmitted Packets from this Node
-*		* Number of Recieved Packets by this Node
-*		* Number of (Rx) Error or Missed Packets by this Node
-*		* Flag if this Node is capable of QAM-256
-*		* Flag if this Node is capable of Packet Aggregation
-*		* Receive Signal to Noise Ration
-*		* Flag if this Node is Active
-*		* Recevie Broadcast PHY Rate
-*		* Number of Clients connected to this Node
+* @description Get Information on all the associated Devices on the network.
+* @param ifIndex - Index of the MoCA Interface.
+* @param ppdevice_array - Array of set of information for each Node on the network.
+*		\n\n MAC Address of the Associated Device 
+*		\n Node ID of the Associated Device
+*		\n Whether this Node is a Preferred NC.
+*		\n Highest MoCA Protocol Version that this Node supports
+*		\n Tx PHY Rate of this Node
+*		\n Rx PHY Rate of this Node
+*		\n Tx Power Reduced by this Node
+*		\n Rx Power Level read by this Node
+*		\n Tx Broadcast PHY Rate
+*		\n Rx Broadcast Power Level read by this Node
+*		\n Number of Transmitted Packets from this Node
+*		\n Number of Recieved Packets by this Node
+*		\n Number of (Rx) Error or Missed Packets by this Node
+*		\n Flag if this Node is capable of QAM-256
+*		\n Flag if this Node is capable of Packet Aggregation
+*		\n Receive Signal to Noise Ration
+*		\n Flag if this Node is Active
+*		\n Recevie Broadcast PHY Rate
+*		\n Number of Clients connected to this Node
 *
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
@@ -766,9 +756,8 @@ INT moca_GetAssociatedDevices(ULONG ifIndex, moca_associated_device_t **ppdevice
 
 /* moca_FreqMaskToValue() function */
 /**
-* Description: A utility function that converts Mask Value to Frequency Number.
-* Parameters : 
-*    mask - Bit Mask of the Frequency.
+* @description A utility function that converts Mask Value to Frequency Number.
+* @param mask - Bit Mask of the Frequency.
 *
 * @return Frequency Value for the given Mask.
 * 
@@ -784,8 +773,8 @@ INT moca_FreqMaskToValue(UCHAR *mask);
 
 /* moca_HardwareEquipped() function */
 /**
-* Description: Functio that returns whether the MoCA Hardware is Equipped or Not.
-* Parameters : None.
+* @description Functio that returns whether the MoCA Hardware is Equipped or Not.
+* @param None.
 *
 * @return Flag Indicating whether the Hardware is Equipped or not.
 * @retval TRUE if Hardware is present.
@@ -802,11 +791,10 @@ BOOL moca_HardwareEquipped(void);
 
 /* moca_IfGetMeshTable() function */
 /**
-* Description: Gets the MoCA Mesh Table.
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    moca_mesh_table_t - pointer to a mesh table entry
-*    pulCount - number of entries in the table
+* @description Gets the MoCA Mesh Table.
+* @param ifIndex - Index of the MoCA Interface.
+* @param moca_mesh_table_t - pointer to a mesh table entry
+* @param pulCount - number of entries in the table
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
 * @retval STATUS_FAILURE if any error is detected 
@@ -824,11 +812,10 @@ INT moca_GetFullMeshRates(ULONG ifIndex, moca_mesh_table_t *pDeviceArray, ULONG 
 
 /* moca_GetFlowStatistics() function */
 /**
-* Description: Gets the MoCA Flow Table.
-* Parameters : 
-*    ifIndex - Index of the MoCA Interface.
-*    moca_flow_table_t - pointer to a flow table entry
-*    pulCount - number of entries in the table
+* @description Gets the MoCA Flow Table.
+* @param ifIndex - Index of the MoCA Interface.
+* @param moca_flow_table_t - pointer to a flow table entry
+* @param pulCount - number of entries in the table
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
 * @retval STATUS_FAILURE if any error is detected 
@@ -844,8 +831,8 @@ INT moca_GetFlowStatistics(ULONG ifIndex, moca_flow_table_t *pDeviceArray, ULONG
 
 /* moca_GetResetCount() function */
 /**
-* Description: Gets the MoCA reset count.
-*    resetcnt - number of reset 
+* @description Gets the MoCA reset count.
+* @param resetcnt - number of reset 
 * @return The status of the operation.
 * @retval STATUS_SUCCESS if successful.
 * @retval STATUS_FAILURE if any error is detected 

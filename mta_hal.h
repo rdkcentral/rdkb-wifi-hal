@@ -1,3 +1,13 @@
+/**
+* @file mta_hal.h
+* @author cisco
+* @brief For CCSP Component:  CcspMtaAgent
+*
+*@description This header file gives the function call prototypes and 
+structure definitions used for the RDK-Broadband 
+hardware abstraction layer for Cable Modem 
+*/
+
 /*
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:

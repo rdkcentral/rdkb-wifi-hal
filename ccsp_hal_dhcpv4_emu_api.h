@@ -469,6 +469,55 @@ bool CcspHalGetBridgePortEnable(ULONG ulIndex,ULONG ulBrgInstanceNumber);
 
 void CcspHalGetBridgePortStats(HALPCOSA_DML_ETH_STATS pStats);
 
+/*
+ *  Procedure           : CcspHaldhcpv4cGetGw
+ *  Purpose             : To get WAN Default Gateway Address 
+ *
+ *  Parameters          : 
+ *   Gateway_Address    : Having WAN Default Gateway Address
+ *  Return_values       : None
+ */
+
+void CcspHaldhcpv4cGetGw(char Gateway_Address[120]);
+
+/*
+ *  Procedure           : CcspHalGetDNSServerValue
+ *  Purpose             : To get primary and secondary DNSServer values
+ *
+ *  Parameters          : 
+ *   InstanceNum        : Having Instance Number 
+ *   DNSServer          : Having DNSServer Value
+ *  Return_values       : None
+ */
+
+void CcspHalGetDNSServerValue(ULONG InstanceNum, char DNSServer[64]);
+
+/*
+ *  Procedure           : CcspHalGetWanAddressMode
+ *  Purpose             : Whether DHCP is enabled or disabled
+ *
+ *  Parameters          : None
+ *  Return_values       : Status of the Operation
+ *     @retval true , if successful
+ *     @retval false , if any error is detected
+ */
+
+bool CcspHalGetWanAddressMode();
+
+/*
+ *  Procedure           : CcspHalDhcpcGetInfo
+ *  Purpose             : To get LeaseTimeRemaining information for connected clients
+ *
+ *  Parameters          : None
+ *  Return_values       : LeaseTimeRemaining value
+ */
+
+int CcspHalDhcpcGetInfo();
+
+
+
+
+
 #endif
 
 
