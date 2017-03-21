@@ -75,6 +75,22 @@ MSO Management.
 #define RETURN_ERR   -1
 #endif
 
+typedef unsigned short  uint16;
+typedef unsigned long   uint32;
+typedef int             boolean;
+
+#ifndef SEC_PER_YEAR
+#define SEC_PER_YEAR    31536000
+#endif
+
+#ifndef SIZE_arrisCmDevHttpClientSee
+#define SIZE_arrisCmDevHttpClientSeed 8L
+#endif
+
+#ifndef ERROR
+#define ERROR -1
+#endif
+
 /**********************************************************************
                 STRUCTURE DEFINITIONS
 **********************************************************************/
