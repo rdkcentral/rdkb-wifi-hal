@@ -425,8 +425,8 @@ MTAMGMT_MTA_BATTERY_INFO,  *PMTAMGMT_MTA_BATTERY_INFO;
 * @sideeffect None.
 
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_InitDB(void);
@@ -443,8 +443,8 @@ INT   mta_hal_InitDB(void);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_GetDHCPInfo(PMTAMGMT_MTA_DHCP_INFO pInfo);
@@ -461,8 +461,8 @@ INT mta_hal_GetDHCPInfo(PMTAMGMT_MTA_DHCP_INFO pInfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 ULONG mta_hal_LineTableGetNumberOfEntries(void);
@@ -480,8 +480,8 @@ ULONG mta_hal_LineTableGetNumberOfEntries(void);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_LineTableGetEntry(ULONG Index, PMTAMGMT_MTA_LINETABLE_INFO pEntry);
@@ -498,8 +498,8 @@ INT   mta_hal_LineTableGetEntry(ULONG Index, PMTAMGMT_MTA_LINETABLE_INFO pEntry)
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_TriggerDiagnostics(ULONG Index);
@@ -517,8 +517,8 @@ INT   mta_hal_TriggerDiagnostics(ULONG Index);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetServiceFlow(ULONG* Count, PMTAMGMT_MTA_SERVICE_FLOW *ppCfg);
@@ -535,8 +535,8 @@ INT   mta_hal_GetServiceFlow(ULONG* Count, PMTAMGMT_MTA_SERVICE_FLOW *ppCfg);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_DectGetEnable(BOOLEAN *pBool);
@@ -553,8 +553,8 @@ INT   mta_hal_DectGetEnable(BOOLEAN *pBool);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_DectSetEnable(BOOLEAN bBool);
@@ -700,8 +700,8 @@ INT mta_hal_GetHandsets(ULONG* pulCount, PMTAMGMT_MTA_HANDSETS_INFO* ppHandsets)
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetCalls(ULONG InstanceNumber, ULONG *Count, PMTAMGMT_MTA_CALLS *ppCfg);
@@ -719,8 +719,8 @@ INT   mta_hal_GetCalls(ULONG InstanceNumber, ULONG *Count, PMTAMGMT_MTA_CALLS *p
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetCALLP(ULONG LineNumber, PMTAMGMT_MTA_CALLP pCallp);
@@ -738,8 +738,8 @@ INT   mta_hal_GetCALLP(ULONG LineNumber, PMTAMGMT_MTA_CALLP pCallp);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetDSXLogs(ULONG *Count, PMTAMGMT_MTA_DSXLOG *ppDSXLog);
@@ -756,8 +756,8 @@ INT   mta_hal_GetDSXLogs(ULONG *Count, PMTAMGMT_MTA_DSXLOG *ppDSXLog);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetDSXLogEnable(BOOLEAN *pBool);
@@ -774,8 +774,8 @@ INT   mta_hal_GetDSXLogEnable(BOOLEAN *pBool);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_SetDSXLogEnable(BOOLEAN Bool);
@@ -793,8 +793,8 @@ INT   mta_hal_SetDSXLogEnable(BOOLEAN Bool);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_ClearDSXLog(BOOLEAN Bool) ;
@@ -811,8 +811,8 @@ INT mta_hal_ClearDSXLog(BOOLEAN Bool) ;
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 
@@ -830,8 +830,8 @@ INT mta_hal_GetCallSignallingLogEnable(BOOLEAN *pBool) ;
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 
@@ -850,8 +850,8 @@ INT mta_hal_SetCallSignallingLogEnable(BOOLEAN Bool) ;
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
  
@@ -870,8 +870,8 @@ INT mta_hal_ClearCallSignallingLog(BOOLEAN Bool) ;
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT   mta_hal_GetMtaLog(ULONG *Count, PMTAMGMT_MTA_MTALOG_FULL *ppCfg);
@@ -888,8 +888,8 @@ INT   mta_hal_GetMtaLog(ULONG *Count, PMTAMGMT_MTA_MTALOG_FULL *ppCfg);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetInstalled(BOOLEAN* Val);
@@ -906,8 +906,8 @@ INT mta_hal_BatteryGetInstalled(BOOLEAN* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetTotalCapacity(ULONG* Val);
@@ -924,8 +924,8 @@ INT mta_hal_BatteryGetTotalCapacity(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetActualCapacity(ULONG* Val);
@@ -942,8 +942,8 @@ INT mta_hal_BatteryGetActualCapacity(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetRemainingCharge(ULONG* Val);
@@ -960,8 +960,8 @@ INT mta_hal_BatteryGetRemainingCharge(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetRemainingTime(ULONG* Val);
@@ -978,8 +978,8 @@ INT mta_hal_BatteryGetRemainingTime(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetNumberofCycles(ULONG* Val);
@@ -997,8 +997,8 @@ INT mta_hal_BatteryGetNumberofCycles(ULONG* Val);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetPowerStatus(CHAR *Val, ULONG *len);
@@ -1016,8 +1016,8 @@ INT mta_hal_BatteryGetPowerStatus(CHAR *Val, ULONG *len);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetCondition(CHAR *Val, ULONG *len);
@@ -1036,8 +1036,8 @@ INT mta_hal_BatteryGetCondition(CHAR *Val, ULONG *len);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetStatus(CHAR* Val, ULONG *len);
@@ -1055,8 +1055,8 @@ INT mta_hal_BatteryGetStatus(CHAR* Val, ULONG *len);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetLife(CHAR* Val, ULONG *len);
@@ -1074,8 +1074,8 @@ INT mta_hal_BatteryGetLife(CHAR* Val, ULONG *len);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetInfo(PMTAMGMT_MTA_BATTERY_INFO pInfo);
@@ -1092,8 +1092,8 @@ INT mta_hal_BatteryGetInfo(PMTAMGMT_MTA_BATTERY_INFO pInfo);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_BatteryGetPowerSavingModeStatus(ULONG *pValue);
@@ -1110,8 +1110,8 @@ INT mta_hal_BatteryGetPowerSavingModeStatus(ULONG *pValue);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 
@@ -1129,8 +1129,8 @@ INT mta_hal_Get_MTAResetCount(ULONG *resetcnt);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 
@@ -1147,8 +1147,8 @@ INT mta_hal_Get_LineResetCount(ULONG *resetcnt);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system 
-* calls. It should probably just send a message to a driver event handler task. 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT mta_hal_ClearCalls(ULONG InstanceNumber);

@@ -60,8 +60,8 @@
     Environment:
         This HAL layer is intended to support DPoE drivers 
         through an open API based on the 
-		CableLabs Cable Data Services DOCSIS® Provisioning of EPON Specifications
-        DPoE™ OAM Extensions Specification 
+		CableLabs Cable Data Services DOCSIS Provisioning of EPON Specifications
+        DPoE OAM Extensions Specification 
 
     ---------------------------------------------------------------
     HAL version:

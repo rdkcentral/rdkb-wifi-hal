@@ -1009,8 +1009,8 @@ INT cm_hal_Get_ErouterResetCount(ULONG *resetcnt);
 * @execution Synchronous.
 * @sideeffect None.
 *
-* @note This function must not suspend and must not invoke any blocking system�
-* calls. It should probably just send a message to a driver event handler task.�
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 *
 */
 
