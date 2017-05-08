@@ -95,6 +95,8 @@
 	  1. Add AP Beacon Rate control HAL
 	  2. Add Dynamic Channel Selection (phase 2) HAL
 	  3. Add Air Time Management HAL
+	What is new for 2.4.0
+	  1. Add data structure and HAL for mesh
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -108,9 +110,16 @@
 #ifndef __WIFI_HAL_H__
 #define __WIFI_HAL_H__
 
+#ifndef ULLONG
+#define ULLONG unsigned long long
+#endif
 
 #ifndef ULONG
 #define ULONG unsigned long
+#endif
+
+#ifndef USHORT
+#define USHORT unsigned short
 #endif
 
 #ifndef BOOL
@@ -183,7 +192,7 @@
 /**********************************************************************
                 STRUCTURE DEFINITIONS
 **********************************************************************/
-
+typedef unsigned char mac_address_t[6];
 //>> Deprecated: used for old RDKB code. 
 typedef struct _wifi_basicTrafficStats
 {
@@ -288,7 +297,7 @@ typedef struct _wifi_radioTrafficStats2
 typedef struct _wifi_radioTrafficStatsMeasure
 {
 	 INT   radio_RadioStatisticsMeasuringRate; //Input //"The rate at which radio related statistics are periodically collected.  Only statistics that explicitly indicate the use of this parameter MUST use the rate set in this parameter  Other parameter's are assumed to collect data in real-time or nearly real-time. Default value is 30 seconds.  This parameter MUST be persistent across reboots. If this parameter is changed,  then use of the new rate MUST be deferred until the start of the next interval and all metrics using this rate MUST return -1 until the completion of the next full interval Units in Seconds"
-	 INT   radio_RadioStatisticsMeasuringInterval; //Input //The interval for which radio data MUST be retained in order and at the end of which appropriate calculations are executed and reflected in the associated radio object's.  Only statistics that explicitly indicate the use of this parameter MUST use the interval set in this parameter  Default value is 30 minutes.  This parameter MUST be persistent across reboots.   If this item is modified, then all metrics leveraging this interval as well as the metrics Total number 802.11 packet of TX and Total number 802.11 packet of RX MUST be re-initialized immediately.  Additionally, the Statistics Start Time must be reset to the current time. Units in Seconds
+	 INT   radio_RadioStatisticsMeasuringInterval; //Input //The interval for which radio data MUST be retained in order and at the end of which appropriate calculations are executed and reflected in the associated radio object's.  Only statistics that explicitly indicate the use of this parameter MUST use the interval set in this parameter  Default value is 30 minutes.  This parameter MUST be persistent across reboots.   If this item is modified, then all metrics leveraging this interval as well as the metrics "Total number 802.11 packet of TX" and "Total number 802.11 packet of RX" MUST be re-initialized immediately.  Additionally, the "Statistics Start Time" must be reset to the current time. Units in Seconds
 } wifi_radioTrafficStatsMeasure_t;	//for radio only
 
 
@@ -324,22 +333,22 @@ typedef struct _wifi_ssidTrafficStats2
 //Please do not edit the elements for this data structure 
 typedef struct _wifi_neighbor_ap2
 {
-	 //CHAR  ap_Radio[64];	//The value MUST be the path name of a row in theDevice.WiFi.Radiotable. The Radio that detected the neighboring WiFi SSID.  
+	 //CHAR  ap_Radio[64];	//The value MUST be the path name of a row in the Device.WiFi.Radio table. The Radio that detected the neighboring WiFi SSID.  
 	 CHAR  ap_SSID[64];	//The current service set identifier in use by the neighboring WiFi SSID. The value MAY be empty for hidden SSIDs.
 	 CHAR  ap_BSSID[64];	//[MACAddress] The BSSID used for the neighboring WiFi SSID.
 	 CHAR  ap_Mode[64];	//The mode the neighboring WiFi radio is operating in. Enumeration of: AdHoc, Infrastructure
 	 UINT  ap_Channel;	//The current radio channel used by the neighboring WiFi radio.
-	 INT   ap_SignalStrength;	//An indicator of radio signal strength (RSSI) of the neighboring WiFi radio measured indBm, as an average of the last 100 packets received.
+	 INT   ap_SignalStrength;	//An indicator of radio signal strength (RSSI) of the neighboring WiFi radio measured in dBm, as an average of the last 100 packets received.
 	 CHAR  ap_SecurityModeEnabled[64];	//The type of encryption the neighboring WiFi SSID advertises. Enumeration of:None, WPA-WPA2 etc.
 	 CHAR  ap_EncryptionMode[64];	//Comma-separated list of strings. The type of encryption the neighboring WiFi SSID advertises. Each list item is an enumeration of: TKIP, AES
 	 CHAR  ap_OperatingFrequencyBand[16];	//Indicates the frequency band at which the radio this SSID instance is operating. Enumeration of:2.4GHz, 5GHz
-	 CHAR  ap_SupportedStandards[64];	//Comma-separated list of strings. List items indicate which IEEE 802.11 standards thisResultinstance can support simultaneously, in the frequency band specified byOperatingFrequencyBand. Each list item is an enumeration of:
-	 CHAR  ap_OperatingStandards[16];	//Comma-separated list of strings. Each list item MUST be a member of the list reported by theSupportedStandardsparameter. List items indicate which IEEE 802.11 standard that is detected for thisResult.
+	 CHAR  ap_SupportedStandards[64];	//Comma-separated list of strings. List items indicate which IEEE 802.11 standards this Result instance can support simultaneously, in the frequency band specified by OperatingFrequencyBand. Each list item is an enumeration of:
+	 CHAR  ap_OperatingStandards[16];	//Comma-separated list of strings. Each list item MUST be a member of the list reported by theSupportedStandards parameter. List items indicate which IEEE 802.11 standard that is detected for thisResult.
 	 CHAR  ap_OperatingChannelBandwidth[16];	//Indicates the bandwidth at which the channel is operating. Enumeration of:
-	 UINT  ap_BeaconPeriod;	//Time interval (inms) between transmitting beacons.
-	 INT   ap_Noise;	//Indicator of average noise strength (indBm) received from the neighboring WiFi radio.
-	 CHAR  ap_BasicDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Basic data transmit rates (in Mbps) for the SSID. For example, ifBasicDataTransferRatesis "1,2", this indicates that the SSID is operating with basic rates of 1 Mbps and 2 Mbps.
-	 CHAR  ap_SupportedDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Data transmit rates (in Mbps) for unicast frames at which the SSID will permit a station to connect. For example, ifSupportedDataTransferRatesis "1,2,5.5", this indicates that the SSID will only permit connections at 1 Mbps, 2 Mbps and 5.5 Mbps.
+	 UINT  ap_BeaconPeriod;	//Time interval (in ms) between transmitting beacons.
+	 INT   ap_Noise;	//Indicator of average noise strength (in dBm) received from the neighboring WiFi radio.
+	 CHAR  ap_BasicDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Basic data transmit rates (in Mbps) for the SSID. For example, if BasicDataTransferRates is "1,2", this indicates that the SSID is operating with basic rates of 1 Mbps and 2 Mbps.
+	 CHAR  ap_SupportedDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Data transmit rates (in Mbps) for unicast frames at which the SSID will permit a station to connect. For example, if SupportedDataTransferRates is "1,2,5.5", this indicates that the SSID will only permit connections at 1 Mbps, 2 Mbps and 5.5 Mbps.
 	 UINT  ap_DTIMPeriod;	//The number of beacon intervals that elapse between transmission of Beacon frames containing a TIM element whose DTIM count field is 0. This value is transmitted in the DTIM Period field of beacon frames. [802.11-2012]
 	 UINT  ap_ChannelUtilization;	//Indicates the fraction of the time AP senses that the channel is in use by the neighboring AP for transmissions.
 	 
@@ -367,7 +376,24 @@ typedef struct _wifi_diag_ipping_result
 	 
 } wifi_diag_ipping_result_t;
 
-//>> -------------------------------- wifi_ap_hal --------------------------------------------
+//----------------ENVIRONMENT-------------------------------------------
+typedef struct _wifi_channelStats {
+	INT  ch_number;						//each channel is only 20MHz bandwidth
+	BOOL ch_in_pool; 	    			//If ch_in_pool is false, driver do not need to scan this channel
+	INT  ch_noise;		    			//this is used to return the average noise floor in dbm
+	BOOL ch_radar_noise;				//if ch_number is in DFS channel, this is used to return if radar signal is present on DFS channel (5G only)
+	INT  ch_max_80211_rssi;    			//max RSSI from the neighbor AP in dbm on this channel.  
+	INT  ch_non_80211_noise;			//average non 802.11 noise
+	INT  ch_utilization;				//this is used to return the 802.11 utilization in percent
+	ULLONG ch_utilization_total; // Total time radio spent receiveing or transmitting on that channel (ch_utilization_active)
+	ULLONG ch_utilization_busy; // Time radio detected that channel was busy (Busy = Rx + Tx + Interference)
+	ULLONG ch_utilization_busy_tx; // Time time radio spent transmitting on channel
+	ULLONG ch_utilization_busy_rx; // Time radio spent receiving on channel (Rx = Rx_obss + Rx_self + Rx_errr (self and obss errors)
+	ULLONG ch_utilization_busy_self; // Time radio spend receiving on channel from its own connected clients
+	ULLONG ch_utilization_busy_ext; // Time radio detected that extended channel was busy (40MHz extention channel busy
+} wifi_channelStats_t;					//This data structure is for each channel
+
+//----------------ASSO. DEV-------------------------------------------
 //>> Deprecated: used for old RDKB code. 
 typedef struct _wifi_device
 {
@@ -383,37 +409,58 @@ typedef struct _wifi_device
 //Please do not edit the elements for this data structure 
 typedef struct _wifi_associated_dev
 {
-     //UCHAR cli_devMacAddress[6];
-     //CHAR  cli_devIPAddress[64];
-     //BOOL  cli_devAssociatedDeviceAuthentiationState;
-     //INT   cli_devSignalStrength;
-     //INT   cli_devTxRate;
-     //INT   cli_devRxRate;
-	 
-	 UCHAR cli_MACAddress[6];		// The MAC address of an associated device.
-	 CHAR  cli_IPAddress[64];		// IP of the associated device
-	 BOOL  cli_AuthenticationState; // Whether an associated device has authenticated (true) or not (false).
-	 UINT  cli_LastDataDownlinkRate; //The data transmit rate in kbps that was most recently used for transmission from the access point to the associated device.
-	 UINT  cli_LastDataUplinkRate; 	// The data transmit rate in kbps that was most recently used for transmission from the associated device to the access point.
-	 INT   cli_SignalStrength; 		//An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device.
-	 UINT  cli_Retransmissions; 	//The number of packets that had to be re-transmitted, from the last 100 packets sent to the associated device. Multiple re-transmissions of the same packet count as one.
-	 BOOL  cli_Active; 				//	boolean	-	Whether or not this node is currently present in the WiFi AccessPoint network.
-	
-	 CHAR  cli_OperatingStandard[64];	//Radio standard the associated Wi-Fi client device is operating under. Enumeration of:
-	 CHAR  cli_OperatingChannelBandwidth[64];	//The operating channel bandwidth of the associated device. The channel bandwidth (applicable to 802.11n and 802.11ac specifications only). Enumeration of:
-	 INT   cli_SNR;		//A signal-to-noise ratio (SNR) compares the level of the Wi-Fi signal to the level of background noise. Sources of noise can include microwave ovens, cordless phone, bluetooth devices, wireless video cameras, wireless game controllers, fluorescent lights and more. It is measured in decibels (dB).
-	 CHAR  cli_InterferenceSources[64]; //Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma seperated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others
-	 ULONG cli_DataFramesSentAck;	//The DataFramesSentAck parameter indicates the total number of MSDU frames marked as duplicates and non duplicates acknowledged. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
-	 ULONG cli_DataFramesSentNoAck;	//The DataFramesSentNoAck parameter indicates the total number of MSDU frames retransmitted out of the interface (i.e., marked as duplicate and non-duplicate) and not acknowledged, but does not exclude those defined in the DataFramesLost parameter. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
-	 ULONG cli_BytesSent;	//The total number of bytes transmitted to the client device, including framing characters.
-	 ULONG cli_BytesReceived;	//The total number of bytes received from the client device, including framing characters.
-	 INT   cli_RSSI;	//The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets recevied from the device.
-	 INT   cli_MinRSSI;	//The Minimum Received Signal Strength Indicator, RSSI, parameter is the minimum energy observed at the antenna receiver for past transmissions (100 packets).
-	 INT   cli_MaxRSSI;	//The Maximum Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for past transmissions (100 packets).
-	 UINT  cli_Disassociations;	//This parameter  represents the total number of client disassociations. Reset the parameter evey 24hrs or reboot
-	 UINT  cli_AuthenticationFailures;	//This parameter indicates the total number of authentication failures.  Reset the parameter evey 24hrs or reboot
-	 
+	UCHAR cli_MACAddress[6];		// The MAC address of an associated device.
+	CHAR  cli_IPAddress[64];		// IP of the associated device
+	BOOL  cli_AuthenticationState; // Whether an associated device has authenticated (true) or not (false).
+	UINT  cli_LastDataDownlinkRate; //The data transmit rate in kbps that was most recently used for transmission from the access point to the associated device.
+	UINT  cli_LastDataUplinkRate; 	// The data transmit rate in kbps that was most recently used for transmission from the associated device to the access point.
+	INT   cli_SignalStrength; 		//An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device.
+	UINT  cli_Retransmissions; 	//The number of packets that had to be re-transmitted, from the last 100 packets sent to the associated device. Multiple re-transmissions of the same packet count as one.
+	BOOL  cli_Active; 				//	boolean	-	Whether or not this node is currently present in the WiFi AccessPoint network.
+
+	CHAR  cli_OperatingStandard[64];	//Radio standard the associated Wi-Fi client device is operating under. Enumeration of:
+	CHAR  cli_OperatingChannelBandwidth[64];	//The operating channel bandwidth of the associated device. The channel bandwidth (applicable to 802.11n and 802.11ac specifications only). Enumeration of:
+	INT   cli_SNR;		//A signal-to-noise ratio (SNR) compares the level of the Wi-Fi signal to the level of background noise. Sources of noise can include microwave ovens, cordless phone, bluetooth devices, wireless video cameras, wireless game controllers, fluorescent lights and more. It is measured in decibels (dB).
+	CHAR  cli_InterferenceSources[64]; //Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma seperated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others
+	ULONG cli_DataFramesSentAck;	//The DataFramesSentAck parameter indicates the total number of MSDU frames marked as duplicates and non duplicates acknowledged. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
+	ULONG cli_DataFramesSentNoAck;	//The DataFramesSentNoAck parameter indicates the total number of MSDU frames retransmitted out of the interface (i.e., marked as duplicate and non-duplicate) and not acknowledged, but does not exclude those defined in the DataFramesLost parameter. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
+	ULONG cli_BytesSent;	//The total number of bytes transmitted to the client device, including framing characters.
+	ULONG cli_BytesReceived;	//The total number of bytes received from the client device, including framing characters.
+	INT   cli_RSSI;	//The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets recevied from the device.
+	INT   cli_MinRSSI;	//The Minimum Received Signal Strength Indicator, RSSI, parameter is the minimum energy observed at the antenna receiver for past transmissions (100 packets).
+	INT   cli_MaxRSSI;	//The Maximum Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for past transmissions (100 packets).
+	UINT  cli_Disassociations;	//This parameter  represents the total number of client disassociations. Reset the parameter evey 24hrs or reboot
+	UINT  cli_AuthenticationFailures;	//This parameter indicates the total number of authentication failures.  Reset the parameter evey 24hrs or reboot
+
 } wifi_associated_dev_t;	//~COSA_DML_WIFI_AP_ASSOC_DEVICE
+
+typedef struct _wifi_associated_dev2
+{
+	mac_address_t cli_MACAddress;		// The MAC address of an associated device.
+	CHAR  cli_IPAddress[64];		// IP of the associated device
+	BOOL  cli_AuthenticationState; // Whether an associated device has authenticated (true) or not (false).
+	UINT  cli_LastDataDownlinkRate; //The data transmit rate in kbps that was most recently used for transmission from the access point to the associated device.
+	UINT  cli_LastDataUplinkRate; 	// The data transmit rate in kbps that was most recently used for transmission from the associated device to the access point.
+	INT   cli_SignalStrength; 		//An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device.
+	UINT  cli_Retransmissions; 	//The number of packets that had to be re-transmitted, from the last 100 packets sent to the associated device. Multiple re-transmissions of the same packet count as one.
+	BOOL  cli_Active; 				//	boolean	-	Whether or not this node is currently present in the WiFi AccessPoint network.
+
+	CHAR  cli_OperatingStandard[64];	//Radio standard the associated Wi-Fi client device is operating under. Enumeration of:
+	CHAR  cli_OperatingChannelBandwidth[64];	//The operating channel bandwidth of the associated device. The channel bandwidth (applicable to 802.11n and 802.11ac specifications only). Enumeration of:
+	INT   cli_SNR;		//A signal-to-noise ratio (SNR) compares the level of the Wi-Fi signal to the level of background noise. Sources of noise can include microwave ovens, cordless phone, bluetooth devices, wireless video cameras, wireless game controllers, fluorescent lights and more. It is measured in decibels (dB).
+	CHAR  cli_InterferenceSources[64]; //Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma seperated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others
+	ULONG cli_DataFramesSentAck;	//The DataFramesSentAck parameter indicates the total number of MSDU frames marked as duplicates and non duplicates acknowledged. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
+	ULONG cli_DataFramesSentNoAck;	//The DataFramesSentNoAck parameter indicates the total number of MSDU frames retransmitted out of the interface (i.e., marked as duplicate and non-duplicate) and not acknowledged, but does not exclude those defined in the DataFramesLost parameter. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
+	ULONG cli_BytesSent;	//The total number of bytes transmitted to the client device, including framing characters.
+	ULONG cli_BytesReceived;	//The total number of bytes received from the client device, including framing characters.
+	INT   cli_RSSI;	//The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets recevied from the device.
+	INT   cli_MinRSSI;	//The Minimum Received Signal Strength Indicator, RSSI, parameter is the minimum energy observed at the antenna receiver for past transmissions (100 packets).
+	INT   cli_MaxRSSI;	//The Maximum Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for past transmissions (100 packets).
+	UINT  cli_Disassociations;	//This parameter  represents the total number of client disassociations. Reset the parameter evey 24hrs or reboot
+	UINT  cli_AuthenticationFailures;	//This parameter indicates the total number of authentication failures.  Reset the parameter evey 24hrs or reboot
+
+	ULLONG   cli_Associations;	// Stats handle used to determine reconnects; increases for every association (stat delta calcualtion)
+} wifi_associated_dev2_t;
 
 typedef struct _wifi_radius_setting_t
 {
@@ -430,24 +477,228 @@ typedef struct _wifi_radius_setting_t
 		 
 } wifi_radius_setting_t;	
 
-//typedef struct wifi_AC_parameters_record  // Access Catagoriy parameters.  see 802.11-2012 spec for descriptions
-//{
-//     INT CWmin;       // CWmin variable
-//     INT CWmax;       // CWmax vairable
-//     INT AIFS;        // AIFS
-//     ULONG TxOpLimit;  // TXOP Limit
-//} wifi_AC_parameters_record_t;
+/* MCS/NSS/BW rate table and indexes that shoul be used for supported rates
+----------------------------------------------
+| type | bw         | nss        |  mcs     
+----------------------------------------------
+| OFDM | 0 (20Mhz)  | 0 (legacy) |  0 - 6M 
+|      |            |            |  1 - 9M 
+|      |            |            |  2 - 12M 
+|      |            |            |  3 - 18M 
+|      |            |            |  4 - 24M 
+|      |            |            |  5 - 36M 
+|      |            |            |  6 - 48M 
+|      |            |            |  7 - 54M
+----------------------------------------------
+| CCK  | 0 (20Mhz)  | 0 (legacy) |  8 - L1M 
+|      |            |            |  9 - L2M 
+|      |            |            | 10 - L5.5M
+|      |            |            | 11 - L11M 
+|      |            |            | 12 - S2M 
+|      |            |            | 13 - S5.5M
+|      |            |            | 14 - S11M"
+----------------------------------------------
+| VHT  | 0 (20Mhz)  | 1 (chain1) |  1 - HT/VHT
+|      | 1 (40Mhz)  | ...        |  2 - HT/VHT
+|      | 2 (80MHz)  | 8 (chain8) |  3 - HT/VHT
+|      | 2 (160MHz) |            |  4 - HT/VHT
+|      |            |            |  5 - HT/VHT
+|      |            |            |  6 - HT/VHT
+|      |            |            |  7 - HT/VHT
+|      |            |            |  8 - VHT 
+|      |            |            |  9 - VHT 
+----------------------------------------------
+NOTE: The size of this table on 4x4 can be big - we could send only non zero elements!
+*/
+typedef struct _wifi_associated_dev_rate_info_rx_stats {
+        // rate table index see table above
+	UCHAR nss; 					// 0 equals legacy protocolss (OFDM, CCK) 1 - n spatial stream (HT, VHT)
+	UCHAR mcs;						// 0 - 7 (HT) - 9 (VHT)
+	USHORT bw; 					// 20, 40, 80, 160 ... (to be considered 5 , 10, 80+80) ...
+	ULLONG flags;  				// Flag indicating data validation that HAS_BYTES, HAS_MSDUS, HAS_MPDUS, HAS_PPDUS, HAS_BW_80P80, HAS_RSSI_COMB, HAS_RSSI_ARRAY
+	ULLONG bytes;					// number of bytes received for given rate
+	ULLONG msdus;					// number of MSDUs received for given rate
+	ULLONG mpdus;					// number of MPDUs received for given rate
+	ULLONG ppdus;					// number of PPDUs received for given rate
+	ULLONG retries;				// number of retries received for given rate
+	UCHAR rssi_combined;			// Last RSSI received on give rate
+	/* Per antenna RSSI (above noise floor) for all widths (primary,secondary) 
+		-----------------------------------------------
+		| chain_num |  20MHz [pri20                   ]
+		|           |  40MHZ [pri20,sec20             ] 
+		|           |  80MHz [pri20,sec20,sec40,      ]
+		|           | 160MHz [pri20,sec20,sec40,sec80 ]
+		-----------------------------------------------
+		|  1        |  rssi  [pri20,sec20,sec40,sec80 ]
+		|  ...      |  ...
+		|  8        |  rssi  [pri20,sec20,sec40,sec80 ]
+		-----------------------------------------------	*/
+	UCHAR rssi_array[8][4]; 		// 8=antennas, 4=20+20+40+80 extension rssi
+} wifi_associated_dev_rate_info_rx_stats_t;
+
+typedef struct _wifi_associated_dev_rate_info_tx_stats {
+        // rate table index see table above
+	UCHAR nss; 					// 0 equals legacy protocolss (OFDM, CCK) 1 - n spatial stream (HT, VHT)
+	UCHAR mcs;						// 0 - 7 (HT) - 9 (VHT)
+	USHORT bw; 					// 20, 40, 80, 160 ... (to be considered 5 , 10, 80+80) ...
+	ULLONG flags;  				// Flag indicating data validation that HAS_BYTES, HAS_MSDUS, HAS_MPDUS, HAS_PPDUS, HAS_BW_80P80, HAS_RSSI_COMB, HAS_RSSI_ARRAY
+	ULLONG bytes;					// number of bytes transmitted for given rate
+	ULLONG msdus;					// number of MSDUs transmitted for given rate
+	ULLONG mpdus;					// number of MPDUs transmitted for given rate
+	ULLONG ppdus;					// number of PPDUs transmitted for given rate
+	ULLONG retries;				// number of transmittion retries for given rate
+	ULLONG attempts;				// number of attempts trying transmitt on given rate
+} wifi_associated_dev_rate_info_tx_stats_t;
+
+/* AC/TID rate table
+ ----------------------
+|    TID   |    AC    |
+-----------------------
+|  0  | 8  |    BE    |  
+|  1  | 9  |    BK    |
+|  2  | 10 |    BK    |
+|  3  | 11 |    BE    |
+|  4  | 12 |    VI    |
+|  5  | 13 |    VI    |
+|  6  | 14 |    VO    |
+|  7  | 15 |    VO    |
+-----------------------
+*/
+typedef struct wifi_associated_dev_tid_stats
+{
+    UCHAR  ac;						// BE, BK. VI, VO 
+    UCHAR  tid;                       			// 0 - 16
+    ULLONG ewma_time_ms;					// Moving average value based on last couple of transmitted msdus
+    ULLONG sum_time_ms;					// Delta of cumulative msdus times over interval
+    ULLONG num_msdus;					// Number of msdus in given interval
+} wifi_associated_dev_tid_stats_t;
+
+/*    Explanation:
+                             these are actually 3 host-endian integers
+                            in this example they are big-endian because
+                             the piranha's host cpu is big-endian MIPS
+                                    _____________|____________
+                                   /             |            \
+                                  |              |            |
+                             _____|______    ____|____    ____|_____
+                            |            |  |         |  |          |
+     ap1       glastackrssi:75  74  73  77  2  3  68  1  0  0  0  136
+                            ^^^^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^
+                                  |              |            |
+                         last 4 rssi values      |      sample counter
+                                                 |
+                                         last 4 rssi's age
+    
+                                the "77" rssi is 1 second old
+                                         ______|______
+                                        /             \
+                                        |             |
+     ap1       glastackrssi:75  74  73  77  2  3  68  1  0  0  0  136
+                                     |             |
+                                     \____________/
+                                           |
+                                 the 2nd most recent rssi of "73"
+                                 is 68 seconds old *in relation*
+                                 to the 1st ("77") therefore it is
+                                 68 + 1 seconds old *now*   */
+typedef struct _wifi_rssi_snapshot {
+	UCHAR  rssi[4];                       		//Last 4 RSSI frames received
+	UCHAR  time_s[4];                                  //Time of when last 4 RSSI were received
+	USHORT count;                                      //Sequence numer of received managemant (bcn, ack) frames 
+} wifi_rssi_snapshot_t;
+
+typedef struct _wifi_associated_dev_stats {
+	ULLONG 	cli_rx_bytes;				//The total number of bytes transmitted to the client device, including framing characters.
+	ULLONG 	cli_tx_bytes;				//The total number of bytes received from the client device, including framing characters.
+	ULLONG 	cli_rx_frames;				//The total number of frames received from the client
+	ULLONG 	cli_tx_frames;				//The total number of frames transmitted to the client
+	ULLONG 	cli_rx_retries;				//Number of rx retries
+	ULLONG 	cli_tx_retries;				//Number of tx retries //cli_Retransmissions
+	ULLONG 	cli_rx_errors;				//Number of numer of rx error
+	ULLONG 	cli_tx_errors;				//Number of tx errors
+	double 	cli_rx_rate;					//average rx data rate used
+	double 	cli_tx_rate;					//average tx data rate used} wifi_associated_dev_t;
+	wifi_rssi_snapshot_t cli_rssi_bcn;      //RSSI from last 4 beacons received (STA)
+	wifi_rssi_snapshot_t cli_rssi_ack;      //RSSI from last 4 ack received     (AP)
+} wifi_associated_dev_stats_t;	
+
+//SURVEY CHANNEL
+/* wifi_getWifiChannelStats() function */
+/**
+* @description Get the all (currently used by configured regualtory domain) Radio channel utilizatio stats.
+*
+* @param ssidIndex - Radio index
+* @param channel_util_array - wifi_channelStats_t **channel_util, channel stats info to be returned
+* @param output_array_size - UINT *output_array_size, to be returned stats, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+//Get the basic Radio channel traffic static info
+INT wifi_getRadioChannelStats(INT radioIndex, wifi_channelStats_t *input_output_channelStats_array, INT array_size);
 
 
-//typedef struct _wifi_qos
-//{
-//     wifi_AC_parameters_record_t BE_AcParametersRecord;      // Best Effort QOS parameters, ACI == 0
-//     wifi_AC_parameters_record_t BK_AcParametersRecord;      // Background QOS parameters, ACI == 1
-//     wifi_AC_parameters_record_t VI_AcParametersRecord;      // Video QOS parameters, ACI == 2
-//     wifi_AC_parameters_record_t VO_AcParametersRecord;      // Voice QOS parameters, ACI == 3
-//}  wifi_qos_t;
+/* wifi_getApAssociatedDeviceRxStatsResult() function */
+/**
+* @description Get the associated client per rate transmittion stats.
+*
+* @param [in] radioIndex - Radio index
+* @param [in]clientMacAddress - client mac address UCHAR[6]
+* @param [out] stats_array -wifi_associated_dev_rate_info_stats_t **stats_array, client tx stats  
+* @param [out] output_array_size - UINT *output_array_size, to be returned
+*             stats, to be returned
+* @param [out] handle - Stats validation handle used to determine reconnects; increases for every association
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_getApAssociatedDeviceRxStatsResult(INT radioIndex, mac_address_t *clientMacAddress, wifi_associated_dev_rate_info_rx_stats_t **stats_array, UINT *output_array_size, ULLONG *handle);
+INT wifi_getApAssociatedDeviceTxStatsResult(INT radioIndex, mac_address_t *clientMacAddress, wifi_associated_dev_rate_info_tx_stats_t **stats_array, UINT *output_array_size, ULLONG *handle);
 
-//<< -------------------------------- wifi_ap_hal --------------------------------------------
+/* wifi_getApAssociatedDeviceTidStatsResult() function */
+/**
+* @description Get the associated client per rate transmittion stats.
+*
+* @param [in] radioIndex - Radio index
+* @param [in]clientMacAddress - client mac address UCHAR[6]
+* @param [out] stats -wifi_associated_dev_tid_stats_t *stats, client stats  
+* @param [out] handle - Stats validation handle used to determine reconnects; increases for every association
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_getApAssociatedDeviceTidStatsResult(INT radioIndex,  mac_address_t *clientMacAddress, wifi_associated_dev_tid_stats_t *tid_stats,  ULLONG *handle);
+
+INT wifi_getApAssociatedDeviceStats(INT apIndex, mac_address_t *clientMacAddress, wifi_associated_dev_stats_t *associated_dev_stats, ULLONG *handle);	
+
+
+/******************************************************************/
+/******************************************************************/
+
 
 //---------------------------------------------------------------------------------------------------
 /* wifi_getHalVersion() function */
@@ -4906,7 +5157,7 @@ INT wifi_setApSecurityPreSharedKey(INT apIndex, CHAR *preSharedKey);          //
 * calls. It should probably just send a message to a driver event handler task.
 *
 */
-//Device.WiFi.AccessPoint.{i}.Security.KeyPassphrase	string(63)	W	
+//Device.WiFi.AccessPoint.{i}.Security.KeyPassphrase	string­(63)	W	
 //A passphrase from which the PreSharedKey is to be generated, for WPA-Personal or WPA2-Personal or WPA-WPA2-Personal security modes.
 INT wifi_getApSecurityKeyPassphrase(INT apIndex, CHAR *output_string);        // outputs the passphrase, maximum 63 characters
 
@@ -4958,7 +5209,7 @@ INT wifi_setApSecurityKeyPassphrase(INT apIndex, CHAR *passPhrase);           //
 //When set to true, this AccessPoint instance's WiFi security settings are reset to their factory default values. The affected settings include ModeEnabled, WEPKey, PreSharedKey and KeyPassphrase.
 INT wifi_setApSecurityReset(INT apIndex);
 
-//Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_KeyPassphrase	string(63)	RW	
+//Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_KeyPassphrase	string­(63)	RW	
 //A passphrase from which the PreSharedKey is to be generated, for WPA-Personal or WPA2-Personal or WPA-WPA2-Personal security modes.	If KeyPassphrase is written, then PreSharedKey is immediately generated. The ACS SHOULD NOT set both the KeyPassphrase and the PreSharedKey directly (the result of doing this is undefined). The key is generated as specified by WPA, which uses PBKDF2 from PKCS #5: Password-based Cryptography Specification Version 2.0 ([RFC2898]).	This custom parameter is defined to enable reading the Passphrase via TR-069 /ACS. When read it should return the actual passphrase			
 //INT wifi_getApKeyPassphrase(INT apIndex, CHAR *output); //Tr181	
 //INT wifi_setApKeyPassphrase(INT apIndex, CHAR *passphase); //Tr181	
@@ -5398,11 +5649,12 @@ INT wifi_cancelApWPS(INT apIndex);                                    // cancels
 //Device.WiFi.AccessPoint.{i}.AssociatedDevice.{i}.X_COMCAST-COM_AuthenticationFailures	//P3
 //HAL funciton should allocate an data structure array, and return to caller with "associated_dev_array"
 INT wifi_getApAssociatedDeviceDiagnosticResult(INT apIndex, wifi_associated_dev_t **associated_dev_array, UINT *output_array_size); //Tr181	
+INT wifi_getApAssociatedDeviceDiagnosticResult2(INT apIndex, wifi_associated_dev2_t **associated_dev_array, UINT *output_array_size); //Tr181	
 
 //------------------------------------------------------------------------------------------------------
 ////SSID stearing APIs using blacklisting
 //INT wifi_setSsidSteeringPreferredList(INT radioIndex,INT apIndex, INT *preferredAPs[32]);  // prevent any client device from assocating with this ipIndex that has previously had a valid assocation on any of the listed "preferred" SSIDs unless SsidSteeringTimeout has expired for this device. The array lists all APs that are preferred over this AP.  Valid AP values are 1 to 32. Unused positions in this array must be set to 0. This setting becomes active when committed.  The wifi subsystem must default to no preferred SSID when initalized.  
-////Using the concept of an preferred list provides a solution to most use cases that requrie SSID Steering.  To implement this approach, the AP places the STA into the Access Control DENY list for a given SSID only if the STA has previously associated to one of the SSIDs in the preferred list that for SSID.
+////Using the concept of an "preferred list" provides a solution to most use cases that requrie SSID Steering.  To implement this approach, the AP places the STA into the Access Control DENY list for a given SSID only if the STA has previously associated to one of the SSIDs in the "preferred list" that for SSID.
 //INT wifi_setSsidSteeringTimout(INT radioIndex,INT apIndex, ULONG SsidSteeringTimout);  // only prevent the client device from assocatign with this apIndex if the device has connected to a preferred SSID within this timeout period - in units of hours.  This setting becomes active when committed.  
 
 
