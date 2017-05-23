@@ -371,7 +371,7 @@ typedef struct {
 	/* Tx Broadcast PHY Rate */
     ULONG                           TxBcastRate;
 	/* Rx Broadcast Power Level read by this Node */
-    ULONG                           RxBcastPowerLevel;
+    INT                               RxBcastPowerLevel;
 	/* Number of Transmitted Packets from this Node */
     ULONG                           TxPackets;
 	/* Number of Recieved Packets by this Node */
