@@ -333,22 +333,22 @@ typedef struct _wifi_ssidTrafficStats2
 //Please do not edit the elements for this data structure 
 typedef struct _wifi_neighbor_ap2
 {
-	 //CHAR  ap_Radio[64];	//The value MUST be the path name of a row in the Device.WiFi.Radio table. The Radio that detected the neighboring WiFi SSID.  
+	 //CHAR  ap_Radio[64];	//The value MUST be the path name of a row in theDevice.WiFi.Radiotable. The Radio that detected the neighboring WiFi SSID.  
 	 CHAR  ap_SSID[64];	//The current service set identifier in use by the neighboring WiFi SSID. The value MAY be empty for hidden SSIDs.
 	 CHAR  ap_BSSID[64];	//[MACAddress] The BSSID used for the neighboring WiFi SSID.
 	 CHAR  ap_Mode[64];	//The mode the neighboring WiFi radio is operating in. Enumeration of: AdHoc, Infrastructure
 	 UINT  ap_Channel;	//The current radio channel used by the neighboring WiFi radio.
-	 INT   ap_SignalStrength;	//An indicator of radio signal strength (RSSI) of the neighboring WiFi radio measured in dBm, as an average of the last 100 packets received.
+	 INT   ap_SignalStrength;	//An indicator of radio signal strength (RSSI) of the neighboring WiFi radio measured indBm, as an average of the last 100 packets received.
 	 CHAR  ap_SecurityModeEnabled[64];	//The type of encryption the neighboring WiFi SSID advertises. Enumeration of:None, WPA-WPA2 etc.
 	 CHAR  ap_EncryptionMode[64];	//Comma-separated list of strings. The type of encryption the neighboring WiFi SSID advertises. Each list item is an enumeration of: TKIP, AES
 	 CHAR  ap_OperatingFrequencyBand[16];	//Indicates the frequency band at which the radio this SSID instance is operating. Enumeration of:2.4GHz, 5GHz
-	 CHAR  ap_SupportedStandards[64];	//Comma-separated list of strings. List items indicate which IEEE 802.11 standards this Result instance can support simultaneously, in the frequency band specified by OperatingFrequencyBand. Each list item is an enumeration of:
-	 CHAR  ap_OperatingStandards[16];	//Comma-separated list of strings. Each list item MUST be a member of the list reported by theSupportedStandards parameter. List items indicate which IEEE 802.11 standard that is detected for thisResult.
+	 CHAR  ap_SupportedStandards[64];	//Comma-separated list of strings. List items indicate which IEEE 802.11 standards thisResultinstance can support simultaneously, in the frequency band specified byOperatingFrequencyBand. Each list item is an enumeration of:
+	 CHAR  ap_OperatingStandards[16];	//Comma-separated list of strings. Each list item MUST be a member of the list reported by theSupportedStandardsparameter. List items indicate which IEEE 802.11 standard that is detected for thisResult.
 	 CHAR  ap_OperatingChannelBandwidth[16];	//Indicates the bandwidth at which the channel is operating. Enumeration of:
-	 UINT  ap_BeaconPeriod;	//Time interval (in ms) between transmitting beacons.
-	 INT   ap_Noise;	//Indicator of average noise strength (in dBm) received from the neighboring WiFi radio.
-	 CHAR  ap_BasicDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Basic data transmit rates (in Mbps) for the SSID. For example, if BasicDataTransferRates is "1,2", this indicates that the SSID is operating with basic rates of 1 Mbps and 2 Mbps.
-	 CHAR  ap_SupportedDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Data transmit rates (in Mbps) for unicast frames at which the SSID will permit a station to connect. For example, if SupportedDataTransferRates is "1,2,5.5", this indicates that the SSID will only permit connections at 1 Mbps, 2 Mbps and 5.5 Mbps.
+	 UINT  ap_BeaconPeriod;	//Time interval (inms) between transmitting beacons.
+	 INT   ap_Noise;	//Indicator of average noise strength (indBm) received from the neighboring WiFi radio.
+	 CHAR  ap_BasicDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Basic data transmit rates (in Mbps) for the SSID. For example, ifBasicDataTransferRatesis "1,2", this indicates that the SSID is operating with basic rates of 1 Mbps and 2 Mbps.
+	 CHAR  ap_SupportedDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Data transmit rates (in Mbps) for unicast frames at which the SSID will permit a station to connect. For example, ifSupportedDataTransferRatesis "1,2,5.5", this indicates that the SSID will only permit connections at 1 Mbps, 2 Mbps and 5.5 Mbps.
 	 UINT  ap_DTIMPeriod;	//The number of beacon intervals that elapse between transmission of Beacon frames containing a TIM element whose DTIM count field is 0. This value is transmitted in the DTIM Period field of beacon frames. [802.11-2012]
 	 UINT  ap_ChannelUtilization;	//Indicates the fraction of the time AP senses that the channel is in use by the neighboring AP for transmissions.
 	 
@@ -564,13 +564,31 @@ typedef struct _wifi_associated_dev_rate_info_tx_stats {
 |  7  | 15 |    VO    |
 -----------------------
 */
-typedef struct wifi_associated_dev_tid_stats
+
+typedef enum
 {
-    UCHAR  ac;						// BE, BK. VI, VO 
+    WIFI_RADIO_QUEUE_TYPE_VI = 0,
+    WIFI_RADIO_QUEUE_TYPE_VO,
+    WIFI_RADIO_QUEUE_TYPE_BE,
+    WIFI_RADIO_QUEUE_TYPE_BK,
+    WIFI_RADIO_QUEUE_TYPE_CAB,
+    WIFI_RADIO_QUEUE_TYPE_BCN,
+    WIFI_RADIO_QUEUE_MAX_QTY,
+    WIFI_RADIO_QUEUE_TYPE_NONE = -1
+} wifi_radioQueueType_t;
+
+typedef struct wifi_associated_dev_tid_entry
+{
+    UCHAR  ac;						// BE, BK. VI, VO (wifi_radioQueueType_t)
     UCHAR  tid;                       			// 0 - 16
     ULLONG ewma_time_ms;					// Moving average value based on last couple of transmitted msdus
     ULLONG sum_time_ms;					// Delta of cumulative msdus times over interval
     ULLONG num_msdus;					// Number of msdus in given interval
+} wifi_associated_dev_tid_entry_t;
+
+typedef struct wifi_associated_dev_tid_stats
+{
+    wifi_associated_dev_tid_entry_t tid_array[16];
 } wifi_associated_dev_tid_stats_t;
 
 /*    Explanation:
@@ -2935,7 +2953,7 @@ INT wifi_applySSIDSettings(INT ssidIndex);
 * HAL funciton should allocate an data structure array, and return to caller with 
 "neighbor_ap_array". 
 *
-* @param radioIndex - Radio index
+* @param apIndex - AP index
 * @param neighbor_ap_array - wifi_neighbor_ap2_t **neighbor_ap_array, neighbour 
 access point info to be returned
 * @param output_array_size - UINT *output_array_size, to be returned
@@ -2953,7 +2971,18 @@ access point info to be returned
 */
 //Start the wifi scan and get the result into output buffer for RDKB to parser. The result will be used to manage endpoint list
 //HAL funciton should allocate an data structure array, and return to caller with "neighbor_ap_array"
-INT wifi_getNeighboringWiFiDiagnosticResult2(INT radioIndex, wifi_neighbor_ap2_t **neighbor_ap_array, UINT *output_array_size); //Tr181	
+INT wifi_getNeighboringWiFiDiagnosticResult2(INT apIndex, wifi_neighbor_ap2_t **neighbor_ap_array, UINT *output_array_size); //Tr181
+
+typedef enum
+{
+    WIFI_RADIO_SCAN_MODE_NONE = 0,
+    WIFI_RADIO_SCAN_MODE_FULL,
+    WIFI_RADIO_SCAN_MODE_ONCHAN,
+    WIFI_RADIO_SCAN_MODE_OFFCHAN,
+    WIFI_RADIO_SCAN_MODE_SURVEY
+} wifi_neighborScanMode_t;
+
+INT wifi_startNeighborScan(INT apIndex, wifi_neighborScanMode_t scan_mode, INT dwell_time, UINT chan_num, UINT *chan_list);
 
 //>> Deprecated: used for old RDKB code. 
 /** Deprecated: used for old RDKB code. */
@@ -5157,7 +5186,7 @@ INT wifi_setApSecurityPreSharedKey(INT apIndex, CHAR *preSharedKey);          //
 * calls. It should probably just send a message to a driver event handler task.
 *
 */
-//Device.WiFi.AccessPoint.{i}.Security.KeyPassphrase	string­(63)	W	
+//Device.WiFi.AccessPoint.{i}.Security.KeyPassphrase	string(63)	W	
 //A passphrase from which the PreSharedKey is to be generated, for WPA-Personal or WPA2-Personal or WPA-WPA2-Personal security modes.
 INT wifi_getApSecurityKeyPassphrase(INT apIndex, CHAR *output_string);        // outputs the passphrase, maximum 63 characters
 
@@ -5209,7 +5238,7 @@ INT wifi_setApSecurityKeyPassphrase(INT apIndex, CHAR *passPhrase);           //
 //When set to true, this AccessPoint instance's WiFi security settings are reset to their factory default values. The affected settings include ModeEnabled, WEPKey, PreSharedKey and KeyPassphrase.
 INT wifi_setApSecurityReset(INT apIndex);
 
-//Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_KeyPassphrase	string­(63)	RW	
+//Device.WiFi.AccessPoint.{i}.Security.X_COMCAST-COM_KeyPassphrase	string(63)	RW	
 //A passphrase from which the PreSharedKey is to be generated, for WPA-Personal or WPA2-Personal or WPA-WPA2-Personal security modes.	If KeyPassphrase is written, then PreSharedKey is immediately generated. The ACS SHOULD NOT set both the KeyPassphrase and the PreSharedKey directly (the result of doing this is undefined). The key is generated as specified by WPA, which uses PBKDF2 from PKCS #5: Password-based Cryptography Specification Version 2.0 ([RFC2898]).	This custom parameter is defined to enable reading the Passphrase via TR-069 /ACS. When read it should return the actual passphrase			
 //INT wifi_getApKeyPassphrase(INT apIndex, CHAR *output); //Tr181	
 //INT wifi_setApKeyPassphrase(INT apIndex, CHAR *passphase); //Tr181	
