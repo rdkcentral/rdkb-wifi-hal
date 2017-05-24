@@ -367,7 +367,7 @@ typedef struct {
 	/* Tx Power Reduced by this Node */
     ULONG                           TxPowerControlReduction;
 	/* Rx Power Level read by this Node */
-    ULONG                           RxPowerLevel;
+    INT                             RxPowerLevel;
 	/* Tx Broadcast PHY Rate */
     ULONG                           TxBcastRate;
 	/* Rx Broadcast Power Level read by this Node */
