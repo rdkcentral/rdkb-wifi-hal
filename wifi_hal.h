@@ -2482,6 +2482,76 @@ INT wifi_getRadioBasicDataTransmitRates(INT radioIndex, CHAR *output);
 */
 INT wifi_setRadioBasicDataTransmitRates(INT radioIndex, CHAR *TransmitRates);
 
+/* wifi_getRadioSupportedDataTransmitRates() function */
+/**
+* @description Get the set of data rates, in Mbps, that have to be supported by all stations that desire to join this BSS. The stations have to be able to receive and transmit at each of the data rates listed in SupportedDataTransmitRates. For example, a value of "1,2", indicates that stations support 1 Mbps and 2 Mbps. Most control packets use a data rate in SupportedDataTransmitRates
+* \n Device.WiFi.Radio.{i}.SupportedDataTransmitRates
+*
+* @param radioIndex - Index of Wi-Fi radio channel
+* @param output_rates - Comma-separated list of strings, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+//Device.WiFi.Radio.{i}.SupportedDataTransmitRates
+//Contains a comma separated string of supported rates supported by the radio instance. Must include all rates in the acceptance criteria belonging to the corresponding radio configuration.	
+INT wifi_getRadioSupportedDataTransmitRates(INT radioIndex, char *output_rates);
+
+/* getRadioOperationalDataTransmitRates() function */
+/**
+* @description Get the set of data rates, in Mbps, that have to be supported by all stations that desire to join this BSS. The stations have to be able to receive and transmit at each of the data rates listed inOperationalDataTransmitRates. For example, a value of "1,2", indicates that stations support 1 Mbps and 2 Mbps. Most control packets use a data rate in OperationalDataTransmitRates.
+* \n Device.WiFi.Radio.{i}.OperationalDataTransmitRates
+*
+* @param radioIndex - Index of Wi-Fi radio channel
+* @param output_rates - Comma-separated list of strings, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+//Device.WiFi.Radio.{i}.OperationalDataTransmitRates
+//Contains a comman separated string of operational rates supported by the radio instance. Is either equal to the set of supported rates or a super set.	
+INT wifi_getRadioOperationalDataTransmitRates(INT radioIndex, char *output_rates);		
+
+
+/* wifi_setRadioOperationalDataTransmitRates() function */
+/**
+* @description Set the data rates, in Mbps, that have to be supported by all stations that desire to join this BSS. The stations have to be able to receive and transmit at each of the data rates listed in OperationalDataTransmitRates. For example, a value of "1,2", indicates that stations support 1 Mbps and 2 Mbps. Most control packets use a data rate in OperationalDataTransmitRates
+* \n Device.WiFi.Radio.{i}.OperationalDataTransmitRates
+*
+* @param radioIndex - Index of Wi-Fi radio channel
+* @param rates - Comma-separated list of strings
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_setRadioOperationalDataTransmitRates(INT radioIndex, char *rates);
+
+
+
 //---------------------------------------------------------------------------------------------------
 //Device.WiFi.Radio.{i}.Stats.
 
