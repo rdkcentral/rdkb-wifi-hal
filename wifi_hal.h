@@ -75,9 +75,9 @@
 
     author:
 
-        zhicheng_qiu@cable.comcast.com 
+        zhicheng_qiu@comcast.com
         Charles Moreman, moremac@cisco.com
-		
+        Paul White, paul@plumewifi.com
     ---------------------------------------------------------------
 
 	Notes:
@@ -97,6 +97,10 @@
 	  3. Add Air Time Management HAL
 	What is new for 2.4.0
 	  1. Add data structure and HAL for mesh
+	What is new for 2.5.0
+	  1. Add the Channel switch HAL for mesh
+	What is new for 2.6.0
+	  1. Add the Band steering HAL for mesh
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -184,9 +188,9 @@
 #define AP_INDEX_16 16
 #endif
 
-//defines for HAL version 2.3.0
+//defines for HAL version 2.6.0
 #define WIFI_HAL_MAJOR_VERSION 2   // This is the major verion of this HAL.
-#define WIFI_HAL_MINOR_VERSION 3   // This is the minor verson of the HAL.
+#define WIFI_HAL_MINOR_VERSION 6   // This is the minor verson of the HAL.
 #define WIFI_HAL_MAINTENANCE_VERSION 0   // This is the maintenance version of the HAL.
 
 /**********************************************************************
@@ -1858,6 +1862,8 @@ INT wifi_getRadioDcsChannelMetrics(INT radioIndex, wifi_channelMetrics_t *input_
 INT wifi_pushRadioChannel(INT radioIndex, UINT channel);
 //Dynamic Channel Selection (phase 2) HAL END
 
+// This HAL is used to change the channel to destination channel, with destination bandwidth, csa_beacon_count is used to specify how long CSA need to be announced.
+INT wifi_pushRadioChannel2(INT radioIndex, UINT channel, UINT channel_width_MHz, UINT csa_beacon_count);
 
 /* wifi_getRadioDfsSupport() function */
 /**
@@ -2841,6 +2847,10 @@ INT wifi_getSSIDStatus(INT ssidIndex, CHAR *output_string); //Tr181
 //Device.WiFi.SSID.{i}.Name
 // Outputs a 32 byte or less string indicating the SSID name.  Sring buffer must be preallocated by the caller.
 INT wifi_getSSIDName(INT apIndex, CHAR *output_string);        
+
+// To read the run time ssid name
+INT wifi_getSSIDNameStatus(INT apIndex, CHAR *output_string);
+
 
 /* wifi_setSSIDName() function */
 /**
@@ -4402,7 +4412,7 @@ INT wifi_setApRadioIndex(INT apIndex, INT radioIndex);                // sets th
 * @description Get the ACL MAC list per AP.
 *
 * @param apIndex - Access Point index
-* @param macArray - Mac Array list, to be returned
+* @param macArray - Mac Array list, to be returned // in formate as "11:22:33:44:55:66\n11:22:33:44:55:67\n"
 * @param buf_size - Buffer size for the mac array list
 *
 * @return The status of the operation
@@ -4457,6 +4467,10 @@ INT wifi_addApAclDevice(INT apIndex, CHAR *DeviceMacAddress);         // adds th
 *
 */
 INT wifi_delApAclDevice(INT apIndex, CHAR *DeviceMacAddress);         // deletes the mac address from the filter list
+
+//To delete all ACL MAC
+INT wifi_delApAclDevices(INT apINdex);
+
 
 /* wifi_getApAclDeviceNum() function */
 /**
@@ -4517,6 +4531,10 @@ INT wifi_kickApAclAssociatedDevices(INT apIndex,BOOL enable);         // enable 
 *
 */
 INT wifi_setApMacAddressControlMode(INT apIndex, INT filterMode);     // sets the mac address filter control mode.  0 == filter disabled, 1 == filter as whitelist, 2 == filter as blacklist
+
+// To read the ACL mode
+INT wifi_getApMacAddressControlMode(INT apIndex, INT *output_filterMode);
+
 
 /* wifi_setApVlanEnable() function */
 /**
@@ -4706,6 +4724,10 @@ INT wifi_stopHostApd();                                             // stops hos
 //Device.WiFi.AccessPoint.{i}.	
 //Device.WiFi.AccessPoint.{i}.Enable
 INT wifi_setApEnable(INT apIndex, BOOL enable);                       // sets the AP enable status variable for the specified ap.
+
+//Daynamically enable /disable VAP
+INT wifi_pushApEnable(INT apIndex, BOOL Enable);
+
 
 /* wifi_getApEnable() function */
 /**
@@ -5990,6 +6012,420 @@ typedef INT ( * wifi_newApAssociatedDevice_callback)(INT apIndex, wifi_associate
 */
 //Callback registration function.
 void wifi_newApAssociatedDevice_callback_register(wifi_newApAssociatedDevice_callback callback_proc);
+
+// The radio stats switch in driver include Tx Stats, background channel scan, capacity stats, etc
+// Radio Stats should be disabled by default
+// If driver do not support those switch, or switch has enabled by default, please just fillup with stumb function
+INT wifi_getRadioStatsEnable(INT radioIndex, BOOL *output_enable);
+INT wifi_setRadioStatsEnable(INT radioIndex, BOOL enable);
+
+// This is where we attempt to transmit a deauth to all clients before moving to a new channel, in the event some client doesn't support/react to CSA. 
+// This makes that client scan and re-connect faster then if we were to do nothing.
+// This is an "automatic" kick-mac type of functionality, that happens during the CSA process.
+// What happens is that after all clients should have moved to the new channel, and just before the radio moves to the new channel, it will broadcast (or unicast all clients) a deauth packet.
+// This helps clients who don't understand or ignore CSA to quickly realize the ap is gone/moved channels, and to scan and reconnect quickly.
+INT wifi_setApCsaDeauth(INT apIndex, INT mode);  //mode(enum): none, ucast, bcast
+
+// When scanfilter is enabled in the driver, we configure two values: enable: yes/no, and filter_ssid: <string>.
+// When filter_ssid is blank (apIndex==-1), the configured SSID on that interface is used.  When it's not empty (apIndex==0 to 15), the filter will apply to whatever ssid is provided.
+INT wifi_setApScanFilter(INT apIndex, INT mode, CHAR *essid); //mode(enum): disabled, enabled, first; essid could be empty to get all matching ESSID
+
+/***************************************************************************************/
+
+/**
+ * \defgroup SteeringConfig Steering Configuration
+ * @{
+ */
+
+/**
+ * @brief Configuration per apIndex
+ *
+ * This defines the configuration for each @b apIndex added to a steering
+ * group
+ *
+ * Channel utilization is to be sampled every @b utilCheckIntervalSec seconds,
+ * and after collecting $b utilAvgCount samples, the steering event
+ * *b WIFI_STEERING_EVENT_CHAN_UTILIZATION should be sent with the averaged value.
+ *
+ * Client active/inactive checking is done every @b inactCheckIntervalSec seconds
+ * and if a given client is idle/inactive for @b inactCheckThresholdSec seconds then
+ * it should be marked as inactive.  Whenever a client changes states between active
+ * and inactive, the steering event @b WIFI_STEERING_EVENT_CLIENT_ACTIVITY should be
+ * sent.
+ */
+typedef struct {
+    INT         apIndex;
+
+    UINT        utilCheckIntervalSec;   /**< Chan utilization check interval        */
+    UINT        utilAvgCount;           /**< Number of samples to average           */
+
+    UINT        inactCheckIntervalSec;  /**< Client inactive check internval        */
+    UINT        inactCheckThresholdSec; /**< Client inactive threshold              */
+} wifi_steering_apConfig_t;
+
+/**
+ * @brief Configuration per Client
+ *
+ * This defines the per-client, per-apIndex configuration settings.  The
+ * high water mark + low water mark pairs define RSSI ranges, in which
+ * given packet types (probe or auth) are responded to as long as the RSSI
+ * of the request packet is within the defined range.
+ *
+ * The RSSI crossings define thresholds which result in steering events
+ * being generated when a connected clients RSSI crosses above or below
+ * the given threshold.
+ *
+ * authRejectReason, when non-zero, results in auth requests being
+ * rejected with the given reason code.  When set to zero, auth requests
+ * that do not fall in the RSSI hwm+lwm range will be silently ignored.
+ *
+ * @see https://supportforums.cisco.com/document/141136/80211-association-status-80211-deauth-reason-codes
+ */
+typedef struct {
+    UINT        rssiProbeHWM;           /**< Probe response RSSI high water mark    */
+    UINT        rssiProbeLWM;           /**< Probe response RSSI low water mark     */
+    UINT        rssiAuthHWM;            /**< Auth response RSSI high water mark     */
+    UINT        rssiAuthLWM;            /**< Auth response RSSI low water mark      */
+    UINT        rssiInactXing;          /**< Inactive RSSI crossing threshold       */
+    UINT        rssiHighXing;           /**< High RSSI crossing threshold           */
+    UINT        rssiLowXing;            /**< Low RSSI crossing threshold            */
+    UINT        authRejectReason;       /**< Inactive RSSI crossing threshold       */
+} wifi_steering_clientConfig_t;
+
+/** @} SteeringConfig */
+
+/**
+ * \defgroup WifiDefs Wifi Definitions
+ * @{
+ */
+
+/**
+ * @brief Wifi Disconnect Sources
+ *
+ * These are the possible sources of a wifi disconnect.
+ * If the disconnect was initiated by the client, then @b DISCONNECT_SOURCE_REMOTE
+ * should be used.
+ * If initiated by the local AP, then @b DISCONNECT_SOURCE_LOCAL should be used.
+ * If this information is not available, then @b DISCONNECT_SOURCE_UNKNOWN should be used.
+ */
+typedef enum {
+    DISCONNECT_SOURCE_UNKNOWN               = 0,    /**< Unknown source             */
+    DISCONNECT_SOURCE_LOCAL,                        /**< Initiated locally          */
+    DISCONNECT_SOURCE_REMOTE                        /**< Initiated remotely         */
+} wifi_disconnectSource_t;
+
+/**
+ * @brief Wifi Disconnect Types
+ * These are the types of wifi disconnects.
+ */
+typedef enum {
+    DISCONNECT_TYPE_UNKNOWN                 = 0,    /**< Unknown type               */
+    DISCONNECT_TYPE_DISASSOC,                       /**< Disassociation             */
+    DISCONNECT_TYPE_DEAUTH                          /**< Deauthentication           */
+} wifi_disconnectType_t;
+
+/** @} WifiDefs */
+
+/**
+ * \defgroup SteeringEvents Steering Events
+ * @{
+ */
+
+/**
+ * @brief Wifi Steering Event Types
+ * These are the different steering event types that are sent by the wifi_hal
+ * steering library.
+ */
+typedef enum {
+    WIFI_STEERING_EVENT_PROBE_REQ           = 1,    /**< Probe Request Event        */
+    WIFI_STEERING_EVENT_CLIENT_CONNECT,             /**< Client Connect Event       */
+    WIFI_STEERING_EVENT_CLIENT_DISCONNECT,          /**< Client Disconnect Event    */
+    WIFI_STEERING_EVENT_CLIENT_ACTIVITY,            /**< Client Active Change Event */
+    WIFI_STEERING_EVENT_CHAN_UTILIZATION,           /**< Channel Utilization Event  */
+    WIFI_STEERING_EVENT_RSSI_XING,                  /**< Client RSSI Crossing Event */
+    WIFI_STEERING_EVENT_RSSI,                       /**< Instant Measurement Event  */
+    WIFI_STEERING_EVENT_AUTH_FAIL                   /**< Client Auth Failure Event  */
+} wifi_steering_eventType_t;
+
+/**
+ * @brief RSSI Crossing Values
+ * These are the RSSI crossing values provided in RSSI crossing events
+ */
+typedef enum {
+    WIFI_STEERING_RSSI_UNCHANGED            = 0,    /**< RSSI hasn't crossed        */
+    WIFI_STEERING_RSSI_HIGHER,                      /**< RSSI went higher           */
+    WIFI_STEERING_RSSI_LOWER                        /**< RSSI went lower            */
+} wifi_steering_rssiChange_t;
+
+/**
+ * @brief Probe Request Event Data
+ * This data is provided with @b WIFI_STEERING_EVENT_PROBE_REQ
+ */
+typedef struct {
+    mac_address_t                   client_mac;     /**< Client MAC Address         */
+    UINT                            rssi;           /**< RSSI of probe frame        */
+    BOOL                            broadcast;      /**< True if broadcast probe    */
+    BOOL                            blocked;        /**< True if response blocked   */
+} wifi_steering_evProbeReq_t;
+
+/**
+ * @brief Client Connect Event Data
+ * This data is provided with @b WIFI_STEERING_EVENT_CLIENT_CONNECT
+ */
+typedef struct {
+    mac_address_t                   client_mac;     /**< Client MAC Address         */
+} wifi_steering_evConnect_t;
+
+/**
+ * @brief Client Disconnect Event Data
+ * This data is provided with @b WIFI_STEERING_EVENT_CLIENT_DISCONNECT
+ */
+typedef struct {
+    mac_address_t                   client_mac;     /**< Client MAC Address         */
+    UINT                            reason;         /**< Reason code of disconnect  */
+    wifi_disconnectSource_t         source;         /**< Source of disconnect       */
+    wifi_disconnectType_t           type;           /**< Disconnect Type            */
+} wifi_steering_evDisconnect_t;
+
+/**
+ * @brief Client Activity Change Event Data
+ * This data is provided with @b WIFI_STEERING_EVENT_CLIENT_ACTIVITY
+ */
+typedef struct {
+    mac_address_t                   client_mac;     /**< Client MAC Address         */
+    BOOL                            active;         /**< True if client is active   */
+} wifi_steering_evActivity_t;
+
+/**
+ * @brief Channel Utilization Event Data
+ * This data is provided with @b WIFI_STEERING_EVENT_CHAN_UTILIZATION
+ */
+typedef struct {
+    UINT                            utilization;    /**< Channel Utilization 0-100  */
+} wifi_steering_evChanUtil_t;
+
+/**
+ * @brief Client RSSI Crossing Event Data
+ * This data is provided with @b WIFI_STEERING_EVENT_RSSI_XING
+ */
+typedef struct {
+    mac_address_t                   client_mac;     /**< Client MAC Address         */
+    UINT                            rssi;           /**< Clients current RSSI       */
+    wifi_steering_rssiChange_t      inactveXing;    /**< Inactive threshold Value   */
+    wifi_steering_rssiChange_t      highXing;       /**< High threshold Value       */
+    wifi_steering_rssiChange_t      lowXing;        /**< Low threshold value        */
+} wifi_steering_evRssiXing_t;
+
+/**
+ * @brief Client RSSI Measurement Event Data
+ * This data is provided with @b WIFI_STEERING_EVENT_RSSI, which is sent in
+ * response to a requset for the client's current RSSI measurement
+ */
+typedef struct {
+    mac_address_t                   client_mac;     /**< Client MAC Address         */
+    UINT                            rssi;           /**< Clients current RSSI       */
+} wifi_steering_evRssi_t;
+
+/**
+ * @brief Auth Failure Event Data
+ * This data is provided with @b WIFI_STEERING_EVENT_AUTH_FAIL
+ */
+typedef struct {
+    mac_address_t                   client_mac;     /**< Client MAC Address         */
+    UINT                            rssi;           /**< RSSI of auth frame         */
+    UINT                            reason;         /**< Reject Reason              */
+    BOOL                            bsBlocked;      /**< True if purposely blocked  */
+    BOOL                            bsRejected;     /**< True if rejection sent     */
+} wifi_steering_evAuthFail_t;
+
+/**
+ * @brief Wifi Steering Event
+ * This is the data containing a single steering event.
+ */
+typedef struct {
+    wifi_steering_eventType_t       type;           /**< Event TYpe                 */
+    INT                             apIndex;        /**< apIndex event is from      */
+    ULLONG                          timestamp_ms;   /**< Optional: Event Timestamp  */
+    union {
+        wifi_steering_evProbeReq_t      probeReq;   /**< Probe Request Data         */
+        wifi_steering_evConnect_t       connect;    /**< Client Connect Data        */
+        wifi_steering_evDisconnect_t    disconnect; /**< Client Disconnect Data     */
+        wifi_steering_evActivity_t      activity;   /**< Client Active Change Data  */
+        wifi_steering_evChanUtil_t      chanUtil;   /**< Channel Utilization Data   */
+        wifi_steering_evRssiXing_t      rssiXing;   /**< Client RSSI Crossing Data  */
+        wifi_steering_evRssi_t          rssi;       /**< Client Measured RSSI Data  */
+        wifi_steering_evAuthFail_t      authFail;   /**< Auth Failure Data          */
+    } data;
+} wifi_steering_event_t;
+
+
+/**
+ * @brief Wifi Steering Event Callback Definition
+ *
+ * This is the definition of the event callback provided when upper layer
+ * registers for steering events.
+ *
+ * @warning the @b event passed to the callback is not dynamically
+ * allocated the call back function handler must allocate wifi_steering_event_t
+ * and copy the "event" into that
+ */
+typedef void (*wifi_steering_eventCB_t)(UINT steeringgroupIndex, wifi_steering_event_t *event);
+
+/** @} SteeringProtos */
+
+
+/**
+ * \defgroup SteeringCalls Steering API Calls
+ * @{
+ */
+
+/**
+ * @brief Steering API Supported
+ * This tells the upper layer if the steering API is supported or not.
+ * @return @b TRUE on platforms that support steering, @b FALSE if not
+ */
+extern BOOL     wifi_steering_supported(void);
+
+/**
+ * \defgroup SteeringGroupCalls Steering Group API Calls
+ * @{
+ */
+
+/**
+ * @brief Add a Steering Group
+ *
+ * A steering group defines a group of apIndex's which can have steering done
+ * between them.
+ *
+ * @param steeringgroupIndex Wifi Steering Group index
+ * @param cfg_2, 2.4G apConfig
+ * @param cfg_5, 5G apConfig
+ * The hal need to allocate (no matter static or dynamic) to store those two config
+ * if cfg_2 and cfg_5 are NULL, this steering group will be removed
+ * @return RETURN_OK on success, RETURN_ERR on failure
+ *
+ * @warning All apIndex's provided within a group must have the same SSID,
+ * encryption, and passphrase configured for steering to function properly.
+ */
+INT wifi_steering_setGroup(UINT steeringgroupIndex, wifi_steering_apConfig_t *cfg_2, wifi_steering_apConfig_t *cfg_5);
+
+
+/** @} SteeringGroupCalls */
+
+/**
+ * \defgroup SteeringEventCalls Steering Event API Calls
+ * @{
+ */
+
+/**
+ * @brief Register for Steering Event Callbacks
+ *
+ * This is called by the upper layer to register for steering event
+ * callbacks.
+ *
+ * @param event_cb Event callback function pointer
+ * @return RETURN_OK on success, RETURN_ERR on failure
+ * @warning the @b event passed to the callback should be a dynamically
+ * allocated event which upper layer will free by calling wifi_steering_eventFree()
+ */
+INT wifi_steering_eventRegister(wifi_steering_eventCB_t event_cb);
+
+/**
+ * @brief Unregister for Steering Event Callbacks
+ *
+ * This is called by the upper layer to stop receiving event callbacks
+ * @return RETURN_OK on success, RETURN_ERR on failure
+ */
+INT wifi_steering_eventUnregister(void);
+
+/** @} SteeringEventCalls */
+
+/**
+ * \defgroup SteeringClientCalls Steering Client API Calls
+ * @{
+ */
+
+/**
+ * @brief Add Client Config to apIndex
+ *
+ * The upper layer calls this funciton to @b add/modify per-client configuration @p config
+ * of @p client_mac for @p apIndex
+ *
+ * @param steeringgroupIndex Wifi Steering Group index
+ * @param apIndex apIndex the client config should be added to
+ * @param client_mac The Client's MAC address.
+ *                  If client_mac is not there, the hal need to add record,
+ *                  else, the hal need to update the config
+ * @param config The client configuration
+ * @return RETURN_OK on success, RETURN_ERR on failure
+ */
+INT wifi_steering_clientSet(
+                                UINT steeringgroupIndex,
+                                INT apIndex,
+                                mac_address_t client_mac,
+                                wifi_steering_clientConfig_t *config);
+
+/**
+ * @brief Remove Client Config from apIndex
+ *
+ * The upper layer calls this funciton to @b remove per-client configuration
+ * of @p client_mac from @p apIndex
+ *
+ * @param steeringgroupIndex Wifi Steering Group index
+ * @param apIndex apIndex the client config should be added to
+ * @param client_mac The Client's MAC address
+ * @return RETURN_OK on success, RETURN_ERR on failure
+ */
+INT wifi_steering_clientRemove(
+                                UINT steeringgroupIndex,
+                                INT apIndex,
+                                mac_address_t client_mac);
+
+/**
+ * @brief Initiate Instant Client RSSI Measurement
+ *
+ * This initiates an instant client RSSI measurement.  The recommended method of
+ * performing this measurement is to send five NUL wifi frames to the client, and
+ * average the RSSI of the ACK frames returned.  This averaged RSSI value should
+ * be sent back using @b WIFI_STEERING_EVENT_RSSI steering event type.
+ * Instant measurement improves user experience by not reacting to false-positive
+ * RSSI crossings.
+ * If for some reason instant measurement is not supported, the function should
+ * return RETURN_ERR and set errno to @b ENOTSUP
+ *
+ * @param steeringgroupIndex Wifi Steering Group index
+ * @param apIndex apIndex the client config should be added to
+ * @param client_mac The Client's MAC address
+ * @return RETURN_OK on success, RETURN_ERR on failure.  Set errno to ENOTSUP if
+ * instant measurement is not supported
+ */
+INT wifi_steering_clientMeasure(
+                                UINT steeringgroupIndex,
+                                INT apIndex,
+                                mac_address_t client_mac);
+
+/**
+ * @brief Initiate a Client Disconnect
+ *
+ * This is used by the upper layer to kick off a client, for steering purposes
+ *
+ * @param steeringgroupIndex Wifi Steering Group index
+ * @param apIndex apIndex the client config should be added to
+ * @param client_mac The Client's MAC address
+ * @param type Disconnect Type
+ * @param reason Reason code to provide in deauth/disassoc frame
+ * @return RETURN_OK on success, RETURN_ERR on failure
+ * @see https://supportforums.cisco.com/document/141136/80211-association-status-80211-deauth-reason-codes
+ */
+INT wifi_steering_clientDisconnect(
+                                UINT steeringgroupIndex,
+                                INT apIndex,
+                                mac_address_t client_mac,
+                                wifi_disconnectType_t type,
+                                UINT reason);
+
+/** @} SteeringClientCalls */
+/** @} SteeringCalls */
 
 //-----------------------------------------------------------------------------------------------
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService. 
