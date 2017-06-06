@@ -3041,7 +3041,7 @@ access point info to be returned
 */
 //Start the wifi scan and get the result into output buffer for RDKB to parser. The result will be used to manage endpoint list
 //HAL funciton should allocate an data structure array, and return to caller with "neighbor_ap_array"
-INT wifi_getNeighboringWiFiDiagnosticResult2(INT apIndex, wifi_neighbor_ap2_t **neighbor_ap_array, UINT *output_array_size); //Tr181
+INT wifi_getNeighboringWiFiDiagnosticResult2(INT radioIndex, wifi_neighbor_ap2_t **neighbor_ap_array, UINT *output_array_size); //Tr181	
 
 typedef enum
 {
@@ -3139,6 +3139,26 @@ INT wifi_getBandSteeringEnable(BOOL *enable);
 */
 //To turn on/off Band steering
 INT wifi_setBandSteeringEnable(BOOL enable);
+
+/* wifi_getRadioBandUtilization() function */
+/**
+* @description To read the radio band utilization. 
+*
+* @param radioIndex - Radio Index
+* @param output_percentage - radio band utilization percentage, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
 
 /* wifi_getBandSteeringBandUtilizationThreshold() function */
 /**
