@@ -5730,6 +5730,45 @@ INT wifi_setApWpsButtonPush(INT apIndex);                             // This fu
 */
 INT wifi_cancelApWPS(INT apIndex);                                    // cancels WPS mode for this AP
 
+/* wifi_getApManagementFramePowerControl() function */
+/**
+* @description Get the ApManagementFramePowerControl
+*
+* @param apIndex - Access Point index
+* @param output_dBm - ManagementFramePowerControl, to be returned 
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_getApManagementFramePowerControl(INT apIndex, INT *output_dBm);  // Get the RadioManagementFramePowerControl supported. 
+
+/* wifi_setApManagementFramePowerControl() function */
+/**
+* @description Sets the ApManagementFramePowerControl 
+*
+* @param apIndex - Access Point index
+* @param dBm - RadioManagementFramePowerControl
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_setApManagementFramePowerControl(INT apIndex, INT dBm); // sets the RadioManagementFramePowerControl in db
 //-----------------------------------------------------------------------------------------------
 
 /* wifi_getApAssociatedDeviceDiagnosticResult() function */
