@@ -3140,6 +3140,50 @@ INT wifi_getBandSteeringEnable(BOOL *enable);
 //To turn on/off Band steering
 INT wifi_setBandSteeringEnable(BOOL enable);
 
+/* wifi_getBandSteeringApGroup() function */
+/**
+* @description To get Band Steering AP group. 
+*
+* @param output_ApGroup - Band Steering AP group, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.APGroup string r/w
+//To get Band Steering AP group //ApGroup buffer size must be 64 bytes in minimal
+INT wifi_getBandSteeringApGroup(char *output_ApGroup);	
+
+/* wifi_setBandSteeringApGroup() function */
+/**
+* @description To set Band Steering AP group. 
+*
+* @param ApGroup - Band Steering AP group
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+//To set Band Steering AP group 
+//ApGroup contains AP index(start from 1) pair array, in following format "$index_2.4G,$index_5G;$index_2.4G,$index_5G"
+//Example "1,2;3,4;7,8" for Private, XH, LnF pairs. 
+//ApGroup have to contain at least one AP pair, such as "1,2"
+INT wifi_setBandSteeringApGroup(char *ApGroup); 
+
 /* wifi_getRadioBandUtilization() function */
 /**
 * @description To read the radio band utilization. 
@@ -3293,6 +3337,93 @@ INT wifi_getBandSteeringPhyRateThreshold (INT radioIndex, INT *pPrThreshold); //
 *
 */
 INT wifi_setBandSteeringPhyRateThreshold (INT radioIndex, INT prThreshold); //If chip is not support, return -1
+
+/* wifi_getBandSteeringOverloadInactiveTime() function */
+/**
+* @description To read the inactivity time (in seconds) for steering under overload condition 
+* \n Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.OverloadInactiveTime int r/w 
+*
+* @param radioIndex - Radio Index
+* @param overloadInactiveTime - inactivity time (in seconds) for steering under overload condition
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_getBandSteeringOverloadInactiveTime (INT radioIndex, INT *overloadInactiveTime); //If chip is not support, return -1
+
+/* wifi_setBandSteeringOverloadInactiveTime() function */
+/**
+* @description To set the inactivity time (in seconds) for steering under overload condition 
+* \n Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.OverloadInactiveTime int r/w 
+*
+* @param radioIndex - Radio Index
+* @param overloadInactiveTime - inactivity time (in seconds) for steering under overload condition
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_setBandSteeringOverloadInactiveTime (INT radioIndex, INT overloadInactiveTime); //If chip is not support, return -1
+
+/* wifi_getBandSteeringIdleInactiveTime() function */
+/**
+* @description To read the inactivity time (in seconds) for steering under Idle condition 
+* \n Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.IdleInactiveTime int r/w 
+*
+* @param radioIndex - Radio Index
+* @param idleInactiveTime - inactivity time (in seconds) for steering under Idle condition
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_getBandSteeringIdleInactiveTime (INT radioIndex, INT *idleInactiveTime); //If chip is not support, return -1
+
+/* wifi_getBandSteeringIdleInactiveTime() function */
+/**
+* @description To set the inactivity time (in seconds) for steering under Idle condition 
+* \n Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.IdleInactiveTime int r/w 
+*
+* @param radioIndex - Radio Index
+* @param idleInactiveTime - inactivity time (in seconds) for steering under Idle condition
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+//Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.{i}.IdleInactiveTime int r/w 
+//to set and read the inactivity time (in seconds) for steering under Idle condition 
+INT wifi_setBandSteeringIdleInactiveTime (INT radioIndex, INT idleInactiveTime); //If chip is not support, return -1
+
 
 /* wifi_getBandSteeringLog() function */
 /**
