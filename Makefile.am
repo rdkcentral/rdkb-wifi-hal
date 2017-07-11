@@ -22,14 +22,12 @@ EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
              cm_hal.h \
              dhcp6cApi.h \
              dhcpv4c_api.h \
-             hotspotfd.h \
              mso_mgmt_hal.h \
              platform_hal.h \
              vlan_hal.h \
              wifi_hal.h \
              ccsp_hal_ethsw.h \
              dhcp4cApi.h \
-             dhcpsnooper.h \
              hal_firewall.h \
              moca_hal.h \
              mta_hal.h \
