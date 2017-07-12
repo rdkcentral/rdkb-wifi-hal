@@ -3043,6 +3043,8 @@ access point info to be returned
 //HAL funciton should allocate an data structure array, and return to caller with "neighbor_ap_array"
 INT wifi_getNeighboringWiFiDiagnosticResult2(INT radioIndex, wifi_neighbor_ap2_t **neighbor_ap_array, UINT *output_array_size); //Tr181	
 
+INT wifi_getNeighboringWiFiStatus(INT radioIndex, wifi_neighbor_ap2_t **neighbor_ap_array, UINT *output_array_size); //Mesh
+
 typedef enum
 {
     WIFI_RADIO_SCAN_MODE_NONE = 0,
