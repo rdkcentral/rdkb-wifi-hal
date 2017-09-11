@@ -581,6 +581,27 @@ typedef enum
     WIFI_RADIO_QUEUE_TYPE_NONE = -1
 } wifi_radioQueueType_t;
 
+typedef enum
+{
+    WIFI_CSA_DEAUTH_MODE_NONE = 0,
+    WIFI_CSA_DEAUTH_MODE_UCAST,
+    WIFI_CSA_DEAUTH_MODE_BCAST
+} wifi_csaDeauthMode_t;
+
+typedef enum
+{
+    WIFI_SCANFILTER_MODE_DISABLED = 0,
+    WIFI_SCANFILTER_MODE_ENABLED,
+    WIFI_SCANFILTER_MODE_FIRST
+} wifi_scanFilterMode_t;
+
+typedef enum
+{
+    WIFI_MAC_ACL_MODE_DISABLED  = 0,
+    WIFI_MAC_ACL_MODE_WHITELIST = 1,
+    WIFI_MAC_ACL_MODE_BLACKLIST = 2
+} wifi_macAclMode_t;
+
 typedef struct wifi_associated_dev_tid_entry
 {
     UCHAR  ac;						// BE, BK. VI, VO (wifi_radioQueueType_t)
