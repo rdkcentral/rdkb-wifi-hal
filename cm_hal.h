@@ -356,18 +356,25 @@ typedef struct _DOCSIF31_CM_US_OFDMA_CHAN {
     unsigned char PreEqEnabled;                          //Whether pre-equalization is enabled on the associated OFDMA upstream channel.
 } DOCSIF31_CM_US_OFDMA_CHAN, *PDOCSIF31_CM_US_OFDMA_CHAN;
 
-
 typedef struct _DOCSIF31_CMSTATUSOFDMA_US {
-    unsigned int ChannelId;                     //The Cable Modem identification of the OFDMA upstream channel within this particular MAC interface. If the interface is down, the object returns the most current value.  If the upstream channel ID is unknown, this object returns a value of 0.
-    unsigned int T3Timeouts;                    //The number of times counter T3 expired in the CM for this upstream channel. Discontinuities in the value of this counter can occur at re-initialization of the managed system, and at other times as indicated by the value of ifCounterDiscontinuityTime for the associated upstream channel.
-    unsigned int T4Timeouts;                    //The number of times counter T4 expired in the CM for this upstream channel. Discontinuities in the value of this counter can occur at re-initialization of the managed system, and at other times as indicated by the value of ifCounterDiscontinuityTime for the associated upstream channel.
-    unsigned int RangingAborteds;               //The number of times the ranging process was aborted by the CMTS. Discontinuities in the value of this counter can occur at re-initialization of the managed system, and at other times as indicated by the value of ifCounterDiscontinuityTime ([RFC2863]) for the associated upstream channel.
-    unsigned int T3Exceededs;                   //This attribute denotes the number of times for excessive T3 timeouts. Discontinuities in the value of this counter can occur at re-initialization of the managed system, and at other times as indicated by the value of ifCounterDiscontinuityTime for the associated upstream channel.
-    unsigned char IsMuted;                               //Whether the upstream channel is muted.
-    unsigned int RangingStatus;                 //This attribute denotes the ranging state of the CM.
-                                                //other(1),aborted(2),retriesExceeded(3),success(4),continue(5),timeoutT4(6)
+    // The full definitions for the fields below can be referenced within DOCS-IF31-MIB.
+    unsigned int ChannelId;                     // The Cable Modem identification of the
+                                                // OFDMA upstream channel within this
+                                                // particular MAC interface. If the
+                                                // interface is down, the object
+                                                // returns the most current value.
+                                                // If the upstream channel ID is unknown,
+                                                // this object returns a value of 0.
+    unsigned int T3Timeouts;                    // Number of T3 counter timeouts.
+    unsigned int T4Timeouts;                    // Number of T4 counter timeouts.
+    unsigned int RangingAborteds;               // Number of times ranging process
+                                                // has been aborted.
+    unsigned int T3Exceededs;                   // Number of excessive T3 timeouts.
+    unsigned char IsMuted;                      // Indicates if upstream channel is muted.
+    unsigned int RangingStatus;                 // Ranging State of CM:
+                                                // other(1),aborted(2),retriesExceeded(3),
+                                                // success(4),continue(5),timeoutT4(6)
 } DOCSIF31_CMSTATUSOFDMA_US, *PDOCSIF31_CMSTATUSOFDMA_US;
-
 //<< Docsis3.1
 
 
