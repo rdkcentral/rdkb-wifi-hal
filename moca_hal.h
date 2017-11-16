@@ -453,6 +453,10 @@ typedef struct {
     ULONG                           LeaseTime;
 } moca_flow_table_t;
 
+typedef INT ( * moca_associatedDevice_callback)(ULONG ifIndex, moca_associated_device_t *moca_dev); //This call back will be invoked when new MoCA client is Actived or Inactived.moca_associated_device_t.Active is used to indicate activation/inactivation
+
+void moca_associatedDevice_callback_register(moca_associatedDevice_callback callback_proc); //Callback registration function.
+
 /**********************************************************************************
  *
  *  MoCA Subsystem level function prototypes 
