@@ -598,5 +598,17 @@ INT platform_hal_SetDeviceCodeImageTimeout(INT seconds);
 * @sideeffect None
 */
 INT platform_hal_SetDeviceCodeImageValid(BOOLEAN flag);
+/* platform_hal_getFactoryPartnerId function */
+/**
+* @description Get FactoryPartnerID from the the device
+*
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT platform_hal_getFactoryPartnerId(CHAR *pValue);
 #endif
  
