@@ -405,6 +405,13 @@ _MTAMGMT_MTA_BATTERY_INFO
 }
 MTAMGMT_MTA_BATTERY_INFO,  *PMTAMGMT_MTA_BATTERY_INFO;
 
+#define MTA_LINENUMBER 8
+typedef  enum {
+        MTA_INIT=0,
+	MTA_START=1,
+	MTA_COMPLETE=2,
+	MTA_ERROR
+} MTAMGMT_MTA_STATUS;
 
 /**********************************************************************************
  *
@@ -1153,5 +1160,62 @@ INT mta_hal_Get_LineResetCount(ULONG *resetcnt);
 */
 INT mta_hal_ClearCalls(ULONG InstanceNumber);
 
+/* mta_hal_getDhcpStatus: */
+/**
+* @description Get the DHCP status for MTA
+* @param MTAMGMT_MTA_STATUS *output_pIpv4status - ipv4 dhcp status
+* @param MTAMGMT_MTA_STATUS *output_pIpv6status - ipv6 dhcp status
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_getDhcpStatus(MTAMGMT_MTA_STATUS *output_pIpv4status, MTAMGMT_MTA_STATUS *output_pIpv6status);
+
+/* mta_hal_getConfigFileStatus: */
+/**
+* @description Get the MTA config file status
+* @param MTAMGMT_MTA_STATUS *poutput_status - config file status
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_getConfigFileStatus(MTAMGMT_MTA_STATUS *poutput_status);
+
+/* mta_hal_getLineRegisterStatus: */
+/**
+* @description Get the register status for all lines
+* @param MTAMGMT_MTA_STATUS *output_status_array - return array buffer for all line register status
+* @param int array_size - buffer size (total line number)
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_getLineRegisterStatus(MTAMGMT_MTA_STATUS *output_status_array, int array_size);
+
+
 #endif /* __MTA_HAL_H__ */
- 
+
