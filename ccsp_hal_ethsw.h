@@ -102,6 +102,10 @@
 #define INT   int
 #endif
 
+#ifndef UINT
+#define UINT unsigned int
+#endif
+
 #ifndef TRUE
 #define TRUE     1
 #endif
@@ -471,9 +475,100 @@ void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociat
 
 //<<
 
-#if defined(_PLATFORM_IPQ_)
-int GWP_RegisterEthWan_Callback(appCallBack *obj); // This function will get used to register RDKB functions to the callback pointers
-#endif
+/* CcspHalExtSw_getEthWanEnable() function */
+/**
+* @description Get EthernetWAN enable status
+*
+* @param pFlag - pointer to BOOLEAN to store current EthernetWAN enable value
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT
+CcspHalExtSw_getEthWanEnable
+  (
+    BOOLEAN * pFlag
+  );
+
+/* CcspHalExtSw_setEthWanEnable() function */
+/**
+* @description Enable/Disable EthernetWAN functionality
+*
+* @param Flag - EthernetWAN enable value
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT
+CcspHalExtSw_setEthWanEnable
+  (
+    BOOLEAN Flag
+  );
+
+/* CcspHalExtSw_getEthWanPort() function */
+/**
+* @description Get EthernetWAN port number value
+*
+* @param pPort - pointer to UINT value to store current setting
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT
+CcspHalExtSw_getEthWanPort
+  (
+    UINT * pPort
+  );
+
+/* CcspHalExtSw_setEthWanPort() function */
+/**
+* @description Set EthernetWAN interface/port number
+*
+* @param Port - UINT value to set the setting
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT
+CcspHalExtSw_setEthWanPort
+  (
+    UINT Port
+  );
+/* 
+* Define callback function pointers which needs to be called
+* from provisioning abstraction layer when any provisioning
+* event occurs.
+*/
+typedef void ( *fpEthWanLink_Up ) ( ) ;            /* RDKB expects this callback once EthWan link is UP */
+typedef void ( *fpEthWanLink_Down ) ( ) ;  /* RDKB expects this callback once EthWan link is Down */
+
+/*! \var typedef struct __appCallBack 
+*       \brief struct of pointers to the function pointers of callback functions.
+*/
+
+typedef struct __appCallBack
+{
+        fpEthWanLink_Up                    pGWP_act_EthWanLinkUP;
+        fpEthWanLink_Down          pGWP_act_EthWanLinkDown;
+}appCallBack;
+
+
+void GWP_RegisterEthWan_Callback(appCallBack *obj); // This function will get used to register RDKB functions to the callback pointers
+
+INT GWP_GetEthWanLinkStatus(); /* Returns 1 if active, 0 for inactive */ // RDKB will call this
+
 
 #endif /* __CCSP_HAL_ETHSW_H__ */
  
