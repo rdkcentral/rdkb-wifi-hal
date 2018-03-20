@@ -101,6 +101,8 @@
 	  1. Add the Channel switch HAL for mesh
 	What is new for 2.6.0
 	  1. Add the Band steering HAL for mesh
+	What is new for 2.7.0
+	  1. Add HAL for Wifi Happiness Index
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -190,7 +192,7 @@
 
 //defines for HAL version 2.6.0
 #define WIFI_HAL_MAJOR_VERSION 2   // This is the major verion of this HAL.
-#define WIFI_HAL_MINOR_VERSION 6   // This is the minor verson of the HAL.
+#define WIFI_HAL_MINOR_VERSION 7   // This is the minor verson of the HAL.
 #define WIFI_HAL_MAINTENANCE_VERSION 0   // This is the maintenance version of the HAL.
 
 /**********************************************************************
@@ -465,6 +467,42 @@ typedef struct _wifi_associated_dev2
 
 	ULLONG   cli_Associations;	// Stats handle used to determine reconnects; increases for every association (stat delta calcualtion)
 } wifi_associated_dev2_t;
+
+typedef struct _wifi_associated_dev3
+{
+        mac_address_t cli_MACAddress;           // The MAC address of an associated device.
+        CHAR  cli_IPAddress[64];                // IP of the associated device  (deprecated, keep it empty)
+        BOOL  cli_AuthenticationState; // Whether an associated device has authenticated (true) or not (false).
+        UINT  cli_LastDataDownlinkRate; //The data transmit rate in kbps that was most recently used for transmission from the access point to the associated device.
+        UINT  cli_LastDataUplinkRate;   // The data transmit rate in kbps that was most recently used for transmission from the associated device to the access point.
+        INT   cli_SignalStrength;               //An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device.
+        UINT  cli_Retransmissions;      //The number of packets that had to be re-transmitted, from the last 100 packets sent to the associated device. Multiple re-transmissions of the same packet count as one.
+        BOOL  cli_Active;                               //      boolean -       Whether or not this node is currently present in the WiFi AccessPoint network.
+
+        CHAR  cli_OperatingStandard[64];        //Radio standard the associated Wi-Fi client device is operating under. Enumeration of:
+        CHAR  cli_OperatingChannelBandwidth[64];        //The operating channel bandwidth of the associated device. The channel bandwidth (applicable to 802.11n and 802.11ac specifications only). Enumeration of:
+        INT   cli_SNR;          //A signal-to-noise ratio (SNR) compares the level of the Wi-Fi signal to the level of background noise. Sources of noise can include microwave ovens, cordless phone, bluetooth devices, wireless video cameras, wireless game controllers, fluorescent lights and more. It is measured in decibels (dB).
+        CHAR  cli_InterferenceSources[64]; //Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma seperated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others
+        ULONG cli_DataFramesSentAck;    //The DataFramesSentAck parameter indicates the total number of MSDU frames marked as duplicates and non duplicates acknowledged. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
+        ULONG cli_DataFramesSentNoAck;  //The DataFramesSentNoAck parameter indicates the total number of MSDU frames retransmitted out of the interface (i.e., marked as duplicate and non-duplicate) and not acknowledged, but does not exclude those defined in the DataFramesLost parameter. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
+        ULONG cli_BytesSent;    //The total number of bytes transmitted to the client device, including framing characters.
+        ULONG cli_BytesReceived;        //The total number of bytes received from the client device, including framing characters.
+        INT   cli_RSSI; //The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets recevied from the device.
+        INT   cli_MinRSSI;      //The Minimum Received Signal Strength Indicator, RSSI, parameter is the minimum energy observed at the antenna receiver for past transmissions (100 packets).
+        INT   cli_MaxRSSI;      //The Maximum Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for past transmissions (100 packets).
+        UINT  cli_Disassociations;      //This parameter  represents the total number of client disassociations. Reset the parameter evey 24hrs or reboot
+        UINT  cli_AuthenticationFailures;       //This parameter indicates the total number of authentication failures.  Reset the parameter evey 24hrs or reboot
+
+        ULLONG   cli_Associations;      // Stats handle used to determine reconnects; increases for every association (stat delta calcualtion)
+
+        ULONG cli_PacketsSent; //The total number of packets transmitted to the Associated Device.
+        ULONG cli_PacketsReceived; //The total number of packets received from the Associated Device.
+        ULONG cli_ErrorsSent; //The total number of outbound packets that could not be transmitted because of errors. These might be due to the number of retransmissions exceeding the retry limit, or from other causes.
+        ULONG cli_RetransCount; //The total number of transmitted packets which were retransmissions for each client on the vAP. Two retransmissions of the same packet results in this counter incrementing by two. Three retransmissions of the same packet results in this counter incrementing by three....
+        ULONG cli_FailedRetransCount;  //The number of packets that were not transmitted successfully due to the number of retransmission attempts exceeding an 802.11 retry limit.
+        ULONG cli_RetryCount;  //The number of packets that were successfully transmitted after one or more retransmissions
+        ULONG cli_MultipleRetryCount; //The number of packets that were successfully transmitted after more than one retransmission.
+} wifi_associated_dev3_t;
 
 typedef struct _wifi_radius_setting_t
 {
@@ -6115,6 +6153,7 @@ INT wifi_setApManagementFramePowerControl(INT apIndex, INT dBm); // sets the Rad
 //HAL funciton should allocate an data structure array, and return to caller with "associated_dev_array"
 INT wifi_getApAssociatedDeviceDiagnosticResult(INT apIndex, wifi_associated_dev_t **associated_dev_array, UINT *output_array_size); //Tr181	
 INT wifi_getApAssociatedDeviceDiagnosticResult2(INT apIndex, wifi_associated_dev2_t **associated_dev_array, UINT *output_array_size); //Tr181	
+INT wifi_getApAssociatedDeviceDiagnosticResult3(INT apIndex, wifi_associated_dev3_t **associated_dev_array, UINT *output_array_size);
 
 //------------------------------------------------------------------------------------------------------
 ////SSID stearing APIs using blacklisting
@@ -6578,6 +6617,11 @@ INT wifi_steering_clientDisconnect(
 
 /** @} SteeringClientCalls */
 /** @} SteeringCalls */
+
+// Radio Timeout for device disassociation.
+// Device.WiFi.Radio.i.X_RDKCENTRAL-COM_connectionTimeOut. Integer r/w (default 180 sec, range: 15 to 1200)
+//INT wifi_getRadioConnectionTimeOut(INT radioIndex, INT *output_timout_sec);
+//INT wifi_setRadioConnectionTimeOut(INT radioIndex, INT timout_sec);
 
 //-----------------------------------------------------------------------------------------------
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService. 
