@@ -130,7 +130,7 @@
 
 #define kMoca_MaxCpeList		256
 #define kMoca_MaxMocaNodes              16
-
+#define MAC_PADDING			12 /* RDKB expects 6 byte MAC, padding required for platforms handling as 18 bytes MAC*/
 /**********************************************************************
                 ENUMERATION DEFINITIONS
 **********************************************************************/
@@ -204,7 +204,7 @@ typedef struct {
 	/* Interface Name (for example: moca0) */
     CHAR                            Name[64];           /* Uniquely identifying the entry */
 	/* MAC Address of the Local Node */
-    UCHAR                           MacAddress[18];
+    UCHAR                           MacAddress[6 + MAC_PADDING];
 	/* Firmware Version of the MoCA Firmware */
     CHAR                            FirmwareVersion[64];
 	/* Maximum PHY Rate that the Node can support */
@@ -353,7 +353,7 @@ typedef struct {
 		valid */ 
 
 	/* MAC Address of the Associated Device */
-    UCHAR                           MACAddress[18];
+    UCHAR                           MACAddress[6 + MAC_PADDING];
 	/* Node ID of the Associated Device */
     ULONG                           NodeID;
 	/* Whether this Node is a Preferred NC. */
