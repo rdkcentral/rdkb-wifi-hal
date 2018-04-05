@@ -91,7 +91,7 @@
 	  1. Add wifi_setRadioTrafficStatsMeasure, wifi_setRadioTrafficStatsRadioStatisticsEnable
 	What is new for 2.2.2
 	  1. Add Band Steering HAL
-	What is new for 2.3.0  
+	What is new for 2.3.0
 	  1. Add AP Beacon Rate control HAL
 	  2. Add Dynamic Channel Selection (phase 2) HAL
 	  3. Add Air Time Management HAL
@@ -102,7 +102,7 @@
 	What is new for 2.6.0
 	  1. Add the Band steering HAL for mesh
 	What is new for 2.7.0
-	  1. Add HAL for Wifi Happiness Index
+	  1. Add HAL for Wifi telemetry
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -502,6 +502,9 @@ typedef struct _wifi_associated_dev3
         ULONG cli_FailedRetransCount;  //The number of packets that were not transmitted successfully due to the number of retransmission attempts exceeding an 802.11 retry limit.
         ULONG cli_RetryCount;  //The number of packets that were successfully transmitted after one or more retransmissions
         ULONG cli_MultipleRetryCount; //The number of packets that were successfully transmitted after more than one retransmission.
+
+       UINT  cli_MaxDownlinkRate; //The Max data transmit rate in kbps for the access point to the associated device.
+       UINT  cli_MaxUplinkRate;   // The Max data transmit rate in kbps for the associated device to the access point.
 } wifi_associated_dev3_t;
 
 typedef struct _wifi_radius_setting_t
@@ -6622,6 +6625,29 @@ INT wifi_steering_clientDisconnect(
 // Device.WiFi.Radio.i.X_RDKCENTRAL-COM_connectionTimeOut. Integer r/w (default 180 sec, range: 15 to 1200)
 //INT wifi_getRadioConnectionTimeOut(INT radioIndex, INT *output_timout_sec);
 //INT wifi_setRadioConnectionTimeOut(INT radioIndex, INT timout_sec);
+
+//Mode 1: If the time delay between when a client disconnect or disassociate message is received by an AP and a client connect or associate message is received by the AP within “rapid_reconnect_window” seconds then the WiFi HAL must invoke a rapid_reconnect call back API. RDKB will use this call back API to increment the rapid re-connect count for this client. (Provided that this was NOT caused by band steering or AP steering).
+#define RECONN_AFTER_INACTIVITY 1
+//Mode 2: If the AP status for a client is connected or associated and the AP receives a client connect or associate message from this client then the WiFi HAL must invoke a rapid_reconnect call back API. RDKB will use this call back event to increment the rapid re-connect count for this client. (Provided that this was NOT caused by band steering or AP steering).
+#define RECONN_AFTER_STA_LEFT 2
+//Mode 3: If the AP changes a client’s status to “disconnected” due to the AP’s client inactivity timeout and the client connects or associates with the same AP radio within “rapid_reconnect_window” minus “client_inactivity_timeout” seconds, then then the WiFi HAL must invoke a rapid_reconnect call back API. RDKB will use this call back API to increment the rapid re-connect count for this client. (Provided that this was NOT caused by band steering or AP steering).
+#define RECONN_DISCONNECT 3 // this is catchall. 3 will be passed if 1 and 2 aren't detected.
+
+// Rapid Reconnect Time Limit
+// Device.WiFi.Radio.i.X_RDKCENTRAL-COM_rapidReconnectMaxTime. Integer r/w (default 180 sec, range: 15 to 1200)
+INT wifi_getRadioRapidReconnectTimeLimit(INT radioIndex, INT *output_timout_sec);
+INT wifi_setRadioRapidReconnectTimeLimit(INT radioIndex, INT timout_sec);
+
+//Device.WiFi.Radio.i.X_RDKCENTRAL-COM_clientInactivityTimout. Integer ro
+INT wifi_getRadioClientInactivityTimout(INT radioIndex, INT *output_timout_sec);
+
+//This call back will be invoked when driver detect the client disconnection or disassociation happen.
+typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT event_type);
+
+//Callback registration function.
+void wifi_apDisassociatedDevice_callback_register(wifi_apDisassociatedDevice_callback callback_proc);
+
+
 
 //-----------------------------------------------------------------------------------------------
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService. 
