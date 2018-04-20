@@ -379,6 +379,19 @@ void CcspHalGetInterfaceDetails(ULONG ulIndex,struct ethernet_port_details *inte
 void CcspHalGetInterfaceStatusDetails(ULONG ulInstanceNumber,HALPCOSA_DML_ETH_PORT_DINFO pInfo);
 
 /*
+ *  Procedure         : CcspHalSetInterfaceEnableDetails
+ *  Purpose           : To check the LAN and WAN Enable Status in Emulator
+ *
+ *  Parameters        : 
+ *     InstanceNumber : Having Instance Number of Interface
+ *     enable         : Having current interface status
+ *  Return_values     : The status of the operation
+ *     @retval true , if successful
+ *     @retval false , if any error is detected
+ */
+int CcspHalSetInterfaceEnableDetails(int index,bool enable);
+
+/*
  *  Procedure         : CcspHalGetInterfaceEnableDetails
  *  Purpose           : To check the LAN and WAN Enable Status in Emulator
  *
@@ -388,8 +401,7 @@ void CcspHalGetInterfaceStatusDetails(ULONG ulInstanceNumber,HALPCOSA_DML_ETH_PO
  *     @retval true , if successful
  *     @retval false , if any error is detected
  */
-
-bool CcspHalGetInterfaceEnableDetails(ULONG InstanceNumber);
+int CcspHalGetInterfaceEnableDetails(ULONG InstanceNumber,bool *enable);
 
 /*
  *  Procedure            : CcspHalGetBridgePortNames
