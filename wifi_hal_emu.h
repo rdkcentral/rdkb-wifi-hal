@@ -5192,6 +5192,13 @@ int do_MacFilter_Update(char *Operation, int i_macFiltCnt,COSA_DML_WIFI_AP_MAC_F
 
 //<< ------------------------------ wifi_ap_hal -----------------------
 
+//This call back will be invoked when driver detect the client authentication fail.
+//event_type: 0=unknow reason; 1=wrong password; 2=timeout;
+typedef INT ( * wifi_apAuthEvent_callback)(INT apIndex, char *MAC, INT event_type);
+//Callback registration function.
+void wifi_apAuthEvent_callback_register(wifi_apAuthEvent_callback callback_proc);
+
+
 #else
 #error "! __WIFI_HAL_H__"
 #endif
