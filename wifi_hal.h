@@ -1021,6 +1021,26 @@ INT wifi_getRadioCountryCode(INT radioIndex, CHAR *output_string);
 INT wifi_setRadioCountryCode(INT radioIndex, CHAR *CountryCode);       
 
 
+/* wifi_pushCountryCode() function */
+/**
+* @brief Set the country code for both wifi radios and apply them. wifi reset automatically if necessary.
+*        The function need to return immediately.
+*
+* @param[in] CountryCode   Country code
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_pushCountryCode(CHAR *CountryCode);
+
 //---------------------------------------------------------------------------------------------------
 //Wifi Tr181 API
 
