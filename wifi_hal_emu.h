@@ -5062,7 +5062,205 @@ int do_MacFilter_Delrule();
 */
 // To Update Wifi MacFiltering Rule Chain
 int do_MacFilter_Update(char *Operation, int i_macFiltCnt,COSA_DML_WIFI_AP_MAC_FILTER  *i_macFiltTabPtr,int count,struct hostDetails *hostPtr);
-	
+
+/* Enum to define WiFi Bands */
+typedef enum
+{
+    band_invalid = -1,
+    band_2_4 = 0,
+    band_5 = 1,
+} wifi_band;
+
+/* INT wifi_getApIndexForWiFiBand(wifi_band band)  */
+/**
+* @description Get the AP index for requested WiFi Band.
+*
+* @param wifi_band - WiFi band for which AP Index is required
+*
+* @return AP Index for requested WiFi Band
+*
+*/
+INT wifi_getApIndexForWiFiBand(wifi_band band);
+
+/*hostapd will read file from nvram /etc/usr/ccsp/wifi/ will contains default
+configuration required for Factory Reset*/
+#define HOSTAPD_FNAME "/nvram/hostapd"
+#define SEC_FNAME "/etc/sec_file.txt"
+enum hostap_names
+{
+    ssid=0,
+    passphrase=1,
+};
+struct params
+{
+     char name[64];
+     char value[64];
+};
+typedef struct __param_list {
+        unsigned int count;
+        struct params *parameter_list;
+}param_list_t;
+struct hostap_conf
+{
+    char ssid[32];
+    char *passphrase;
+    char *wpa_pairwise;
+    char *wpa;
+    char *wpa_keymgmt;
+};
+
+/* The type of encryption the neighboring WiFi SSID advertises.          */
+/* Each list item is an enumeration of: TKIP, AES                        */
+void wlan_encryption_mode_to_string(char* encryption_mode, char* string);
+
+//open a file and read that line
+INT File_Reading(CHAR *file,char *Value);
+
+// convert wireless mode into supported standards
+void wlan_wireless_mode_to_supported_standards_string(char* wireless_mode,char* string,char* freq);
+
+//convert wireless bitrates into operated standards
+void wlan_bitrate_to_operated_standards_string(char* bitrate,char* string,char* freq);
+
+//convert operated standards into operating channel bandwith
+void wlan_operated_standards_to_channel_bandwidth_string(char* wireless_mode,char* string);
+
+/***************************************************************
+        Checking Hostapd status(whether it's running or not)
+****************************************************************/
+
+/*
+*       Procedure       : Checking Hostapd status(whether it's running or not)
+*       Purpose         : Restart the Hostapd with updated configuration parameter
+*       Parameter       :
+*        status         : Having Hostapd status
+*       Return_values   : None
+*/
+
+//Get to know the current status of public wifi
+INT Hostapd_PublicWifi_status(char status[50]);
+//Get to know the current status of private wifi
+INT Hostapd_PrivateWifi_status(char status[50]);
+
+//passing the hostapd configuration file and get the interface name
+INT GetInterfaceName(char interface_name[50],char conf_file[100]);
+
+//passing the hostapd configuration file and get the virtual interface of xfinity(2g)
+INT GetInterfaceName_virtualInterfaceName_2G(char interface_name[50]);
+
+//Restarting the hostapd process
+void RestartHostapd();
+
+//kill the existing hostapd process
+void KillHostapd();
+
+//Restart the xfinity wifi of 2g
+void xfinitywifi_2g(int ssidIndex);
+
+//Restart the private wifi of 2g
+void privatewifi_2g(int ssidIndex);
+
+//Restart the xfinity and private wifi of 2g
+void KillHostapd_2g(int ssidIndex);
+
+//Restart the xfinity and private wifi of 2g
+void KillHostapd_xfinity_2g(int ssidIndex);
+
+//Restart the xfinity wifi of 5g
+void xfinitywifi_5g(int ssidIndex);
+
+//Restart the private wifi of 5g
+void privatewifi_5g(int ssidIndex);
+
+//Restart the xfinity and private wifi of 5g
+void KillHostapd_5g(int ssidIndex);
+
+//Restart the xfinity and private wifi of 5g
+void KillHostapd_xfinity_5g(int ssidIndex);
+
+//Kill the existing xfinity wifi set up
+INT killXfinityWiFi();
+
+//Restarting the hostapd process with Factory_Reset set up
+void defaultwifi_restarting_process();
+
+// Restarting the hostapd process with dongle identification(Tenda/Tp-link)
+int hostapd_restarting_process(int apIndex);
+
+//get the mac address of wan interface
+void get_mac(unsigned char *mac);
+
+//Check the hostapd status
+BOOL checkWifi();
+
+//check the wireless interface status
+BOOL checkLanInterface();
+
+//Get the ssid name from hostapd configuration file
+INT GettingHostapdSsid(INT ssidIndex,char *hostapd_conf,char *val);
+
+//Disable wifi interface 
+void DisableWifi(int InstanceNumber);
+
+// Read the hostapd configuration file with corresponding parameters
+int wifi_hostapdRead(int ap,struct params *params,char *output);
+
+//Write the hosatpd configuration with corresponding parameters
+int wifi_hostapdWrite(int ap,param_list_t *list);
+
+//Get the wifi maxbitrate
+INT get_wifiMaxbitrate(int radioIndex,char *output_string);
+
+//update the radio channel number
+void wifi_updateRadiochannel(INT radioIndex,ULONG channel);
+
+//set the autochannelenable config parameter
+INT wifi_setAutoChannelEnableVal(INT radioIndex,ULONG channel);
+
+//Store the previous channel number
+void wifi_storeprevchanval(INT radioIndex); //for AutoChannelEnable
+
+// Get the Radio Channel BandWidth
+INT wifi_halgetRadioChannelBW(CHAR *file,CHAR *Value);
+
+//set the radio channel bandwidth for 40MHz
+INT wifi_halsetRadioChannelBW_40(char *file);
+
+// set the radio channel bandwidth for 20MHz
+INT wifi_halsetRadioChannelBW_20(char *file);
+
+//Get the radio extension channel
+INT wifi_halgetRadioExtChannel(CHAR *file,CHAR *Value);
+
+//Get to know the wireless interface of statistics
+INT wifi_halGetIfStats(char * ifname, wifi_radioTrafficStats2_t *pStats);
+
+//Get to know the interface status
+INT GetIfacestatus(CHAR *interface_name,CHAR *status);
+
+INT wifi_halGetIfStatsNull(wifi_radioTrafficStats2_t *output_struct);
+
+// Get the BSSID of SSID's
+INT wifihal_getBaseBSSID(CHAR *interface_name,CHAR *mac,INT index);
+
+//Sacn to get the nearby wifi devices
+int GetScanningValues(char *file,char *value);
+
+void converting_lowercase_to_uppercase(char *Value);
+
+// scan to get the nearby wifi device lists
+void wifihal_GettingNeighbouringAPScanningDetails(char *interface_name,wifi_neighbor_ap2_t **neighbor_ap_array, UINT *output_array_size);
+
+//press the virtual push button
+INT SetWPSButton(char *interface_name);
+
+INT wifihal_AssociatedDevicesstats(INT apIndex,CHAR *interface_name,wifi_associated_dev_t **associated_dev_array, UINT *output_array_size);
+
+int wifihal_interfacestatus(CHAR *wifi_status,CHAR *interface_name);
+
+
+
+
 //-----------------------------------------------------------------------------------------------
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService. 
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService.AccessNetworkType	
