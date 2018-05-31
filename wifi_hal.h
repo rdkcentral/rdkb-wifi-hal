@@ -195,7 +195,7 @@
 
 //defines for HAL version 2.12.0
 #define WIFI_HAL_MAJOR_VERSION 2   // This is the major verion of this HAL.
-#define WIFI_HAL_MINOR_VERSION 12   // This is the minor verson of the HAL.
+#define WIFI_HAL_MINOR_VERSION 8   // This is the minor verson of the HAL.
 #define WIFI_HAL_MAINTENANCE_VERSION 0   // This is the maintenance version of the HAL.
 
 /**********************************************************************
