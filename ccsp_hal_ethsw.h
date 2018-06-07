@@ -471,5 +471,9 @@ void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociat
 
 //<<
 
+#if defined(_PLATFORM_IPQ_)
+int GWP_RegisterEthWan_Callback(appCallBack *obj); // This function will get used to register RDKB functions to the callback pointers
+#endif
+
 #endif /* __CCSP_HAL_ETHSW_H__ */
  
