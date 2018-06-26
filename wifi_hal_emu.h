@@ -708,7 +708,6 @@ INT wifi_getRadioCountryCode(INT radioIndex, CHAR *output_string);
 *
 */
 INT wifi_setRadioCountryCode(INT radioIndex, CHAR *CountryCode);       
-INT wifi_pushRadioCountryCode(INT radioIndex, CHAR *CountryCode);
 
 //---------------------------------------------------------------------------------------------------
 //Wifi Tr181 API
