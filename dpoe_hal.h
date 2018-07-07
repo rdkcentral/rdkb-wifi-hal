@@ -39,10 +39,6 @@
         For CCSP Component: DPoE management
 		
     ---------------------------------------------------------------
-    Copyright:
-        Broadcom Corporation, 2015
-        All Rights Reserved.
-    ---------------------------------------------------------------
 
     Description:
 
