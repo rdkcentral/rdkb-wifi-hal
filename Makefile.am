@@ -33,7 +33,8 @@ EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
              mta_hal.h \
              Tr69_Tlv.h \
              wifi_hal_emu.h \
-             dpoe_hal.h
+             dpoe_hal.h \
+             bt_hal.h
 
 otherincludedir = $(includedir)/ccsp
 otherinclude_HEADERS = $(EXTRA_DIST)
