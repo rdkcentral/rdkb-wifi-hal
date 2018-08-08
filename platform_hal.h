@@ -610,5 +610,31 @@ INT platform_hal_SetDeviceCodeImageValid(BOOLEAN flag);
 * @sideeffect None
 */
 INT platform_hal_getFactoryPartnerId(CHAR *pValue);
+
+/* platform_hal_getFactoryCmVariant function */
+/**
+* @description Get FactoryCmVariant from the the device
+*
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT platform_hal_getFactoryCmVariant(CHAR *pValue);
+
+/* platform_hal_setFactoryCmVariant function */
+/**
+* @description Set FactoryCmVariant from the the device
+*
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT platform_hal_setFactoryCmVariant(CHAR *pValue);
 #endif
  
