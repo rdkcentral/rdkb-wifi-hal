@@ -6687,6 +6687,45 @@ typedef INT ( * wifi_newApAssociatedDevice_callback)(INT apIndex, wifi_associate
 */
 void wifi_newApAssociatedDevice_callback_register(wifi_newApAssociatedDevice_callback callback_proc);
 
+/* wifi_apDisassociatedDevice_callback() function */
+/**
+* @brief This call back will be invoked when new wifi client disassociates from Access Point.	
+*
+* @param[in] apIndex          Access Point Index
+* @param[in] MAC   			  MAC address of disassociated device
+* @param[in] event_type   	  type of disassociation, explicit or due to client inactivity
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT event_type);
+
+/* wifi_apDisassociatedDevice_callback_register() function */
+/**
+* @brief Callback registration function.	
+*
+* @param[in] callback_proc  wifi_apDisassociatedDevice_callback callback function
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+void wifi_apDisassociatedDevice_callback_register(wifi_apDisassociatedDevice_callback callback_proc);
 
 /**
 * @brief This API returns the radio enabled status.
