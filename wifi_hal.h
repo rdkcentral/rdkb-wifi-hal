@@ -2026,6 +2026,51 @@ INT wifi_setRadioDcsDwelltime(INT radioIndex, INT millisecond);
 */
 INT wifi_getRadioDcsDwelltime(INT radioIndex, INT *output_millisecond);
 
+/* wifi_setRadioDcsScanning() function */
+/**
+* @brief Enable/Disable selected wifi radio channel's DCS.
+*
+* Device.WiFi.Radio.{i}.X_RDKCENTRAL_COM_DCSEnable
+*
+* @param[in] radioIndex  Index of Wi-Fi radio channel
+* @param[in] enable      Set the value of DCS Enable flag for the selected radio index
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_setRadioDcsScanning(INT radioIndex, BOOL enable);                        //RDKB
+
+/* wifi_getRadioDcsScanning() function */
+/**
+* @brief Get DCS of the selected wifi radio channel's enable/disable status.
+*
+* Device.WiFi.Radio.{i}.X_RDKCENTRAL_COM_DCSEnable
+*
+* @param[in]  radioIndex   Index of Wi-Fi radio channel
+* @param[out] output_bool  DCS Enable flag for the selected radio index, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_getRadioDcsScanning(INT radioIndex, BOOL *output_bool);          //RDKB
+
+
 //Device.WiFi.Radio.i.X_RDKCENTRAL-COM_DCSHighChannelUsageThreshold	integer	W
 
 /**
@@ -3524,6 +3569,82 @@ INT wifi_setBandSteeringApGroup(char *ApGroup);
 *
 */
 INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
+
+/* wifi_getApAssociatedDevice() function */
+/**
+* @brief Gets the ApAssociatedDevice list for client MAC addresses
+*
+* @param[in]  apIndex          Access Point index
+* @param[out] output_buf       List for client MAC, to be returned
+* @param[out] output_buf_size  Buffer length
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+*
+*/
+INT wifi_getApAssociatedDevice(INT ap_index, CHAR *output_buf, INT output_buf_size);
+
+/* wifi_getApAssociatedDevice() function */
+/**
+* @brief Gets the RSSI value associated with the access point.
+*
+* @param[in]  apIndex      Access Point index
+* @param[out] MAC          Client MAC in upcase format
+* @param[out] output_RSSI  RSSI is in dbm
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+*
+*/
+INT wifi_getApDeviceRSSI(INT ap_index, CHAR *MAC, INT *output_RSSI);
+
+/* wifi_getApAssociatedDevice() function */
+/**
+* @brief Gets the ApAssociatedDevice Rx Rate
+*
+* @param[in] apIndex       Access Point index
+* @param[in] MAC           Client MAC in upcase format
+* @param[ut] output_RxMb   Rx Rate in Mb
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+*
+*/
+INT wifi_getApDeviceRxrate (INT ap_index, CHAR *MAC, INT *output_RxMb);
+
+/* wifi_getApAssociatedDevice() function */
+/**
+* @brief Gets the ApAssociatedDevice Tx Rate
+*
+* @param[in]  apIndex       Access Point index
+* @param[in]  MAC           Client MAC in upcase format
+* @param[out] output_TxMb   Tx Rate in Mb
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+*
+*/
+INT wifi_getApDeviceTxrate (INT ap_index, CHAR *MAC, INT *output_TxMb);
 
 /* wifi_getBandSteeringBandUtilizationThreshold() function */
 /**
