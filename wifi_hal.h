@@ -7304,7 +7304,8 @@ void wifi_apAssociatedDevice_callback_register(wifi_apAssociatedDevice_callback 
 //Device.WiFi.AccessPoint.{i}.X_RDKCENTRAL-COM_InterworkingServiceEnable
 //Device.WiFi.AccessPoint.{i}.X_RDKCENTRAL-COM_InterworkingElement.AccessNetworkType
 //Access Network Type value to be included in the Interworking IE in the beaconds. (refer 8.4.2.94 of IEEE Std 802.11-2012). Possible values are: 0 - Private network;1 - Private network with guest access;2 - Chargeable public network;3 - Free public network;4 - Personal device network;5 - Emergency services only network;6-13 - Reserved;14 - Test or experimental;15 - Wildcard
-//INT wifi_setAccessNetworkType(INT apIndex, INT accessNetworkType);   // P3
+INT wifi_setInterworkingAccessNetworkType(INT apIndex, INT accessNetworkType);   // P3
+INT wifi_getInterworkingAccessNetworkType(INT apIndex, UINT *output_uint);   // P3
 //Device.WiFi.AccessPoint.{i}.X_RDKCENTRAL-COM_InterworkingElement.Internet	
 //Device.WiFi.AccessPoint.{i}.X_RDKCENTRAL-COM_InterworkingElement.ASRA
 //Device.WiFi.AccessPoint.{i}.X_RDKCENTRAL-COM_InterworkingElement.ESR
