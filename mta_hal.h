@@ -362,6 +362,7 @@ _MTAMGMT_MTA_LINETABLE_INFO
     ULONG                           CallsNumber;
     PMTAMGMT_MTA_CALLS              pCalls;
     ULONG                           CallsUpdateTime;
+    ULONG                           OverCurrentFault;            /* 1 = Normal,2 = Fault */
 }
 MTAMGMT_MTA_LINETABLE_INFO, *PMTAMGMT_MTA_LINETABLE_INFO;
 
