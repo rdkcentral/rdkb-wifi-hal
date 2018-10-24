@@ -569,6 +569,11 @@ void GWP_RegisterEthWan_Callback(appCallBack *obj); // This function will get us
 
 INT GWP_GetEthWanLinkStatus(); /* Returns 1 if active, 0 for inactive */ // RDKB will call this
 
+INT 
+GWP_GetEthWanInterfaceName
+	(
+		unsigned char * Interface 
+	); // This function will get used to retrieve the ETHWAN interface name. API returns 0 = success and 1 = fail
 
 #endif /* __CCSP_HAL_ETHSW_H__ */
  
