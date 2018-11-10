@@ -7828,6 +7828,7 @@ typedef struct {
     // 2. Session Information URL.
     // 3. BSS Transition Candidate List Entries
     wifi_BTMTerminationDuration_t    termDuration;
+    UCHAR               disassociationImminent;
     USHORT              urlLen;
     CHAR                url[MAX_URL_LEN];
     UCHAR               numCandidates;
@@ -8121,6 +8122,7 @@ typedef struct {
     wifi_ChannelReport_t    channelReport;
     BOOL                vendorSpecificPresent;
     wifi_VendorSpecific_t   vendorSpecific;
+    USHORT               numRepetitions;
 } wifi_BeaconRequest_t;
 
 // 802.11-2016 section 9.4.2.22.7
@@ -8137,6 +8139,7 @@ typedef struct {
     UINT                tsf;
     BOOL                wideBandWidthChannelPresent;
     wifi_WideBWChannel_t    wideBandwidthChannel;
+    USHORT              numRepetitions;
 } wifi_BeaconReport_t;
 
 /* @description This call back is invoked when a STA responds to a Beacon
