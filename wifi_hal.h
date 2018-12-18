@@ -7851,6 +7851,7 @@ typedef struct {
     wifi_MeasurementPilotTransmission_t     msmtPilotTransmission;
     BOOL                    vendorSpecificPresent;
     wifi_VendorSpecific_t   vendorSpecific;
+    ssid_t                  target_ssid;
 } wifi_NeighborReport_t;
 
 // BSS Transition Management Request Frame, 802.11-2016 section 9.6.14.9.
