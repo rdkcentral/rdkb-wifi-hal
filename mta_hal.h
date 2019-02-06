@@ -1211,5 +1211,86 @@ INT mta_hal_getConfigFileStatus(MTAMGMT_MTA_STATUS *poutput_status);
 INT mta_hal_getLineRegisterStatus(MTAMGMT_MTA_STATUS *output_status_array, int array_size);
 
 
+#define MTA_DHCPOPTION122SUBOPTION1_MAX          4
+#define MTA_DHCPOPTION122SUBOPTION2_MAX          4
+#define MTA_DHCPOPTION122CCCV6DSSID1_MAX         32
+#define MTA_DHCPOPTION122CCCV6DSSID2_MAX         32
+
+
+typedef  enum {
+   MTA_IPV4=0,
+   MTA_IPV6=1,
+   MTA_DUAL_STACK=2,
+} MTAMGMT_MTA_PROV_IP_MODE; // MTAMGMT_PROVISIONING_PARAMS.MtaIPMode
+
+
+typedef struct _MTAMGMT_PROVISIONING_PARAMS
+{
+    
+INT  MtaIPMode;
+CHAR DhcpOption122Suboption1[MTA_DHCPOPTION122SUBOPTION1_MAX]; 	// 4 byte hex value ie. FFFFFFFF = "255.255.255.255". IPv4 addresses MUST be encoded as 4 binary octets in network  byte-order (high order byte first).
+CHAR DhcpOption122Suboption2[MTA_DHCPOPTION122SUBOPTION2_MAX]; 		//  4 byte hex value ie. FFFFFFFF = "255.255.255.255"
+CHAR DhcpOption2171CccV6DssID1[MTA_DHCPOPTION122CCCV6DSSID1_MAX]; 	// 32 byte hex value
+CHAR DhcpOption2171CccV6DssID2[MTA_DHCPOPTION122CCCV6DSSID2_MAX]; 	// 32 byte hex value
+}
+MTAMGMT_PROVISIONING_PARAMS, *PMTAMGMT_MTA_PROVISIONING_PARAMS;
+
+
+/* mta_hal_start_provisioning: */
+/**
+* @description This API call will start IP provisioning for all the lines for IPv4/IPv6 , or dual mode
+* @param PMTAMGMT_MTA_PROVISIONING pParameters - IP provisioning for all line register status
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_start_provisioning(PMTAMGMT_MTA_PROVISIONING_PARAMS pParameters); // This API call will start IP provisioning for all the lines for IPv4/IPv6 , or dual mode
+
+/* mta_hal_getLineRegisterStatus_callback: */
+/**
+* @description This call back will be invoked to returing MTA line
+* @param MTAMGMT_MTA_STATUS *output_status_array - return array buffer for all line register status
+* @param int array_size - buffer size (total line number)
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Asynchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+typedef INT ( * mta_hal_getLineRegisterStatus_callback)(MTAMGMT_MTA_STATUS *output_status_array, int array_size); //This call back will be invoked to returing MTA line provisionoing status
+
+/* mta_hal_LineRegisterStatus_callback_register: */
+/**
+* @description This call back will be invoked to returing MTA line
+* @param mta_hal_getLineRegisterStatus_callback callback_proc - Callback registration function.
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+
+void mta_hal_LineRegisterStatus_callback_register(mta_hal_getLineRegisterStatus_callback callback_proc); //Callback registration function.
+
 #endif /* __MTA_HAL_H__ */
 
