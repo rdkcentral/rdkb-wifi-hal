@@ -6749,6 +6749,42 @@ typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT
 */
 void wifi_apDisassociatedDevice_callback_register(wifi_apDisassociatedDevice_callback callback_proc);
 
+/* wifi_apDeAuthEvent_callback() function */
+/**
+* @brief This call back will be invoked when DeAuth Event (reason 2 wrong password) comes from client.
+*
+* @param[in] apIndex          Access Point Index
+* @param[in] MAC              MAC address of client device
+* @param[in] reason           reason for Auth Event
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+typedef INT ( * wifi_apDeAuthEvent_callback)(int ap_index, char *mac, int reason);
+
+/* wifi_apDeAuthEvent_callback_register() function */
+/**
+* @brief Callback registration function.
+*
+* @param[in] callback_proc  wifi_apDeAuthEvent_callback callback function
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*/
+void wifi_apDeAuthEvent_callback_register(wifi_apDeAuthEvent_callback callback_proc);
+
 /**
 * @brief This API returns the radio enabled status.
 *
