@@ -455,6 +455,15 @@ typedef struct {
 
 typedef INT ( * moca_associatedDevice_callback)(ULONG ifIndex, moca_associated_device_t *moca_dev); //This call back will be invoked when new MoCA client is Actived or Inactived.moca_associated_device_t.Active is used to indicate activation/inactivation
 
+typedef struct moca_assoc_pnc_info {
+	/* The index of this node */
+    ULONG   mocaNodeIndex;
+	/* Whether this Node is a Preferred NC. */
+    BOOL        mocaNodePreferredNC;
+	/* The MoCA version of this node */
+    ULONG    mocaNodeMocaversion;
+}moca_assoc_pnc_info_t;
+
 void moca_associatedDevice_callback_register(moca_associatedDevice_callback callback_proc); //Callback registration function.
 
 /**********************************************************************************
