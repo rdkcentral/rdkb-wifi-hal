@@ -8166,7 +8166,7 @@ typedef struct {
 typedef struct {
     UCHAR               opClass;
     UCHAR               channel;
-    ULONG               startTime;
+    ULLONG              startTime;
     USHORT              duration;
     UCHAR               frameInfo;
     UCHAR               rcpi;
