@@ -120,6 +120,12 @@
 #define kMoca_MaxCpeList		256
 #define kMoca_MaxMocaNodes              16
 #define MAC_PADDING			12 /* RDKB expects 6 byte MAC, padding required for platforms handling as 18 bytes MAC*/
+
+#define STATUS_INPROGRESS   -1 /* If ACA process already running */
+#define STATUS_NO_NODE      -2 /* If specified NODE not exist */
+#define STATUS_INVALID_PROBE    -3 /* If HAL API called with invalid probe TYPE */
+#define STATUS_INVALID_CHAN     -4 /* If HAL API called with invalid channel */
+
 /**********************************************************************
                 ENUMERATION DEFINITIONS
 **********************************************************************/
@@ -136,6 +142,22 @@ typedef enum
 } moca_if_status_t;
 #endif
 
+typedef enum
+{
+    PROBE_QUITE = 0,
+    PROBE_EVM
+}PROBE_TYPE;
+
+#if 0
+typedef enum
+{
+    STAT_SUCCESS =0,
+    STAT_FAIL_BADCHANNEL,
+    STAT_FAIL_NOEVMPROBE,
+    STAT_FAIL,
+    STAT_INPROGRESS
+}ACA_STATUS;
+#endif
 /**********************************************************************
                 STRUCTURE DEFINITIONS
 **********************************************************************/
@@ -456,6 +478,40 @@ typedef struct moca_assoc_pnc_info {
 	/* The MoCA version of this node */
     ULONG    mocaNodeMocaversion;
 }moca_assoc_pnc_info_t;
+
+
+typedef struct{
+    INT TxNode; /* The NODE ID of Transmit MOCA NODE. */
+    INT RxNode; /* The Node ID of Receive MOCA Node. */
+    INT Channel; /* The Primary channel or Secondary channel used to calculate the NPER and VLPER */
+    UCHAR Mod[512]; /* Subcarrier MODULATION used to calcuate the NPER and VLPER between two nodes */
+    UCHAR Nper[512]; /* Each NPER of between two nodes on Corresponding Channel */
+    UCHAR Vlper[512]; /* Each Vlper of between two nodes on Corresponding Channel */
+}moca_scmod_stat_t;
+moca_scmod_stat_t *pscmodStat;
+
+
+typedef struct {
+    UINT NodeID; /* The NodeID where we want to start the ACA testing */
+    PROBE_TYPE Type; /* The Probe Type could be Enum EVM=1 or Quite=0 */
+    UINT Channel; /* The Channel on which ACA test should start */
+    UINT ReportNodes;/* Specifies the MoCA Nodes that are requested to be part of the channel assessment: Setting bits
+corresponding to Node IDs of these MoCA Nodes to 1 (LSB corresponds to Node ID 0x0).
+                        For example:
+                        0000 0000 0000 0101 can be represented as 0x0005, Node 0 and Node 2.     */
+    BOOL ACAStart; /* The ACAStart will indiacte to start the ACA process or not. 0 for no action , 1 for config and
+start
+                     the process */
+}moca_aca_cfg_t;
+
+typedef struct{
+    moca_aca_cfg_t acaCfg; /* the current configuration on ACA process started */
+    INT stat;/* SUCCESS=0, Fail-BADCHANNEL=1,Fail-NoEVMPROBE=2, Fail=3,In-Progress=4 */
+    INT RxPower; /* Total RX Power in DBM */
+    INT ACAPowProfile[512]; /* Power Profile Representation for each channel*/
+    BOOL ACATrapCompleted; /* mocaIfAcaStatusTrapCompleted ReadOnly parameter, 
+                              it will be TRUE when PowerPorfile is ready */
+}moca_aca_stat_t;
 
 void moca_associatedDevice_callback_register(moca_associatedDevice_callback callback_proc); //Callback registration function.
 
@@ -852,6 +908,139 @@ INT moca_GetFlowStatistics(ULONG ifIndex, moca_flow_table_t *pDeviceArray, ULONG
 */
 
 INT moca_GetResetCount(ULONG *resetcnt);
+
+/****************************************************************/
+/* moca_SetIfAcaConfig() function */
+/**
+* @description Sets the MoCA Configuration Parameters to start the ACA process.
+* @param ifIndex - Index of the MoCA Interface.
+* @param moca_aca_cfg_t - Configuration Parameters required for MOCA ACA Process
+*       \n UINT NodeID; * The NodeID where we want to start the ACA testing *
+*       \n PROBE_TYPE Type; * The Probe Type could be Enum EVM=1 or Quite=0 *
+*       \n UINT Channel; * The Channel on which ACA test should start *
+*       \n UINT ReportNodes;* Specifies the MoCA Nodes that are requested to be part of the channel assessment: Setting
+*       bits corresponding to Node IDs of these MoCA Nodes to 1 (LSB corresponds to Node ID 0x0).
+                        For example:
+                        0000 0000 0000 0101 can be represented as 0x0005, Node 0 and Node 2.     *
+* 
+*       \n BOOL ACAStart; * The ACAStart for normal configuration should be 0, if ACAStart is 1 then 
+                            The Hal should start the process. *
+* @return The status of the operation.
+* @retval STATUS_SUCCESS if successful.
+* @retval STATUS_FAILURE if any error is detected for unknown reason
+* @retval STATUS_INPROGRESS if already the ACA process running.
+* 
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task.
+* ACAStart bit is set then ACA Process should get start. If user request ACA Start while ACA Process
+* in progress, then HAL should send error saying ACA Is in progress. It should not start new one.
+*
+*/
+int moca_setIfAcaConfig(int interfaceIndex, moca_aca_cfg_t acaCfg);
+/****************************************************************/
+/* moca_GetIfAcaConfig() function */
+/**
+* @description Gets the MoCA Configuration Parameters set before starting the ACA process.
+* @param ifIndex - Index of the MoCA Interface.
+* @param moca_aca_cfg_t - Applied Configuration Parameters for MOCA ACA Process
+*       \n UINT NodeID; * The NodeID  *
+*       \n PROBE_TYPE Type; * The Probe Type could be Enum EVM=1 or Quite=0 *
+*       \n UINT Channel; * The Channel on which ACA test should start *
+*   \n UINT ReportNodes;* Specifies the MoCA Nodes that are requested to be part of the channel assessment: Setting
+*   bits corresponding to Node IDs of these MoCA Nodes to 1 (LSB corresponds to Node ID 0x0).
+                        For example:
+                        0000 0000 0000 0101 can be represented as 0x0005, Node 0 and Node 2.     *
+* @return The status of the operation.
+* @retval STATUS_SUCCESS if successful.
+* @retval STATUS_FAILURE if any error is detected 
+* 
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
+int moca_getIfAcaConfig(int interfaceIndex, moca_aca_cfg_t *acaCfg);
+
+/****************************************************************/
+/* moca_cancelIfAca() function */
+/**
+* @description this function uses to cancel the ACA process which already running.
+* @param ifIndex - Index of the MoCA Interface on which ACA process started.
+* @return The status of the operation.
+* @retval STATUS_SUCCESS if successful.
+* @retval STATUS_FAILURE if any error is detected 
+* 
+* @execution ASynchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*/
+int moca_cancelIfAca(int interfaceIndex);
+
+
+/****************************************************************/
+/* moca_getIfAcaStatus() function */
+/**
+* @description Gets the MoCA ACA status after the starting the ACA process.
+* @param ifIndex - Index of the MoCA Interface.
+* @param moca_aca_stat_t - Applied Configuration Parameters for MOCA ACA Process and
+*        ACA Process stats.
+*       moca_aca_cfg_t - Applied Configuration Parameters for MOCA ACA Process
+*           \n UINT NodeID; * The NodeID  *
+*           \n PROBE_TYPE Type; * The Probe Type could be Enum EVM=1 or Quite=0 *
+*           \n UINT Channel; * The Channel on which ACA test should start *
+*       \n UINT ReportNodes; * Specifies the MoCA Nodes that are requested to be part of the channel assessment: Setting
+*       bits corresponding to Node IDs of these MoCA Nodes to 1 (LSB corresponds to Node ID 0x0).
+                        For example:
+                        0000 0000 0000 0101 can be represented as 0x0005, Node 0 and Node 2.     *
+*   \n STATUS stat; * SUCCESS=0, Fail-BADCHANNEL=1,Fail-NoEVMPROBE=2, Fail=3,In-Progress=4 *
+*   \n INT RxPower; * Total RX Power in DBM *
+*   \n INT ACAPowProfile[512]; * Power Profile Representation for each channel in twos complement way*
+*   \n BOOL ACATrapCompleted; * True for When Powerprofile ready *
+* @return The status of the operation.
+* @retval STATUS_SUCCESS if successful.
+* @retval STATUS_FAILURE if any error is detected 
+* 
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
+int moca_getIfAcaStatus(int interfaceIndex,moca_aca_stat_t *pacaStat);
+
+/****************************************************************/
+/* moca_getIfScmod() function */
+/**
+* @description Gets the MoCA SCMODE status after the starting the ACA process.
+* @param ifIndex - Index of the MoCA Interface.
+* @param moca_scmod_stat_t - Status of test between Transmit and recieve node.
+*   \n INT TxNode; * The NODE ID of Transmit MOCA NODE. *
+*   \n INT RxNode;  * The Node ID of Receive MOCA Node. *
+*   \n INT Channel;  The Primary channel or Secondary channel used to calculate the NPER and VLPER *
+*   \n UCHAR Mod[512]; * Subcarrier MODULATION used to calcuate the NPER and VLPER between two nodes *
+*   \n UCHAR Nper[512]; * Each NPER of between two nodes on Corresponding Channel *
+*   \n UCHAR Vlper[512]; * Each Vlper of between two nodes on Corresponding Channel *
+* @return The status of the operation.
+* @retval STATUS_SUCCESS if successful.
+* @retval STATUS_FAILURE if any error is detected 
+* 
+* @execution Synchronous.
+* @sideeffect None.
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task. 
+*
+*/
+
+int moca_getIfScmod(int interfaceIndex,int *pnumOfEntries,moca_scmod_stat_t **ppscmodStat);
+
 
 #endif
  
