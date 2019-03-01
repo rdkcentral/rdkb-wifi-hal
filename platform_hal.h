@@ -41,13 +41,6 @@
 
     ---------------------------------------------------------------
 
-    copyright:
-
-        Cisco Systems, Inc., 2014
-        All Rights Reserved.
-
-    ---------------------------------------------------------------
-
     description:
 
         This header file gives the function call prototypes and 
