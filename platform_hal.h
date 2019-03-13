@@ -629,5 +629,36 @@ INT platform_hal_getFactoryCmVariant(CHAR *pValue);
 * @sideeffect None
 */
 INT platform_hal_setFactoryCmVariant(CHAR *pValue);
+
+typedef  enum {
+   LED_WHITE=0,
+   LED_YELLOW=1,
+   LED_GREEN=2,
+   LED_RED=3,
+   LED_BLUE=4,
+   NOT_SUPPORTED=5,
+} LED_COLOR; // LED_COLOR
+
+
+typedef struct _LEDMGMT_PARAMS
+{
+LED_COLOR  LedColor;  // LED_COLOR
+INT  State;	// 0 for Solid, 1 for Blink
+INT  Interval;	// In case fs State is blink then interval per second
+}
+LEDMGMT_PARAMS, *PLEDMGMT_PARAMS;
+/* platform_hal_setLed function */
+/**
+* @description Set Led behavior of the device
+*
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT platform_hal_setLed(PLEDMGMT_PARAMS pValue);
+
 #endif
  
