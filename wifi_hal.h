@@ -8276,6 +8276,27 @@ INT wifi_cancelRMBeaconRequest(UINT apIndex, UCHAR dialogToken);
  */
 INT wifi_getRMCapabilities(CHAR *peer, UCHAR out_Capabilities[5]);
 
+// VAP telemetry report structures and function prototypes
+#define MAX_VAP 16
+/**
+ * @brief VAP Telemetry information.
+ *
+ * Structure which holds he VAP Telemetry information.
+ */
+typedef struct {
+    UINT                txOverflow[MAX_VAP];            // WiFi TX overflow SSID counters for each VAP.
+} wifi_VAPTelemetry_t;
+
+/* @description Get the VAP Telemetry data.
+ *
+ * @param[in] apIndex - Access Point index.
+ * @param[out] telemetry - structure for vap telemetry data.
+ *
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+INT wifi_getVAPTelemetry(UINT apIndex, wifi_VAPTelemetry_t *telemetry);
 
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService.DGAFEnable	
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService.ANQPDomainID
