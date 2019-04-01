@@ -371,6 +371,22 @@ typedef struct _DOCSIF31_CMSTATUSOFDMA_US {
 } DOCSIF31_CMSTATUSOFDMA_US, *PDOCSIF31_CMSTATUSOFDMA_US;
 //<< Docsis3.1
 
+#define MAX_KICKSTART_ROWS 5
+
+typedef struct _fixed_length_buffer {
+    USHORT length;
+    UINT8 *buffer;
+} fixed_length_buffer_t;
+
+typedef struct _snmpv3_kickstart_row {
+    fixed_length_buffer_t security_name;
+    fixed_length_buffer_t security_number;
+} snmp_kickstart_row_t;
+
+typedef struct _snmpv3_kickstart_table {
+    UINT8 n_rows;
+    snmp_kickstart_row_t *kickstart_values[MAX_KICKSTART_ROWS];
+} snmpv3_kickstart_table_t;
 
 /**********************************************************************************
  *
@@ -1125,6 +1141,22 @@ INT docsis_GetUsOfdmaChanTable(PDOCSIF31_CM_US_OFDMA_CHAN *ppinfo, int *output_N
 */
 INT docsis_GetStatusOfdmaUsTable(PDOCSIF31_CMSTATUSOFDMA_US *ppinfo, int *output_NumberOfEntries);
 //<< Docsis3.1
+
+/*  cm_hal_snmpv3_kickstart_initialize: */
+/**
+* @description Configure the SNMPv3 security parameters on the CM.
+* @param snmpv3_kickstart_table_t * pKickstart_Table - a pointer to the SNMPv3 kickstart table
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*
+*/
+INT cm_hal_snmpv3_kickstart_initialize(snmpv3_kickstart_table_t *pKickstart_Table);
 
 #ifdef __cplusplus
 }
