@@ -1210,6 +1210,42 @@ INT mta_hal_getConfigFileStatus(MTAMGMT_MTA_STATUS *poutput_status);
 */
 INT mta_hal_getLineRegisterStatus(MTAMGMT_MTA_STATUS *output_status_array, int array_size);
 
+/*  mta_hal_devResetNow: */
+/**
+* @description Set boolean value passed to reset MTA device
+* @param BOOLEAN bResetValue - boolean value to reset the device
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_devResetNow(BOOLEAN bResetValue);
+
+/* mta_hal_getMtaOperationalStatus: */
+/**
+* @description Get the operational status of MTA
+* @param MTAMGMT_MTA_STATUS *operationalStatus - return buffer for operational status
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_getMtaOperationalStatus(MTAMGMT_MTA_STATUS *operationalStatus);
+
 
 #define MTA_DHCPOPTION122SUBOPTION1_MAX          4
 #define MTA_DHCPOPTION122SUBOPTION2_MAX          4
