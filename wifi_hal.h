@@ -507,8 +507,8 @@ typedef struct _wifi_associated_dev3
         mac_address_t cli_MACAddress;           //<! The MAC address of an associated device.
         CHAR  cli_IPAddress[64];                //<! IP of the associated device  (deprecated, keep it empty)
         BOOL  cli_AuthenticationState; //<! Whether an associated device has authenticated (true) or not (false).
-        UINT  cli_LastDataDownlinkRate; //<!The data transmit rate in kbps that was most recently used for transmission from the access point to the associated device.
-        UINT  cli_LastDataUplinkRate;   //<! The data transmit rate in kbps that was most recently used for transmission from the associated device to the access point.
+        UINT  cli_LastDataDownlinkRate; //<! The median PHY rate in kbps of the most recent 16 unicast data frame transmissions from the access point to the associated device.
+        UINT  cli_LastDataUplinkRate;   //<! The median PHY rate in kbps of the most recent 16 unicast data frame transmissions from the associated device to the access point.
         INT   cli_SignalStrength;               //<!An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device.
         UINT  cli_Retransmissions;      //<!The number of packets that had to be re-transmitted, from the last 100 packets sent to the associated device. Multiple re-transmissions of the same packet count as one.
         BOOL  cli_Active;                               //<!      boolean -       Whether or not this node is currently present in the WiFi AccessPoint network.
