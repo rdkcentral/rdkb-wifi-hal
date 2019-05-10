@@ -25,6 +25,7 @@ EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
              mso_mgmt_hal.h \
              platform_hal.h \
              vlan_hal.h \
+             voice_hal.h \
              wifi_hal.h \
              ccsp_hal_ethsw.h \
              dhcp4cApi.h \
@@ -34,7 +35,8 @@ EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
              Tr69_Tlv.h \
              wifi_hal_emu.h \
              dpoe_hal.h \
-             bt_hal.h
+             bt_hal.h \
+             wan_hal.h
 
 otherincludedir = $(includedir)/ccsp
 otherinclude_HEADERS = $(EXTRA_DIST)
