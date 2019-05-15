@@ -701,7 +701,6 @@ INT platform_hal_getRotorLock();
 */
 BOOLEAN platform_hal_getFanStatus();
 
-
 /* platform_hal_setFanMaxOverride function */
 /**
 * @description Set the fax to maximum speed
@@ -712,6 +711,20 @@ BOOLEAN platform_hal_getFanStatus();
 */
 INT platform_hal_setFanMaxOverride(BOOLEAN bOverrideFlag);
 #endif // _XB7_PRODUCT_REQ_
+
+/* platform_hal_SetSNMPOnboardRebootEnable() function */
+/**
+* @description Set SNMP Onboard Reboot Enable value 
+*  to allow or ignore SNMP reboot
+*
+* @param pValue - SNMP Onboard Reboot Enable value ("disable", "enable")
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*/
+INT platform_hal_SetSNMPOnboardRebootEnable(CHAR* pValue);
+
 
 #ifdef __cplusplus
 }
