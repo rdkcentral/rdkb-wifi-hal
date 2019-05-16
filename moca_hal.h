@@ -404,6 +404,10 @@ typedef struct {
     by 'mocaMeshRxNodeIndex'.*/
     ULONG                           TxRate;
 
+    //Only for MoCA 2.x
+    ULONG                           TxRateNper;
+    ULONG                           TxRateVlper;
+
 } moca_mesh_table_t;
 #endif
 
