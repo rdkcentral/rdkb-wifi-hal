@@ -119,6 +119,11 @@
  * @{
  */
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
+
 #ifndef ULLONG
 #define ULLONG unsigned long long
 #endif
@@ -5558,7 +5563,7 @@ INT wifi_setApWmmUapsdEnable(INT apIndex, BOOL enable);               // enables
 *
 */
 // Sets the WMM ACK polity on the hardware. AckPolicy false means do not acknowledge, true means acknowledge
-INT wifi_setApWmmOgAckPolicy(INT apIndex, INT class, BOOL ackPolicy);  //RDKB
+INT wifi_setApWmmOgAckPolicy(INT apIndex, INT cla, BOOL ackPolicy);  //RDKB
 			
 /* wifi_getApIsolationEnable() function */
 /**
@@ -8417,6 +8422,9 @@ INT wifi_getVAPTelemetry(UINT apIndex, wifi_VAPTelemetry_t *telemetry);
 
 //<< ------------------------------ wifi_ap_hal -----------------------
 /** @} */
+#ifdef __cplusplus
+}
+#endif
 
 #else
 #error "! __WIFI_HAL_H__"

@@ -78,6 +78,11 @@
                CONSTANT DEFINITIONS
 **********************************************************************/
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
+
 #ifndef CHAR
 #define CHAR  char
 #endif
@@ -1124,5 +1129,9 @@ INT docsis_GetUsOfdmaChanTable(PDOCSIF31_CM_US_OFDMA_CHAN *ppinfo, int *output_N
 */
 INT docsis_GetStatusOfdmaUsTable(PDOCSIF31_CMSTATUSOFDMA_US *ppinfo, int *output_NumberOfEntries);
 //<< Docsis3.1
+
+#ifdef __cplusplus
+}
+#endif
 #endif
  

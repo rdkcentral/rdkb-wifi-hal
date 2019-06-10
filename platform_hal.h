@@ -82,6 +82,11 @@
                CONSTANT DEFINITIONS
 **********************************************************************/
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
+
 #ifndef CHAR
 #define CHAR  char
 #endif
@@ -659,6 +664,10 @@ LEDMGMT_PARAMS, *PLEDMGMT_PARAMS;
 * @sideeffect None
 */
 INT platform_hal_setLed(PLEDMGMT_PARAMS pValue);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
  
