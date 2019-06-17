@@ -86,6 +86,12 @@
       1. Add HAL function definitions for 802.11k Neighbor Request and Response definitions
     What is new for 2.12.0
       1. Add HAL function definitions for 802.11k Beacon Request and Response definitions
+    What is new for 2.13.0
+      1. Add HAL function definitions for DPP
+    What is new for 2.14.0
+      1. Add HAL function definitions for steering effectiveness telemetry
+    What is new for 2.15.0
+      1. Add HAL function definitions for 802.11ax
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -194,9 +200,9 @@ extern "C"{
 #define AP_INDEX_16 16
 #endif
 
-//defines for HAL version 2.12.0
+//defines for HAL version 2.15.0
 #define WIFI_HAL_MAJOR_VERSION 2   // This is the major verion of this HAL.
-#define WIFI_HAL_MINOR_VERSION 8   // This is the minor verson of the HAL.
+#define WIFI_HAL_MINOR_VERSION 15   // This is the minor verson of the HAL.
 #define WIFI_HAL_MAINTENANCE_VERSION 0   // This is the maintenance version of the HAL.
 
 /**********************************************************************
@@ -495,6 +501,117 @@ typedef struct _wifi_associated_dev2
 	ULLONG   cli_Associations;	//<! Stats handle used to determine reconnects; increases for every association (stat delta calcualtion)
 } wifi_associated_dev2_t;
 
+/* 802.11ax HAL structure definitions */
+
+#define     MAX_RU_ALLOCATIONS  74
+#define     MAX_BSR 32
+
+typedef enum {
+	wifi_twt_agreement_type_individual,
+	wifi_twt_agreement_type_broadcast,
+} wifi_twt_agreement_type_t;
+
+typedef struct {
+	BOOL	implicit;
+	BOOL	announced;
+	BOOL	trigger_enabled;
+} wifi_twt_operation_t;
+
+typedef struct {
+	UINT    wake_time;
+    UINT    wake_interval;
+    UINT    min_wake_duration;
+    UINT    channel;
+} wifi_twt_individual_params_t;
+
+typedef struct {
+	UINT    traget_beacon;
+    UINT    listen_interval;
+} wifi_twt_broadcast_params_t;
+
+typedef struct {
+	wifi_twt_agreement_type_t	agreement;
+	wifi_twt_operation_t	operation;
+	union {
+		wifi_twt_individual_params_t	individual;
+		wifi_twt_broadcast_params_t	broadcast;
+	} patams;
+} wifi_twt_params_t;
+
+
+typedef struct {
+	wifi_twt_params_t	twt_params;
+} wifi_80211ax_params_t;
+
+typedef enum {
+    wifi_guard_interval_400,
+    wifi_guard_interval_800,
+    wifi_guard_interval_1600,
+    wifi_guard_interval_3200,
+    wifi_guard_interval_auto,
+} wifi_guard_interval_t;
+
+typedef enum {
+    wifi_dl_data_ack_immediate,
+    wifi_dl_data_block_ack_immediate,
+    wifi_dl_data_block_ack_deferred,
+} wifi_dl_data_ack_type_t;
+
+typedef enum {
+    WIFI_DL_MU_TYPE_NONE,
+    WIFI_DL_MU_TYPE_HE,
+    WIFI_DL_MU_TYPE_MIMO,
+    WIFI_DL_MU_TYPE_HE_MIMO
+} wifi_dl_mu_type_t;
+
+typedef enum {
+    WIFI_UL_MU_TYPE_NONE,
+    WIFI_UL_MU_TYPE_HE,
+} wifi_ul_mu_type_t;
+
+typedef enum {
+    WIFI_RU_TYPE_26,
+    WIFI_RU_TYPE_52,
+    WIFI_RU_TYPE_106,
+    WIFI_RU_TYPE_242,
+    WIFI_RU_TYPE_484,
+    WIFI_RU_TYPE_996,
+    WIFI_RU_TYPE_1024,
+} wifi_ru_type_t;
+
+typedef enum {
+    wifi_access_category_background,
+    wifi_access_category_best_effort,
+    wifi_access_category_video,
+    wifi_access_category_voice,
+} wifi_access_category_t;
+
+typedef struct {
+    wifi_access_category_t  access_category;
+    UINT        queue_size;
+} wifi_bsr_t;
+
+
+typedef struct {
+    UCHAR   subchannels;
+    wifi_ru_type_t  type;
+} wifi_ru_allocation_t;
+
+typedef struct {
+    wifi_dl_mu_type_t   cli_DownlinkMuType;
+    wifi_bsr_t              cli_BufferStatus[MAX_BSR];
+    UCHAR                   cli_AllocatedDownlinkRuNum;
+    wifi_ru_allocation_t    cli_DownlinkRuAllocations[MAX_RU_ALLOCATIONS];
+} wifi_dl_mu_stats_t;
+
+typedef struct {
+    wifi_ul_mu_type_t   cli_UpinkMuType;
+    UCHAR                   cli_ChannelStateInformation;
+    wifi_bsr_t              cli_BufferStatus[MAX_BSR];
+    UCHAR                   cli_AllocatedUplinkRuNum;
+    wifi_ru_allocation_t    cli_UplinkRuAllocations[MAX_RU_ALLOCATIONS];
+} wifi_ul_mu_stats_t;
+
 /**
  * @brief This structure hold the information about the wifi interface.
  */
@@ -535,6 +652,9 @@ typedef struct _wifi_associated_dev3
 
        UINT  cli_MaxDownlinkRate; //The Max data transmit rate in kbps for the access point to the associated device.
        UINT  cli_MaxUplinkRate;   // The Max data transmit rate in kbps for the associated device to the access point.
+       wifi_ul_mu_stats_t  cli_DownlinkMuStats;
+       wifi_dl_mu_stats_t  cli_UplinkMuStats;
+	   wifi_twt_params_t	cli_TwtParams;
 } wifi_associated_dev3_t;
 
 /**
@@ -1533,7 +1653,7 @@ INT wifi_getRadioOperatingFrequencyBand(INT radioIndex, CHAR *output_string); //
 
 /* wifi_getRadioSupportedStandards() function */
 /**
-* @brief Get the Supported Radio Mode. eg: "b,g,n"; "n,ac".
+* @brief Get the Supported Radio Mode. eg: "b,g,n"; "n,ac"; "ax"; "a,n,ac,ax".
 *
 * The output_string is a max length 64 octet string that is allocated by the RDKB code.
 * Implementations must ensure that strings are not longer than this.
@@ -1553,10 +1673,11 @@ INT wifi_getRadioOperatingFrequencyBand(INT radioIndex, CHAR *output_string); //
 *
 */
 //Device.WiFi.Radio.{i}.SupportedStandards
-//Get the Supported Radio Mode. eg: "b,g,n"; "n,ac"
+//Get the Supported Radio Mode. eg: "b,g,n"; "n,ac"; "ax"; "a,n,ac,ax"
 //The output_string is a max length 64 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
 INT wifi_getRadioSupportedStandards(INT radioIndex, CHAR *output_string); //Tr181
 
+/** Deprecated: used for old RDKB code. **/
 /* wifi_getRadioStandard() function */
 /**
 * @brief Get the radio operating mode, and pure mode flag. eg: "ac".
@@ -1586,6 +1707,35 @@ INT wifi_getRadioSupportedStandards(INT radioIndex, CHAR *output_string); //Tr18
 //The output_string is a max length 64 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
 INT wifi_getRadioStandard(INT radioIndex, CHAR *output_string, BOOL *gOnly, BOOL *nOnly, BOOL *acOnly);	//RDKB
 
+/* wifi_getRadioMode() function */
+/**
+* @brief Get the radio operating mode, and pure mode flag. eg: "ac".
+*
+* The output_string is a max length 64 octet string that is allocated by the RDKB code.
+* Implementations must ensure that strings are not longer than this.
+*
+* @param[in]  radioIndex      Index of Wi-Fi radio channel
+* @param[out] output_string   Radio operating mode, to be returned
+* @param[out] pureMode        Pointer to pure mode bit map starting from LSB b only, g only, a only, 
+* 						  	  n only, ac only, ax only, e.g. n only will be 8, ax only will be 32
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+//Device.WiFi.Radio.{i}.OperatingStandards
+//Get the radio operating mode, and pure mode flag. eg: "ac"
+//The output_string is a max length 64 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
+INT wifi_getRadioMode(INT radioIndex, CHAR *output_string, UINT *pureMode);	//RDKB
+
+/** Deprecated: used for old RDKB code. **/
 /* wifi_setRadioChannelMode() function */
 /**
 * @brief Set the radio operating mode, and pure mode flag.
@@ -1609,6 +1759,29 @@ INT wifi_getRadioStandard(INT radioIndex, CHAR *output_string, BOOL *gOnly, BOOL
 */
 //Set the radio operating mode, and pure mode flag.
 INT wifi_setRadioChannelMode(INT radioIndex, CHAR *channelMode, BOOL gOnlyFlag, BOOL nOnlyFlag, BOOL acOnlyFlag);	//RDKB
+
+/* wifi_setRadioMode() function */
+/**
+* @brief Set the radio operating mode, and pure mode flag.
+*
+* @param[in] radioIndex   Index of Wi-Fi radio channel
+* @param[in] channelMode  Pass the channelMode for specified radio index
+* @param[in] pureMode     Pass flag for setting pure mode bit map starting from LSB b only, g only, a only, 
+* 						  n only, ac only, ax only, e.g. n only will be 8, ax only will be 32
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+//Set the radio operating mode, and pure mode flag.
+INT wifi_setRadioMode(INT radioIndex, CHAR *channelMode, UINT pureMode);	//RDKB
 
 /* wifi_getRadioPossibleChannels() function */
 /**
@@ -8298,6 +8471,40 @@ typedef struct {
  * @retval RETURN_ERR if any error is detected.
  */
 INT wifi_getVAPTelemetry(UINT apIndex, wifi_VAPTelemetry_t *telemetry);
+
+/* 802.11ax HAL API prototypes */
+
+INT wifi_setDownlinkMuType  (INT    radio_index,
+                                wifi_dl_mu_type_t   mu_type);
+
+INT wifi_getDownlinkMuType  (INT    radio_index,
+                                wifi_dl_mu_type_t   *mu_type);
+
+INT wifi_setUplinkMuType    (INT    radio_index,
+                                wifi_ul_mu_type_t   mu_type);
+
+INT wifi_getUplinkMuType    (INT    radio_index,
+                                wifi_ul_mu_type_t   *mu_type);
+
+INT wifi_setGuardInterval   (INT radio_index,
+                                wifi_guard_interval_t   guard_interval);
+
+INT wifi_getGuardInterval   (INT radio_index,
+                                wifi_guard_interval_t   *guard_interval);
+
+INT wifi_setBSSColorEnabled (INT apIndex, BOOL enabled);
+
+INT wifi_getBSSColorEnabled (INT apindex, BOOL *enabled);
+
+INT wifi_getBSSColor    (INT apIndex, UCHAR *color);
+
+INT wifi_setDownlinkDataAckType (INT radio_index,
+                                wifi_dl_data_ack_type_t ack_type);
+
+INT	wifi_getTWTParams	(CHAR *sta, wifi_twt_params_t *twt_params);
+
+INT	wifi_get80211axDefaultParameters	(INT apIndex, wifi_80211ax_params_t	*params);
+
 
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService.DGAFEnable	
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService.ANQPDomainID
