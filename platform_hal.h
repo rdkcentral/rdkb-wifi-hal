@@ -77,11 +77,9 @@
 /**********************************************************************
                CONSTANT DEFINITIONS
 **********************************************************************/
-
 #ifdef __cplusplus
 extern "C"{
 #endif
-
 
 #ifndef CHAR
 #define CHAR  char
@@ -660,6 +658,60 @@ LEDMGMT_PARAMS, *PLEDMGMT_PARAMS;
 * @sideeffect None
 */
 INT platform_hal_setLed(PLEDMGMT_PARAMS pValue);
+
+
+#ifdef _XB7_PRODUCT_REQ_
+/* platform_hal_getFanSpeed function */
+/**
+* @description Get the fan speed in RPMs
+*
+* @return FanSpeed in unsigned int
+*/
+UINT platform_hal_getFanSpeed();
+
+
+/* platform_hal_getFanRPM fuction */
+/**
+* @description Get the fan speed
+*
+* @return FanRPM in unsigned int
+*/
+UINT platform_hal_getRPM();
+
+
+/* platform_hal_getRotorLock function */
+/**
+* @description Get the status of rotor lock
+*
+* @return The status of the rotor lock
+* @rtnval 1 if locked
+* @rtnval 0 if not locked
+* @rtnval -1 if value not applicable
+*/
+INT platform_hal_getRotorLock();
+
+
+/* platform_hal_getFanStatus function */
+/**
+* @description Get the fan status
+*
+* @return the fan status
+* @rtnval 1 if fan is enabled
+* @rtnval 0 if fan disabled
+*/
+BOOLEAN platform_hal_getFanStatus();
+
+
+/* platform_hal_setFanMaxOverride function */
+/**
+* @description Set the fax to maximum speed
+*
+* @param bOverrideFlag - Boolean value to enable/disalbe fan tur run in highspeed
+*
+* @return RETURN_OK on success setting/unsetting the fan to run in high speed mode
+*/
+INT platform_hal_setFanMaxOverride(BOOLEAN bOverrideFlag);
+#endif // _XB7_PRODUCT_REQ_
 
 #ifdef __cplusplus
 }
