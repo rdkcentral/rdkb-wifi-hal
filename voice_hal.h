@@ -627,9 +627,9 @@ int32_t voice_hal_getIpAddressFamily(uint32_t service, char *address_family, uin
  * 
  *****************************************************************************/
 
-/* voice_hal_setIpv4LinkState: */
+/* voice_hal_setLinkState: */
 /**
-* @description In response to the link state event, set the IPv4 link state to up or down
+* @description In response to the link state event, set the link state to up or down
 * 
 * @param VoiceHalIpLinkState_e state - input either VOICE_HAL_IP_LINK_STATE_DOWN or VOICE_HAL_IP_LINK_STATE_UP
 *
@@ -641,24 +641,7 @@ int32_t voice_hal_getIpAddressFamily(uint32_t service, char *address_family, uin
 * @sideeffect None.
 *
 */
-int32_t voice_hal_setIpv4LinkState(VoiceHalIpLinkState_e state);
-
-
-/* voice_hal_setCurrentIpv6LinkState: */
-/**
-* @description In response to the link state event, set the IPv6 link state to up or down
-* 
-* @param VoiceHalIpLinkState_e state - input either VOICE_HAL_IP_LINK_STATE_DOWN or VOICE_HAL_IP_LINK_STATE_UP
-*
-* @return The status of the operation.
-* @retval RDK_SUCCESS if successful.
-* @retval RDK_FAILURE if any error is detected
-*
-* @execution Synchronous.
-* @sideeffect None.
-*
-*/
-int32_t voice_hal_setIpv6LinkState(VoiceHalIpLinkState_e state);
+int32_t voice_hal_setLinkState(VoiceHalIpLinkState_e state);
 
 /* voice_hal_setIpWanAddress: */
 /**
@@ -2313,6 +2296,15 @@ int32_t voice_hal_getLineStats(uint32_t service, uint32_t profile, uint32_t line
 */
 int32_t voice_hal_resetLineStats(uint32_t service, uint32_t profile, uint32_t lineIndex);
 
+/* voice_hal_print_debug_counters: */
+/**
+* @description Prints global voice counters
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+void voice_hal_print_debug_counters();
 
 #endif /* __voice_hal_H__ */
 
