@@ -49,6 +49,15 @@ _WAN_QOS_QUEUE
 }
 WAN_QOS_QUEUE,  *PWAN_QOS_QUEUE;
 
+/**
+ * Structure for SELFHEAL configuration which is required in ccsp-wanagent
+ * and wan hal. */
+typedef struct
+_SELFHEAL_CONFIG
+{
+    unsigned int rebootStatus;
+}
+SELFHEAL_CONFIG, *PSELFHEAL_CONFIG;
 
 /* wan_hal_Init() function */
 /**
@@ -86,6 +95,17 @@ int wan_hal_SetWanmode(t_eWanMode mode);
 *
 */
 int wan_hal_SetWanConnectionEnable(unsigned int enable);
+/**
+* @description Set SelfHeal Configuration to wanmanager
+*
+* @param pSelfHealConfig - Ptr to struct contains the configuration
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+*/
+int wan_hal_SetSelfHealConfig(PSELFHEAL_CONFIG pSelfHealConfig);
 
 /* wanmgr_hal_GetWanOEUpstreamCurrRate() function */
 /**
