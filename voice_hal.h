@@ -1382,6 +1382,23 @@ int32_t voice_hal_setEnableEmergencySipUriUserParm(uint32_t service, uint32_t pr
 int32_t voice_hal_getEnableEmergencySipUriUserParm(uint32_t service, uint32_t profile, bool *enable);
 
 /**
+* @description enable/disable the local codec priority
+* 
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param uint8_t localCodecPriority - enable local codec priority
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_setLocalCodecPriority(uint32_t service, uint32_t profile, uint8_t localCodecPriority);
+
+/**
 * @description set the maximum number of preferred codecs
 * 
 * @param uint32_t service - input the voice service affected
