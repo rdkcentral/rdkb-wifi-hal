@@ -1,39 +1,5 @@
-/**
-* @file voice_hal.h
-* @author sky
-* @brief For CCSP Component:  CcspTelcoVoIPAgent
-*
-* @description This header file gives the function call prototypes and structure 
-* definitions used for the RDK-Broadband hardware abstraction layer for VoIP 
-*/
-
-/*************************************************************
- * 
- *  REVIEW PURPOSES ONLY - NOT FOR CODE
- * 
- ************************************************************/
-
-
-/* ******************************************************************************
- * Copyright (C) 2019 Sky group of companies, All Rights Reserved
- * * --------------------------------------------------------------------------
- * * THIS SOFTWARE CONTRIBUTION IS PROVIDED ON BEHALF OF SKY PLC.
- * * BY THE CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
- * * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * * A PARTICULAR PURPOSE ARE DISCLAIMED
- * * ******************************************************************************
- * 
- *   ** Project     : RDK-B/Hub4
- *   ** @addtogroup : TelcoVoIP
- *   ** @file       : VOICE_HAL.H
- *   ** @author     : Sky PLC
- *   ** @date       : 05/04/2019
- *   ** 
- *   ** @brief      : The HAL definition for the Telco voice over IP Ccsp component
- *   **
- * ******************************************************************************
-
- * If not stated otherwise in this file or this component's Licenses.txt file the
+/*
+ * If not stated otherwise in this file or this component's LICENSE file the
  * following copyright and licenses apply:
  *
  * Copyright 2016 RDK Management
@@ -51,18 +17,20 @@
  * limitations under the License.
 */
 
+/**
+* @file voice_hal.h
+* @author sky
+* @brief For CCSP Component:  CcspTelcoVoIPAgent
+*
+* @description This header file gives the function call prototypes and structure 
+* definitions used for the RDK-Broadband hardware abstraction layer for VoIP 
+*/
+
 /**********************************************************************
 
     module: voice_hal.h
 
         For CCSP Component:  CcspTelcoVoIPAgent
-
-    ---------------------------------------------------------------
-
-    copyright:
-
-        Sky, 2019
-        All Rights Reserved.
 
     ---------------------------------------------------------------
 
@@ -72,10 +40,6 @@
         structure definitions used for the RDK-Broadband 
         hardware abstraction layer for VoIP
 
-        NOTE:
-        THIS VERSION IS AN EARLY DRAFT INTENDED TO GET COMMENTS FROM COMCAST.
-        TESTING HAS NOT YET BEEN COMPLETED.  
-       
     ---------------------------------------------------------------
 
     environment:

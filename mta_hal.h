@@ -1,15 +1,5 @@
-/**
-* @file mta_hal.h
-* @author cisco
-* @brief For CCSP Component:  CcspMtaAgent
-*
-*@description This header file gives the function call prototypes and 
-structure definitions used for the RDK-Broadband 
-hardware abstraction layer for Cable Modem 
-*/
-
 /*
- * If not stated otherwise in this file or this component's Licenses.txt file the
+ * If not stated otherwise in this file or this component's LICENSE file the
  * following copyright and licenses apply:
  *
  * Copyright 2016 RDK Management
@@ -43,6 +33,15 @@ hardware abstraction layer for Cable Modem
    limitations under the License.
 **********************************************************************/
 
+/**
+* @file mta_hal.h
+* @author cisco
+* @brief For CCSP Component:  CcspMtaAgent
+*
+*@description This header file gives the function call prototypes and 
+structure definitions used for the RDK-Broadband 
+hardware abstraction layer for Cable Modem 
+*/
 /**********************************************************************
 
     module: mta_hal.h
@@ -57,10 +56,6 @@ hardware abstraction layer for Cable Modem
         structure definitions used for the RDK-Broadband 
         hardware abstraction layer for Cable Modem
 
-        NOTE:
-        THIS VERSION IS AN EARLY DRAFT INTENDED TO GET COMMENTS FROM COMCAST.
-        TESTING HAS NOT YET BEEN COMPLETED.  
-       
     ---------------------------------------------------------------
 
     environment:

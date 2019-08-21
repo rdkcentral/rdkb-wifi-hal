@@ -1,5 +1,5 @@
 /*
- * If not stated otherwise in this file or this component's Licenses.txt file the
+ * If not stated otherwise in this file or this component's LICENSE file the
  * following copyright and licenses apply:
  *
  * Copyright 2016 RDK Management
@@ -47,10 +47,6 @@
         structure definitions used for the RDK-Broadband 
         hardware abstraction layer for platform
 
-        NOTE:
-        THIS VERSION IS AN EARLY DRAFT.
-        TESTING HAS NOT YET BEEN COMPLETED.  
-       
     ---------------------------------------------------------------
 
     environment:

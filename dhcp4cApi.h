@@ -1,11 +1,5 @@
-/**
-* @file dhcp4cApi.h
-* @brief For CCSP Component: DHCP4-Client Status
-*
-* @description This header file gives the function call prototypes and structure definitions used for the RDK-Broadband DHCP4Client Status abstraction layer.
-*/
 /*
- * If not stated otherwise in this file or this component's Licenses.txt file the
+ * If not stated otherwise in this file or this component's LICENSE file the
  * following copyright and licenses apply:
  *
  * Copyright 2016 RDK Management
@@ -21,6 +15,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+*/
+/**
+* @file dhcp4cApi.h
+* @brief For CCSP Component: DHCP4-Client Status
+*
+* @description This header file gives the function call prototypes and structure definitions used for the RDK-Broadband DHCP4Client Status abstraction layer.
 */
 #ifndef _DHCP4_CLIENT_API_
 #define _DHCP4_CLIENT_API_

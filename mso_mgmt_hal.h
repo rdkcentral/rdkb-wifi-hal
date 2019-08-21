@@ -1,13 +1,5 @@
-/**
-* @file mso_mgmt_hal.h
-* @brief MSO Management HAL
-*
-* @description This header file gives the function call prototypes and structure definitions used for the RDK-Broadband hardware abstraction layer for 
-MSO Management.
-*/
-
 /*
- * If not stated otherwise in this file or this component's Licenses.txt file the
+ * If not stated otherwise in this file or this component's LICENSE file the
  * following copyright and licenses apply:
  *
  * Copyright 2016 RDK Management
@@ -23,6 +15,14 @@ MSO Management.
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+*/
+
+/**
+* @file mso_mgmt_hal.h
+* @brief MSO Management HAL
+*
+* @description This header file gives the function call prototypes and structure definitions used for the RDK-Broadband hardware abstraction layer for 
+MSO Management.
 */
 #ifndef __MSO_MGMT_HAL_H__
 #define __MSO_MGMT_HAL_H__
