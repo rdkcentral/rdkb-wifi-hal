@@ -725,6 +725,46 @@ INT platform_hal_setFanMaxOverride(BOOLEAN bOverrideFlag);
 */
 INT platform_hal_SetSNMPOnboardRebootEnable(CHAR* pValue);
 
+/* platform_hal_GetMACsecEnable() function */
+/**
+* @description Get MACsec enable status
+*
+* @param ethPort - Ethernet port (zero-based)
+* @param pFlag - MACsec enable value, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*/
+INT platform_hal_GetMACsecEnable(INT ethPort, BOOLEAN *pFlag);
+
+
+/* platform_hal_SetMACsecEnable() function */
+/**
+* @description Enable/Disable MACsec
+*
+* @param ethPort - Ethernet port (zero-based)
+* @param Flag - MACsec enable value
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*/
+INT platform_hal_SetMACsecEnable(INT ethPort, BOOLEAN Flag);
+
+
+/* platform_hal_GetMACsecOperationalStatus() function */
+/**
+* @description Get MACsec operation status
+*
+* @param ethPort - Ethernet port (zero-based)
+* @param pFlag - MACsec operation status value, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*/
+INT platform_hal_GetMACsecOperationalStatus(INT ethPort, BOOLEAN *pFlag);
 
 #ifdef __cplusplus
 }
