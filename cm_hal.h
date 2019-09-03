@@ -73,6 +73,7 @@
 /**********************************************************************
                CONSTANT DEFINITIONS
 **********************************************************************/
+#define OFDM_PARAM_STR_MAX_LEN 64
 
 #ifdef __cplusplus
 extern "C"{
@@ -347,10 +348,13 @@ typedef struct _DOCSIF31_CM_DS_OFDM_CHAN {
     unsigned int PlcFreq;                       /**< This is the PHY Link Channel (PLC) frequency. It is the center frequency of the lowest frequency subcarrier of the PLC. The aim of the PLC is for the CMTS to convey to the CM the physical properties of the OFDM channel */
     unsigned int NumPilots;                     /**< The number of continuous pilots configured for the OFDM downstream channel as received in the OCD message. */
     unsigned int TimeInterleaverDepth;          /**< The time interleaving used for this downstream channel as received in the OCD message. */
+    char averageSNR[OFDM_PARAM_STR_MAX_LEN];    /**< The averageSNR value of this downstream channel */
+    char PowerLevel[OFDM_PARAM_STR_MAX_LEN];    /**< The power level of this downstream channel */
     unsigned long long PlcTotalCodewords;       /**< The total number of PLC codewords received by the CM. */
     unsigned long long PlcUnreliableCodewords;  /**< The total number of PLC codewords which failed post-decoding LDPC syndrome check. */
     unsigned long long NcpTotalFields;          /**< The total number of NCP fields received by the CM. */
     unsigned long long NcpFieldCrcFailures;     /**< The total number of NCP fields received by the CM which failed the CRC check. */
+
 } DOCSIF31_CM_DS_OFDM_CHAN, *PDOCSIF31_CM_DS_OFDM_CHAN;
 
 
