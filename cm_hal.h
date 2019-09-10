@@ -1187,8 +1187,26 @@ INT cm_hal_snmpv3_kickstart_initialize(snmpv3_kickstart_table_t *pKickstart_Tabl
 /** @} */  //END OF GROUP CM_HAL_APIS
 
 
+/*  docsis_IsEnergyDetected: */
+/**
+* @description Get the docsis energy to detect WAN mode.
+* @param BOOLEAN *pEnergyDetected , 0 for No Docsis, 1 if DOCSIS is connected
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*
+*/
+
+INT docsis_IsEnergyDetected( BOOLEAN *pEnergyDetected );
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif
  
