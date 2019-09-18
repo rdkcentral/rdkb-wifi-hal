@@ -76,6 +76,8 @@ hardware abstraction layer for Cable Modem
 #ifndef __MTA_HAL_H__
 #define __MTA_HAL_H__
 
+#include <netinet/in.h>
+
 /**********************************************************************
                CONSTANT DEFINITIONS
 **********************************************************************/
@@ -257,6 +259,30 @@ _MTAMGMT_MTA_DHCP_INFO
     ANSC_IPV4_ADDRESS               SecondaryDHCPServer;
 }
 MTAMGMT_MTA_DHCP_INFO, *PMTAMGMT_MTA_DHCP_INFO;
+
+typedef  struct
+_MTAMGMT_MTA_DHCPv6_INFO
+{
+    CHAR                            IPV6Address[INET6_ADDRSTRLEN];
+    CHAR                            BootFileName[40];
+    CHAR                            FQDN[64];
+    CHAR                            Prefix[INET6_ADDRSTRLEN];
+    CHAR                            Gateway[INET6_ADDRSTRLEN];
+    ULONG                           LeaseTimeRemaining;
+    CHAR                            RebindTimeRemaining[64];
+    CHAR                            RenewTimeRemaining[64];
+    CHAR                            PrimaryDNS[INET6_ADDRSTRLEN];
+    CHAR                            SecondaryDNS[INET6_ADDRSTRLEN];
+    CHAR                            DHCPOption3[64];
+    CHAR                            DHCPOption6[64];
+    CHAR                            DHCPOption7[64];
+    CHAR                            DHCPOption8[64];
+    CHAR                            PCVersion[64];
+    CHAR                            MACAddress[64];
+    CHAR                            PrimaryDHCPv6Server[INET6_ADDRSTRLEN];
+    CHAR                            SecondaryDHCPv6Server[INET6_ADDRSTRLEN];
+}
+MTAMGMT_MTA_DHCPv6_INFO, *PMTAMGMT_MTA_DHCPv6_INFO;
 
 typedef  struct
 _MTAMGMT_MTA_SERVICE_FLOW
@@ -472,6 +498,8 @@ INT   mta_hal_InitDB(void);
 *
 */
 INT mta_hal_GetDHCPInfo(PMTAMGMT_MTA_DHCP_INFO pInfo);
+
+INT mta_hal_GetDHCPV6Info(PMTAMGMT_MTA_DHCPv6_INFO pInfo);
 
 /*  mta_hal_LineTableGetNumberOfEntries :  */
 /**
