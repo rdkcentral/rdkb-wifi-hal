@@ -868,6 +868,7 @@ typedef struct _wifi_associated_dev_stats {
 * @param[in]   radioIndex                       The index of the radio array
 * @param[out]  input_output_channelStats_array  Channel status info to be returned
 * @param[out]  array_size                       The length of the output array
+* When array_size = 0, the API return ONCHAN stats
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -6814,6 +6815,8 @@ INT wifi_getApAssociatedDeviceDiagnosticResult(INT apIndex, wifi_associated_dev_
 
 INT wifi_getApAssociatedDeviceDiagnosticResult2(INT apIndex, wifi_associated_dev2_t **associated_dev_array, UINT *output_array_size); //Tr181	
 INT wifi_getApAssociatedDeviceDiagnosticResult3(INT apIndex, wifi_associated_dev3_t **associated_dev_array, UINT *output_array_size);
+
+INT wifi_getApAssociatedClientDiagnosticResult(INT apIndex, char *mac_addr, wifi_associated_dev3_t *dev_conn);
 
 /* wifi_setClientDetailedStatisticsEnable() function */
 /**
