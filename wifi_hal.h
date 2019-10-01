@@ -7706,6 +7706,23 @@ typedef struct {
 
 /**
  * @brief Set the Fast Transition capability to disabled, full FT
+**
+ * @brief EAP/EAPOL Authenticator information.
+ *
+ * Structure which holds the the EAP/EAPOL Config param values.
+ */
+typedef struct _wifi_eap_config_t
+{
+    unsigned int    uiEAPOLKeyTimeout;
+    unsigned int    uiEAPOLKeyRetries;
+    unsigned int    uiEAPIdentityRequestTimeout;
+    unsigned int    uiEAPIdentityRequestRetries;
+    unsigned int    uiEAPRequestTimeout;
+    unsigned int    uiEAPRequestRetries;
+} wifi_eap_config_t;
+
+
+/* @description Set the Fast Transition capability to disabled, full FT
  * support, or adaptive FT support.  Adaptive support is the same as full
  * support except the Mobility Domain Element is not sent in Beacon Frames.
  * 
@@ -7742,6 +7759,35 @@ INT wifi_getBSSTransitionActivated(INT apIndex, BOOL *activate);
 
 /**
  * @brief Get the Fast Transition over DS activated value.  
+ * @description Set the EAP authentication and EAPOL Handshake parameters.
+ * EAPOL Key Timeout and max retries [M1 and M3]
+ * EAP Identity Request and max retries
+ * EAP Request Timeout and max retries
+ * @param [in] apIndex - VAP number
+ * @param [in] value - Either timeout or retry value
+ * @param [in] param - Pramater string name to be configured as follows
+ * eapolkey(timeout or retries),
+ * eapidentityrequest(timeout or retries),
+ * eaprequest(timeout or retries)
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+UINT wifi_setEAP_Param(UINT apIndex, UINT value, char  *param);
+
+/* @description Get the EAP authentication and EAPOL Handshake parameters.
+ * EAPOL Key Timeout and max retries [M1 and M3]
+ * EAP Identity Request and max retries
+ * EAP Request Timeout and max retries
+ * @param [in] apIndex - VAP number
+ * @param [in] output to be filled
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+UINT wifi_getEAP_Param(UINT apIndex, wifi_eap_config_t *output);
+
+/* @description Get the Fast Transition over DS activated value.  
  * See 802.11-2016 section 13.3.
  * 
  * Receipt of the TR-181 Object for reading
