@@ -86,6 +86,8 @@
 #define RDK_ERROR_RANGE (-3)   /* Value provided, but out of permitted range */
 #define RDK_ERROR_OOM (-4)   /* Out of memory, usually malloc failed */
 
+#undef VOICE_UNSUPPORTED_PARAMS /*Writable Region specific parameter APIs disabled(Currently no datamodel to configure these) */
+
 /**********************************************************************
                 ENUMERATION DEFINITIONS
 **********************************************************************/
@@ -1239,8 +1241,8 @@ int32_t voice_hal_getEnableNetworkDisconnect(uint32_t service, uint32_t profile,
  *    Regionalisation 
  * 
  *****************************************************************************/
-
-/* voice_hal_setRegion: */
+#ifdef VOICE_UNSUPPORTED_PARAMS 
+/* voice_hal_setProfileRegion: */
 /**
 * @description set the geographic region associated with this profile
 * 
@@ -1256,9 +1258,9 @@ int32_t voice_hal_getEnableNetworkDisconnect(uint32_t service, uint32_t profile,
 * @sideeffect None.
 *
 */
-int32_t voice_hal_setRegion(uint32_t service, uint32_t profile, const char *region);
+int32_t voice_hal_setProfileRegion(uint32_t service, uint32_t profile, const char *region);
 
-/* voice_hal_getRegion: */
+/* voice_hal_getProfileRegion: */
 /**
 * @description get the geographic region associated with this profile
 * 
@@ -1275,7 +1277,7 @@ int32_t voice_hal_setRegion(uint32_t service, uint32_t profile, const char *regi
 * @sideeffect None.
 *
 */
-int32_t voice_hal_getRegion(uint32_t service, uint32_t profile, char *region, uint32_t *pLength);
+int32_t voice_hal_getProfileRegion(uint32_t service, uint32_t profile, char *region, uint32_t *pLength);
 
 /**
 * @description set Tel URI feature code
@@ -1413,6 +1415,7 @@ int32_t voice_hal_getMaxPreferredCodecs(uint32_t service, uint32_t profile, uint
 * @sideeffect None.
 *
 */
+#endif
 int32_t voice_hal_getDigitMap(uint32_t service, uint32_t profile, VoiceHalDigitMap_e map_type, char *digit_map_string, uint32_t *uiBufLen);
 
 /* voice_hal_setDigitMap: */
@@ -1447,6 +1450,7 @@ int32_t voice_hal_setDigitMap(uint32_t service, uint32_t profile, VoiceHalDigitM
 * @sideeffect None.
 *
 */
+#ifdef VOICE_UNSUPPORTED_PARAMS 
 int32_t voice_hal_setConferencingOption(uint32_t service, uint32_t profile, const char *option);
 
 /* voice_hal_getConferencingOption: */
@@ -1670,43 +1674,7 @@ int32_t voice_hal_setHoldModeInactive(uint32_t service, uint32_t profile, bool e
 *
 */
 int32_t voice_hal_getHoldModeInactive(uint32_t service, uint32_t profile, bool *enable);
-
-/* voice_hal_getListPacketisationPeriods: */
-/**
-* @description get the list of supported packetisation periods 
-* @param uint32_t service - input the voice service affected
-* @param uint32_t profile - input the voice profile affected
-* @param uint32_t codec - input the codec being queried
-* @param char *periods - output a comma separated list of periods as a null-terminated string
-* @param uint32_t *pLength - input/output the buffer length
-*
-* @return The status of the operation.
-* @retval RDK_SUCCESS if successful.
-* @retval RDK_FAILURE if any error is detected
-*
-* @execution Synchronous.
-* @sideeffect None.
-*
-*/
-int32_t voice_hal_getListPacketisationPeriods(uint32_t service, uint32_t profile, uint32_t codec, char *periods, uint32_t *pLength);
-
-/* voice_hal_setListPacketisationPeriods: */
-/**
-* @description set the list of supported packetisation periods 
-* @param uint32_t service - input the voice service affected
-* @param uint32_t profile - input the voice profile affected
-* @param uint32_t codec - input the codec being queried
-* @param char *periods - input a comma separated list of periods as a null-terminated string
-*
-* @return The status of the operation.
-* @retval RDK_SUCCESS if successful.
-* @retval RDK_FAILURE if any error is detected
-*
-* @execution Synchronous.
-* @sideeffect None.
-*
-*/
-int32_t voice_hal_setListPacketisationPeriods(uint32_t service, uint32_t profile, uint32_t codec, const char *periods);
+#endif
 
 /*****************************************************************************
  * 
@@ -1785,21 +1753,6 @@ int32_t voice_hal_setTransmitGain(uint32_t service, uint32_t profile, uint32_t l
 *
 */
 int32_t voice_hal_getTransmitGain(uint32_t service, uint32_t profile, uint32_t line, int32_t *gain);
-
-/* voice_hal_factoryDefault: */
-/**
-* @description factory default setting
-* @param uint32_t service - input the voice service to be restarted
-*
-* @return The status of the operation.
-* @retval RDK_SUCCESS if successful.
-* @retval RDK_FAILURE if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None.
-*
-*/
-int32_t voice_hal_factoryDefault(uint32_t service);
 
 /* voice_hal_setDisableLoopCurrentUntilRegistered: */
 /**
