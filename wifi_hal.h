@@ -92,6 +92,7 @@
       1. Add HAL function definitions for steering effectiveness telemetry
     What is new for 2.15.0
       1. Add HAL function definitions for 802.11ax
+      2. Add HAL definitions for dfs channel state
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -9211,6 +9212,51 @@ INT	wifi_get80211axDefaultParameters	(INT apIndex, wifi_80211ax_params_t	*params
 #ifdef __cplusplus
 }
 #endif
+
+typedef enum {
+	WIFI_EVENT_CHANNELS_CHANGED,
+	WIFI_EVENT_DFS_RADAR_DETECTED
+} wifi_chan_eventType_t;
+
+typedef void (*wifi_chan_eventCB_t)(UINT radioIndex, wifi_chan_eventType_t event, UCHAR channel);
+
+typedef enum {
+	CHAN_STATE_AVAILABLE = 1,
+	CHAN_STATE_DFS_NOP_FINISHED,
+	CHAN_STATE_DFS_NOP_START,
+	CHAN_STATE_DFS_CAC_START,
+	CHAN_STATE_DFS_CAC_COMPLETED
+} wifi_channelState_t;
+
+typedef struct _wifi_channelMap_t {
+	INT ch_number;
+	wifi_channelState_t ch_state;
+} wifi_channelMap_t;
+
+/* wifi_getRadioChannels() function */
+/*
+ * Description: This function returns a map of current states of each possible channel for given radio.
+ * The implementation must fill the map for each channel reported by wifi_getRadioPossibleChannels().
+ *
+ * Parameters :
+ * radioIndex - The index of the radio. First radio is index 0. 2nd radio is index 1 - type INT
+ * output_map - a pointer to an array of wifi_channelMap_t structures, preallocated by the caller.
+ * This is where the output is written
+ * output_map_size - The size of the output_map array.
+ *
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous.
+ * @sideeffect None.
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ */
+INT wifi_getRadioChannels(INT radioIndex, wifi_channelMap_t *output_map, INT output_map_size);
+
+INT wifi_chan_eventRegister(wifi_chan_eventCB_t event_cb);
 
 #else
 #error "! __WIFI_HAL_H__"
