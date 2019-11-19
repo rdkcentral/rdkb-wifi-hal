@@ -21,15 +21,34 @@
 * @file mso_mgmt_hal.h
 * @brief MSO Management HAL
 *
-* @description This header file gives the function call prototypes and structure definitions used for the RDK-Broadband hardware abstraction layer for 
-MSO Management.
+* @description This header file gives the function call prototypes and structure definitions used for the RDK-Broadband
+* hardware abstraction layer for MSO Management.
 */
+
 #ifndef __MSO_MGMT_HAL_H__
 #define __MSO_MGMT_HAL_H__
 
 /**********************************************************************
                CONSTANT DEFINITIONS
 **********************************************************************/
+/**
+* @defgroup msomgmt_hal MSO Management HAL
+*
+* This module provides the function call prototypes and structure definitions.
+*
+* @defgroup  msomgmt_hal_types  MSO Management HAL Data Types
+* @ingroup   msomgmt_hal
+*
+* @defgroup msomgmt_hal_apis   MSO Management HAL APIs
+* @ingroup  msomgmt_hal
+*
+**/
+
+
+/**
+ * @addtogroup msomgmt_hal_types
+ * @{
+ */
 
 #ifndef CHAR
 #define CHAR  char
@@ -105,10 +124,21 @@ typedef enum
 }
 mso_pwd_ret_status;
 
+/**
+ * @}
+ */
+
+/**
+ * @addtogroup msomgmt_hal_apis
+ * @{
+ */
+
+
 /* mso_validatepwd() function */
 /**
 * @description Validate whether the password passed in matches the password of the day for mso user.
-* @param pwd - a pointer to a buffer that was preallocated by the caller. 
+*
+* @param pwd - Pointer to a buffer that was preallocated by the caller. 
 * 
 * @return The status of the operation.
 * @retval mso_pwd_ret_status
@@ -126,6 +156,7 @@ mso_pwd_ret_status mso_validatepwd(char *pwd);
 /* mso_set_pod_seed : */
 /**
 * @description Sets the PoD seed for mso password validation.
+*
 * @param 
 *    CHAR* - PoD seed
 *
@@ -144,7 +175,8 @@ INT mso_set_pod_seed(char *);
 
 /* mso_get_pod_seed : */
 /**
-* @description Gets the PoD seed for mso password validation,
+* @description Gets the PoD seed for mso password validation.
+*
 * @param 
 *    CHAR* pSeed - a pointer to a buffer that was preallocated by the caller.  This is where the output is written
 *
@@ -162,4 +194,7 @@ INT mso_set_pod_seed(char *);
 INT mso_get_pod_seed(char* pSeed);
 
 #endif
+/**
+ * @}
+ */
 

@@ -25,6 +25,23 @@
 #ifndef _DHCP4_CLIENT_API_
 #define _DHCP4_CLIENT_API_
 
+/**
+ * @defgroup DHCPV4C_HAL DHCPV4C HAL
+ *
+ * DHCPv4C HAL is used for the RDK-B DHCPv4 Client Status abstraction layer.
+ *
+ * @defgroup DHCPV4C_HAL_TYPES  DHCPV4C HAL Data Types
+ * @ingroup  DHCPV4C_HAL
+ *
+ * @defgroup DHCPV4C_HAL_APIS   DHCPV4C HAL APIs
+ * @ingroup  DHCPV4C_HAL
+ *
+ **/
+
+/**
+ * @addtogroup DHCPV4C_HAL_TYPES
+ * @{
+ */
 enum DHCPC_CMD{
 	DHCPC_CMD_LEASE_TIME = 0,
 	DHCPC_CMD_LEASE_TIME_REMAIN,
@@ -54,6 +71,13 @@ typedef struct{
 	int	number;
 	unsigned int addrList[MAX_IPV4_ADDR_LIST_NUMBER];
 }ipv4AddrList_t;
+
+/** @} */  //END OF GROUP DHCPV4C_HAL_TYPES
+
+/**
+ * @addtogroup DHCPV4C_HAL_APIS
+ * @{
+ */
 
 /* dhcp4c_get_ert_lease_time() function */
 /**
@@ -540,6 +564,8 @@ int dhcp4c_get_emta_remain_renew_time(unsigned int *pValue);
 *
 */
 int dhcp4c_get_emta_remain_rebind_time(unsigned int *pValue);
+
+/** @} */  //END OF GROUP DHCPV4C_HAL_APIS
 
 #endif
 

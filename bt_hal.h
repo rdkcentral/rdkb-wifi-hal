@@ -20,6 +20,22 @@
 #ifndef __BT_HAL_H__
 #define __BT_HAL_H__
 
+/**
+* @defgroup bt_hal Bluetooth HAL
+*
+* @defgroup BLUETOOTH_HAL_TYPES  Bluetooth HAL Data Types
+* @ingroup  bt_hal
+*
+* @defgroup BLUETOOTH_HAL_APIS   Bluetooth HAL  APIs
+* @ingroup  bt_hal
+*
+**/
+
+
+/**
+ * @addtogroup BLUETOOTH_HAL_TYPES
+ * @{
+ */
 
 /**********************************************************************
   CONSTANT DEFINITIONS
@@ -88,6 +104,15 @@ typedef enum
         BLE_LAST
 }BLE_Status_e;
 
+/**
+ * @}
+ */
+
+/**
+ * @addtogroup BLUETOOTH_HAL_APIS
+ * @{
+ */
+
 /**********************************************************************************
 *
 *  BLE Subsystem level function prototypes 
@@ -97,8 +122,9 @@ typedef enum
 
 /* ble_Enable :  */
 /**
-* @description Enable/disbale BLE radio
-* @param BLE_Status_e status - new BLE radio status 
+* @description Enable/disable BLE radio.
+*
+* @param BLE_Status_e status  New BLE radio status 
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -115,8 +141,9 @@ INT ble_Enable(BLE_Status_e status);
 
 /* ble_Status :  */
 /**
-* @description Enable BLE radio
-* @param BLE_Status_e * status - pointer to status, to be returned 
+* @description Returns BLE status.
+*
+* @param BLE_Status_e * status  Pointer to status, to be returned 
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -132,3 +159,8 @@ INT ble_Enable(BLE_Status_e status);
 INT ble_GetStatus(BLE_Status_e *status);
 
 #endif
+
+/**
+ * @}
+ */
+

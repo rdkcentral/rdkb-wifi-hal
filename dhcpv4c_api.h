@@ -115,6 +115,10 @@
 #define STATUS_FAILURE     -1
 #endif
 
+/**
+ * @addtogroup DHCPV4C_HAL_TYPES
+ * @{
+ */
 #define DHCPV4_MAX_IPV4_ADDRS   4
 
 /**********************************************************************
@@ -126,6 +130,12 @@ typedef struct {
 	/* Each IPv4 Address */
     UINT addrs[DHCPV4_MAX_IPV4_ADDRS];
 } dhcpv4c_ip_list_t;
+/** @} */  //END OF GROUP DHCPV4C_HAL_TYPES
+
+/**
+ * @addtogroup DHCPV4C_HAL_APIS
+ * @{
+ */
 
 /**********************************************************************************
  *
@@ -620,5 +630,6 @@ INT dhcpv4c_get_emta_remain_renew_time(UINT *pValue);
 */
 INT dhcpv4c_get_emta_remain_rebind_time(UINT *pValue);
 
+/** @} */  //END OF GROUP DHCPV4C_HAL_APIS
 #endif
  

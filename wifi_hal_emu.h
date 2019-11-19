@@ -120,7 +120,10 @@
 #define RETURN_ERR   -1
 #endif
 
-
+/**
+ * @addtogroup WIFI_HAL_TYPES
+ * @{
+ */
 #ifndef RADIO_INDEX_1
 #define RADIO_INDEX_1 1
 #define RADIO_INDEX_2 2
@@ -257,63 +260,63 @@ typedef struct _wifi_neighbor_ap
 
 typedef struct _wifi_radioTrafficStats2
 {
-     ULONG radio_BytesSent;	//The total number of bytes transmitted out of the interface, including framing characters.
-     ULONG radio_BytesReceived;	//The total number of bytes received on the interface, including framing characters.
-     ULONG radio_PacketsSent;	//The total number of packets transmitted out of the interface.
-     ULONG radio_PacketsReceived; //The total number of packets received on the interface.
+     ULONG radio_BytesSent;	/**< The total number of bytes transmitted out of the interface, including framing characters. */
+     ULONG radio_BytesReceived;	/**< The total number of bytes received on the interface, including framing characters. */
+     ULONG radio_PacketsSent;	/**< The total number of packets transmitted out of the interface. */
+     ULONG radio_PacketsReceived; /**< The total number of packets received on the interface. */
 
-	 ULONG radio_ErrorsSent;	//The total number of outbound packets that could not be transmitted because of errors.
-     ULONG radio_ErrorsReceived;    //The total number of inbound packets that contained errors preventing them from being delivered to a higher-layer protocol.
-     ULONG radio_DiscardPacketsSent; //The total number of outbound packets which were chosen to be discarded even though no errors had been detected to prevent their being transmitted. One possible reason for discarding such a packet could be to free up buffer space.
-     ULONG radio_DiscardPacketsReceived; //The total number of inbound packets which were chosen to be discarded even though no errors had been detected to prevent their being delivered. One possible reason for discarding such a packet could be to free up buffer space.
-	 ULONG radio_PLCPErrorCount;	//The number of packets that were received with a detected Physical Layer Convergence Protocol (PLCP) header error.	
-	 ULONG radio_FCSErrorCount;	//The number of packets that were received with a detected FCS error. This parameter is based on dot11FCSErrorCount from [Annex C/802.11-2012].
-	 ULONG radio_InvalidMACCount;	//The number of packets that were received with a detected invalid MAC header error.
-	 ULONG radio_PacketsOtherReceived;	//The number of packets that were received, but which were destined for a MAC address that is not associated with this interface.
-	 INT   radio_NoiseFloor; 	//The noise floor for this radio channel where a recoverable signal can be obtained. Expressed as a signed integer in the range (-110:0).  Measurement should capture all energy (in dBm) from sources other than Wi-Fi devices as well as interference from Wi-Fi devices too weak to be decoded. Measured in dBm
-	 ULONG radio_ChannelUtilization; //Percentage of time the channel was occupied by the radio's own activity (Activity Factor) or the activity of other radios.  Channel utilization MUST cover all user traffic, management traffic, and time the radio was unavailable for CSMA activities, including DIFS intervals, etc.  The metric is calculated and updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected from the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1.  Units in Percentage
-	 INT   radio_ActivityFactor; //Percentage of time that the radio was transmitting or receiving Wi-Fi packets to/from associated clients. Activity factor MUST include all traffic that deals with communication between the radio and clients associated to the radio as well as management overhead for the radio, including NAV timers, beacons, probe responses,time for receiving devices to send an ACK, SIFC intervals, etc.  The metric is calculated and updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected from the just completed interval.   If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units in Percentage
-	 INT   radio_CarrierSenseThreshold_Exceeded; //Percentage of time that the radio was unable to transmit or receive Wi-Fi packets to/from associated clients due to energy detection (ED) on the channel or clear channel assessment (CCA). The metric is calculated and updated in this Parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected from the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units in Percentage
-	 INT   radio_RetransmissionMetirc; //Percentage of packets that had to be re-transmitted. Multiple re-transmissions of the same packet count as one.  The metric is calculated and updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".   The calculation of this metric MUST only use the data collected from the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units  in percentage
-	 INT   radio_MaximumNoiseFloorOnChannel; //Maximum Noise on the channel during the measuring interval.  The metric is updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected in the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1.  Units in dBm
-	 INT   radio_MinimumNoiseFloorOnChannel; //Minimum Noise on the channel. The metric is updated in this Parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected in the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units in dBm
-	 INT   radio_MedianNoiseFloorOnChannel; //Median Noise on the channel during the measuring interval.   The metric is updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected in the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units in dBm
-	 ULONG radio_StatisticsStartTime; 	 //The date and time at which the collection of the current set of statistics started.  This time must be updated whenever the radio statistics are reset.
+	 ULONG radio_ErrorsSent;	/**< The total number of outbound packets that could not be transmitted because of errors. */
+     ULONG radio_ErrorsReceived;    /**< The total number of inbound packets that contained errors preventing them from being delivered to a higher-layer protocol. */
+     ULONG radio_DiscardPacketsSent; /**< The total number of outbound packets which were chosen to be discarded even though no errors had been detected to prevent their being transmitted. One possible reason for discarding such a packet could be to free up buffer space. */
+     ULONG radio_DiscardPacketsReceived; /**< The total number of inbound packets which were chosen to be discarded even though no errors had been detected to prevent their being delivered. One possible reason for discarding such a packet could be to free up buffer space. */
+	 ULONG radio_PLCPErrorCount;	/**< The number of packets that were received with a detected Physical Layer Convergence Protocol (PLCP) header error.	 */
+	 ULONG radio_FCSErrorCount;	/**< The number of packets that were received with a detected FCS error. This parameter is based on dot11FCSErrorCount from [Annex C/802.11-2012]. */
+	 ULONG radio_InvalidMACCount;	/**< The number of packets that were received with a detected invalid MAC header error. */
+	 ULONG radio_PacketsOtherReceived;	/**< The number of packets that were received, but which were destined for a MAC address that is not associated with this interface. */
+	 INT   radio_NoiseFloor; 	/**< The noise floor for this radio channel where a recoverable signal can be obtained. Expressed as a signed integer in the range (-110:0).  Measurement should capture all energy (in dBm) from sources other than Wi-Fi devices as well as interference from Wi-Fi devices too weak to be decoded. Measured in dBm */
+	 ULONG radio_ChannelUtilization; /**< Percentage of time the channel was occupied by the radio's own activity (Activity Factor) or the activity of other radios.  Channel utilization MUST cover all user traffic, management traffic, and time the radio was unavailable for CSMA activities, including DIFS intervals, etc.  The metric is calculated and updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected from the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1.  Units in Percentage */
+	 INT   radio_ActivityFactor; /**< Percentage of time that the radio was transmitting or receiving Wi-Fi packets to/from associated clients. Activity factor MUST include all traffic that deals with communication between the radio and clients associated to the radio as well as management overhead for the radio, including NAV timers, beacons, probe responses,time for receiving devices to send an ACK, SIFC intervals, etc.  The metric is calculated and updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected from the just completed interval.   If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units in Percentage */
+	 INT   radio_CarrierSenseThreshold_Exceeded; /**< Percentage of time that the radio was unable to transmit or receive Wi-Fi packets to/from associated clients due to energy detection (ED) on the channel or clear channel assessment (CCA). The metric is calculated and updated in this Parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected from the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units in Percentage */
+	 INT   radio_RetransmissionMetirc; /**< Percentage of packets that had to be re-transmitted. Multiple re-transmissions of the same packet count as one.  The metric is calculated and updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".   The calculation of this metric MUST only use the data collected from the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units  in percentage */
+	 INT   radio_MaximumNoiseFloorOnChannel; /**< Maximum Noise on the channel during the measuring interval.  The metric is updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected in the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1.  Units in dBm */
+	 INT   radio_MinimumNoiseFloorOnChannel; /**< Minimum Noise on the channel. The metric is updated in this Parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected in the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units in dBm */
+	 INT   radio_MedianNoiseFloorOnChannel; /**< Median Noise on the channel during the measuring interval.   The metric is updated in this parameter at the end of the interval defined by "Radio Statistics Measuring Interval".  The calculation of this metric MUST only use the data collected in the just completed interval.  If this metric is queried before it has been updated with an initial calculation, it MUST return -1. Units in dBm */
+	 ULONG radio_StatisticsStartTime; 	 /**< The date and time at which the collection of the current set of statistics started.  This time must be updated whenever the radio statistics are reset. */
 	
 } wifi_radioTrafficStats2_t;	//for radio only
 
 typedef struct _wifi_radioTrafficStatsMeasure
 {
-	 INT   radio_RadioStatisticsMeasuringRate; //Input //"The rate at which radio related statistics are periodically collected.  Only statistics that explicitly indicate the use of this parameter MUST use the rate set in this parameter  Other parameter's are assumed to collect data in real-time or nearly real-time. Default value is 30 seconds.  This parameter MUST be persistent across reboots. If this parameter is changed,  then use of the new rate MUST be deferred until the start of the next interval and all metrics using this rate MUST return -1 until the completion of the next full interval Units in Seconds"
-	 INT   radio_RadioStatisticsMeasuringInterval; //Input //The interval for which radio data MUST be retained in order and at the end of which appropriate calculations are executed and reflected in the associated radio object's.  Only statistics that explicitly indicate the use of this parameter MUST use the interval set in this parameter  Default value is 30 minutes.  This parameter MUST be persistent across reboots.   If this item is modified, then all metrics leveraging this interval as well as the metrics Total number 802.11 packet of TX and Total number 802.11 packet of RX MUST be re-initialized immediately.  Additionally, the Statistics Start Time must be reset to the current time. Units in Seconds
+	 INT   radio_RadioStatisticsMeasuringRate; /**< Input //"The rate at which radio related statistics are periodically collected.  Only statistics that explicitly indicate the use of this parameter MUST use the rate set in this parameter  Other parameter's are assumed to collect data in real-time or nearly real-time. Default value is 30 seconds.  This parameter MUST be persistent across reboots. If this parameter is changed,  then use of the new rate MUST be deferred until the start of the next interval and all metrics using this rate MUST return -1 until the completion of the next full interval Units in Seconds" */
+	 INT   radio_RadioStatisticsMeasuringInterval; /**< Input //The interval for which radio data MUST be retained in order and at the end of which appropriate calculations are executed and reflected in the associated radio object's.  Only statistics that explicitly indicate the use of this parameter MUST use the interval set in this parameter  Default value is 30 minutes.  This parameter MUST be persistent across reboots.   If this item is modified, then all metrics leveraging this interval as well as the metrics Total number 802.11 packet of TX and Total number 802.11 packet of RX MUST be re-initialized immediately.  Additionally, the Statistics Start Time must be reset to the current time. Units in Seconds */
 } wifi_radioTrafficStatsMeasure_t;	//for radio only
 
 
 typedef struct _wifi_ssidTrafficStats2
 {
-     ULONG ssid_BytesSent;	//The total number of bytes transmitted out of the interface, including framing characters.
-     ULONG ssid_BytesReceived;	//The total number of bytes received on the interface, including framing characters.
-     ULONG ssid_PacketsSent;	//The total number of packets transmitted out of the interface.
-     ULONG ssid_PacketsReceived; //The total number of packets received on the interface.
+     ULONG ssid_BytesSent;	/**< The total number of bytes transmitted out of the interface, including framing characters. */
+     ULONG ssid_BytesReceived;	/**< The total number of bytes received on the interface, including framing characters. */
+     ULONG ssid_PacketsSent;	/**< The total number of packets transmitted out of the interface. */
+     ULONG ssid_PacketsReceived; /**< The total number of packets received on the interface. */
 
-     ULONG ssid_RetransCount;	//The total number of transmitted packets which were retransmissions. Two retransmissions of the same packet results in this counter incrementing by two.
-     ULONG ssid_FailedRetransCount; //The number of packets that were not transmitted successfully due to the number of retransmission attempts exceeding an 802.11 retry limit. This parameter is based on dot11FailedCount from [802.11-2012].	
-     ULONG ssid_RetryCount;  //The number of packets that were successfully transmitted after one or more retransmissions. This parameter is based on dot11RetryCount from [802.11-2012].	
-     ULONG ssid_MultipleRetryCount; //The number of packets that were successfully transmitted after more than one retransmission. This parameter is based on dot11MultipleRetryCount from [802.11-2012].	
-     ULONG ssid_ACKFailureCount;  //The number of expected ACKs that were never received. This parameter is based on dot11ACKFailureCount from [802.11-2012].	
-     ULONG ssid_AggregatedPacketCount; //The number of aggregated packets that were transmitted. This applies only to 802.11n and 802.11ac.	
+     ULONG ssid_RetransCount;	/**< The total number of transmitted packets which were retransmissions. Two retransmissions of the same packet results in this counter incrementing by two. */
+     ULONG ssid_FailedRetransCount; /**< The number of packets that were not transmitted successfully due to the number of retransmission attempts exceeding an 802.11 retry limit. This parameter is based on dot11FailedCount from [802.11-2012]. */
+     ULONG ssid_RetryCount;  /**< The number of packets that were successfully transmitted after one or more retransmissions. This parameter is based on dot11RetryCount from [802.11-2012]. */
+     ULONG ssid_MultipleRetryCount; /**< The number of packets that were successfully transmitted after more than one retransmission. This parameter is based on dot11MultipleRetryCount from [802.11-2012]. */
+     ULONG ssid_ACKFailureCount;  /**< The number of expected ACKs that were never received. This parameter is based on dot11ACKFailureCount from [802.11-2012].	 */
+     ULONG ssid_AggregatedPacketCount; /**< The number of aggregated packets that were transmitted. This applies only to 802.11n and 802.11ac. */
 	 
-	 ULONG ssid_ErrorsSent;	//The total number of outbound packets that could not be transmitted because of errors.
-     ULONG ssid_ErrorsReceived;    //The total number of inbound packets that contained errors preventing them from being delivered to a higher-layer protocol.
-     ULONG ssid_UnicastPacketsSent;	//The total number of inbound packets that contained errors preventing them from being delivered to a higher-layer protocol.
-     ULONG ssid_UnicastPacketsReceived;  //The total number of received packets, delivered by this layer to a higher layer, which were not addressed to a multicast or broadcast address at this layer.
-     ULONG ssid_DiscardedPacketsSent; //The total number of outbound packets which were chosen to be discarded even though no errors had been detected to prevent their being transmitted. One possible reason for discarding such a packet could be to free up buffer space.
-     ULONG ssid_DiscardedPacketsReceived; //The total number of inbound packets which were chosen to be discarded even though no errors had been detected to prevent their being delivered. One possible reason for discarding such a packet could be to free up buffer space.
-     ULONG ssid_MulticastPacketsSent; //The total number of packets that higher-level protocols requested for transmission and which were addressed to a multicast address at this layer, including those that were discarded or not sent.
-     ULONG ssid_MulticastPacketsReceived; //The total number of received packets, delivered by this layer to a higher layer, which were addressed to a multicast address at this layer.  
-     ULONG ssid_BroadcastPacketsSent;  //The total number of packets that higher-level protocols requested for transmission and which were addressed to a broadcast address at this layer, including those that were discarded or not sent.
-     ULONG ssid_BroadcastPacketsRecevied; //The total number of packets that higher-level protocols requested for transmission and which were addressed to a broadcast address at this layer, including those that were discarded or not sent.
-     ULONG ssid_UnknownPacketsReceived;  //The total number of packets received via the interface which were discarded because of an unknown or unsupported protocol.
+	 ULONG ssid_ErrorsSent;	/**< The total number of outbound packets that could not be transmitted because of errors. */
+     ULONG ssid_ErrorsReceived;    /**< The total number of inbound packets that contained errors preventing them from being delivered to a higher-layer protocol. */
+     ULONG ssid_UnicastPacketsSent;	/**< The total number of inbound packets that contained errors preventing them from being delivered to a higher-layer protocol. */
+     ULONG ssid_UnicastPacketsReceived;  /**< The total number of received packets, delivered by this layer to a higher layer, which were not addressed to a multicast or broadcast address at this layer. */
+     ULONG ssid_DiscardedPacketsSent; /**< The total number of outbound packets which were chosen to be discarded even though no errors had been detected to prevent their being transmitted. One possible reason for discarding such a packet could be to free up buffer space. */
+     ULONG ssid_DiscardedPacketsReceived; /**< The total number of inbound packets which were chosen to be discarded even though no errors had been detected to prevent their being delivered. One possible reason for discarding such a packet could be to free up buffer space. */
+     ULONG ssid_MulticastPacketsSent; /**< The total number of packets that higher-level protocols requested for transmission and which were addressed to a multicast address at this layer, including those that were discarded or not sent. */
+     ULONG ssid_MulticastPacketsReceived; /**< The total number of received packets, delivered by this layer to a higher layer, which were addressed to a multicast address at this layer. */
+     ULONG ssid_BroadcastPacketsSent;  /**< The total number of packets that higher-level protocols requested for transmission and which were addressed to a broadcast address at this layer, including those that were discarded or not sent. */
+     ULONG ssid_BroadcastPacketsRecevied; /**< The total number of packets that higher-level protocols requested for transmission and which were addressed to a broadcast address at this layer, including those that were discarded or not sent. */
+     ULONG ssid_UnknownPacketsReceived;  /**< The total number of packets received via the interface which were discarded because of an unknown or unsupported protocol. */
 
 } wifi_ssidTrafficStats2_t;  //for ssid only
 
@@ -322,45 +325,45 @@ typedef struct _wifi_ssidTrafficStats2
 typedef struct _wifi_neighbor_ap2
 {
 	 //CHAR  ap_Radio[64];	//The value MUST be the path name of a row in theDevice.WiFi.Radiotable. The Radio that detected the neighboring WiFi SSID.  
-	 CHAR  ap_SSID[64];	//The current service set identifier in use by the neighboring WiFi SSID. The value MAY be empty for hidden SSIDs.
-	 CHAR  ap_BSSID[64];	//[MACAddress] The BSSID used for the neighboring WiFi SSID.
-	 CHAR  ap_Mode[64];	//The mode the neighboring WiFi radio is operating in. Enumeration of: AdHoc, Infrastructure
-	 UINT  ap_Channel;	//The current radio channel used by the neighboring WiFi radio.
-	 INT   ap_SignalStrength;	//An indicator of radio signal strength (RSSI) of the neighboring WiFi radio measured indBm, as an average of the last 100 packets received.
-	 CHAR  ap_SecurityModeEnabled[64];	//The type of encryption the neighboring WiFi SSID advertises. Enumeration of:None, WPA-WPA2 etc.
-	 CHAR  ap_EncryptionMode[64];	//Comma-separated list of strings. The type of encryption the neighboring WiFi SSID advertises. Each list item is an enumeration of: TKIP, AES
-	 CHAR  ap_OperatingFrequencyBand[16];	//Indicates the frequency band at which the radio this SSID instance is operating. Enumeration of:2.4GHz, 5GHz
-	 CHAR  ap_SupportedStandards[64];	//Comma-separated list of strings. List items indicate which IEEE 802.11 standards thisResultinstance can support simultaneously, in the frequency band specified byOperatingFrequencyBand. Each list item is an enumeration of:
-	 CHAR  ap_OperatingStandards[16];	//Comma-separated list of strings. Each list item MUST be a member of the list reported by theSupportedStandardsparameter. List items indicate which IEEE 802.11 standard that is detected for thisResult.
-	 CHAR  ap_OperatingChannelBandwidth[16];	//Indicates the bandwidth at which the channel is operating. Enumeration of:
-	 UINT  ap_BeaconPeriod;	//Time interval (inms) between transmitting beacons.
-	 INT   ap_Noise;	//Indicator of average noise strength (indBm) received from the neighboring WiFi radio.
-	 CHAR  ap_BasicDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Basic data transmit rates (in Mbps) for the SSID. For example, ifBasicDataTransferRatesis "1,2", this indicates that the SSID is operating with basic rates of 1 Mbps and 2 Mbps.
-	 CHAR  ap_SupportedDataTransferRates[256];	//Comma-separated list (maximum list length 256) of strings. Data transmit rates (in Mbps) for unicast frames at which the SSID will permit a station to connect. For example, ifSupportedDataTransferRatesis "1,2,5.5", this indicates that the SSID will only permit connections at 1 Mbps, 2 Mbps and 5.5 Mbps.
-	 UINT  ap_DTIMPeriod;	//The number of beacon intervals that elapse between transmission of Beacon frames containing a TIM element whose DTIM count field is 0. This value is transmitted in the DTIM Period field of beacon frames. [802.11-2012]
-	 UINT  ap_ChannelUtilization;	//Indicates the fraction of the time AP senses that the channel is in use by the neighboring AP for transmissions.
+	 CHAR  ap_SSID[64];	/**< The current service set identifier in use by the neighboring WiFi SSID. The value MAY be empty for hidden SSIDs. */
+	 CHAR  ap_BSSID[64];	/**< [MACAddress] The BSSID used for the neighboring WiFi SSID. */
+	 CHAR  ap_Mode[64];	/**< The mode the neighboring WiFi radio is operating in. Enumeration of: AdHoc, Infrastructure */
+	 UINT  ap_Channel;	/**< The current radio channel used by the neighboring WiFi radio. */
+	 INT   ap_SignalStrength;	/**< An indicator of radio signal strength (RSSI) of the neighboring WiFi radio measured indBm, as an average of the last 100 packets received. */
+	 CHAR  ap_SecurityModeEnabled[64];	/**< The type of encryption the neighboring WiFi SSID advertises. Enumeration of:None, WPA-WPA2 etc. */
+	 CHAR  ap_EncryptionMode[64];	/**< Comma-separated list of strings. The type of encryption the neighboring WiFi SSID advertises. Each list item is an enumeration of: TKIP, AES */
+	 CHAR  ap_OperatingFrequencyBand[16];	/**< Indicates the frequency band at which the radio this SSID instance is operating. Enumeration of:2.4GHz, 5GHz */
+	 CHAR  ap_SupportedStandards[64];	/**< Comma-separated list of strings. List items indicate which IEEE 802.11 standards thisResultinstance can support simultaneously, in the frequency band specified byOperatingFrequencyBand. Each list item is an enumeration of: */
+	 CHAR  ap_OperatingStandards[16];	/**< Comma-separated list of strings. Each list item MUST be a member of the list reported by theSupportedStandardsparameter. List items indicate which IEEE 802.11 standard that is detected for thisResult. */
+	 CHAR  ap_OperatingChannelBandwidth[16];	/**< Indicates the bandwidth at which the channel is operating. Enumeration of: */
+	 UINT  ap_BeaconPeriod;	/**< Time interval (inms) between transmitting beacons. */
+	 INT   ap_Noise;	/**< Indicator of average noise strength (indBm) received from the neighboring WiFi radio. */
+	 CHAR  ap_BasicDataTransferRates[256];	/**< Comma-separated list (maximum list length 256) of strings. Basic data transmit rates (in Mbps) for the SSID. For example, ifBasicDataTransferRatesis "1,2", this indicates that the SSID is operating with basic rates of 1 Mbps and 2 Mbps. */
+	 CHAR  ap_SupportedDataTransferRates[256];	/**< Comma-separated list (maximum list length 256) of strings. Data transmit rates (in Mbps) for unicast frames at which the SSID will permit a station to connect. For example, ifSupportedDataTransferRatesis "1,2,5.5", this indicates that the SSID will only permit connections at 1 Mbps, 2 Mbps and 5.5 Mbps. */
+	 UINT  ap_DTIMPeriod;	/**< The number of beacon intervals that elapse between transmission of Beacon frames containing a TIM element whose DTIM count field is 0. This value is transmitted in the DTIM Period field of beacon frames. [802.11-2012] */
+	 UINT  ap_ChannelUtilization;	/**< Indicates the fraction of the time AP senses that the channel is in use by the neighboring AP for transmissions. */
 	 
 } wifi_neighbor_ap2_t;	//COSA_DML_NEIGHTBOURING_WIFI_RESULT
 
 typedef struct _wifi_diag_ipping_setting
 {
-	 CHAR  ipping_Interface[256];	//The value MUST be the path name of a row in the IP.Interface table. The IP-layer interface over which the test is to be performed. This identifies the source IP address to use when performing the test. Example: Device.IP.Interface.1. If an empty string is specified, the CPE MUST use the interface as directed by its routing policy (Forwarding table entries) to determine the appropriate interface.
-	 CHAR  ipping_Host[256];	//Host name or address of the host to ping. In the case where Host is specified by name, and the name resolves to more than one address, it is up to the device implementation to choose which address to use.
-	 UINT  ipping_NumberOfRepetitions;	//Number of repetitions of the ping test to perform before reporting the results.	
-	 UINT  ipping_Timeout;	//Timeout in milliseconds for the ping test.	
-	 UINT  ipping_DataBlockSize;	//Size of the data block in bytes to be sent for each ping.
-	 UINT  ipping_DSCP;	//DiffServ codepoint to be used for the test packets. By default the CPE SHOULD set this value to zero.
+	 CHAR  ipping_Interface[256];	/**< The value MUST be the path name of a row in the IP.Interface table. The IP-layer interface over which the test is to be performed. This identifies the source IP address to use when performing the test. Example: Device.IP.Interface.1. If an empty string is specified, the CPE MUST use the interface as directed by its routing policy (Forwarding table entries) to determine the appropriate interface. */
+	 CHAR  ipping_Host[256];	/**< Host name or address of the host to ping. In the case where Host is specified by name, and the name resolves to more than one address, it is up to the device implementation to choose which address to use. */
+	 UINT  ipping_NumberOfRepetitions;	/**< Number of repetitions of the ping test to perform before reporting the results. */
+	 UINT  ipping_Timeout;	/**< Timeout in milliseconds for the ping test.	*/
+	 UINT  ipping_DataBlockSize;	/**< Size of the data block in bytes to be sent for each ping. */
+	 UINT  ipping_DSCP;	/**< DiffServ codepoint to be used for the test packets. By default the CPE SHOULD set this value to zero. */
 
 } wifi_diag_ipping_setting_t;	
 
 typedef struct _wifi_diag_ipping_result
 {
-	 CHAR  ipping_DiagnosticsState[64];	//Indicates availability of diagnostic data. Enumeration of:	Complete, Error_CannotResolveHostName, 	Error_Internal, Error_Other
-	 UINT  ipping_SuccessCount;	//Result parameter indicating the number of successful pings (those in which a successful response was received prior to the timeout) in the most recent ping test.	
-	 UINT  ipping_FailureCount;	//Result parameter indicating the number of failed pings in the most recent ping test.
-	 UINT  ipping_AverageResponseTime;	//Result parameter indicating the average response time in milliseconds over all repetitions with successful responses of the most recent ping test. If there were no successful responses, this value MUST be zero.
-	 UINT  ipping_MinimumResponseTime;	//Result parameter indicating the minimum response time in milliseconds over all repetitions with successful responses of the most recent ping test. If there were no successful responses, this value MUST be zero.
-	 UINT  ipping_MaximumResponseTime;	//Result parameter indicating the maximum response time in milliseconds over all repetitions with successful responses of the most recent ping test. If there were no successful responses, this value MUST be zero.
+	 CHAR  ipping_DiagnosticsState[64];	/**< Indicates availability of diagnostic data. Enumeration of:	Complete, Error_CannotResolveHostName, 	Error_Internal, Error_Other */
+	 UINT  ipping_SuccessCount;	/**< Result parameter indicating the number of successful pings (those in which a successful response was received prior to the timeout) in the most recent ping test. */
+	 UINT  ipping_FailureCount;	/**< Result parameter indicating the number of failed pings in the most recent ping test. */
+	 UINT  ipping_AverageResponseTime;	/**< Result parameter indicating the average response time in milliseconds over all repetitions with successful responses of the most recent ping test. If there were no successful responses, this value MUST be zero. */
+	 UINT  ipping_MinimumResponseTime;	/**< Result parameter indicating the minimum response time in milliseconds over all repetitions with successful responses of the most recent ping test. If there were no successful responses, this value MUST be zero. */
+	 UINT  ipping_MaximumResponseTime;	/**< Result parameter indicating the maximum response time in milliseconds over all repetitions with successful responses of the most recent ping test. If there were no successful responses, this value MUST be zero. */
 	 
 } wifi_diag_ipping_result_t;
 
@@ -387,42 +390,42 @@ typedef struct _wifi_associated_dev
      //INT   cli_devTxRate;
      //INT   cli_devRxRate;
 	 
-	 UCHAR cli_MACAddress[6];		// The MAC address of an associated device.
-	 CHAR  cli_IPAddress[64];		// IP of the associated device
-	 BOOL  cli_AuthenticationState; // Whether an associated device has authenticated (true) or not (false).
-	 UINT  cli_LastDataDownlinkRate; //The data transmit rate in kbps that was most recently used for transmission from the access point to the associated device.
-	 UINT  cli_LastDataUplinkRate; 	// The data transmit rate in kbps that was most recently used for transmission from the associated device to the access point.
-	 INT   cli_SignalStrength; 		//An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device.
-	 UINT  cli_Retransmissions; 	//The number of packets that had to be re-transmitted, from the last 100 packets sent to the associated device. Multiple re-transmissions of the same packet count as one.
-	 BOOL  cli_Active; 				//	boolean	-	Whether or not this node is currently present in the WiFi AccessPoint network.
+	 UCHAR cli_MACAddress[6];		/**< The MAC address of an associated device. */
+	 CHAR  cli_IPAddress[64];		/**< IP of the associated device */
+	 BOOL  cli_AuthenticationState; /**< Whether an associated device has authenticated (true) or not (false). */
+	 UINT  cli_LastDataDownlinkRate; /**< The data transmit rate in kbps that was most recently used for transmission from the access point to the associated device. */
+	 UINT  cli_LastDataUplinkRate; 	/**< The data transmit rate in kbps that was most recently used for transmission from the associated device to the access point. */
+	 INT   cli_SignalStrength; 		/**< An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device. */
+	 UINT  cli_Retransmissions; 	/**< The number of packets that had to be re-transmitted, from the last 100 packets sent to the associated device. Multiple re-transmissions of the same packet count as one. */
+	 BOOL  cli_Active; 				/**<	boolean	-	Whether or not this node is currently present in the WiFi AccessPoint network. */
 	
-	 CHAR  cli_OperatingStandard[64];	//Radio standard the associated Wi-Fi client device is operating under. Enumeration of:
-	 CHAR  cli_OperatingChannelBandwidth[64];	//The operating channel bandwidth of the associated device. The channel bandwidth (applicable to 802.11n and 802.11ac specifications only). Enumeration of:
-	 INT   cli_SNR;		//A signal-to-noise ratio (SNR) compares the level of the Wi-Fi signal to the level of background noise. Sources of noise can include microwave ovens, cordless phone, bluetooth devices, wireless video cameras, wireless game controllers, fluorescent lights and more. It is measured in decibels (dB).
-	 CHAR  cli_InterferenceSources[64]; //Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma seperated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others
-	 ULONG cli_DataFramesSentAck;	//The DataFramesSentAck parameter indicates the total number of MSDU frames marked as duplicates and non duplicates acknowledged. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
-	 ULONG cli_DataFramesSentNoAck;	//The DataFramesSentNoAck parameter indicates the total number of MSDU frames retransmitted out of the interface (i.e., marked as duplicate and non-duplicate) and not acknowledged, but does not exclude those defined in the DataFramesLost parameter. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification.
-	 ULONG cli_BytesSent;	//The total number of bytes transmitted to the client device, including framing characters.
-	 ULONG cli_BytesReceived;	//The total number of bytes received from the client device, including framing characters.
-	 INT   cli_RSSI;	//The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets recevied from the device.
-	 INT   cli_MinRSSI;	//The Minimum Received Signal Strength Indicator, RSSI, parameter is the minimum energy observed at the antenna receiver for past transmissions (100 packets).
-	 INT   cli_MaxRSSI;	//The Maximum Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for past transmissions (100 packets).
-	 UINT  cli_Disassociations;	//This parameter  represents the total number of client disassociations. Reset the parameter evey 24hrs or reboot
-	 UINT  cli_AuthenticationFailures;	//This parameter indicates the total number of authentication failures.  Reset the parameter evey 24hrs or reboot
+	 CHAR  cli_OperatingStandard[64];	/**< Radio standard the associated Wi-Fi client device is operating under. Enumeration of: */
+	 CHAR  cli_OperatingChannelBandwidth[64];	/**< The operating channel bandwidth of the associated device. The channel bandwidth (applicable to 802.11n and 802.11ac specifications only). Enumeration of: */
+	 INT   cli_SNR;		/**< A signal-to-noise ratio (SNR) compares the level of the Wi-Fi signal to the level of background noise. Sources of noise can include microwave ovens, cordless phone, bluetooth devices, wireless video cameras, wireless game controllers, fluorescent lights and more. It is measured in decibels (dB). */
+	 CHAR  cli_InterferenceSources[64]; /**< Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma seperated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others */
+	 ULONG cli_DataFramesSentAck;	/**< The DataFramesSentAck parameter indicates the total number of MSDU frames marked as duplicates and non duplicates acknowledged. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification. */
+	 ULONG cli_DataFramesSentNoAck;	/**< The DataFramesSentNoAck parameter indicates the total number of MSDU frames retransmitted out of the interface (i.e., marked as duplicate and non-duplicate) and not acknowledged, but does not exclude those defined in the DataFramesLost parameter. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification. */
+	 ULONG cli_BytesSent;	/**< The total number of bytes transmitted to the client device, including framing characters. */
+	 ULONG cli_BytesReceived;	/**< The total number of bytes received from the client device, including framing characters. */
+	 INT   cli_RSSI;	/**< The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets recevied from the device. */
+	 INT   cli_MinRSSI;	/**< The Minimum Received Signal Strength Indicator, RSSI, parameter is the minimum energy observed at the antenna receiver for past transmissions (100 packets). */
+	 INT   cli_MaxRSSI;	/**< The Maximum Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for past transmissions (100 packets). */
+	 UINT  cli_Disassociations;	/**< This parameter  represents the total number of client disassociations. Reset the parameter evey 24hrs or reboot */
+	 UINT  cli_AuthenticationFailures;	/**< This parameter indicates the total number of authentication failures.  Reset the parameter evey 24hrs or reboot */
 	 
 } wifi_associated_dev_t;	//~COSA_DML_WIFI_AP_ASSOC_DEVICE
 
 typedef struct _wifi_radius_setting_t
 {
-	 INT  RadiusServerRetries; 			//Number of retries for Radius requests.
-	 INT  RadiusServerRequestTimeout; 	//Radius request timeout in seconds after which the request must be retransmitted for the # of retries available.	
-	 INT  PMKLifetime; 					//Default time in seconds after which a Wi-Fi client is forced to ReAuthenticate (def 8 hrs).	
-	 BOOL PMKCaching; 					//Enable or disable caching of PMK.	
-	 INT  PMKCacheInterval; 			//Time interval in seconds after which the PMKSA (Pairwise Master Key Security Association) cache is purged (def 5 minutes).	
-	 INT  MaxAuthenticationAttempts; 	//Indicates the # of time, a client can attempt to login with incorrect credentials. When this limit is reached, the client is blacklisted and not allowed to attempt loging into the network. Settings this parameter to 0 (zero) disables the blacklisting feature.
-	 INT  BlacklistTableTimeout; 		//Time interval in seconds for which a client will continue to be blacklisted once it is marked so.	
-	 INT  IdentityRequestRetryInterval; //Time Interval in seconds between identity requests retries. A value of 0 (zero) disables it.	
-	 INT  QuietPeriodAfterFailedAuthentication;  //The enforced quiet period (time interval) in seconds following failed authentication. A value of 0 (zero) disables it.	
+	 INT  RadiusServerRetries; 			/**< Number of retries for Radius requests. */
+	 INT  RadiusServerRequestTimeout; 	/**< Radius request timeout in seconds after which the request must be retransmitted for the # of retries available.	 */
+	 INT  PMKLifetime; 					/**< Default time in seconds after which a Wi-Fi client is forced to ReAuthenticate (def 8 hrs).	 */
+	 BOOL PMKCaching; 					/**< Enable or disable caching of PMK.	*/
+	 INT  PMKCacheInterval; 			/**< Time interval in seconds after which the PMKSA (Pairwise Master Key Security Association) cache is purged (def 5 minutes).	*/
+	 INT  MaxAuthenticationAttempts; 	/**< Indicates the # of time, a client can attempt to login with incorrect credentials. When this limit is reached, the client is blacklisted and not allowed to attempt loging into the network. Settings this parameter to 0 (zero) disables the blacklisting feature. */
+	 INT  BlacklistTableTimeout; 		/**< Time interval in seconds for which a client will continue to be blacklisted once it is marked so.	*/
+	 INT  IdentityRequestRetryInterval; /**< Time Interval in seconds between identity requests retries. A value of 0 (zero) disables it.	*/
+	 INT  QuietPeriodAfterFailedAuthentication;  /**< The enforced quiet period (time interval) in seconds following failed authentication. A value of 0 (zero) disables it. */
 	 //UCHAR RadiusSecret[64];			//The secret used for handshaking with the RADIUS server [RFC2865]. When read, this parameter returns an empty string, regardless of the actual value.
 		 
 } wifi_radius_setting_t;	
@@ -443,6 +446,13 @@ typedef struct _wifi_radius_setting_t
 //     wifi_AC_parameters_record_t VI_AcParametersRecord;      // Video QOS parameters, ACI == 2
 //     wifi_AC_parameters_record_t VO_AcParametersRecord;      // Voice QOS parameters, ACI == 3
 //}  wifi_qos_t;
+
+/** @} */  //END OF GROUP WIFI_HAL_TYPES
+
+/**
+ * @addtogroup WIFI_HAL_APIS
+ * @{
+ */
 
 //<< -------------------------------- wifi_ap_hal --------------------------------------------
 
@@ -5059,6 +5069,13 @@ int do_MacFilter_Delrule();
 // To Update Wifi MacFiltering Rule Chain
 int do_MacFilter_Update(char *Operation, int i_macFiltCnt,COSA_DML_WIFI_AP_MAC_FILTER  *i_macFiltTabPtr,int count,struct hostDetails *hostPtr);
 
+/** @} */  //END OF GROUP WIFI_HAL_APIS
+
+/**
+ * @addtogroup WIFI_HAL_TYPES
+ * @{
+ */
+
 /* Enum to define WiFi Bands */
 typedef enum
 {
@@ -5066,6 +5083,12 @@ typedef enum
     band_2_4 = 0,
     band_5 = 1,
 } wifi_band;
+/** @} */  //END OF GROUP WIFI_HAL_TYPES
+
+/**
+ * @addtogroup WIFI_HAL_APIS
+ * @{
+ */
 
 /* INT wifi_getApIndexForWiFiBand(wifi_band band)  */
 /**
@@ -5077,6 +5100,13 @@ typedef enum
 *
 */
 INT wifi_getApIndexForWiFiBand(wifi_band band);
+
+/** @} */  //END OF GROUP WIFI_HAL_APIS
+
+/**
+ * @addtogroup WIFI_HAL_TYPES
+ * @{
+ */
 
 /*hostapd will read file from nvram /etc/usr/ccsp/wifi/ will contains default
 configuration required for Factory Reset*/
@@ -5104,6 +5134,12 @@ struct hostap_conf
     char *wpa;
     char *wpa_keymgmt;
 };
+/** @} */  //END OF GROUP WIFI_HAL_TYPES
+
+/**
+ * @addtogroup WIFI_HAL_APIS
+ * @{
+ */
 
 /* The type of encryption the neighboring WiFi SSID advertises.          */
 /* Each list item is an enumeration of: TKIP, AES                        */
@@ -5391,6 +5427,8 @@ int wifihal_interfacestatus(CHAR *wifi_status,CHAR *interface_name);
 typedef INT ( * wifi_apAuthEvent_callback)(INT apIndex, char *MAC, INT event_type);
 //Callback registration function.
 void wifi_apAuthEvent_callback_register(wifi_apAuthEvent_callback callback_proc);
+
+/** @} */  //END OF GROUP WIFI_HAL_APIS
 
 
 #else

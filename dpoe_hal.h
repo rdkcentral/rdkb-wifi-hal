@@ -68,10 +68,24 @@
 #ifndef __DPOE_HAL_H__
 #define __DPOE_HAL_H__
 
+/**
+* @defgroup DPoE_HAL DPoE HAL
+*
+* @defgroup DPoE_HAL_TYPES  DPoE HAL Data Types
+* @ingroup  DPoE_HAL
+*
+* @defgroup DPoE_HAL_APIS   DPoE HAL  APIs
+* @ingroup  DPoE_HAL
+*
+**/
+
 /**********************************************************************
                CONSTANT DEFINITIONS
 **********************************************************************/
-
+/**
+ * @addtogroup DPoE_HAL_TYPES
+ * @{
+ */
 #ifndef CHAR
 #define CHAR  char
 #endif
@@ -120,9 +134,9 @@
 #define RETURN_ERR   -1
 #endif
 
-#define DPOE_HAL_MAJOR_VERSION 1         // This is the major verion of this HAL.
-#define DPOE_HAL_MINOR_VERSION 0         // This is the minor verson of the HAL.
-#define DPOE_HAL_MAINTENANCE_VERSION 1   // This is the maintenance version of the HAL.
+#define DPOE_HAL_MAJOR_VERSION 1         //!< This is the major version of this HAL.
+#define DPOE_HAL_MINOR_VERSION 0         //!< This is the minor version of the HAL.
+#define DPOE_HAL_MAINTENANCE_VERSION 1   //!< This is the maintenance version of the HAL.
 
 
 /**********************************************************************
@@ -255,6 +269,14 @@ typedef struct dpoe_link_encrypt_mode
 	UCHAR link_EncryptMode;
 } dpoe_link_encrypt_mode_t;
 
+/**
+ * @}
+ */
+
+/**
+ * @addtogroup DPoE_HAL_APIS
+ * @{
+ */
 
 
 /**********************************************************************************
@@ -271,7 +293,7 @@ typedef struct dpoe_link_encrypt_mode
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification
 * <br>@ref Context: ONU
 *
-* @param dpoe_mac_address_t *pOnuId - info of OnuId, to be returned
+* @param dpoe_mac_address_t *pOnuId - Info of OnuId, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -296,7 +318,7 @@ INT dpoe_getOnuId(dpoe_mac_address_t *pOnuId);
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
 *
-* @param dpoe_firmware_info_t *pFirmwareInfo - info of Firmware, to be returned
+* @param dpoe_firmware_info_t *pFirmwareInfo - Info of Firmware, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -310,7 +332,7 @@ INT dpoe_getFirmwareInfo(dpoe_firmware_info_t *pFirmwareInfo);
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
 *
-** @param dpoe_epon_chip_info_t *pEponChipInfo - info of epon chip, to be returned
+** @param dpoe_epon_chip_info_t *pEponChipInfo - Info of epon chip, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -321,6 +343,7 @@ INT dpoe_getEponChipInfo(dpoe_epon_chip_info_t *pEponChipInfo);
 /* Function: dpoe_getManufacturerInfo */
 /**
 * @description This function will return information corresponding to multiple OAM messages.
+*
 * - Date of Manufacture (D7/00 05)
 * - Manufacturer Info (D7/00 06)
 * - ONU Manufacturer Organization Name (D7/00 0E)
@@ -335,7 +358,7 @@ INT dpoe_getEponChipInfo(dpoe_epon_chip_info_t *pEponChipInfo);
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
 *
-* @param dpoe_manufacturer_t *pManufacturerInfo - info of manufacturer, to be returned
+* @param dpoe_manufacturer_t *pManufacturerInfo - Info of manufacturer, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -346,10 +369,11 @@ INT dpoe_getManufacturerInfo(dpoe_manufacturer_t *pManufacturerInfo);
 /* Function: dpoe_getMaxLogicalLinks */
 /**
 * @description The maximum number of logical links the ONU supports on the EPON.
+*
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
 *
-* @param dpoe_onu_max_logical_links_t *pMaxLogicalLinks - info of logical links, to be returned
+* @param dpoe_onu_max_logical_links_t *pMaxLogicalLinks - Info of logical links, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -360,6 +384,7 @@ USHORT dpoe_getMaxLogicalLinks(dpoe_onu_max_logical_links_t *pMaxLogicalLinks);
 /* Function: dpoe_getNumberOfNetworkPorts */
 /**
 * @description This attribute provides the total number of TU interface ports on the ONU.
+*
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
 *
@@ -374,6 +399,7 @@ INT dpoe_getNumberOfNetworkPorts(ULONG *pNumPorts);
 /* Function: dpoe_getNumberOfS1Interfaces */
 /**
 * @description This attribute provides the number of S1 interfaces on the DPoE ONU.
+*
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
 *
@@ -388,7 +414,8 @@ INT dpoe_getNumberOfS1Interfaces(ULONG *pNumS1Interfaces);
 /* Function: dpoe_getOnuPacketBufferCapabilities */
 /**
 * @description This message provides a means for the DPoE ONU to convey information about 
-* packet buffer capabilities to the DPoE System 
+* packet buffer capabilities to the DPoE System.
+* 
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
 *
@@ -405,11 +432,12 @@ INT dpoe_getOnuPacketBufferCapabilities(dpoe_onu_packet_buffer_capabilities_t *p
 * @description This attribute represents the current traffic state for an LLID. User data traffic 
 * may be enabled (normal operation) or disabled (discarded by the DPoE ONU). 
 * Only OAM and MPCP remain enabled regardless of the LLID forwarding state. 
+*
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: Logical Link 
 *
-* @param dpoe_link_forwarding_state_t linkForwardingState[] - info of Link forwarding state, to be returned
-* @param USHORT numEntries - number of entries
+* @param dpoe_link_forwarding_state_t linkForwardingState[] - Info of Link forwarding state, to be returned
+* @param USHORT                       numEntries            - Number of entries
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -420,6 +448,7 @@ INT dpoe_getLlidForwardingState(dpoe_link_forwarding_state_t linkForwardingState
 /* Function: dpoe_getOamFrameRate */
 /**
 * @description This attribute represents the maximum rate at which OAM PDUs are transmitted on a link. 
+*
 * Setting the Maximum OAM Frame Rate to 0 disables rate control. 
 * The Minimum OAM Frame Rate is the heartbeat rate. This is the rate at which OAM PDUs are sent 
 * between the ONU and DPoE System, using an Info PDU as a "heartbeat" if there is no other OAM activity, 
@@ -431,8 +460,8 @@ INT dpoe_getLlidForwardingState(dpoe_link_forwarding_state_t linkForwardingState
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: Logical Link 
 *
-* @param dpoe_link_oam_frame_rate_t linkOamFrameRate[] - info of which OAM PDUs are transmitted on a link
-* @param USHORT numEntries - number of entries
+* @param dpoe_link_oam_frame_rate_t linkOamFrameRate[] - Info of which OAM PDUs are transmitted on a link
+* @param USHORT                     numEntries         - Number of entries
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -443,6 +472,7 @@ INT dpoe_getOamFrameRate(dpoe_link_oam_frame_rate_t linkOamFrameRate[], USHORT n
 /* Function: dpoe_getDeviceSysDescrInfo */
 /**
 * @description This function will return multiple pieces of device system information.
+*
 * Vendor Name: This attribute represents the ONU vendor name. 
 * It can be used to populate the VENDOR field in the sysDescr 
 * MIB variable (see [DPoE-SP-OSSIv1.0]), and may or may not be the same as the ONU 
@@ -457,7 +487,7 @@ INT dpoe_getOamFrameRate(dpoe_link_oam_frame_rate_t linkOamFrameRate[], USHORT n
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
 *
-* @param dpoe_device_sys_descr_info_t *pDeviceSysDescrInfo - multiple pieces of device system information
+* @param dpoe_device_sys_descr_info_t *pDeviceSysDescrInfo - Multiple pieces of device system information
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -469,13 +499,14 @@ INT dpoe_getDeviceSysDescrInfo(dpoe_device_sys_descr_info_t *pDeviceSysDescrInfo
 /* Function: dpoe_getEponMode */
 /**
 * @description This attribute represents the EPON mode(s) supported by this ONU.
+*
 * DPoE Systems that support 2G-EPON MUST support this attribute. DPoE ONUs that support 2G-EPON MUST
 * support this attribute. DPoE Systems that support 1G-EPON and 10G-EPON SHOULD support this attribute. DPoE
 * ONUs that support 1G-EPON and 10G-EPON SHOULD support this attribute.
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification ( see spec for intepretation of return value )
 * <br>Context: ONU
 *
-* @param USHORT *pMode - return the EPON mode(s) supported by this ONU
+* @param USHORT *pMode - Return the EPON mode(s) supported by this ONU
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -485,9 +516,10 @@ INT dpoe_getEponMode(USHORT *pMode);
 
 /* Function: dpoe_setResetOnu */
 /**
-@description This attribute resets the ONU, as if from power on.  
-<br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
-<br>Context: ONU 
+@description This attribute resets the ONU, as if from power on. 
+* 
+*<br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
+*<br>Context: ONU 
 *
 * @param None.
 *
@@ -500,10 +532,11 @@ INT dpoe_setResetOnu(void);
 /* Function: dpoe_getDynamicMacAddressAgeLimit */
 /**
 * @description This attribute represents Dynamic MAC learning table age limit.  
+*
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
 *
-* @param USHORT *pAgeLimit - return the age limit
+* @param USHORT *pAgeLimit - Return the age limit
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -516,6 +549,7 @@ INT dpoe_getDynamicMacAddressAgeLimit(USHORT *pAgeLimit);
 * @description This attribute is a capability attribute that represents 
 * the maximum size of the DPoE ONU MAC address learning table for the 
 * entire DPoE ONU. 
+*
 * The total number of MAC addresses learned by the DPoE ONU cannot exceed this number.  
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: ONU 
@@ -531,11 +565,12 @@ INT dpoe_getDynamicMacLearningTableSize(USHORT *pNumEntries);
 /* Function: dpoe_getDynamicMacTable */
 /**
 * @description This attribute represents the dynamically learned MAC address rules. 
+*
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: Logical Link 
 *
-* @param dpoe_link_mac_address_t linkDynamicMacTable[] - dynamically learned MAC address, to be returned
-* @param USHORT numEntries - Number of entries
+* @param dpoe_link_mac_address_t linkDynamicMacTable[] - Dynamically learned MAC address, to be returned
+* @param USHORT                  numEntries            - Number of entries
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -545,12 +580,13 @@ INT dpoe_getDynamicMacTable(dpoe_link_mac_address_t linkDynamicMacTable[], USHOR
 
 /* Function: dpoe_getStaticMacTable */
 /**
-* @description This attribute represents the statically provisioned MAC address table 
+* @description This attribute represents the statically provisioned MAC address table.
+* 
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification 
 * <br>Context: Logical Link
 *
-* @param dpoe_link_mac_address_t linkStaticMacTable[] - statically provisioned MAC address tabl, to be returned
-* @param USHORT numEntries - Number of entries
+* @param dpoe_link_mac_address_t linkStaticMacTable[] - Statically provisioned MAC address tabl, to be returned
+* @param USHORT                  numEntries           - Number of entries
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -563,10 +599,11 @@ INT dpoe_getStaticMacTable(dpoe_link_mac_address_t linkStaticMacTable[], USHORT 
 * @description This message represents the aggregate dynamic MAC address limit
 * for the DPoE ONU as a whole. This is the maximum number of addresses
 * that can be learned by all ports combined.
+*
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification
 * <br>Context: ONU 
 *
-* @param USHORT *pAggregrateLimit - aggregate dynamic MAC address limit, to be returned
+* @param USHORT *pAggregrateLimit - Aggregate dynamic MAC address limit, to be returned
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -580,6 +617,7 @@ INT dpoe_getMacLearningAggregateLimit(USHORT *pAggregrateLimit);
 /**
 * @description This function will return a list of all LLID port traffic statistics
 * for this ONU. 
+*
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification
 * <br><br>
 * Example Usage:
@@ -589,8 +627,8 @@ INT dpoe_getMacLearningAggregateLimit(USHORT *pAggregrateLimit);
 * <br> dpoe_getOnuLinkStatistics(pMyLinkStats, dpoe_getMaxLogicalLinks());
 * <br>Context: Logical Link 
 *
-* @param pOnuTrafficStats - this pointer should allocate 'numEntries' times of dpoe_llid_traffic_stats_t size memory
-* @param USHORT numEntries - Which is determined by dpoe_getMaxLogicalLinks().
+* @param dpoe_link_traffic_stats_t pOnuTrafficStats - This pointer should allocate 'numEntries' times of dpoe_llid_traffic_stats_t size memory
+* @param USHORT                    numEntries       - Which is determined by dpoe_getMaxLogicalLinks().
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -601,6 +639,7 @@ INT dpoe_getOnuLinkStatistics(dpoe_link_traffic_stats_t onuLinkTrafficStats[], U
 /* Function: dpoe_setClearOnuLinkStatistics */
 /**
 * @description This function will clear all statistics for the DPoE ONU.
+*
 * <br>Reference: DPoE-SP-OAMv1.0-I08-140807 specification
 * <br>Context: ONU
 *
@@ -616,7 +655,7 @@ INT dpoe_setClearOnuLinkStatistics(void);
 /**
 * @description Get the Reboot Ready Status
 *
-* @param ULONG *pValue- Values of 1 for Ready, 2 for Not Ready
+* @param ULONG *pValue - Values of 1 for Ready, 2 for Not Ready
 *
 * @return the status of the operation.
 * @retval RETURN_OK if successful.
@@ -626,7 +665,8 @@ INT dpoe_hal_Reboot_Ready(ULONG *pValue);
 
 /* Function: dpoe_hal_ReinitMac */
 /**
-* @description Reinit DPoE.  Performs reinit MAC only to same DS/US
+* @description Reinit DPoE.  Performs reinit MAC only to same DS/US.
+*
 * @param None.
 *
 * @return The status of the operation.
@@ -643,7 +683,8 @@ INT dpoe_hal_ReinitMac();
 
 /* Function: dpoe_GetProvIpType */
 /*
-* @description Retrieve the provisioned IP type
+* @description Retrieve the provisioned IP type.
+*
 * @param CHAR* pValue - ip type currently provisioned values are "IPv4", "IPv6", or "unknown"
 
 * @return The status of the operation.
@@ -662,6 +703,7 @@ INT dpoe_hal_ReinitMac();
 /* Function: dpoe_hal_Get_eponResetCount */
 /**
 * @description Retrieve the count of epon resets
+*
 * @param ULONG *resetcnt - Count to be returned
 *
 * @return The status of the operation.
@@ -679,6 +721,7 @@ INT dpoe_hal_Get_eponResetCount(ULONG *resetcnt);
 /* Function: dpoe_hal_LocalResetCount */
 /**
 * @description Retrieve the count of local reset
+*
 * @param ULONG *resetcnt - Count to be returned
 *
 * @return The status of the operation.
@@ -696,6 +739,7 @@ INT dpoe_hal_LocalResetCount(ULONG *resetcnt);
 /* Function:  dpoe_hal_Get_ErouterResetCount */
 /**
 * @description Retrieve the count of erouter reset
+*
 * @param ULONG *resetcnt - Count to be returned
 *
 * @return The status of the operation.
@@ -714,6 +758,7 @@ INT dpoe_hal_Get_ErouterResetCount(ULONG *resetcnt);
 /* Function:  dpoe_LlidForwardingStateGetEntryCount */
 /**
 * @description Retrieve the count of max logical links
+*
 * @param ULONG *pNumEntry - Count to be returned
 *
 * @return The status of the operation.
@@ -730,7 +775,8 @@ INT dpoe_LlidForwardingStateGetEntryCount( USHORT *pNumEntry );
 
 /* Function:  dpoe_OamFrameRateGetEntryCount */
 /**
-* @description Retrieve the count of max logical links
+* @description Retrieve the count of max logical links.
+*
 * @param ULONG *pNumEntry - Count to be returned
 *
 * @return The status of the operation.
@@ -748,6 +794,7 @@ INT dpoe_OamFrameRateGetEntryCount( USHORT *pNumEntry );
 /* Function:  dpoe_OnuLinkStatisticsGetEntryCount */
 /**
 * @description Retrieve the count of max logical links
+*
 * @param ULONG *pNumEntry - Count to be returned
 *
 * @return The status of the operation.
@@ -765,6 +812,10 @@ INT dpoe_OnuLinkStatisticsGetEntryCount( USHORT *pNumEntry );
 
 #endif 
 /** #ifndef __DPOE_HAL_H__ **/
+
+/**
+ * @}
+ */
 
 
 

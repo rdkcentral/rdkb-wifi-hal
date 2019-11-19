@@ -28,6 +28,26 @@
 #define BOOLEAN UCHAR
 #endif
 
+/**
+* @defgroup firewall_hal Firewall HAL
+*
+* This module is responsible for setting firewall rules like port forwarding, port triggering
+* Parental control etc.
+*
+* @defgroup FIREWALL_HAL_TYPES  Firewall HAL Data Types
+* @ingroup  firewall_hal
+*
+* @defgroup FIREWALL_HAL_APIS   Firewall HAL  APIs
+* @ingroup  firewall_hal
+*
+**/
+
+
+/**
+ * @addtogroup FIREWALL_HAL_TYPES
+ * @{
+ */
+
 #ifndef  INTERFACE_SIZE
 #define  INTERFACE_SIZE     16
 #endif
@@ -251,6 +271,15 @@ _COSA_DML_MD_DEV
     char            BlockDays[64];
 }
 COSA_DML_MD_DEV;
+
+/**
+ * @}
+ */
+
+/**
+ * @addtogroup FIREWALL_HAL_APIS
+ * @{
+ */
 
 /*******************************************************************
 		           FUNCTION PROTOTYPES
@@ -870,3 +899,9 @@ int do_parentalControl_Devices(int OPERATION,COSA_DML_MD_DEV *i_MDDevs);
 void CosaDmlTrustedUser_Accept(int block_type,char  ipAddress[64],int operation);
 
 #endif
+
+/**
+ * @}
+ */
+
+

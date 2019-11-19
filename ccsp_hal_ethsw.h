@@ -71,6 +71,23 @@
 #ifndef __CCSP_HAL_ETHSW_H__
 #define __CCSP_HAL_ETHSW_H__
 
+/**
+* @defgroup ETHSW_HAL  Ethernet Switch HAL
+*
+* @defgroup ETHSW_HAL_TYPES  Ethernet Switch HAL Data Types
+* @ingroup  ETHSW_HAL
+*
+* @defgroup ETHSW_HAL_APIS Ethernet Switch HAL  APIs
+* @ingroup  ETHSW_HAL
+*
+**/
+
+
+/**
+ * @addtogroup ETHSW_HAL_TYPES
+ * @{
+ */
+
 /**********************************************************************
                CONSTANT DEFINITIONS
 **********************************************************************/
@@ -221,7 +238,15 @@ _CCSP_HAL_ETHSW_ADMIN_STATUS
     CCSP_HAL_ETHSW_AdminTest
 }
 CCSP_HAL_ETHSW_ADMIN_STATUS, *PCCSP_HAL_ETHSW_ADMIN_STATUS;
+/**
+ * @}
+ */
 
+
+/**
+ * @addtogroup ETHSW_HAL_APIS
+ * @{
+ */
 
 /**********************************************************************
                 STRUCTURE DEFINITIONS
@@ -230,6 +255,7 @@ CCSP_HAL_ETHSW_ADMIN_STATUS, *PCCSP_HAL_ETHSW_ADMIN_STATUS;
 /* CcspHalEthSwInit :  */
 /**
 * @description Do what needed to intialize the Eth hal.
+*
 * @param None
 *
 * @return The status of the operation.
@@ -375,7 +401,7 @@ CcspHalEthSwGetPortAdminStatus
 /**
 * @description Set the ethernet port admin status
 
-* @param AdminStatus -- set the admin status, as defined in CCSP_HAL_ETHSW_ADMIN_STATUS
+* @param AdminStatus -- Set the admin status, as defined in CCSP_HAL_ETHSW_ADMIN_STATUS
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -402,7 +428,7 @@ CcspHalEthSwSetPortAdminStatus
 * @description Set the ethernet port configuration -- admin up/down, link speed, duplex mode
 
 * @param PortId      -- Port ID as defined in CCSP_HAL_ETHSW_PORT
-* @param AgingSpeed  -- integer value of aging speed
+* @param AgingSpeed  -- Integer value of aging speed
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -428,7 +454,7 @@ CcspHalEthSwSetAgingSpeed
 * @description Query Moca and External switch port for the given MAC address
 
 * @param mac      -- MAC address to search for
-* @param port      -- The return values are: 0: MoCA, 1-4: Ethernet port 
+* @param port     -- The return values are: 0: MoCA, 1-4: Ethernet port 
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
@@ -453,28 +479,46 @@ CcspHalEthSwLocatePortByMacAddress
 //>>zqiu
 //Ethernet HAL for client association/disassociation notification. 
 
+/**
+ * @}
+ */
+
+/**
+ * @addtogroup ETHSW_HAL_TYPES
+ * @{
+ */
+
 typedef struct _eth_device {
 	UCHAR eth_devMacAddress[6];
-	INT  eth_port; 		//which exteranl port the device attached to. index start from 0
-	INT  eth_vlanid; 	//what vlan ID the the port tagged.
+	INT  eth_port; 		//!< which external port the device attached to. index start from 0
+	INT  eth_vlanid; 	//!< what vlan ID the the port tagged.
 	INT  eth_devTxRate; 	// optional
 	INT  eth_devRxRate; 	// optional
 	BOOLEAN eth_Active; 	//device is online/offline
 } eth_device_t;
+/**
+ * @}
+ */
 
-INT CcspHalExtSw_getAssociatedDevice(ULONG *output_array_size, eth_device_t **output_struct); //The HAL need to allowcate array and return the array size by output_array_size
 
-typedef INT ( * CcspHalExtSw_ethAssociatedDevice_callback)(eth_device_t *eth_dev); //This call back will be invoked when new Ethernet client come to associate to AP, or existing Ethernet client left. 
+/**
+ * @addtogroup ETHSW_HAL_APIS
+ * @{
+ */
 
-void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociatedDevice_callback callback_proc); //Callback registration function.
+INT CcspHalExtSw_getAssociatedDevice(ULONG *output_array_size, eth_device_t **output_struct); //!< The HAL need to allocate array and return the array size by output_array_size
+
+typedef INT ( * CcspHalExtSw_ethAssociatedDevice_callback)(eth_device_t *eth_dev); //!< This call back will be invoked when new Ethernet client come to associate to AP, or existing Ethernet client left. 
+
+void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociatedDevice_callback callback_proc); //!< Callback registration function.
 
 //<<
 
 /* CcspHalExtSw_getEthWanEnable() function */
 /**
-* @description Get EthernetWAN enable status
+* @description Get EthernetWAN enable status.
 *
-* @param pFlag - pointer to BOOLEAN to store current EthernetWAN enable value
+* @param pFlag - Pointer to BOOLEAN to store current EthernetWAN enable value
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -490,7 +534,7 @@ CcspHalExtSw_getEthWanEnable
 
 /* CcspHalExtSw_setEthWanEnable() function */
 /**
-* @description Enable/Disable EthernetWAN functionality
+* @description Enable/Disable EthernetWAN functionality.
 *
 * @param Flag - EthernetWAN enable value
 *
@@ -508,9 +552,9 @@ CcspHalExtSw_setEthWanEnable
 
 /* CcspHalExtSw_getEthWanPort() function */
 /**
-* @description Get EthernetWAN port number value
+* @description Get EthernetWAN port number value.
 *
-* @param pPort - pointer to UINT value to store current setting
+* @param pPort - Pointer to UINT value to store current setting
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -526,7 +570,7 @@ CcspHalExtSw_getEthWanPort
 
 /* CcspHalExtSw_setEthWanPort() function */
 /**
-* @description Set EthernetWAN interface/port number
+* @description Set EthernetWAN interface/port number.
 *
 * @param Port - UINT value to set the setting
 *
@@ -541,13 +585,24 @@ CcspHalExtSw_setEthWanPort
   (
     UINT Port
   );
+
+/**
+ * @}
+ */
+
+
+/**
+ * @addtogroup ETHSW_HAL_TYPES
+ * @{
+ */
+
 /* 
-* Define callback function pointers which needs to be called
+* @brief Define callback function pointers which needs to be called
 * from provisioning abstraction layer when any provisioning
 * event occurs.
 */
-typedef void ( *fpEthWanLink_Up ) ( ) ;            /* RDKB expects this callback once EthWan link is UP */
-typedef void ( *fpEthWanLink_Down ) ( ) ;  /* RDKB expects this callback once EthWan link is Down */
+typedef void ( *fpEthWanLink_Up ) ( ) ;            /**< RDKB expects this callback once EthWan link is UP */
+typedef void ( *fpEthWanLink_Down ) ( ) ;  /**< RDKB expects this callback once EthWan link is Down */
 
 /*! \var typedef struct __appCallBack 
 *       \brief struct of pointers to the function pointers of callback functions.
@@ -559,16 +614,28 @@ typedef struct __appCallBack
         fpEthWanLink_Down          pGWP_act_EthWanLinkDown;
 }appCallBack;
 
+/**
+ * @}
+ */
 
-void GWP_RegisterEthWan_Callback(appCallBack *obj); // This function will get used to register RDKB functions to the callback pointers
+/**
+ * @addtogroup ETHSW_HAL_APIS
+ * @{
+ */
+void GWP_RegisterEthWan_Callback(appCallBack *obj); //!< This function will get used to register RDKB functions to the callback pointers
 
-INT GWP_GetEthWanLinkStatus(); /* Returns 1 if active, 0 for inactive */ // RDKB will call this
+INT GWP_GetEthWanLinkStatus(); /**< Returns 1 if active, 0 for inactive */ // RDKB will call this
 
 INT 
 GWP_GetEthWanInterfaceName
 	(
 		unsigned char * Interface 
-	); // This function will get used to retrieve the ETHWAN interface name. API returns 0 = success and 1 = fail
+	); //!< This function will get used to retrieve the ETHWAN interface name. API returns 0 = success and 1 = fail
 
 #endif /* __CCSP_HAL_ETHSW_H__ */
+
+/**
+ * @}
+ */
+
  

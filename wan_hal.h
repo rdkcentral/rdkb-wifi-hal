@@ -22,6 +22,22 @@
 
 #include <stdint.h>
 
+/**
+ * @defgroup WAN_HAL WAN HAL
+ *
+ * @defgroup WAN_HAL_TYPES  WAN HAL Data Types
+ * @ingroup  WAN_HAL
+ *
+ * @defgroup WAN_HAL_APIS   WAN HAL APIs
+ * @ingroup  WAN_HAL
+ *
+ **/
+
+/**
+ * @addtogroup WAN_HAL_TYPES
+ * @{
+ */
+
 #define RETURN_ERROR 1
 #define RETURN_OK 0
 
@@ -77,6 +93,13 @@ _SELFHEAL_CONFIG
     unsigned int rebootStatus;
 }
 SELFHEAL_CONFIG, *PSELFHEAL_CONFIG;
+
+/** @} */  //END OF GROUP WAN_HAL_TYPES
+
+/**
+ * @addtogroup WAN_HAL_APIS
+ * @{
+ */
 
 /* wan_hal_Init() function */
 /**
@@ -180,4 +203,5 @@ int wan_hal_SetQoSConfiguration(PWAN_QOS_QUEUE pQueue, unsigned int QueueNumberO
 */ 
 int wan_hal_RestartWanService(void);
 
+/** @} */  //END OF GROUP WAN_HAL_APIS
 #endif /* __WAN_HAL_H__ */

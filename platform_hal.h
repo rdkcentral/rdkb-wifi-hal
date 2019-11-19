@@ -74,6 +74,24 @@
 #ifndef __PLATFORM_HAL_H__
 #define __PLATFORM_HAL_H__
 
+/**
+* @defgroup platform_hal Platform HAL
+*
+* @defgroup PLATFORM_HAL_TYPES  Platform HAL Data Types
+* @ingroup  platform_hal
+*
+* @defgroup PLATFORM_HAL_APIS   Platform HAL  APIs
+* @ingroup  platform_hal
+*
+**/
+
+
+/**
+ * @addtogroup PLATFORM_HAL_TYPES
+ * @{
+ */
+
+
 /**********************************************************************
                CONSTANT DEFINITIONS
 **********************************************************************/
@@ -124,6 +142,15 @@ extern "C"{
 #ifndef RETURN_ERR
 #define RETURN_ERR   -1
 #endif
+
+/**
+ * @}
+ */
+
+/**
+ * @addtogroup PLATFORM_HAL_APIS
+ * @{
+ */
 
 /**********************************************************************************
  *
@@ -261,8 +288,8 @@ INT platform_hal_SetWebUITimeout(ULONG value);
 * @description Get Web Access Level 
 *
 * @param userIndex - User Index
-* @param ifIndex - Interface Index
-* @param pValue - Web Access Level, to be returned
+* @param ifIndex   - Interface Index
+* @param pValue    - Web Access Level, to be returned
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -277,8 +304,8 @@ INT platform_hal_GetWebAccessLevel(INT userIndex, INT ifIndex, ULONG *pValue);
 * @description Set Web Access Level 
 *
 * @param userIndex - User Index
-* @param ifIndex - Interface Index
-* @param value - Web Access Level
+* @param ifIndex   - Interface Index
+* @param value     - Web Access Level
 *
 * <table>
 * <caption id="multi_row">Lan Level Vs Index table</caption>
@@ -379,7 +406,7 @@ INT platform_hal_GetHardwareVersion(CHAR* pValue);
 /**
 * @description Get software version flashed in the device
 *
-* @param pValue - Software version, to be returned
+* @param pValue  - Software version, to be returned
 * @param maxSize - Maximum size of the Software version string
 *
 * @return The status of the operation
@@ -394,7 +421,7 @@ INT platform_hal_GetSoftwareVersion(CHAR* pValue, ULONG maxSize);
 /**
 * @description Get bootloader version flashed in the device
 *
-* @param pValue - Bootloader version, to be returned
+* @param pValue  - Bootloader version, to be returned
 * @param maxSize - Maximum size of the bootloader version string
 *
 * @return The status of the operation
@@ -409,7 +436,7 @@ INT platform_hal_GetBootloaderVersion(CHAR* pValue, ULONG maxSize);
 /**
 * @description Get firmware image name flashed in the device
 *
-* @param pValue - Firmware image name, to be returned
+* @param pValue  - Firmware image name, to be returned
 * @param maxSize - Maximum size of the bootloader version string
 *
 * @return The status of the operation
@@ -579,7 +606,7 @@ INT platform_hal_SetDeviceCodeImageTimeout(INT seconds);
 
 /* platform_hal_SetDeviceCodeImageValid() function */
 /**
-* @description Set Valid flag for firmware image flashed in the device
+* @description Set Valid flag for firmware image flashed in the device.
 *
 * @param flag - Image valid flag
 *
@@ -592,8 +619,7 @@ INT platform_hal_SetDeviceCodeImageTimeout(INT seconds);
 INT platform_hal_SetDeviceCodeImageValid(BOOLEAN flag);
 /* platform_hal_getFactoryPartnerId function */
 /**
-* @description Get FactoryPartnerID from the the device
-*
+* @description Get FactoryPartnerID from the the device.
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -605,8 +631,7 @@ INT platform_hal_getFactoryPartnerId(CHAR *pValue);
 
 /* platform_hal_getFactoryCmVariant function */
 /**
-* @description Get FactoryCmVariant from the the device
-*
+* @description Get FactoryCmVariant from the the device.
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -618,8 +643,7 @@ INT platform_hal_getFactoryCmVariant(CHAR *pValue);
 
 /* platform_hal_setFactoryCmVariant function */
 /**
-* @description Set FactoryCmVariant from the the device
-*
+* @description Set FactoryCmVariant from the the device.
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -628,6 +652,11 @@ INT platform_hal_getFactoryCmVariant(CHAR *pValue);
 * @sideeffect None
 */
 INT platform_hal_setFactoryCmVariant(CHAR *pValue);
+
+/**
+ * @addtogroup PLATFORM_HAL_TYPES
+ * @{
+ */
 
 typedef  enum {
    LED_WHITE=0,
@@ -641,11 +670,21 @@ typedef  enum {
 
 typedef struct _LEDMGMT_PARAMS
 {
-LED_COLOR  LedColor;  // LED_COLOR
-INT  State;	// 0 for Solid, 1 for Blink
-INT  Interval;	// In case fs State is blink then interval per second
+LED_COLOR  LedColor;  //!< LED_COLOR
+INT  State;	//!< 0 for Solid, 1 for Blink
+INT  Interval;	//!< In case fs State is blink then interval per second
 }
 LEDMGMT_PARAMS, *PLEDMGMT_PARAMS;
+
+/**
+ * @}
+ */
+
+/**
+ * @addtogroup PLATFORM_HAL_APIS
+ * @{
+ */
+
 /* platform_hal_setLed function */
 /**
 * @description Set Led behavior of the device
@@ -728,7 +767,7 @@ INT platform_hal_SetSNMPOnboardRebootEnable(CHAR* pValue);
 * @description Get MACsec enable status
 *
 * @param ethPort - Ethernet port (zero-based)
-* @param pFlag - MACsec enable value, to be returned
+* @param pFlag   - MACsec enable value, to be returned
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -742,7 +781,7 @@ INT platform_hal_GetMACsecEnable(INT ethPort, BOOLEAN *pFlag);
 * @description Enable/Disable MACsec
 *
 * @param ethPort - Ethernet port (zero-based)
-* @param Flag - MACsec enable value
+* @param Flag    - MACsec enable value
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -756,7 +795,7 @@ INT platform_hal_SetMACsecEnable(INT ethPort, BOOLEAN Flag);
 * @description Get MACsec operation status
 *
 * @param ethPort - Ethernet port (zero-based)
-* @param pFlag - MACsec operation status value, to be returned
+* @param pFlag   - MACsec operation status value, to be returned
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -769,4 +808,9 @@ INT platform_hal_GetMACsecOperationalStatus(INT ethPort, BOOLEAN *pFlag);
 #endif
 
 #endif
+
+/**
+ * @}
+ */
+
  

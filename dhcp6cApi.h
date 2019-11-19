@@ -26,6 +26,11 @@
 #ifndef _DHCP6_CLIENT_API_
 #define _DHCP6_CLIENT_API_
 
+/**
+ * @addtogroup DHCPV4C_HAL_APIS
+ * @{
+ */
+
 /* ert_dhcp6c_get_info() function */
 /**
 * @description Gets the E-Router Info.
@@ -62,6 +67,7 @@ int ert_dhcp6c_get_info(dhcp6cInfo_t *pInfo);
 */
 int ecm_dhcp6c_get_info(dhcp6cInfo_t *pInfo);
 
+/** @} */  //END OF GROUP DHCPV4C_HAL_APIS
 #endif
 
 

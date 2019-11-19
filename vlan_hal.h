@@ -106,10 +106,28 @@
 #define RETURN_ERR   -1
 #endif
 
+/**
+ * @defgroup VLAN_HAL Virtual LAN HAL
+ *
+ * VLAN HAL layer is intended to support VLAN drivers through the System Calls.
+ *
+ * @defgroup VLAN_HAL_TYPES  VLAN HAL Data Types
+ * @ingroup  VLAN_HAL
+ *
+ * @defgroup VLAN_HAL_APIS   VLAN HAL APIs
+ * @ingroup  VLAN_HAL
+ *
+ **/
+
+/**
+ * @addtogroup VLAN_HAL_TYPES
+ * @{
+ */
+
 //defines for HAL version 1.0
-#define VLAN_HAL_MAJOR_VERSION 1   		// This is the major verion of this HAL.
-#define VLAN_HAL_MINOR_VERSION 0   		// This is the minor verson of the HAL.
-#define VLAN_HAL_MAINTENANCE_VERSION 1  // This is the maintenance version of the HAL.
+#define VLAN_HAL_MAJOR_VERSION 1   		/**< This is the major verion of this HAL. */
+#define VLAN_HAL_MINOR_VERSION 0   		/**< This is the minor verson of the HAL. */
+#define VLAN_HAL_MAINTENANCE_VERSION 1  /**< This is the maintenance version of the HAL. */
 
 //defines for charecter length for VLAN configurartion
 #define VLAN_HAL_MAX_VLANGROUP_TEXT_LENGTH			32  
@@ -135,11 +153,18 @@ typedef struct _vlan_vlanidconfiguration
 	 	
 } vlan_vlanidconfiguration_t;
 
+/** @} */  //END OF GROUP VLAN_HAL_TYPES
+
 /**********************************************************************
  *
  *  VLAN HAL function prototypes 
  *
 ***********************************************************************/
+
+/**
+ * @addtogroup VLAN_HAL_APIS
+ * @{
+ */
 
 /**
 * @description This HAL is used to creat an new vlan group, and assig default vlanID.
@@ -373,6 +398,8 @@ int get_vlanId_for_GroupName(const char *groupName, char *vlanID);
 */
 
 int print_all_vlanId_Configuration(void);
+
+/** @} */  //END OF GROUP VLAN_HAL_APIS
 
 /*
 Example usage on Puma6 platfom:

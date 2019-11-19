@@ -79,6 +79,24 @@ hardware abstraction layer for Cable Modem
 /**********************************************************************
                CONSTANT DEFINITIONS
 **********************************************************************/
+/**
+* @defgroup mta_hal MTA HAL
+*
+* This module provides the function call prototypes and structure definitions used for the  MTA hardware abstraction layer.
+*
+* @defgroup MTA_HAL_TYPES  MTA HAL Data Types
+* @ingroup  mta_hal
+*
+* @defgroup MTA_HAL_APIS   MTA HAL  APIs
+* @ingroup  mta_hal
+*
+**/
+
+
+/**
+ * @addtogroup MTA_HAL_TYPES
+ * @{
+ */
 
 #ifndef ULONG
 #define ULONG unsigned long
@@ -401,6 +419,16 @@ typedef  enum {
 	MTA_COMPLETE=2,
 	MTA_ERROR
 } MTAMGMT_MTA_STATUS;
+
+/**
+ * @}
+ */
+
+/**
+ * @addtogroup MTA_HAL_APIS
+ * @{
+ */
+
 
 /**********************************************************************************
  *
@@ -1326,4 +1354,8 @@ typedef INT ( * mta_hal_getLineRegisterStatus_callback)(MTAMGMT_MTA_STATUS *outp
 void mta_hal_LineRegisterStatus_callback_register(mta_hal_getLineRegisterStatus_callback callback_proc); //Callback registration function.
 
 #endif /* __MTA_HAL_H__ */
+/**
+ * @}
+ */
+
 

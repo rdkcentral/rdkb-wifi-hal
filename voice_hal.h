@@ -67,9 +67,23 @@
 
 #include <stdint.h>
 
+/**
+ * @defgroup VOICE_HAL VOICE HAL
+ *
+ * @defgroup VOICE_HAL_TYPES  VOICE HAL Data Types
+ * @ingroup  VOICE_HAL
+ *
+ * @defgroup VOICE_HAL_APIS   VOICE HAL APIs
+ * @ingroup  VOICE_HAL
+ *
+ **/
 /**********************************************************************
                CONSTANT DEFINITIONS
 **********************************************************************/
+/**
+ * @addtogroup VOICE_HAL_TYPES
+ * @{
+ */
 
 /* Curiously, rdk_error.h only defines RDK_SUCCESS.
  * Here, additional Voice specific error codes are defined.
@@ -193,60 +207,27 @@ typedef struct
 {
     uint16_t                   id;   /**< for internal use only */
     bool                       resetStatistics;  /**< ResetStatistics */
-    /* Total number of RTP packets sent for this line. */
-    uint32_t                   PacketsSent;
-    /* Total number of RTP payload bytes received for this line. */
-    uint32_t                   PacketsReceived;
-    /*Total number of RTP payload bytes sent for this line.  */
-    uint32_t                   BytesSent;
-    /* Total number of RTP payload bytes received for this line. */
-    uint32_t                   BytesReceived;
-    /* Total number of RTP packets that have been lost for this line. */
-    uint32_t                   PacketsLost;
-    /* Total incoming calls received. */
-    uint32_t                   IncomingCallsReceived; 
-    /* Total incoming calls answered by the local user. */
-    uint32_t                   IncomingCallsAnswered;
-    /* Total incoming calls that successfully completed call setup signalling. */
-    uint32_t                   IncomingCallsConnected;
-    /* Total incoming calls that failed to successfully complete call setup signalling. */
-    uint32_t                   IncomingCallsFailed;
-    /* Total outgoing calls attempted. */ 
-    uint32_t                   OutgoingCallsAttempted;
-    /* Total outgoing calls answered by the remote user. */
-    uint32_t                   OutgoingCallsAnswered;
-    /* Total outgoing calls that successfully completed call setup signalling. */
-    uint32_t                   OutgoingCallsConnected;
-    /* Total outgoing calls that failed to successfully complete call setup signaling. */
-    uint32_t                   OutgoingCallsFailed;
-    /* Current receive packet loss rate in percent, calculated as defined in 
-     * [section 6.4-RFC3550] */
-    uint32_t                   ReceivePacketLossRate;
-    /* Current far end receive packet lost rate in percent, calculated as defined
-     * in  [Section6.4/RFC3550]. */
-    uint32_t                   FarEndPacketLossRate;
-    /* Current receive interarrival jitter in�| microseconds. Calculated from J(i) as 
-     * defined in [Section6.4/RFC3550], with units converted to�| microseconds. */
-    uint32_t                   ReceiveInterarrivalJitter;
-    /* Current Interarrival jitter in microseconds as reported from the far-end 
-     * device via RTCP. Calculated from J(i) as defined in [Section64./RFC3550], 
-     * with units converted to microseconds. */
-    uint32_t                   FarEndInterarrivalJitter;
-    /* Current round trip delay in microseconds calculated as defined in
-     * [section 6.4-RFC3550]. */
-    uint32_t                   RoundTripDelay;
-    /* Average receive interarrival jitter in microseconds since the beginning 
-     * of the current call. Calculated as the average of D(i,j) as defined in 
-     * [Section6.4/RFC3550], with units converted to microseconds.*/
-    uint32_t                   AverageReceiveInterarrivalJitter;
-    /* Average far-end interarrival jitter in microseconds since the beginning 
-     * of the current call. Calculated as the average of the interarrival jitter 
-     * values reported by the far-end, with units converted to microseconds.*/
-    uint32_t                   AverageFarEndInterarrivalJitter;
-    /* Average round trip delay in microseconds since the beginning of the current
-     * call. Average of the RoundTripDelay statistic accumulated each time the
-     *  delay is calculated. */
-    uint32_t                   AverageRoundTripDelay;
+    uint32_t                   PacketsSent; /**< Total number of RTP packets sent for this line. */
+    uint32_t                   PacketsReceived; /**< Total number of RTP payload bytes received for this line. */
+    uint32_t                   BytesSent; /**< Total number of RTP payload bytes sent for this line.  */
+    uint32_t                   BytesReceived; /**< Total number of RTP payload bytes received for this line. */
+    uint32_t                   PacketsLost; /**< Total number of RTP packets that have been lost for this line. */
+    uint32_t                   IncomingCallsReceived; /**< Total incoming calls received. */
+    uint32_t                   IncomingCallsAnswered; /**< Total incoming calls answered by the local user. */
+    uint32_t                   IncomingCallsConnected; /**< Total incoming calls that successfully completed call setup signalling. */
+    uint32_t                   IncomingCallsFailed; /**< Total incoming calls that failed to successfully complete call setup signalling. */
+    uint32_t                   OutgoingCallsAttempted; /**< Total outgoing calls attempted. */
+    uint32_t                   OutgoingCallsAnswered; /**< Total outgoing calls answered by the remote user. */
+    uint32_t                   OutgoingCallsConnected; /**< Total outgoing calls that successfully completed call setup signalling. */
+    uint32_t                   OutgoingCallsFailed; /**< Total outgoing calls that failed to successfully complete call setup signaling. */
+    uint32_t                   ReceivePacketLossRate; /**< Current receive packet loss rate in percent, calculated as defined in [section 6.4-RFC3550] */
+    uint32_t                   FarEndPacketLossRate; /**< Current far end receive packet lost rate in percent, calculated as defined in  [Section6.4/RFC3550]. */
+    uint32_t                   ReceiveInterarrivalJitter; /**< Current receive interarrival jitter in�| microseconds. Calculated from J(i) as defined in [Section6.4/RFC3550], with units converted to�| microseconds. */
+    uint32_t                   FarEndInterarrivalJitter; /**< Current Interarrival jitter in microseconds as reported from the far-end device via RTCP. Calculated from J(i) as defined in [Section64./RFC3550], with units converted to microseconds. */
+    uint32_t                   RoundTripDelay; /**< Current round trip delay in microseconds calculated as defined in [section 6.4-RFC3550]. */
+    uint32_t                   AverageReceiveInterarrivalJitter; /**< Average receive interarrival jitter in microseconds since the beginning of the current call. Calculated as the average of D(i,j) as defined in [Section6.4/RFC3550], with units converted to microseconds.*/
+    uint32_t                   AverageFarEndInterarrivalJitter; /**< Average far-end interarrival jitter in microseconds since the beginning of the current call. Calculated as the average of the interarrival jitter values reported by the far-end, with units converted to microseconds. */
+    uint32_t                   AverageRoundTripDelay; /**< Average round trip delay in microseconds since the beginning of the current call. Average of the RoundTripDelay statistic accumulated each time the delay is calculated. */
 } TelcoVoipAgent_VoiceService_Stats_t;
 
 typedef  struct 
@@ -270,6 +251,8 @@ typedef  struct
 }
 TelcoVoipAgent_Voice_Credentials_t, *pTelcoVoipAgent_Voice_Credentials_t;
 
+/** @} */  //END OF GROUP VOICE_HAL_TYPES
+
 /*****************************************************************************
  * 
  * Ccsp Telco voice HAL function prototypes
@@ -281,6 +264,12 @@ TelcoVoipAgent_Voice_Credentials_t, *pTelcoVoipAgent_Voice_Credentials_t;
  * Basic management
  * 
  *****************************************************************************/
+
+/**
+ * @addtogroup VOICE_HAL_APIS
+ * @{
+ */
+
 /* voice_hal_Init :  */
 /**
 * @description Init the Voice Hal.
@@ -2239,6 +2228,7 @@ int32_t voice_hal_resetLineStats(uint32_t service, uint32_t profile, uint32_t li
 *
 */
 void voice_hal_print_debug_counters();
+/** @} */  //END OF GROUP VOICE_HAL_APIS
 
 #endif /* __voice_hal_H__ */
 

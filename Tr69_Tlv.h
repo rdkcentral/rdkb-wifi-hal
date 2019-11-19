@@ -19,6 +19,24 @@
 #ifndef _TR69TLV_H_
 #define _TR69TLV_H_
 
+/**
+* @defgroup tr69_hal TR69-TLV HAL
+*
+* Telemetry Key fields and data fields are stored in the database as TLV (Tag, Length, Value).
+*
+* - Tag - uniquely identifies the field.
+* - Length - gives the size (in number of bytes) of the data associated with the field.
+* - Value - contains the actual data associated with the field stored in network byte ordering.
+*
+* @defgroup TR69_HAL_TYPES Tr69-TLV HAL Data Types
+* @ingroup  tr69_hal
+*
+**/
+
+/**
+ * @addtogroup TR69_HAL_TYPES
+ * @{
+ */
 typedef struct _Tr69TlvData{
     char URL[256];
     char Username[50];
@@ -34,3 +52,6 @@ typedef struct _Tr69TlvData{
 }Tr69TlvData;
 
 #endif
+/**
+ * @}
+ */
