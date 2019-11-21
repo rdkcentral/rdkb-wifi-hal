@@ -660,7 +660,6 @@ LEDMGMT_PARAMS, *PLEDMGMT_PARAMS;
 INT platform_hal_setLed(PLEDMGMT_PARAMS pValue);
 
 
-#ifdef _XB7_PRODUCT_REQ_
 /* platform_hal_getFanSpeed function */
 /**
 * @description Get the fan speed in RPMs
@@ -710,7 +709,6 @@ BOOLEAN platform_hal_getFanStatus();
 * @return RETURN_OK on success setting/unsetting the fan to run in high speed mode
 */
 INT platform_hal_setFanMaxOverride(BOOLEAN bOverrideFlag);
-#endif // _XB7_PRODUCT_REQ_
 
 /* platform_hal_SetSNMPOnboardRebootEnable() function */
 /**
