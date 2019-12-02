@@ -8472,6 +8472,350 @@ typedef struct {
  */
 INT wifi_getVAPTelemetry(UINT apIndex, wifi_VAPTelemetry_t *telemetry);
 
+/* @description This call back is invoked when a STA responds to a DPP Authentication
+ * Request from the gateway    with DPP Authentication Response
+ *
+ * @param apIndex; index of the vAP where the DPP Authentication Response frame is received
+ * @param staMAC, MAC address of the peer device
+ * @param status, one of wifi_dppAuthResponseStatus_t authentication response status
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls.
+ */
+
+/************* DPP *************************/
+typedef enum {
+      WIFI_DPP_TECH_INFRA
+} wifi_DppTechnology_t;
+
+typedef enum {
+      WIFI_DPP_KEY_MGMT_PSK,
+      WIFI_DPP_KEY_MGMT_DPP,
+      WIFI_DPP_KEY_MGMT_SAE,
+      WIFI_DPP_KEY_MGMT_PSKSAE
+} wifi_DppKeyManagement_t;
+
+typedef struct {
+  // TODO: modeled from DPP spec
+  // This is only need for DPP key_management, psk & sae stations
+  // won't need this
+} wifi_DppConnector_t;
+
+typedef struct {
+      wifi_DppKeyManagement_t keyManagement;
+      union {
+        unsigned char    preSharedKey[128];
+        char    passPhrase[64];
+        wifi_DppConnector_t dppConnector;
+      } creds;
+} wifi_DppCredentialObject_t;
+
+typedef ssid_t        wifi_DppDiscoveryObject_t;
+
+// DPP Configuration Object
+typedef struct {
+      wifi_DppTechnology_t             wifiTech;
+      wifi_DppDiscoveryObject_t         discovery;
+      wifi_DppCredentialObject_t        credentials;
+} wifi_DppConfigurationObject_t;
+
+typedef enum {
+    STATE_DPP_UNPROVISIONED,
+    STATE_DPP_AUTH_RSP_PENDING,
+    STATE_DPP_AUTH_FAILED,
+    STATE_DPP_AUTHENTICATED,
+    STATE_DPP_CFG_RSP_SENT,
+    STATE_DPP_CFG_ASSOC_IND_RECEIVED,
+    STATE_DPP_PROVISIONED = STATE_DPP_CFG_ASSOC_IND_RECEIVED
+} wifi_dpp_state_t;
+
+typedef enum {
+    RESPONDER_STATUS_OK,
+    RESPONDER_STATUS_NOT_COMPATIBLE,
+    RESPONDER_STATUS_AUTH_FAILURE,
+    RESPONDER_STATUS_BAD_CODE,
+    RESPONDER_STATUS_BAD_GROUP,
+    RESPONDER_STATUS_CONFIGURATION_FAILURE,
+    RESPONDER_STATUS_RESPONSE_PENDING,
+    RESPONDER_STATUS_INVALID_CONNECTOR,
+    RESPONDER_STATUS_NO_MATCH,
+    RESPONDER_STATUS_CONFIG_REJECTED,
+    RESPONDER_STATUS_NOT_AVAILABLE,
+} wifi_enrollee_responder_status_t;
+
+typedef enum {
+    ActStatus_Idle,
+    ActStatus_Config_Error,
+    ActStatus_In_Progress,
+    ActStatus_No_Response,
+    ActStatus_Failed,
+    ActStatus_OK
+} wifi_activation_status_t;
+
+typedef struct {
+    mac_address_t  sta_mac;
+    char            iPubKey[256];
+    char            rPubKey[256];
+	
+    unsigned int    channel; // current channel that DPP Authentication request will be sent on
+
+    void 			*instance;
+    wifi_dpp_state_t    state;
+} wifi_dpp_session_data_t;
+
+typedef enum {
+	dpp_context_type_session_data,
+	dpp_context_type_received_frame_auth_rsp,
+	dpp_context_type_received_frame_cfg_req
+} wifi_device_dpp_context_type_t;
+
+typedef enum {
+	wifi_dpp_frame_type_auth_rsp,
+	wifi_dpp_frame_type_config_req,
+} wifi_dpp_frame_type_t;
+
+typedef struct {
+	UCHAR *frame;
+	UINT 	length;
+	wifi_dpp_frame_type_t	frame_type;
+} wifi_dpp_received_frame_t;
+
+typedef struct {
+    unsigned int ap_index;
+	wifi_device_dpp_context_type_t type;
+	wifi_dpp_session_data_t		session_data;
+	wifi_dpp_received_frame_t	received_frame;
+    unsigned int    dpp_init_retries;
+    unsigned int    max_retries;
+    unsigned char   token;
+    wifi_DppConfigurationObject_t config;
+    wifi_enrollee_responder_status_t     enrollee_status;
+    wifi_activation_status_t    activation_status;
+    unsigned int    check_for_associated;
+    unsigned int    check_for_config_requested;
+	unsigned int	num_channels;	// number of channels that enrollee can listen on
+	unsigned int	channels_list[32]; // list of channels that enrollee can listen on
+	unsigned int	current_attempts; // number of failed attempts on N different channels off the list
+} wifi_device_dpp_context_t;
+
+
+/* @description Initiate device provisioning with unprovisioned DPP enabled client.
+ * Causes AP to start transmitting DPP Authentication Request unicast message to client on current operating channel.
+ * Sent from the AP at apIndex.  Returns an error if message transmission fails.
+ *
+ * @param apIndex; index of the vAP to send the request from.
+ * @param staMAC, MAC address string of the peer device to send the request
+ *      to.  Must be an external device MAC address.
+ * @param iBootstrapSubjectPubKeyInfoB64; pointer to initiator's DER encoded ASN.1 base64 subject public key info (RFC 5280).
+ * @param rBootstrapSubjectPubKeyInfoB64; pointer to responder's DER encoded ASN.1 base64 subject public key info (RFC 5280).
+ * @param channel; frequency in Hz of channel on which initiator should send the DPP Authentication Request public action frame
+
+ 
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+
+INT wifi_dppInitiate(wifi_device_dpp_context_t *ctx);
+
+/* @description Cancel device provisioning if DPP Authentication Response is not receieved after number of sent requets
+ * Causes AP to stop transmitting DPP Authentication Request unicast message to client on current operating channel.
+ * If DPP Authentication Response has already been received from client, the provisioning sequence can not be cancelled.
+ * Sent from the AP at apIndex.  Returns an error if message transmission fails.
+ *
+ * @param apIndex; index of the vAP to send the request from.
+ * @param staMAC, MAC address string of the peer device to send the request
+ *      to.  Must be an external device MAC address.
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+INT wifi_dppCancel(wifi_device_dpp_context_t *ctx);
+/* @description This call back is invoked when a STA responds to a DPP Authentication
+ * Request from the gateway    with DPP Authentication Response
+ *
+ * @param apIndex; index of the vAP where the DPP Authentication Response frame is received
+ * @param staMAC, MAC address of the peer device
+ * @param status, one of wifi_dppAuthResponseStatus_t authentication response status
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls.
+ */
+typedef void (*wifi_dppAuthResponse_callback_t)(UINT apIndex, 
+                                                mac_address_t sta,
+                                                UCHAR *frame,
+												UINT len);
+/* @description This call back is invoked when a STA sends DPP Configuration
+ * Request to the gateway
+ *
+ * @param apIndex; index of the vAP where the DPP Configuration Request frame is received
+ * @param staMAC, MAC address string of the peer device
+ * @param configAttributes, address of memory pointing to configuration attributes
+ * @param length, length of memory in bytes
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls.
+ */
+typedef void (*wifi_dppConfigRequest_callback_t)(UINT apIndex,
+                                                mac_address_t sta,
+												UCHAR token,
+                                                UCHAR *attribs,
+                                                UINT length);
+
+typedef enum
+{
+    WIFI_FRAME_TYPE_PROBE_REQ,
+    WIFI_FRAME_TYPE_ACTION,
+} wifi_mgmtFrameType_t;
+
+typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type);
+
+ /*
+ * @description DPP callbacks registration for AuthResponse & dppConfigRequest functions.
+ *
+ * @param wifi_dppAuthResponse_callback - DPP Authentication Response callback function
+ * @param wifi_dppConfigRequest_callback - DPP Config Request callback function
+ *
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls.
+ */
+ 
+INT wifi_dpp_frame_received_callbacks_register(wifi_dppAuthResponse_callback_t dppAuthCallback,
+                                    wifi_dppConfigRequest_callback_t dppCpnfigCallback);
+
+/* @description send athentication confiration as per DPP specifications
+ * Causes AP to transmit DPP Authentication Conf message frame to STA that will cause STA 
+ * to request configuration process in case confirmation status is set to success
+ * Sent from the AP at apIndex.  Returns an error if message transmission fails.
+ *
+ * @param apIndex; index of the vAP to send the request from.
+ * @param staMAC, MAC address string of the peer device to send the request
+ *      to.  Must be an external device MAC address.
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+
+INT wifi_dppSendAuthCnf(wifi_device_dpp_context_t *ctx);
+
+/* @description send device specific configuration as per DPP specifications
+ * Causes AP to transmit DPP Configuration Response frame to STA with device specific 
+ * configuration
+ * Sent from the AP at apIndex.  Returns an error if message transmission fails.
+ *
+ * @param apIndex; index of the vAP to send the request from.
+ * @param staMAC, MAC address string of the peer device to send the request
+ *      to.  Must be an external device MAC address.
+ * @param config, start address of memory pointing to configuration
+ * @param length, length in bytes of memory pointing to configuration
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+
+INT wifi_dppSendConfigResponse(wifi_device_dpp_context_t *ctx);
+
+/* @description set STA specific password key
+ * Configures STA specific password in AP
+ *
+ * @param apIndex; index of the vAP to send the request from.
+ * @param staMAC, MAC address string of the peer device to send the request
+ *      to.  Must be an external device MAC address.
+ * @param key
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+
+INT wifi_dppSetSTAPassphrase(UINT apIndex, 
+                                CHAR *sta,
+                                CHAR *key);
+
+/* @description remove STA specific password key
+ * Removes STA specific password in AP
+ *
+ * @param apIndex; index of the vAP to send the request from.
+ * @param staMAC, MAC address string of the peer device to send the request
+ *      to.  Must be an external device MAC address.
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+
+INT wifi_dppRemoveSTAPassphrase(UINT apIndex,
+                                CHAR *sta);
+
+/* @description transmit an action frame 
+ * Transmits an action frame to STA from a specific VAP
+ *
+ * @param apIndex; index of the vAP to send the frame from.
+ * @param staMAC; MAC address string of the peer device to send the frame to
+ * @param channel; channel on which this action frame should be sent on (for public action frames that 
+ *      can be sent tp a device on off channel
+ * @param frame; pointer to the frame buffer
+ * @param len; length of the buffer
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+
+INT wifi_sendActionFrame(INT apIndex,
+                                mac_address_t sta,
+                                UINT frequency,
+                                UCHAR *frame,
+                                UINT len);
+
+/* @description call back for a received management frame (probe requests and action frames) on a VAP
+ * This callback is a manadatory static callback that MUST be implemented when management frames 
+ * are received. If a hander for probe requests or some specific public action frames are registered, 
+ * then the registered callbacks should be invoked
+ * Callback for a received management frame on a VAP
+ *
+ * @param apIndex; index of the vAP
+ * @param frame; pointer to the frame buffer, the buffer points to the data
+ * @param len; length of the buffer
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected.
+ */
+
+typedef enum {
+    pre_assoc_probe_block,
+    pre_assoc_assoc_block,
+    post_assoc_idle_80211v,
+    post_assoc_idle_kick_mac,
+    post_assoc_active_80211v,
+    post_assoc_active_kickmac,
+} wifi_steer_type_t;
+typedef unsigned int     wifi_steer_matching_condition_t;
+
+typedef struct {
+    CHAR     *module;
+    mac_address_t     sta_mac;
+    mac_address_t     src_bss;
+    mac_address_t     dst_bss;
+    wifi_steer_type_t     type;
+    wifi_steer_matching_condition_t     cond;
+} wifi_steer_trigger_data_t;
+typedef INT (* wifi_steerTriggered_callback)(INT apIndex, wifi_steer_trigger_data_t *data);
+void wifi_steerTriggered_callback_register(wifi_steerTriggered_callback callback_proc, CHAR *module);
+
 /* 802.11ax HAL API prototypes */
 
 INT wifi_setDownlinkMuType  (INT    radio_index,
