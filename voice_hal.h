@@ -1225,6 +1225,42 @@ int32_t voice_hal_setEnableNetworkDisconnect(uint32_t service, uint32_t profile,
 */
 int32_t voice_hal_getEnableNetworkDisconnect(uint32_t service, uint32_t profile, bool *enableDisconnect);
 
+/* voice_hal_setEnablePrackRequired: */
+/**
+* @description set the enable/disable state of the PRACK required
+* 
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param bool enablePrackRequired
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_setEnablePrackRequired(uint32_t service, uint32_t profile, bool enablePrackRequired);
+
+/* voice_hal_getEnablePrackRequired: */
+/**
+* @description set the enable/disable state of the PRACK required
+* 
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param bool *enablePrackRequired - output the state of the PRACK required
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getEnablePrackRequired(uint32_t service, uint32_t profile, bool *enablePrackRequired);
+
 /*****************************************************************************
  * 
  *    Regionalisation 
