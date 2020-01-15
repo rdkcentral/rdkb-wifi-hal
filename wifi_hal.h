@@ -856,8 +856,8 @@ typedef struct _wifi_rssi_snapshot {
 } wifi_rssi_snapshot_t;
 
 typedef struct _wifi_associated_dev_stats {
-	ULLONG 	cli_rx_bytes;				/**< The total number of bytes transmitted to the client device, including framing characters. */
-	ULLONG 	cli_tx_bytes;				/**< The total number of bytes received from the client device, including framing characters. */
+	ULLONG 	cli_rx_bytes;				/**< The total number of bytes received from the client device, including framing characters. */
+	ULLONG 	cli_tx_bytes;				/**< The total number of bytes transmitted to the client device, including framing characters. */
 	ULLONG 	cli_rx_frames;				/**< The total number of frames received from the client */
 	ULLONG 	cli_tx_frames;				/**< The total number of frames transmitted to the client */
 	ULLONG 	cli_rx_retries;				/**< Number of rx retries */
@@ -880,12 +880,16 @@ typedef struct _wifi_associated_dev_stats {
 //SURVEY CHANNEL
 /* wifi_getWifiChannelStats() function */
 /**
-* @brief Get the all (currently used by configured regualtory domain) Radio channel utilization status.
+* @brief Get the channels utilization status.
 *
-* @param[in]   radioIndex                       The index of the radio array
-* @param[out]  input_output_channelStats_array  Channel status info to be returned
-* @param[out]  array_size                       The length of the output array
-* When array_size = 0, the API return ONCHAN stats
+* @param[in]      radioIndex                      The index of the radio
+* @param[in, out] input_output_channelStats_array The array initially filled with requested channel numbers.
+*                                                 The same array is used as an output with channel statistics
+*                                                 details. Data for each channel must be written to the corresponding
+*                                                 element of the array. When array_size = 0, the API returns ONCHAN
+*                                                 stats in a single wifi_channelStats_t element.
+* @param[out]     array_size                      The length of the output array
+*
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -1824,7 +1828,7 @@ INT wifi_setRadioMode(INT radioIndex, CHAR *channelMode, UINT pureMode);	//RDKB
 */
 //Device.WiFi.Radio.{i}.PossibleChannels
 //Get the list of supported channel. eg: "1-11"
-//The output_string is a max length 64 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
+//The output_string is a max length 128 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
 INT wifi_getRadioPossibleChannels(INT radioIndex, CHAR *output_string);	//RDKB
 
 /* wifi_getRadioChannelsInUse() function */
@@ -7215,14 +7219,14 @@ typedef enum {
  * steering library.
  */
 typedef enum {
-    WIFI_STEERING_EVENT_PROBE_REQ           = 1,    /**< Probe Request Event        */
-    WIFI_STEERING_EVENT_CLIENT_CONNECT,             /**< Client Connect Event       */
-    WIFI_STEERING_EVENT_CLIENT_DISCONNECT,          /**< Client Disconnect Event    */
-    WIFI_STEERING_EVENT_CLIENT_ACTIVITY,            /**< Client Active Change Event */
-    WIFI_STEERING_EVENT_CHAN_UTILIZATION,           /**< Channel Utilization Event  */
-    WIFI_STEERING_EVENT_RSSI_XING,                  /**< Client RSSI Crossing Event */
-    WIFI_STEERING_EVENT_RSSI,                       /**< Instant Measurement Event  */
-    WIFI_STEERING_EVENT_AUTH_FAIL                   /**< Client Auth Failure Event  */
+    WIFI_STEERING_EVENT_PROBE_REQ           = 1,    /**< Probe Request Event                             */
+    WIFI_STEERING_EVENT_CLIENT_CONNECT,             /**< Client association completed successfully Event */
+    WIFI_STEERING_EVENT_CLIENT_DISCONNECT,          /**< Client Disconnect Event                         */
+    WIFI_STEERING_EVENT_CLIENT_ACTIVITY,            /**< Client Active Change Event                      */
+    WIFI_STEERING_EVENT_CHAN_UTILIZATION,           /**< Channel Utilization Event                       */
+    WIFI_STEERING_EVENT_RSSI_XING,                  /**< Client RSSI Crossing Event                      */
+    WIFI_STEERING_EVENT_RSSI,                       /**< Instant Measurement Event                       */
+    WIFI_STEERING_EVENT_AUTH_FAIL                   /**< Client Auth Failure Event                       */
 } wifi_steering_eventType_t;
 
 /**
@@ -9579,8 +9583,9 @@ typedef struct _wifi_channelMap_t {
  * Parameters :
  * radioIndex - The index of the radio. First radio is index 0. 2nd radio is index 1 - type INT
  * output_map - a pointer to an array of wifi_channelMap_t structures, preallocated by the caller.
- * This is where the output is written
- * output_map_size - The size of the output_map array.
+ *              This is where the output is written. If the item in the array is not used,
+ *              the "ch_number" should be set to 0.
+ * output_map_size - The size of the output_map array in array items.
  *
  * @return The status of the operation.
  * @retval RETURN_OK if successful.
