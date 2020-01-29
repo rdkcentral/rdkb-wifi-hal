@@ -8706,38 +8706,44 @@ INT wifi_getVAPTelemetry(UINT apIndex, wifi_VAPTelemetry_t *telemetry);
 /************* DPP *************************/
 typedef enum {
       WIFI_DPP_TECH_INFRA
-} wifi_DppTechnology_t;
+} wifi_dppTechnology_t;
 
 typedef enum {
       WIFI_DPP_KEY_MGMT_PSK,
       WIFI_DPP_KEY_MGMT_DPP,
       WIFI_DPP_KEY_MGMT_SAE,
       WIFI_DPP_KEY_MGMT_PSKSAE
-} wifi_DppKeyManagement_t;
+} wifi_dppKeyManagement_t;
+
+typedef enum {
+	WIFI_P_256 = 1,
+	WIFI_P_384,
+	WIFI_P_521	
+} wifi_dppCurve_t;
 
 typedef struct {
-  // TODO: modeled from DPP spec
-  // This is only need for DPP key_management, psk & sae stations
-  // won't need this
-} wifi_DppConnector_t;
+    wifi_dppCurve_t	curve;
+    char            x[256];
+    char            y[256];
+} wifi_dppConnector_t;
 
 typedef struct {
-      wifi_DppKeyManagement_t keyManagement;
+      wifi_dppKeyManagement_t keyManagement;
       union {
         unsigned char    preSharedKey[128];
         char    passPhrase[64];
-        wifi_DppConnector_t dppConnector;
+        wifi_dppConnector_t dppConnector;
       } creds;
-} wifi_DppCredentialObject_t;
+} wifi_dppCredentialObject_t;
 
-typedef ssid_t        wifi_DppDiscoveryObject_t;
+typedef ssid_t        wifi_dppDiscoveryObject_t;
 
 // DPP Configuration Object
 typedef struct {
-      wifi_DppTechnology_t             wifiTech;
-      wifi_DppDiscoveryObject_t         discovery;
-      wifi_DppCredentialObject_t        credentials;
-} wifi_DppConfigurationObject_t;
+      wifi_dppTechnology_t             wifiTech;
+      wifi_dppDiscoveryObject_t         discovery;
+      wifi_dppCredentialObject_t        credentials;
+} wifi_dppConfigurationObject_t;
 
 typedef enum {
     STATE_DPP_UNPROVISIONED,
@@ -8808,14 +8814,15 @@ typedef struct {
     unsigned int    dpp_init_retries;
     unsigned int    max_retries;
     unsigned char   token;
-    wifi_DppConfigurationObject_t config;
+    wifi_dppConfigurationObject_t config;
+    wifi_dppConnector_t	reconfig_conn;
     wifi_enrollee_responder_status_t     enrollee_status;
     wifi_activation_status_t    activation_status;
     unsigned int    check_for_associated;
     unsigned int    check_for_config_requested;
-	unsigned int	num_channels;	// number of channels that enrollee can listen on
-	unsigned int	channels_list[32]; // list of channels that enrollee can listen on
-	unsigned int	current_attempts; // number of failed attempts on N different channels off the list
+    unsigned int	num_channels;	// number of channels that enrollee can listen on
+    unsigned int	channels_list[32]; // list of channels that enrollee can listen on
+    unsigned int	current_attempts; // number of failed attempts on N different channels off the list
 } wifi_device_dpp_context_t;
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
 
@@ -9262,6 +9269,4 @@ INT wifi_getRadioChannels(INT radioIndex, wifi_channelMap_t *output_map, INT out
 
 INT wifi_chan_eventRegister(wifi_chan_eventCB_t event_cb);
 
-#else
-#error "! __WIFI_HAL_H__"
 #endif
