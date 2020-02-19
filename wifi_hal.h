@@ -624,8 +624,8 @@ typedef struct _wifi_associated_dev3
         mac_address_t cli_MACAddress;           /**< The MAC address of an associated device. */
         CHAR  cli_IPAddress[64];                /**< IP of the associated device  (deprecated, keep it empty) */
         BOOL  cli_AuthenticationState; /**< Whether an associated device has authenticated (true) or not (false). */
-        UINT  cli_LastDataDownlinkRate; /**< The median PHY rate in kbps of the most recent 16 unicast data frame transmissions from the access point to the associated device. */
-        UINT  cli_LastDataUplinkRate;   /**< The median PHY rate in kbps of the most recent 16 unicast data frame transmissions from the associated device to the access point. */
+        UINT  cli_LastDataDownlinkRate; /**< The median PHY rate in Mbps of the most recent 16 unicast data frame transmissions from the access point to the associated device. */
+        UINT  cli_LastDataUplinkRate;   /**< The median PHY rate in Mbps of the most recent 16 unicast data frame transmissions from the associated device to the access point. */
         INT   cli_SignalStrength;               /**< An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device. */
         UINT  cli_Retransmissions;      /**< The number of packets that had to be re-transmitted, from the last 100 packets sent to the associated device. Multiple re-transmissions of the same packet count as one. */
         BOOL  cli_Active;                               /**<      boolean -       Whether or not this node is currently present in the WiFi AccessPoint network. */
@@ -654,8 +654,8 @@ typedef struct _wifi_associated_dev3
         ULONG cli_RetryCount;  /**< The number of packets that were successfully transmitted after one or more retransmissions */
         ULONG cli_MultipleRetryCount; /**< The number of packets that were successfully transmitted after more than one retransmission. */
 
-       UINT  cli_MaxDownlinkRate; /**< The Max data transmit rate in kbps for the access point to the associated device. */
-       UINT  cli_MaxUplinkRate;   /**<  The Max data transmit rate in kbps for the associated device to the access point. */
+       UINT  cli_MaxDownlinkRate; /**< The Max data transmit rate in Mbps for the access point to the associated device. */
+       UINT  cli_MaxUplinkRate;   /**<  The Max data transmit rate in Mbps for the associated device to the access point. */
        wifi_ul_mu_stats_t  cli_DownlinkMuStats;
        wifi_dl_mu_stats_t  cli_UplinkMuStats;
 	   wifi_twt_params_t	cli_TwtParams;
