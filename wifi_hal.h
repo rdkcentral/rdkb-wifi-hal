@@ -93,6 +93,8 @@
     What is new for 2.15.0
       1. Add HAL function definitions for 802.11ax
       2. Add HAL definitions for dfs channel state
+    What is new for 2.16.0
+      1. Modified HAL structure definition for VAP Telemetry
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -202,9 +204,9 @@ extern "C"{
  * @addtogroup WIFI_HAL_TYPES
  * @{
  */
-//defines for HAL version 2.15.0
+//defines for HAL version 2.16.0
 #define WIFI_HAL_MAJOR_VERSION 2   /**< This is the major verion of this HAL. */
-#define WIFI_HAL_MINOR_VERSION 15   /**< This is the minor verson of the HAL. */
+#define WIFI_HAL_MINOR_VERSION 16   /**< This is the minor verson of the HAL. */
 #define WIFI_HAL_MAINTENANCE_VERSION 0   /**< This is the maintenance version of the HAL. */
 
 /**********************************************************************
@@ -8654,10 +8656,10 @@ INT wifi_getRMCapabilities(CHAR *peer, UCHAR out_Capabilities[5]);
 /**
  * @brief VAP Telemetry information.
  *
- * Structure which holds he VAP Telemetry information.
+ * Structure which holds the VAP Telemetry information.
  */
 typedef struct {
-    UINT                txOverflow[MAX_VAP];            // WiFi TX overflow SSID counters for each VAP.
+    UINT                txOverflow;            // WiFi TX overflow counter.
 } wifi_VAPTelemetry_t;
 
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
