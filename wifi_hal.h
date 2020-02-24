@@ -99,6 +99,8 @@
       1. Add HAL function definition for Single Client reporting feature
     What is new for 2.18.0
       1. Add HAL Fuction Definition for Absolute TX-Power retreival
+    What is new for 2.19.0
+      1. Added zerowait DFS status support
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -9302,5 +9304,72 @@ typedef struct _wifi_GASConfiguration_t{   // Values correspond to the dot11GASA
     UINT ResponseBufferingTime;
     UINT QueryResponseLengthLimit;
 } wifi_GASConfiguration_t;
+
+/**
+* @brief Check if Zero DFS is supported
+*
+* Zero DFS (also known as Background CAC) allows Wi-Fi stack to continue
+* operation on main channel and at the same time run background CAC.
+*
+* @param[in]  radioIndex Index of Wi-Fi radio
+* @param[out] supported  True if ZeroDFS is supported, false otherwise.
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+*/
+INT wifi_isZeroDFSSupported(UINT radioIndex, BOOL *supported);
+
+/**
+* @brief Set Zero DFS State
+*
+* The Zero DFS feature can be enabled or disabled. For EU countries
+* the "Pre-CAC" can be also set. If the "Pre-CAC" is set, then
+* after passing background CAC driver can start background CAC
+* on the next channel.
+*
+* @param[in]  radioIndex Index of Wi-Fi radio
+* @param[in]  enabled    True if ZeroDFS must be enabled, false otherwise.
+* @param[in]  precac     Valid only for EU regulatory domain. If set,
+*                        after passing requested backgronund CAN, driver
+*                        can start background CAC on the next channel.
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+*/
+INT wifi_setZeroDFSState(UINT radioIndex, BOOL enable, BOOL precac);
+
+/**
+* @brief Get Zero DFS State
+*
+* The Zero DFS feature can be enabled or disabled. For EU countries
+* the "Pre-CAC" can be also set. If the "Pre-CAC" is set, then
+* after passing background CAC driver can start background CAC
+* on next channel.
+*
+* @param[in]   radioIndex Index of Wi-Fi radio
+* @param[out]  enabled    True if ZeroDFS is enabled, false otherwise.
+* @param[out]  precac     Valid only for EU regulatory domain. If true,
+*                         then driver can start background CAC on
+*                         the next channel.
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+*/
+INT wifi_getZeroDFSState(UINT radioIndex, BOOL *enable, BOOL *precac);
 
 #endif
