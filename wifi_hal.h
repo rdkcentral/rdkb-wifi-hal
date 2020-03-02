@@ -95,6 +95,8 @@
       2. Add HAL definitions for dfs channel state
     What is new for 2.16.0
       1. Modified HAL structure definition for VAP Telemetry
+    What is new for 2.17.0
+      1. Add HAL function definition for Single Client reporting feature
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -206,7 +208,7 @@ extern "C"{
  */
 //defines for HAL version 2.16.0
 #define WIFI_HAL_MAJOR_VERSION 2   /**< This is the major verion of this HAL. */
-#define WIFI_HAL_MINOR_VERSION 16   /**< This is the minor verson of the HAL. */
+#define WIFI_HAL_MINOR_VERSION 17   /**< This is the minor verson of the HAL. */
 #define WIFI_HAL_MAINTENANCE_VERSION 0   /**< This is the maintenance version of the HAL. */
 
 /**********************************************************************
