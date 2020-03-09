@@ -97,6 +97,8 @@
       1. Modified HAL structure definition for VAP Telemetry
     What is new for 2.17.0
       1. Add HAL function definition for Single Client reporting feature
+    What is new for 2.18.0
+      1. Add HAL Fuction Definition for Absolute TX-Power retreival
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -208,7 +210,7 @@ extern "C"{
  */
 //defines for HAL version 2.16.0
 #define WIFI_HAL_MAJOR_VERSION 2   /**< This is the major verion of this HAL. */
-#define WIFI_HAL_MINOR_VERSION 17   /**< This is the minor verson of the HAL. */
+#define WIFI_HAL_MINOR_VERSION 18   /**< This is the minor verson of the HAL. */
 #define WIFI_HAL_MAINTENANCE_VERSION 0   /**< This is the maintenance version of the HAL. */
 
 /**********************************************************************
@@ -2683,9 +2685,9 @@ INT wifi_getRadioTransmitPowerSupported(INT radioIndex, CHAR *output_list); //Tr
 
 /* wifi_getRadioTransmitPower() function */
 /**
-* @brief Get current Transmit Power, eg "75", "100".
+* @brief Get current Transmit Power in dBm units.
 *
-* The transmit power level is in units of full power for this radio.
+* The transmit power value is in dBm units of full power for this radio.
 * Device.WiFi.Radio.{i}.TransmitPower
 *
 * @param[in]  radioIndex   Index of Wi-Fi radio channel
@@ -2703,6 +2705,28 @@ INT wifi_getRadioTransmitPowerSupported(INT radioIndex, CHAR *output_list); //Tr
 *
 */
 INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *output_ulong);	//RDKB
+
+/* wifi_getRadioPercentageTransmitPower() function E.g : "75" "100"*/
+/**
+* @brief Get current Transmit Power level in units of full power.
+*
+* The transmit power is a percentage value of full power for this radio.
+*
+* @param[in]  radioIndex   Index of Wi-Fi radio channel
+* @param[out] output_ulong Current Transmit power percentage value, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_getRadioPercentageTransmitPower(INT radioIndex, ULONG *output_ulong);    //RDKB
 
 /* wifi_setRadioTransmitPower() function */
 /**
