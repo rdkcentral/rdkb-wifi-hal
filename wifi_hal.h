@@ -93,6 +93,7 @@
     What is new for 2.15.0
       1. Add HAL function definitions for 802.11ax
       2. Add HAL definitions for dfs channel state
+      3. Add HAL function definitions for EAP parameters
     What is new for 2.16.0
       1. Modified HAL structure definition for VAP Telemetry
     What is new for 2.17.0
@@ -101,6 +102,7 @@
       1. Add HAL Fuction Definition for Absolute TX-Power retreival
     What is new for 2.19.0
       1. Added zerowait DFS status support
+      2. Modified HAL definitions for EAP parameters
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -210,9 +212,9 @@ extern "C"{
  * @addtogroup WIFI_HAL_TYPES
  * @{
  */
-//defines for HAL version 2.16.0
+//defines for HAL version 2.19.0
 #define WIFI_HAL_MAJOR_VERSION 2   /**< This is the major verion of this HAL. */
-#define WIFI_HAL_MINOR_VERSION 18   /**< This is the minor verson of the HAL. */
+#define WIFI_HAL_MINOR_VERSION 19   /**< This is the minor verson of the HAL. */
 #define WIFI_HAL_MAINTENANCE_VERSION 0   /**< This is the maintenance version of the HAL. */
 
 /**********************************************************************
@@ -7800,14 +7802,13 @@ INT wifi_getBSSTransitionActivated(INT apIndex, BOOL *activate);
 
 
 /**
- * @brief Get the Fast Transition over DS activated value.  
  * @description Set the EAP authentication and EAPOL Handshake parameters.
  * EAPOL Key Timeout and max retries [M1 and M3]
  * EAP Identity Request and max retries
  * EAP Request Timeout and max retries
  * @param [in] apIndex - VAP number
  * @param [in] value - Either timeout or retry value
- * @param [in] param - Pramater string name to be configured as follows
+ * @param [in] param - Parameter string name to be configured as follows
  * eapolkey(timeout or retries),
  * eapidentityrequest(timeout or retries),
  * eaprequest(timeout or retries)
@@ -7815,7 +7816,7 @@ INT wifi_getBSSTransitionActivated(INT apIndex, BOOL *activate);
  * @retval RETURN_OK if successful.
  * @retval RETURN_ERR if any error is detected.
  */
-UINT wifi_setEAP_Param(UINT apIndex, UINT value, char  *param);
+INT wifi_setEAP_Param(UINT apIndex, UINT value, char  *param);
 
 /* @description Get the EAP authentication and EAPOL Handshake parameters.
  * EAPOL Key Timeout and max retries [M1 and M3]
@@ -7827,7 +7828,7 @@ UINT wifi_setEAP_Param(UINT apIndex, UINT value, char  *param);
  * @retval RETURN_OK if successful.
  * @retval RETURN_ERR if any error is detected.
  */
-UINT wifi_getEAP_Param(UINT apIndex, wifi_eap_config_t *output);
+INT wifi_getEAP_Param(UINT apIndex, wifi_eap_config_t *output);
 
 /* @description Get the Fast Transition over DS activated value.  
  * See 802.11-2016 section 13.3.
