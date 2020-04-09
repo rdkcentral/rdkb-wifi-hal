@@ -8743,45 +8743,35 @@ INT wifi_getVAPTelemetry(UINT apIndex, wifi_VAPTelemetry_t *telemetry);
 
 /************* DPP *************************/
 typedef enum {
-      WIFI_DPP_TECH_INFRA
-} wifi_dppTechnology_t;
+    WIFI_DPP_TECH_INFRA
+} wifi_dpp_technology_t;
 
 typedef enum {
-      WIFI_DPP_KEY_MGMT_PSK,
-      WIFI_DPP_KEY_MGMT_DPP,
-      WIFI_DPP_KEY_MGMT_SAE,
-      WIFI_DPP_KEY_MGMT_PSKSAE
-} wifi_dppKeyManagement_t;
-
-typedef enum {
-	WIFI_P_256 = 1,
-	WIFI_P_384,
-	WIFI_P_521	
-} wifi_dppCurve_t;
+    WIFI_DPP_KEY_MGMT_PSK,
+    WIFI_DPP_KEY_MGMT_DPP,
+    WIFI_DPP_KEY_MGMT_SAE,
+    WIFI_DPP_KEY_MGMT_PSKSAE,
+    WIFI_DPP_KEY_MGMT_DPPPSKSAE
+} wifi_dpp_key_management_t;
 
 typedef struct {
-    wifi_dppCurve_t	curve;
-    char            x[256];
-    char            y[256];
-} wifi_dppConnector_t;
-
-typedef struct {
-      wifi_dppKeyManagement_t keyManagement;
+      wifi_dpp_key_management_t keyManagement;
       union {
         unsigned char    preSharedKey[128];
         char    passPhrase[64];
-        wifi_dppConnector_t dppConnector;
       } creds;
-} wifi_dppCredentialObject_t;
+} wifi_dpp_credential_object_t;
 
-typedef ssid_t        wifi_dppDiscoveryObject_t;
+typedef ssid_t        wifi_dpp_discovery_object_t;
 
 // DPP Configuration Object
 typedef struct {
-      wifi_dppTechnology_t             wifiTech;
-      wifi_dppDiscoveryObject_t         discovery;
-      wifi_dppCredentialObject_t        credentials;
-} wifi_dppConfigurationObject_t;
+	wifi_dpp_technology_t             wifiTech;
+    wifi_dpp_discovery_object_t         discovery;
+    wifi_dpp_credential_object_t        credentials;
+	void 	*reconfigCtx;
+	void 	*cSignInstance;		
+} wifi_dpp_configuration_object_t;
 
 typedef enum {
     STATE_DPP_UNPROVISIONED,
@@ -8789,8 +8779,11 @@ typedef enum {
     STATE_DPP_AUTH_FAILED,
     STATE_DPP_AUTHENTICATED,
     STATE_DPP_CFG_RSP_SENT,
+    STATE_DPP_CFG_FAILED,
     STATE_DPP_CFG_ASSOC_IND_RECEIVED,
-    STATE_DPP_PROVISIONED = STATE_DPP_CFG_ASSOC_IND_RECEIVED
+    STATE_DPP_PROVISIONED = STATE_DPP_CFG_ASSOC_IND_RECEIVED,
+    STATE_DPP_RECFG_AUTH_RSP_PENDING,
+    STATE_DPP_RECFG_AUTH_FAILED,
 } wifi_dpp_state_t;
 
 typedef enum {
@@ -8817,50 +8810,86 @@ typedef enum {
 } wifi_activation_status_t;
 
 typedef struct {
-    mac_address_t  sta_mac;
-    char            iPubKey[256];
-    char            rPubKey[256];
-	
-    unsigned int    channel; // current channel that DPP Authentication request will be sent on
+    char            iPubKey[512];
+    char            rPubKey[512];
+} wifi_dpp_config_data_t;
 
-    void 			*instance;
+typedef struct {
+	unsigned char 	tran_id;
+    char            iPubKey[512];
+} wifi_dpp_reconfig_data_t;
+
+typedef enum {
+	wifi_dpp_session_type_config,
+	wifi_dpp_session_type_reconfig,
+} wifi_dpp_session_type_t;
+
+typedef struct {
+    mac_address_t  sta_mac;
+	wifi_dpp_session_type_t	session;
+    union {
+        wifi_dpp_config_data_t  config_data;
+        wifi_dpp_reconfig_data_t    reconfig_data;
+    } u;
+    unsigned int    channel; // current channel that DPP Authentication request will be sent on
+    void            *instance;
     wifi_dpp_state_t    state;
 } wifi_dpp_session_data_t;
 
 typedef enum {
 	dpp_context_type_session_data,
 	dpp_context_type_received_frame_auth_rsp,
-	dpp_context_type_received_frame_cfg_req
+	dpp_context_type_received_frame_cfg_req,
+	dpp_context_type_received_frame_cfg_result,
+	dpp_context_type_received_frame_recfg_announce,
+	dpp_context_type_received_frame_recfg_auth_rsp,
 } wifi_device_dpp_context_type_t;
 
 typedef enum {
-	wifi_dpp_frame_type_auth_rsp,
-	wifi_dpp_frame_type_config_req,
-} wifi_dpp_frame_type_t;
+    wifi_dpp_public_action_frame_type_auth_req,
+    wifi_dpp_public_action_frame_type_auth_rsp,
+    wifi_dpp_public_action_frame_type_auth_cnf,
+    wifi_dpp_public_action_frame_type_reserved_1,
+    wifi_dpp_public_action_frame_type_reserved_2,
+    wifi_dpp_public_action_frame_type_peer_disc_req,
+    wifi_dpp_public_action_frame_type_peer_disc_rsp,
+    wifi_dpp_public_action_frame_type_pkex_req,
+    wifi_dpp_public_action_frame_type_pkex_rsp,
+    wifi_dpp_public_action_frame_type_pkex_rev_req,
+    wifi_dpp_public_action_frame_type_pkex_rev_rsp,
+    wifi_dpp_public_action_frame_type_cfg_result,
+    wifi_dpp_public_action_frame_type_conn_status_result,
+    wifi_dpp_public_action_frame_type_presence_announcement,
+    wifi_dpp_public_action_frame_type_recfg_announcement,
+    wifi_dpp_public_action_frame_type_recfg_auth_req,
+    wifi_dpp_public_action_frame_type_recfg_auth_rsp,
+    wifi_dpp_public_action_frame_type_recfg_auth_cnf,
+} wifi_dpp_public_action_frame_type_t;
 
 typedef struct {
 	UCHAR *frame;
 	UINT 	length;
-	wifi_dpp_frame_type_t	frame_type;
+	wifi_dpp_public_action_frame_type_t	frame_type;
 } wifi_dpp_received_frame_t;
 
 typedef struct {
     unsigned int ap_index;
+	unsigned char configurator_version;
+	unsigned char enrollee_version;
 	wifi_device_dpp_context_type_t type;
 	wifi_dpp_session_data_t		session_data;
 	wifi_dpp_received_frame_t	received_frame;
     unsigned int    dpp_init_retries;
     unsigned int    max_retries;
     unsigned char   token;
-    wifi_dppConfigurationObject_t config;
-    wifi_dppConnector_t	reconfig_conn;
+    wifi_dpp_configuration_object_t config;
     wifi_enrollee_responder_status_t     enrollee_status;
     wifi_activation_status_t    activation_status;
     unsigned int    check_for_associated;
     unsigned int    check_for_config_requested;
-    unsigned int	num_channels;	// number of channels that enrollee can listen on
-    unsigned int	channels_list[32]; // list of channels that enrollee can listen on
-    unsigned int	current_attempts; // number of failed attempts on N different channels off the list
+	unsigned int	num_channels;	// number of channels that enrollee can listen on
+	unsigned int	channels_list[32]; // list of channels that enrollee can listen on
+	unsigned int	current_attempts; // number of failed attempts on N different channels off the list
 } wifi_device_dpp_context_t;
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
 
@@ -8901,6 +8930,7 @@ INT wifi_dppInitiate(wifi_device_dpp_context_t *ctx);
  * @retval RETURN_ERR if any error is detected.
  */
 INT wifi_dppCancel(wifi_device_dpp_context_t *ctx);
+
 /* @description This call back is invoked when a STA responds to a DPP Authentication
  * Request from the gateway    with DPP Authentication Response
  *
@@ -8918,6 +8948,7 @@ typedef void (*wifi_dppAuthResponse_callback_t)(UINT apIndex,
                                                 mac_address_t sta,
                                                 UCHAR *frame,
 												UINT len);
+
 /* @description This call back is invoked when a STA sends DPP Configuration
  * Request to the gateway
  *
@@ -8938,12 +8969,61 @@ typedef void (*wifi_dppConfigRequest_callback_t)(UINT apIndex,
                                                 UCHAR *attribs,
                                                 UINT length);
 
-/** @} */  //END OF GROUP WIFI_HAL_APIS
-
-/**
- * @addtogroup WIFI_HAL_TYPES
- * @{
+/* @description This call back is invoked when a STA sends DPP Configuration
+ * Result to the gateway
+ *
+ * @param apIndex; index of the vAP where the DPP Configuration Request frame is received
+ * @param staMAC, MAC address string of the peer device
+ * @param attributes, address of memory pointing to attributes
+ * @param length, length of memory in bytes
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls.
  */
+typedef void (*wifi_dppConfigResult_callback_t)(UINT apIndex,
+                                                mac_address_t sta,
+                                                UCHAR *attribs,
+                                                UINT length);
+
+/* @description This call back is invoked when a STA sends DPP Reconfig
+ * Announcement to the gateway
+ *
+ * @param apIndex; index of the vAP where the DPP Configuration Request frame is received
+ * @param staMAC, MAC address string of the peer device
+ * @param attributes, address of memory pointing to attributes
+ * @param length, length of memory in bytes
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls.
+ */
+typedef void (*wifi_dppReconfigAnnounce_callback_t)(UINT apIndex,
+                                                mac_address_t sta,
+                                                UCHAR *attribs,
+                                                UINT length);
+
+/* @description This call back is invoked when a STA responds to a DPP Reconfig Authentication
+ * Request from the gateway    with DPP Authentication Response
+ *
+ * @param apIndex; index of the vAP where the DPP Authentication Response frame is received
+ * @param staMAC, MAC address of the peer device
+ * @param status, one of wifi_dppAuthResponseStatus_t authentication response status
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls.
+ */
+typedef void (*wifi_dppReconfigAuthResponse_callback_t)(UINT apIndex, 
+                                                mac_address_t sta,
+                                                UCHAR *frame,
+												UINT len);
 
 typedef enum
 {
@@ -8978,7 +9058,10 @@ typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCH
  */
  
 INT wifi_dpp_frame_received_callbacks_register(wifi_dppAuthResponse_callback_t dppAuthCallback,
-                                    wifi_dppConfigRequest_callback_t dppCpnfigCallback);
+                                    wifi_dppConfigRequest_callback_t dppCpnfigCallback,
+									wifi_dppConfigResult_callback_t dppConfigResultCallback,
+									wifi_dppReconfigAnnounce_callback_t dppReconfigAnnounceCallback,
+									wifi_dppReconfigAuthResponse_callback_t dppReconfigAuthRspCallback);
 
 /* @description send athentication confiration as per DPP specifications
  * Causes AP to transmit DPP Authentication Conf message frame to STA that will cause STA 
