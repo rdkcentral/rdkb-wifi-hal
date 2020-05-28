@@ -9293,4 +9293,14 @@ INT wifi_getRadioChannels(INT radioIndex, wifi_channelMap_t *output_map, INT out
 
 INT wifi_chan_eventRegister(wifi_chan_eventCB_t event_cb);
 
+/* GAS Configuration */ 
+typedef struct _wifi_GASConfiguration_t{   // Values correspond to the dot11GASAdvertisementEntry field definitions; see 802.11-2016 Annex C.3.
+    UINT AdvertisementID;
+    BOOL PauseForServerResponse;
+    UINT ResponseTimeout;
+    UINT ComeBackDelay;
+    UINT ResponseBufferingTime;
+    UINT QueryResponseLengthLimit;
+} wifi_GASConfiguration_t;
+
 #endif
