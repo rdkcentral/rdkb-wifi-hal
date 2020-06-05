@@ -9127,6 +9127,307 @@ INT	wifi_getTWTParams	(CHAR *sta, wifi_twt_params_t *twt_params);
 
 INT	wifi_get80211axDefaultParameters	(INT apIndex, wifi_80211ax_params_t	*params);
 
+typedef enum {
+    wifi_anqp_element_name_reserved_0,
+    wifi_anqp_element_name_query_list = 256,
+    wifi_anqp_element_name_capability_list,
+    wifi_anqp_element_name_venue_name,
+    wifi_anqp_element_name_emergency_call_number,
+    wifi_anqp_element_name_network_auth_type,
+    wifi_anqp_element_name_roaming_consortium,
+    wifi_anqp_element_name_ip_address_availabality,
+    wifi_anqp_element_name_nai_realm,
+    wifi_anqp_element_name_3gpp_cellular_network,
+    wifi_anqp_element_name_geo_location,
+    wifi_anqp_element_name_civic_location,
+    wifi_anqp_element_name_loc_public_id,
+    wifi_anqp_element_name_domain_name,
+    wifi_anqp_element_name_emergency_alert_id,
+    wifi_anqp_element_name_tdls_capability,
+    wifi_anqp_element_name_emergency_nai,
+    wifi_anqp_element_name_neighbor_report,
+    wifi_anqp_element_name_venue_url,
+    wifi_anqp_element_name_advice_of_charge,
+    wifi_anqp_element_name_local_content,
+    wifi_anqp_element_name_network_auth_type_with_timestamp,
+    wifi_anqp_element_name_reserved_1 = 273,
+    wifi_anqp_element_name_vendor_specific = 56797,
+    wifi_anqp_element_name_reserved_2
+} wifi_anqp_element_name_t;
+
+typedef enum {
+    wifi_anqp_element_hs_subtype_reserved_0,
+    wifi_anqp_element_hs_subtype_hs_query_list,
+    wifi_anqp_element_hs_subtype_hs_capability_list,
+    wifi_anqp_element_hs_subtype_operator_friendly_name,
+    wifi_anqp_element_hs_subtype_wan_metrics,
+    wifi_anqp_element_hs_subtype_conn_capability,
+    wifi_anqp_element_hs_subtype_nai_home_realm_query,
+    wifi_anqp_element_hs_subtype_op_class_ind,
+    wifi_anqp_element_hs_subtype_osu_providers_list,
+    wifi_anqp_element_hs_subtype_reserved_1,
+    wifi_anqp_element_hs_subtype_icon_request,
+    wifi_anqp_element_hs_subtype_icon_bin_file,
+    wifi_anqp_element_hs_subtype_op_icon_metadata,
+    wifi_anqp_element_hs_subtype_op_providers_nai_list,
+    wifi_anqp_element_hs_subtype_reserved_2
+} wifi_anqp_element_hs_subtype_t;
+
+typedef enum {
+    wifi_anqp_id_type_anqp,
+    wifi_anqp_id_type_hs
+} wifi_anqp_id_type_t;
+
+typedef struct {
+    wifi_anqp_id_type_t     type;
+    union {
+        wifi_anqp_element_name_t    anqp_elem_id;
+        wifi_anqp_element_hs_subtype_t  anqp_hs_id;
+    } u;
+    UINT    len;
+    UCHAR   *data;
+} wifi_anqp_elem_t;
+
+typedef struct wifi_anqp_node {
+    struct wifi_anqp_list    *next;
+    wifi_anqp_elem_t    *value;
+} wifi_anqp_node_t;
+
+
+typedef enum {
+    wifi_ipv4_field_values_not_available,
+    wifi_ipv4_field_values_available,
+    wifi_ipv4_field_values_post_restricted,
+    wifi_ipv4_field_values_single_nated_private,
+    wifi_ipv4_field_values_double_nated_private,
+    wifi_ipv4_field_values_port_restricted_single_nated,
+    wifi_ipv4_field_values_port_restricted_double_nated,
+    wifi_ipv4_field_values_not_known
+} wifi_ipv4_field_values_t;
+
+typedef enum {
+    wifi_ipv6_field_values_not_available,
+    wifi_ipv6_field_values_available,
+    wifi_ipv6_field_values_not_known
+} wifi_ipv6_field_values_t;
+
+typedef struct {
+    UCHAR   field_format;
+}__attribute__((packed)) wifi_ipAddressAvailabality_t;
+
+typedef enum {
+    wifi_auth_id_reserved,
+    wifi_auth_id_expanded_eap,
+    wifi_auth_id_inner_auth_eap,
+    wifi_auth_id_expanded_inner_auth_eap,
+    wifi_auth_id_credential_type,
+    wifi_auth_id_tunneled_eap,
+}wifi_auth_id_t;
+
+typedef struct {
+    UCHAR  id;
+    UCHAR   length;
+    UCHAR   val[16];
+}__attribute__((packed)) wifi_authMethod_t;
+
+typedef struct {
+    UCHAR   length;
+    UCHAR   method;
+    UCHAR   auth_param_count;
+    wifi_authMethod_t   auth_method[16];
+}__attribute__((packed)) wifi_eapMethod_t;
+
+typedef struct {
+    USHORT            data_field_length;
+    UCHAR             encoding;
+    UCHAR             realm_length;
+    UCHAR             realm[256];
+    UCHAR             eap_method_count;
+    wifi_eapMethod_t  eap_method[16];
+} __attribute__((packed))wifi_naiRealm_t;
+
+typedef struct {
+    USHORT nai_realm_count;
+    wifi_naiRealm_t nai_realm_tuples[20];
+}__attribute__((packed)) wifi_naiRealmElement_t;
+
+typedef struct {
+    UCHAR    length;
+    UCHAR    language[3];
+    UCHAR    name[256];
+}__attribute__((packed)) wifi_venueName_t;
+
+typedef struct {
+    UCHAR            venueGroup;
+    UCHAR            venueType;
+    wifi_venueName_t venueNameTuples[16];
+}__attribute__((packed)) wifi_venueNameElement_t;
+
+typedef struct {
+    UCHAR   PLMN[3];
+}__attribute__((packed)) wifi_plmn_t;
+
+typedef struct {
+    UCHAR   iei;//copy zero for now.
+    UCHAR   plmn_length;
+    UCHAR number_of_plmns;
+    wifi_plmn_t plmn[16];
+}__attribute__((packed))wifi_3gpp_plmn_list_information_element_t;
+
+typedef struct {
+    UCHAR   gud;
+    UCHAR   uhdLength;//Length of remaining fields
+    wifi_3gpp_plmn_list_information_element_t plmn_information;
+}__attribute__((packed)) wifi_3gppCellularNetwork_t;
+
+typedef struct {
+    UCHAR length;
+    UCHAR domainName[255]; //max domain name allowed based on the spec.
+}__attribute__((packed)) wifi_domainNameTuple_t;
+  
+typedef struct {
+    wifi_domainNameTuple_t  domainNameTuple[4];
+}__attribute__((packed)) wifi_domainName_t;
+
+typedef struct {
+    UCHAR length;
+    UCHAR oui[15];
+}__attribute__((packed)) wifi_ouiDuple_t;
+
+typedef struct {
+    wifi_ouiDuple_t ouiDuple[32];
+}__attribute__((packed)) wifi_roamingConsortium_t;
+
+typedef struct {
+    USHORT capabilityList[64];
+}__attribute__((packed)) wifi_capabilityListANQP_t;
+
+typedef struct {
+    UCHAR    wifiRoamingConsortiumCount;
+    UCHAR    wifiRoamingConsortiumOui[3][15+1];//only 3 OIS is allowed in beacon and probe responses OIS length is variable between 3-15
+    UCHAR    wifiRoamingConsortiumLen[3];
+}__attribute__((packed)) wifi_roamingConsortiumElement_t;
+
+INT wifi_pushApRoamingConsortiumElement(INT apIndex, wifi_roamingConsortiumElement_t *infoEelement);
+
+//HS2 Related ANQP Elements start
+
+//=========================================Start-HS-Operator Friendly Name=========================================================================
+//HS2.0 Operator Name Duple #1     HS2.0 Operator Name Duple #2        ......    HS2.0 Operator Name Duple #n
+//           variable                            variable                                      variable
+
+//HS2.0 Operator name Duple
+//Length                                  Language Code                                     Operator Name
+//   1   (3+ operator name)                   3                                               variable
+
+typedef struct _wifi_HS2_OperatorNameDuple_t // figure 9-595
+{
+    UCHAR length; //length is 3(language code)+number of octects in operator name field  eg. operatorName= aaaa length is 4+3 = 7
+    UCHAR languageCode[3];
+    UCHAR operatorName[252]; //based on spec the maximum length of operator name is 252
+} __attribute__((packed)) wifi_HS2_OperatorNameDuple_t;
+
+typedef struct
+{
+    wifi_HS2_OperatorNameDuple_t operatorNameDuple[16]; //putting 16 duples supported for now story RDKB-1317 does not tell how many duples we are supporting nor the spec (spec mentions n duples)
+} __attribute__((packed)) wifi_HS2_OperatorFriendlyName_t;
+
+//=========================================End-HS2-Operator Friendly Name=========================================================================
+
+//=========================================Start-HS2-Wan Metrics Element=========================================================================
+//WAN Info                 Downlink Speed           Uplink Speed     Downlink Load       Uplink Load        LMD
+//   1                            4                       4                  1                1               2
+typedef struct // figure 9-595
+{
+    UCHAR wanInfo;
+    UINT downLinkSpeed;
+    UINT upLinkSpeed;
+    UCHAR downLinkLoad;
+    UCHAR upLinkLoad;
+    USHORT lmd;
+} __attribute__((packed)) wifi_HS2_WANMetrics_t;
+
+//WAN Info Bit fields
+//        B0     B1                  B2                      B3                 B4    B7
+//        Link Status              Symetric Link          At Capacity          Reserved
+//Bits:        2                        1                    1                     4
+typedef enum
+{
+    wifi_hs2_wan_info_reserved,
+    wifi_hs2_wan_info_linkup,
+    wifi_hs2_wan_info_linkdown,
+    wifi_hs2_wan_info_link_in_test_state
+} wifi_HS2_Wan_Info_Link_Status_t;
+
+//=========================================End-HS2-Wan Metrics Element=========================================================================
+
+//=========================================Start-HS2-Connection Capability Element=========================================================================
+
+//Proto Port Tuple #1        Proto Port Tuple #2  ............. Proto Port Tuple #n
+//         4                        4(optional)                   4(optional)
+
+//Proto Port Tuple Format
+//IP Protocol                             Port Number                  Status
+//     1                                       2                         1
+
+typedef struct // figure 9-595
+{
+    UCHAR ipProtocol;
+    USHORT portNumber;
+    UCHAR status;
+} __attribute__((packed)) wifi_HS2_Proto_Port_Tuple_t;
+
+typedef struct // figure 9-595
+{
+    wifi_HS2_Proto_Port_Tuple_t protoPortTuple[16];//putting 16 duples supported for now. story RDKB-1317 does not tell how many duples we are supporting nor the spec (spec mentions n duples)
+} __attribute__((packed)) wifi_HS2_ConnectionCapability_t;
+
+typedef enum
+{
+    wifi_hs2_connection_capability_closed,
+    wifi_hs2_connection_capability_open,
+    wifi_hs2_connection_capability_unknown,
+    wifi_hs2_connection_capability_reserved
+} wifi_HS2_ConnectionCapability_Status_t;
+
+    //=========================================End-HS2-Connection Capability Element=========================================================================
+
+    //=========================================Start-HS2-NAI Realm Query Element=========================================================================
+
+    //NAI Realm Count                          NAI Home Realm                    NAI Home Realm   ....  NAI Home Realm
+    //                                         Name Data #1                        Name Data #2            Name Data #n
+    //      1                                   variable                         (variable optional)       (variable optional)
+
+    //NAI Realm Encoding                                 NAI Home Realm Name Length              NAI Home Realm
+    //         1                                                      1                               variable
+typedef struct// figure 9-595
+{
+    UCHAR encoding;
+    UCHAR length;
+    UCHAR name[255];//per spec maximum length is 255
+} __attribute__((packed)) wifi_HS2_NAI_Home_Realm_Data_t;
+
+typedef struct// figure 9-595
+{
+    UCHAR realmCount;
+    wifi_HS2_NAI_Home_Realm_Data_t homeRealmData[20];//as realm count is unsigned char we can put 255 realms here spec says n story does not define how many we support
+} __attribute__((packed)) wifi_HS2_NAI_Home_Realm_Query_t;
+
+//=========================================End-HS2-NAI Realm Query Element=========================================================================
+
+//=========================================Start-HS-Capability List=========================================================================
+//HS2.0 Capability #1     HS2.0 Capability #2        ......    HS2.0 Capability #n
+//            1             0 or 1 (optional)                      0 or 1 (optional)
+//=========================================End-HS-Capability List=========================================================================
+typedef struct
+{
+    UCHAR capabilityList[64];
+} __attribute__((packed)) wifi_HS2_CapabilityList_t;
+
+typedef void (* wifi_anqp_request_callback_t)   (UINT apIndex, mac_address_t sta, unsigned char token,  wifi_anqp_node_t *list);
+INT wifi_anqp_request_callback_register(wifi_anqp_request_callback_t *callback);
+
+INT wifi_anqpSendResponse(UINT apIndex, mac_address_t sta, unsigned char token, wifi_anqp_node_t *list);
 
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService.DGAFEnable	
 //Device.WiFi.AccessPoint.{i}.X_COMCAST-COM_InterworkingService.ANQPDomainID
