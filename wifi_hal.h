@@ -226,8 +226,7 @@ typedef char r0r1_key_str_t[33];
 typedef char            mac_addr_str_t[18];
 typedef mac_address_t   bssid_t;
 typedef char            ssid_t[32];
-
-//>> Deprecated: used for old RDKB code. 
+typedef unsigned int u_int32_t;
 typedef struct _wifi_basicTrafficStats
 {
      ULONG wifi_BytesSent;
@@ -759,6 +758,14 @@ typedef struct _wifi_associated_dev_rate_info_tx_stats {
 	ULLONG attempts;				/**< number of attempts trying transmitt on given rate */
 } wifi_associated_dev_rate_info_tx_stats_t;
 
+typedef struct athstat_results{
+    u_int32_t    rtx_total;
+    u_int32_t    tx_total;
+    u_int32_t    rx_total;
+    u_int32_t    rx_own;
+    u_int32_t    d_rx_t; // delta rx_total
+    u_int32_t    d_rx_o; // delta rx_own
+} athstat_results_t;
 /* AC/TID rate table
  ----------------------
 |    TID   |    AC    |
