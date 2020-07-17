@@ -158,6 +158,22 @@
          }
 #endif
 
+#ifndef ETHWAN_DEF_INTF_NUM
+/*
+* ETH WAN Physical Interface Number Assignment - Should eventually move away from Compile Time
+* Utilized by Auto WAN feature in provisioning Apps & CCSP Eth Agent with Ethernet WAN Feature, CcspHalExtSw_setEthWanPort()
+* ETh WAN HAL is 0 based
+*/
+#if defined (ETH_6_PORTS)
+#define ETHWAN_DEF_INTF_NUM 5
+#elif defined (ETH_4_PORTS)
+#define ETHWAN_DEF_INTF_NUM 3
+#else
+/* Default to Physical Port #1 for ETH WAN */
+#define ETHWAN_DEF_INTF_NUM 0
+#endif
+#endif
+
 
 /**********************************************************************
                 STRUCTURE DEFINITIONS
