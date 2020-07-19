@@ -9027,8 +9027,17 @@ typedef void (*wifi_dppReconfigAuthResponse_callback_t)(UINT apIndex,
 
 typedef enum
 {
-    WIFI_FRAME_TYPE_PROBE_REQ,
-    WIFI_FRAME_TYPE_ACTION,
+    WIFI_MGMT_FRAME_TYPE_INVALID=-1,
+    WIFI_MGMT_FRAME_TYPE_PROBE_REQ=0,
+    WIFI_MGMT_FRAME_TYPE_PROBE_RSP=1,
+    WIFI_MGMT_FRAME_TYPE_ASSOC_REQ=2,
+    WIFI_MGMT_FRAME_TYPE_ASSOC_RSP=3,
+    WIFI_MGMT_FRAME_TYPE_AUTH=4,
+    WIFI_MGMT_FRAME_TYPE_DEAUTH=5,
+    WIFI_MGMT_FRAME_TYPE_REASSOC_REQ=6,
+    WIFI_MGMT_FRAME_TYPE_REASSOC_RSP=7,
+    WIFI_MGMT_FRAME_TYPE_DISASSOC=8,
+    WIFI_MGMT_FRAME_TYPE_ACTION=9,
 } wifi_mgmtFrameType_t;
 
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
@@ -9038,8 +9047,22 @@ typedef enum
  * @{
  */
 
-typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type);
+typedef enum
+{
+    WIFI_DATA_FRAME_TYPE_INVALID=-1,
+    WIFI_DATA_FRAME_TYPE_8021x,
+} wifi_dataFrameType_t;
 
+typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type);
+
+typedef enum
+{
+    WIFI_FRAME_TYPE_INVALID=-1,
+    WIFI_FRAME_TYPE_MGMT,
+    WIFI_FRAME_TYPE_CTRL,
+    WIFI_FRAME_TYPE_DATA,
+} wifi_frameType_t;
+  
  /*
  * @description DPP callbacks registration for AuthResponse & dppConfigRequest functions.
  *
@@ -9284,7 +9307,7 @@ typedef struct {
 } wifi_anqp_elem_t;
 
 typedef struct wifi_anqp_node {
-    struct wifi_anqp_list    *next;
+    struct wifi_anqp_node    *next;
     wifi_anqp_elem_t    *value;
 } wifi_anqp_node_t;
 
@@ -9702,6 +9725,132 @@ typedef struct _wifi_GASConfiguration_t{   // Values correspond to the dot11GASA
     UINT QueryResponseLengthLimit;
 } wifi_GASConfiguration_t;
 
+/* Passpoint R1 related APIs */
+
+/***********************************************************************************
+ * Description : Set Country code information element in Beacon and Probe Response
+ * Parameters: AP Index, Enabled Status
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_setCountryIe(INT apIndex, BOOL enabled);
+
+/***********************************************************************************
+ * Description : Get status of country code information element in Beacon 
+                 and Probe Response
+ * Parameters: AP Index, pointer to Enabled Status variable
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_getCountryIe(INT apIndex, BOOL *enabled);
+
+/***********************************************************************************
+ * Description : Enable Traffic Inspection and Filtering 
+ * Parameters: AP Index, Enabled Status
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_setLayer2TrafficInspectionFiltering(INT apIndex, BOOL enabled);
+
+/***********************************************************************************
+ * Description : Get Traffic Inspection and Filtering status
+ * Parameters: AP Index, pointer to Enabled Status variable
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_getLayer2TrafficInspectionFiltering(INT apIndex, BOOL *enabled);
+
+/***********************************************************************************
+ * Description : Disable DGAF. When set to true, DGAF disabled bit should be set 
+                 in HS2.0 Indication Information Element in Beacon and Probe
+ * Parameters: AP Index, Disabled Status
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_setDownStreamGroupAddress(INT apIndex, BOOL disabled);
+
+/***********************************************************************************
+ * Description : Status of Disable DGAF
+ * Parameters: AP Index, pointer to Disabled Status variable
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_getDownStreamGroupAddress(INT apIndex, BOOL *disabled);
+
+/***********************************************************************************
+ * Description : Enable BSS Load Information Element in Beacon/Probe Response
+ * Parameters: AP Index, Enabled Status
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_setBssLoad(INT apIndex, BOOL enabled);
+
+/***********************************************************************************
+ * Description : Get Status of BSS Load Information Element in Beacon/Probe Response
+ * Parameters: AP Index, pointer to Enabled Status variable
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_getBssLoad(INT apIndex, BOOL *enabled);
+
+/***********************************************************************************
+ * Description : Enable Proxy Arp function on device Driver
+ * Parameters: AP Index, Enabled Status
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_setProxyArp(INT apIndex, BOOL enabled);
+
+/***********************************************************************************
+ * Description : Get Status of Proxy Arp from Driver
+ * Parameters: AP Index, pointer to Enabled Status variable 
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_getProxyArp(INT apIndex, BOOL *enable);
+
+/***********************************************************************************
+ * Description : Set Hotspot 2.0 Status for the Access Point
+ * Parameters: AP Index, HS20 Enabled status
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_pushApHotspotElement(INT apIndex, BOOL enabled);
+
+/***********************************************************************************
+ * Description : Enable Traffic Inspection and Filtering 
+ * Parameters: AP Index, pointer to Enabled Status variable
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_getApHotspotElement(INT apIndex, BOOL *enabled);
+
+/***********************************************************************************
+ * Description : Push Roaming Consortium Information Element Contents to HAL 
+ * Parameters: AP Index, pointer to wifi_roamingConsortiumElement_t
+               the structure contains OI count, length of first 3 OIs,
+               and first 3 OI as a hex string. When count > 0 and interworking is 
+               enabled, Roaming Consortium Information Element should be present
+               in Beacon and Probe Response with this information.
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_pushApRoamingConsortiumElement(INT apIndex, wifi_roamingConsortiumElement_t *infoElement);
+
+/***********************************************************************************
+ * Description : Get Roaming Consortium Information Element Contents
+ * Parameters: AP Index, pointer to wifi_roamingConsortiumElement_t
+               If Roaming Consortium is not present, return count as 0,
+               and length and OI fileds can be ignored
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_getApRoamingConsortiumElement(INT apIndex, wifi_roamingConsortiumElement_t *infoElement);
+
+/***********************************************************************************
+ * Description : Disable P2P Cross Connect
+                 When Set to True, Include P2P Information element in Beacon and Probe Response
+                 Include P2P Manageability attribute with the Cross Connection Permitted field value 0
+ * Parameters: AP Index, Disabled Status
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_setP2PCrossConnect(INT apIndex, BOOL disabled);
+
+/***********************************************************************************
+ * Description : Get Disable P2P Cross Connect status
+ * Parameters: AP Index, pointer to Disabled Status variable
+ * Return: The status of the operation
+ **********************************************************************************/
+INT wifi_getP2PCrossConnect(INT apIndex, BOOL *disabled);
+
+/* End Passpoint related APIs */
+
 /**
 * @brief Check if Zero DFS is supported
 *
@@ -9768,5 +9917,96 @@ INT wifi_setZeroDFSState(UINT radioIndex, BOOL enable, BOOL precac);
 *
 */
 INT wifi_getZeroDFSState(UINT radioIndex, BOOL *enable, BOOL *precac);
+
+#define KI1_VER_MASK            0xf8
+
+#define KI1_PW_KEY              0x08
+#define KI1_INSTALL             0x40
+#define KI1_ACK                 0x80
+
+#define KI1_MSG1_BITS   (KI1_PW_KEY | KI1_ACK)
+#define KI1_MSG3_BITS   (KI1_PW_KEY | KI1_INSTALL|KI1_ACK)
+
+#define KI0_MIC                 0x01
+#define KI0_SECURE              0x02
+#define KI0_ENCR                0x10
+
+#define KI0_MSG3_BITS   (KI0_MIC | KI0_SECURE | KI0_ENCR)
+#define KI0_MSG4_BITS   (KI0_MIC | KI0_SECURE)
+
+#define KEY_MSG_1_OF_4(msg)             \
+        ((((msg)->key_info[1] & KI1_VER_MASK) == KI1_MSG1_BITS) && ((msg)->key_info[0] == 0))
+
+#define KEY_MSG_2_OF_4(msg)             \
+        ((((msg)->key_info[1] & KI1_VER_MASK) == KI1_PW_KEY) && ((msg)->key_info[0] == KI0_MIC))
+
+#define KEY_MSG_3_OF_4(msg)             \
+        ((((msg)->key_info[1] & KI1_VER_MASK) == KI1_MSG3_BITS) && ((msg)->key_info[0] == KI0_MSG3_BITS))
+
+#define KEY_MSG_4_OF_4(msg)             \
+        ((((msg)->key_info[1] & KI1_VER_MASK) == KI1_PW_KEY) && ((msg)->key_info[0] == KI0_MSG4_BITS))
+
+
+typedef struct {
+    unsigned char   descriptor;
+    unsigned char   key_info[2];
+    unsigned short  key_len;
+    unsigned char   replay[8];
+    unsigned char   nonce[32];
+    unsigned char   init_vector[16];
+    unsigned char   rsc[8];
+    unsigned char   key_id[8];
+    unsigned char   mic[16];
+    unsigned short  len;
+    unsigned char   data[0];
+} wifi_eapol_key_frame_t;
+
+typedef enum {
+    wifi_eap_code_request = 1,
+    wifi_eap_code_response,
+    wifi_eap_code_success,
+    wifi_eap_code_failure,
+} wifi_eap_code_t;
+
+typedef struct {
+    unsigned char   code;
+    unsigned char   id;
+    unsigned short  len;
+    unsigned char   data[0];
+} __attribute__((__packed__)) wifi_eap_frame_t;
+
+typedef enum {
+    wifi_eapol_type_eap_packet,
+    wifi_eapol_type_eapol_start,
+    wifi_eapol_type_eapol_logoff,
+    wifi_eapol_type_eapol_key,
+} wifi_eapol_type_t;
+
+typedef struct {
+    unsigned char   version;
+    unsigned char   type;
+    unsigned short  len;
+    unsigned char   data[0];
+} __attribute__((__packed__)) wifi_8021x_frame_t;
+
+typedef enum {
+    wifi_direction_unknown,
+    wifi_direction_uplink,
+    wifi_direction_downlink
+} wifi_direction_t;
+
+typedef void (* wifi_received8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
+typedef void (* wifi_sent8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
+
+typedef void (* wifi_receivedAuthFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
+typedef void (* wifi_sentAuthFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
+
+typedef void (* wifi_receivedAssocReqFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
+typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
+
+typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
+
+int mgmt_frame_received_callback(INT ap_index, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
+INT wifi_mgmt_frame_callbacks_register(wifi_receivedMgmtFrame_callback dppRecvRxCallback);
 
 #endif
