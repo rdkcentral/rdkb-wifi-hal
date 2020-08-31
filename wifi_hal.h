@@ -9719,6 +9719,8 @@ INT wifi_getRadioChannels(INT radioIndex, wifi_channelMap_t *output_map, INT out
 INT wifi_chan_eventRegister(wifi_chan_eventCB_t event_cb);
 
 /* GAS Configuration */ 
+#define GAS_CFG_TYPE_SUPPORTED 1
+
 typedef struct _wifi_GASConfiguration_t{   // Values correspond to the dot11GASAdvertisementEntry field definitions; see 802.11-2016 Annex C.3.
     UINT AdvertisementID;
     BOOL PauseForServerResponse;
@@ -9727,6 +9729,8 @@ typedef struct _wifi_GASConfiguration_t{   // Values correspond to the dot11GASA
     UINT ResponseBufferingTime;
     UINT QueryResponseLengthLimit;
 } wifi_GASConfiguration_t;
+
+INT wifi_applyGASConfiguration(wifi_GASConfiguration_t *input_struct);
 
 /* Passpoint R1 related APIs */
 
