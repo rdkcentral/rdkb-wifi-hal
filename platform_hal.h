@@ -374,6 +374,20 @@ INT platform_hal_DocsisParamsDBInit(void);
 */
 INT platform_hal_GetModelName(CHAR* pValue);
 
+/* platform_hal_GetRouterRegion() function */
+/**
+* @description Get router region
+*
+* @param pValue - Router region name, to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT platform_hal_GetRouterRegion(CHAR* pValue);
+
 /* platform_hal_GetSerialNumber() function */
 /**
 * @description Get device serial number 

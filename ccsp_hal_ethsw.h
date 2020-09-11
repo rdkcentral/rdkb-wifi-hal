@@ -648,6 +648,16 @@ GWP_GetEthWanInterfaceName
 		unsigned char * Interface 
 	); //!< This function will get used to retrieve the ETHWAN interface name. API returns 0 = success and 1 = fail
 
+
+#ifdef _HUB4_PRODUCT_REQ_
+#define UP "up"
+#define DOWN "down"
+#define DISCONNECTED "disconnected"
+
+typedef INT (*ethsw_ethLinkEventCallback)(CHAR* ifname, CHAR* state);
+void CcspHalEthSw_RegisterLinkEventCallback(ethsw_ethLinkEventCallback callback_proc);
+#endif // _HUB4_PRODUCT_REQ_
+
 #endif /* __CCSP_HAL_ETHSW_H__ */
 
 /**

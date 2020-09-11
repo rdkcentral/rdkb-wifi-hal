@@ -53,6 +53,28 @@ typedef enum
     WAN_MODE_AUTO = 4
 } t_eWanMode;
 
+typedef struct 
+_WAN_IPV4_CFG 
+{
+    char ifname[64];         // interface name (erouter0)
+    char subnetmask[64];     // subnet mask
+    char ipaddress[64];      // ip address to assign (192.168.0.1)
+    char dnsservers[256];    // new-line separated list of servers to be added
+    char defaultgateway[64]; // default gateway address
+
+} WAN_IPV4_CFG, *PWAN_IPV4_CFG;
+
+typedef struct
+_WAN_IPV6_CFG
+{
+    char ifname[64];         // interface name (erouter0)
+    char ipaddress[128];      // ip address to assign 
+    char dnsservers[512];    // new-line separated list of servers to be added
+    int  preferredlifetime;  
+    int  validlifetime;
+
+} WAN_IPV6_CFG, *PWAN_IPV6_CFG;
+
 /*
  * The WAN_QOS_QUEUE structure needed in ccsp-wanagent and wan-hal
   */
@@ -78,11 +100,26 @@ _WAN_QOS_QUEUE
     signed long         PtmPriority;
     unsigned long       QueueId;
     unsigned long       LowClassMaxThreshold;
+    unsigned long       LowClassMinThreshold;
     unsigned long       HighClassMinThreshold;
     unsigned long       HighClassMaxThreshold;
     char                L2DeviceType[32];
-}
-WAN_QOS_QUEUE,  *PWAN_QOS_QUEUE;
+
+}WAN_QOS_QUEUE,  *PWAN_QOS_QUEUE;
+
+/* * MAPT */
+typedef  struct
+_WAN_MAPT_CFG
+{
+    char          ifName[64];
+    char          brIPv6Prefix[128];
+    char          ruleIPv4Prefix[128];
+    char          ruleIPv6Prefix[128];
+    unsigned int  psidOffset;
+    unsigned int  ratio;
+    char          pdIPv6Prefix[128];
+
+} WAN_MAPT_CFG, *PWAN_MAPT_CFG;
 
 /**
  * Structure for SELFHEAL configuration which is required in ccsp-wanagent
@@ -181,13 +218,15 @@ int wan_hal_GetWanOEDownstreamCurrRate(unsigned int *pValue);
 *
 * @param queueInfo - QoS configurations to be set
 * @param QueueNumberOfEntries - The number of QoS profiles
+* @param baseifname - Base interface name
+* @param wanifname - Wan interface name
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
 * @retval RETURN_ERR if any error is detected
 *
 */
-int wan_hal_SetQoSConfiguration(PWAN_QOS_QUEUE pQueue, unsigned int QueueNumberOfEntries);
+int wan_hal_SetQoSConfiguration(PWAN_QOS_QUEUE pQueue, unsigned int QueueNumberOfEntries, const char* baseifname, const char* wanifname);
 
 /* wan_hal_restart_wan_service() function */
 /**
@@ -202,6 +241,99 @@ int wan_hal_SetQoSConfiguration(PWAN_QOS_QUEUE pQueue, unsigned int QueueNumberO
 *
 */ 
 int wan_hal_RestartWanService(void);
+
+/* wan_hal_ConfigureIpv4() function */
+/**
+* @description configure IPv4 dnsservers, netmask and ip address for the required interface
+*
+* @param pWanIpv4Cfg     - fill needed WAN_IPV4_CFG information 
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+*/
+int wan_hal_ConfigureIpv4(PWAN_IPV4_CFG pWanIpv4Cfg);
+
+/* wan_hal_UnConfigureIpv4() function */
+/**
+* @description unconfigure IPv4 dnsservers, netmask and ip address for the required interface
+*
+* @param pWanIpv4Cfg     - fill needed WAN_IPV4_CFG information    
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+*/
+int wan_hal_UnConfigureIpv4(PWAN_IPV4_CFG pWanIpv4Cfg);
+
+/* wan_hal_ConfigureIpv6() function */
+/**
+* @description Add IPv6 address for the required interface
+*
+* @param pWanIpv6Cfg     - fill needed WAN_IPV6_CFG information
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+*/
+int wan_hal_ConfigureIpv6(PWAN_IPV6_CFG pWanIpv6Cfg);
+
+/* wan_hal_UnConfigureIpv4() function */
+/**
+* @description Delete IPv6 address for the required interface
+*
+* @param pWanIpv6Cfg     - fill needed WAN_IPV6_CFG information
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+*/
+int wan_hal_UnConfigureIpv6(PWAN_IPV6_CFG pWanIpv6Cfg);
+
+/* wan_hal_EnableMapt() function */
+/**
+* @description Enable MAPT for the required interface
+*
+* @param pMAPTCfg             - Needs to fill PWAN_MAPT_CFG params
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+*/
+int wan_hal_EnableMapt( PWAN_MAPT_CFG pMAPTCfg );
+
+/* wan_hal_DisableMapt() function */
+/**
+* @description Disable MAPT for the required interface
+*
+* @param ifName               - interface name
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+*/
+int wan_hal_DisableMapt(const char* ifName);
+
+/**
+ * @description Set/Reset WanOE mode based on the enable flag. If it is
+ * true, update the boardparam to set WAN_ETH_MODE in the CPE. Else disabled
+ * the WAN_ETH_MODE and reclaim ethernet port.
+ * @param enable flag indicates to enable or disable ETH_WAN mode in CPE.
+ */
+int wan_hal_enableWanOEMode(const unsigned char enable);
+
+/**
+ * @description Get authentication information like ADSL username and password.
+ * @param autInfo to hold the authentication data
+ * @retval RETURN_OK if successful else RETURN_ERR
+ */
+int wan_hal_getAuthInfo(char *authInfo);
 
 /** @} */  //END OF GROUP WAN_HAL_APIS
 #endif /* __WAN_HAL_H__ */

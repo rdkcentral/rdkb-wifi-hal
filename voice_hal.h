@@ -737,6 +737,146 @@ int32_t voice_hal_setTestSelector(uint32_t service, uint32_t phy_interface, char
 */
 int32_t voice_hal_getTestSelector(uint32_t service, uint32_t phy_interface, char *testSelector, uint32_t *pLength);
 
+/* voice_hal_getPOSTTipGroundVoltageACParameter: */
+/**
+* @description get the POST result for Tip Ground Voltage AC
+*
+* @param uint32_t service - input the voice service index
+* @param uint32_t uiPhyInterface - input the uiPhyInterface index
+* @param char* pValue - output the POST parameter value
+* @param uint32_t* pLength - input/output the buffer size
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+* @retval RDK_ERROR_OOM if buffer length insufficient
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getPOSTTipGroundVoltageACParameter(uint32_t service, uint32_t phy_interface, char *pValue, uint32_t *pLength);
+
+/* voice_hal_getPOSTTipGroundVoltageDCParameter: */
+/**
+* @description get the POST result for Tip Ground Voltage DC
+*
+* @param uint32_t service - input the voice service index
+* @param uint32_t uiPhyInterface - input the uiPhyInterface index
+* @param char* pValue - output the POST parameter value
+* @param uint32_t* pLength - input/output the buffer size
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+* @retval RDK_ERROR_OOM if buffer length insufficient
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getPOSTTipGroundVoltageDCParameter(uint32_t service, uint32_t phy_interface, char *pValue, uint32_t *pLength);
+
+/* voice_hal_getPOSTRingGroundVoltageACParameter: */
+/**
+* @description get the POST result for Ring Ground Voltage AC
+*
+* @param uint32_t service - input the voice service index
+* @param uint32_t uiPhyInterface - input the uiPhyInterface index
+* @param char* pValue - output the POST parameter value
+* @param uint32_t* pLength - input/output the buffer size
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+* @retval RDK_ERROR_OOM if buffer length insufficient
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getPOSTRingGroundVoltageACParameter(uint32_t service, uint32_t phy_interface, char *pValue, uint32_t *pLength);
+
+/* voice_hal_getPOSTRingGroundVoltageDCParameter: */
+/**
+* @description get the POST result for Ring Ground Voltage DC
+*
+* @param uint32_t service - input the voice service index
+* @param uint32_t uiPhyInterface - input the uiPhyInterface index
+* @param char* pValue - output the POST parameter value
+* @param uint32_t* pLength - input/output the buffer size
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+* @retval RDK_ERROR_OOM if buffer length insufficient
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getPOSTRingGroundVoltageDCParameter(uint32_t service, uint32_t phy_interface, char *pValue, uint32_t *pLength);
+
+/* voice_hal_getPOSTTipGroundImpedanceParameter: */
+/**
+* @description get the POST result for Tip Ground Impedance
+*
+* @param uint32_t service - input the voice service index
+* @param uint32_t uiPhyInterface - input the uiPhyInterface index
+* @param char* pValue - output the POST parameter value
+* @param uint32_t* pLength - input/output the buffer size
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+* @retval RDK_ERROR_OOM if buffer length insufficient
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getPOSTTipGroundImpedanceParameter(uint32_t service, uint32_t phy_interface, char *pValue, uint32_t *pLength);
+
+/* voice_hal_getPOSTRingGroundImpedanceParameter: */
+/**
+* @description get the POST result for Ring Ground Impedance
+*
+* @param uint32_t service - input the voice service index
+* @param uint32_t uiPhyInterface - input the uiPhyInterface index
+* @param char* pValue - output the POST parameter value
+* @param uint32_t* pLength - input/output the buffer size
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+* @retval RDK_ERROR_OOM if buffer length insufficient
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getPOSTRingGroundImpedanceParameter(uint32_t service, uint32_t phy_interface, char *pValue, uint32_t *pLength);
+
+/* voice_hal_getPOSTTipRingImpedanceParameter: */
+/**
+* @description get the POST result for Tip Ring Impedance
+*
+* @param uint32_t service - input the voice service index
+* @param uint32_t uiPhyInterface - input the uiPhyInterface index
+* @param char* pValue - output the POST parameter value
+* @param uint32_t* pLength - input/output the buffer size
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+* @retval RDK_ERROR_OOM if buffer length insufficient
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getPOSTTipRingImpedanceParameter(uint32_t service, uint32_t phy_interface, char *pValue, uint32_t *pLength);
+
 /*****************************************************************************
  * 
  *    Calling features - call waiting, caller ID ...
@@ -1460,6 +1600,177 @@ int32_t voice_hal_getDigitMap(uint32_t service, uint32_t profile, VoiceHalDigitM
 */
 int32_t voice_hal_setDigitMap(uint32_t service, uint32_t profile, VoiceHalDigitMap_e map_type, const char *digit_map_string);
 
+/* voice_hal_setSipDscpMark: */
+/**
+* @description set the diffserv code point applied to outgoing SIP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param uint32_t dscp - input DSCP code point
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_setSipDscpMark(uint32_t service, uint32_t profile, uint32_t dscp);
+
+/* voice_hal_getSipDscpMark: */
+/**
+* @description get the diffserv code point applied to outgoing SIP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param uint32_t dscp - output DSCP code point
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getSipDscpMark(uint32_t service, uint32_t profile, uint32_t *dscp);
+
+/* voice_hal_setSipEthernetPriorityMark: */
+/**
+* @description set the ethernet priority code used for outgoing SIP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param int32_t priority - input ethernet priority code
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_setSipEthernetPriorityMark(uint32_t service, uint32_t profile, int32_t priority);
+
+/* voice_hal_getSipEthernetPriorityMark: */
+/**
+* @description get the ethernet priority code used for outgoing SIP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param int32_t priority - output ethernet priority code
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getSipEthernetPriorityMark(uint32_t service, uint32_t profile, int32_t *priority);
+
+/* voice_hal_getSipSKBMark: */
+/**
+* @description get the ethernet mark used for outgoing SIP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param uint32_t mark - ethernet mark value
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getSipSKBMark(uint32_t service, uint32_t profile, uint32_t *mark);
+
+/* voice_hal_setRtpDscpMark: */
+/**
+* @description set the diffserv code point applied to outgoing RTP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param uint32_t dscp - input DSCP code point
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_setRtpDscpMark(uint32_t service, uint32_t profile, uint32_t dscp);
+
+/* voice_hal_getDscpMark: */
+/**
+* @description get the diffserv code point applied to outgoing RTP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param uint32_t dscp - output DSCP code point
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getRtpDscpMark(uint32_t service, uint32_t profile, uint32_t *dscp);
+
+/* voice_hal_setRtpEthernetPriorityMark: */
+/**
+* @description set the ethernet priority code used for outgoing RTP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param int32_t priority - input ethernet priority code
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_setRtpEthernetPriorityMark(uint32_t service, uint32_t profile, int32_t priority);
+
+/* voice_hal_getRtpEthernetPriorityMark: */
+/**
+* @description get the ethernet priority code used for outgoing RTP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param int32_t priority - output ethernet priority code
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getRtpEthernetPriorityMark(uint32_t service, uint32_t profile, int32_t *priority);
+
+/* voice_hal_getRtpSKBMark: */
+/**
+* @description get the SKB(Socket Kernel Buffer) mark used for outgoing RTP packets
+* @param uint32_t service - input the voice service affected
+* @param uint32_t profile - input the voice profile affected
+* @param uint32_t mark - ethernet mark value
+*
+* @return The status of the operation.
+* @retval RDK_SUCCESS if successful.
+* @retval RDK_FAILURE if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+int32_t voice_hal_getRtpSKBMark(uint32_t service, uint32_t profile, uint32_t *mark);
+
+#ifdef VOICE_UNSUPPORTED_PARAMS 
 /* voice_hal_setConferencingOption: */
 /**
 * @description set the conferencing option
@@ -1475,7 +1786,6 @@ int32_t voice_hal_setDigitMap(uint32_t service, uint32_t profile, VoiceHalDigitM
 * @sideeffect None.
 *
 */
-#ifdef VOICE_UNSUPPORTED_PARAMS 
 int32_t voice_hal_setConferencingOption(uint32_t service, uint32_t profile, const char *option);
 
 /* voice_hal_getConferencingOption: */
@@ -1563,40 +1873,6 @@ int32_t voice_hal_setEnableSipSubscribe(uint32_t service, uint32_t profile, bool
 *
 */
 int32_t voice_hal_getEnableSipSubscribe(uint32_t service, uint32_t profile, bool *enable);
-
-/* voice_hal_setDscpMark: */
-/**
-* @description set the diffserv code point applied to outgoing SIP packets
-* @param uint32_t service - input the voice service affected
-* @param uint32_t profile - input the voice profile affected
-* @param uint32_t dscp - input DSCP code point
-*
-* @return The status of the operation.
-* @retval RDK_SUCCESS if successful.
-* @retval RDK_FAILURE if any error is detected
-*
-* @execution Synchronous.
-* @sideeffect None.
-*
-*/
-int32_t voice_hal_setDscpMark(uint32_t service, uint32_t profile, uint32_t dscp);
-
-/* voice_hal_getDscpMark: */
-/**
-* @description get the diffserv code point applied to outgoing SIP packets
-* @param uint32_t service - input the voice service affected
-* @param uint32_t profile - input the voice profile affected
-* @param uint32_t dscp - output DSCP code point
-*
-* @return The status of the operation.
-* @retval RDK_SUCCESS if successful.
-* @retval RDK_FAILURE if any error is detected
-*
-* @execution Synchronous.
-* @sideeffect None.
-*
-*/
-int32_t voice_hal_getDscpMark(uint32_t service, uint32_t profile, uint32_t *dscp);
 
 /* voice_hal_setSessionExpires: */
 /**
