@@ -147,6 +147,33 @@ extern "C"{
  * @}
  */
 
+/**********************************************************************
+                ENUMERATION DEFINITIONS
+**********************************************************************/
+
+typedef  enum {
+   HOST_CPU=0,
+   PEER_CPU=1,
+   NOT_SUPPORTED_CPU=3,
+} RDK_CPUS; // RDK_CPUS
+
+#ifndef PLAT_PROC_MEM_MAX_LEN
+#define PLAT_PROC_MEM_MAX_LEN   40
+#endif
+
+/**********************************************************************
+                STRUCTURE DEFINITIONS
+**********************************************************************/
+typedef  struct
+_PLAT_PROC_MEM_INFO
+{
+    CHAR                            dramPath[PLAT_PROC_MEM_MAX_LEN];
+    CHAR                            emmcPath1[PLAT_PROC_MEM_MAX_LEN];
+    CHAR                            emmcPath2[PLAT_PROC_MEM_MAX_LEN];
+    CHAR                            emmcPath3[PLAT_PROC_MEM_MAX_LEN];
+}
+PLAT_PROC_MEM_INFO, *PPLAT_PROC_MEM_INFO;
+
 /**
  * @addtogroup PLATFORM_HAL_APIS
  * @{
@@ -816,6 +843,23 @@ INT platform_hal_SetMACsecEnable(INT ethPort, BOOLEAN Flag);
 * @retval RETURN_ERR if any error is detected
 */
 INT platform_hal_GetMACsecOperationalStatus(INT ethPort, BOOLEAN *pFlag);
+
+/*  platform_hal_GetMemoryPaths() function : */
+/**
+*@description Get the device specific processors DRAM and eMMC paths
+* @param RDK_CPUS index - Index to which processor/CPU to request. Host is the primary RDK CPU
+* @param PPLAT_PROC_MEM_INFO *ppinfo - Ponter to get the return array
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note HAL function need to allocate the array of PPLAT_PROC_MEM_INFO and return with ppinfo.
+*
+*/
+INT platform_hal_GetMemoryPaths(RDK_CPUS index, PPLAT_PROC_MEM_INFO *ppinfo);
 
 #ifdef __cplusplus
 }
