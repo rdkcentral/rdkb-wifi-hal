@@ -938,12 +938,13 @@ INT cm_hal_HTTP_Download_Reboot_Now();
 /* cm_hal_FWupdateAndFactoryReset : */
 /**
 * @description: Firmware update and factory reset the device
-* @param None
+* @param char* pUrl - NULL for snmp
+* @param char* pImagename - NULL for snmp
 * @return the status of the Firmware update and factory reset operation.
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any reboot is in process.
 */
-INT cm_hal_FWupdateAndFactoryReset();
+INT cm_hal_FWupdateAndFactoryReset(char* pUrl, char* pImagename);
 
 /*  cm_hal_ReinitMac : */
 /**
