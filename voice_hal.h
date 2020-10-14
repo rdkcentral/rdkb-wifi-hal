@@ -205,8 +205,7 @@ typedef  enum
 **********************************************************************/
 typedef struct
 {
-    uint16_t                   id;   /**< for internal use only */
-    bool                       resetStatistics;  /**< ResetStatistics */
+    bool                       ResetStatistics;  /**< ResetStatistics */
     uint32_t                   PacketsSent; /**< Total number of RTP packets sent for this line. */
     uint32_t                   PacketsReceived; /**< Total number of RTP payload bytes received for this line. */
     uint32_t                   BytesSent; /**< Total number of RTP payload bytes sent for this line.  */
@@ -220,14 +219,23 @@ typedef struct
     uint32_t                   OutgoingCallsAnswered; /**< Total outgoing calls answered by the remote user. */
     uint32_t                   OutgoingCallsConnected; /**< Total outgoing calls that successfully completed call setup signalling. */
     uint32_t                   OutgoingCallsFailed; /**< Total outgoing calls that failed to successfully complete call setup signaling. */
+#ifdef HUB4_SDK_L07
+    uint32_t                   CallsDropped; /**< Total calls that were successfully connected (incoming or outgoing), but dropped unexpectedly while in progress without explicit user termination. */
+    uint32_t                   TotalCallTime; /**<  Cumulative call duration in seconds. */
+    uint32_t                   ServerDownTime; /**< The number of seconds the CPE is unable to maintain a connection to the server. SHOULD not include time in which overall network connectivity is unavailable. Applies only to SIP. */
+#endif
     uint32_t                   ReceivePacketLossRate; /**< Current receive packet loss rate in percent, calculated as defined in [section 6.4-RFC3550] */
     uint32_t                   FarEndPacketLossRate; /**< Current far end receive packet lost rate in percent, calculated as defined in  [Section6.4/RFC3550]. */
-    uint32_t                   ReceiveInterarrivalJitter; /**< Current receive interarrival jitter in�| microseconds. Calculated from J(i) as defined in [Section6.4/RFC3550], with units converted to�| microseconds. */
+    uint32_t                   ReceiveInterarrivalJitter; /**< Current receive interarrival jitter in microseconds. Calculated from J(i) as defined in [Section6.4/RFC3550], with units converted to microseconds. */
     uint32_t                   FarEndInterarrivalJitter; /**< Current Interarrival jitter in microseconds as reported from the far-end device via RTCP. Calculated from J(i) as defined in [Section64./RFC3550], with units converted to microseconds. */
     uint32_t                   RoundTripDelay; /**< Current round trip delay in microseconds calculated as defined in [section 6.4-RFC3550]. */
     uint32_t                   AverageReceiveInterarrivalJitter; /**< Average receive interarrival jitter in microseconds since the beginning of the current call. Calculated as the average of D(i,j) as defined in [Section6.4/RFC3550], with units converted to microseconds.*/
     uint32_t                   AverageFarEndInterarrivalJitter; /**< Average far-end interarrival jitter in microseconds since the beginning of the current call. Calculated as the average of the interarrival jitter values reported by the far-end, with units converted to microseconds. */
     uint32_t                   AverageRoundTripDelay; /**< Average round trip delay in microseconds since the beginning of the current call. Average of the RoundTripDelay statistic accumulated each time the delay is calculated. */
+#if HUB4_SDK_L07
+    uint32_t                   OverRuns; /**< Total number of times the receive jitter buffer has overrun for this line. */
+    uint32_t                   UnderRuns; /**<  Total number of times the receive jitter buffer has underrun for this line. */
+#endif
 } TelcoVoipAgent_VoiceService_Stats_t;
 
 typedef  struct 
