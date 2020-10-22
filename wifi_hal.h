@@ -625,6 +625,62 @@ typedef struct {
     wifi_ru_allocation_t    cli_UplinkRuAllocations[MAX_RU_ALLOCATIONS];
 } wifi_ul_mu_stats_t;
 
+#define MAX_NR                  8
+#define MAX_NC                  4
+#define MAX_SUB_CARRIERS        256
+#define MAX_PILOTS              26
+
+/* RSSI in each of received streams of the received frame */
+typedef INT	wifi_streams_rssi_t	[MAX_NR];
+/* CSI data for each subcarrier over Nc and Nr */
+typedef UINT	wifi_carrier_data_t	[MAX_NR][MAX_NC];
+/* CSI data over 80MHz BW */
+typedef wifi_carrier_data_t		wifi_csi_matrix_t [MAX_SUB_CARRIERS];
+
+typedef UCHAR	wifi_evm_data_t	[MAX_NC][MAX_NR];
+typedef wifi_evm_data_t	wifi_evm_matrix_t[MAX_PILOTS];
+
+/**
+ * @brief This structure hold the information about the wifi interface.
+ */
+typedef struct _wifi_frame_info
+{
+	UCHAR	bw_mode;			/* Bit 0-3: 0:20MHz; 1:40MHz; 2:80MHz; 3:160MHz */
+								/* Bit 4: 80+80MHz */
+								/* Bit 4-7: 0:11n; 1:11ac */
+	UCHAR	mcs;				/* Encoded as 11ac numbering */	
+	UCHAR	Nr;					/* Number of antennas used to receive the frame */
+	UCHAR	Nc;					/* Number of streams used to transmit the frame */
+	wifi_streams_rssi_t	nr_rssi;	/* RSSI on each of Nr */
+	USHORT	valid_mask;			/* Bit mask that determines which regions of CSI capture (tones) are valid. One bit represents 20MHz chunk. */
+	USHORT	phy_bw;				/* VAP BW at the time of capture, indicated as 20, 40, 80, 160 */
+	USHORT	cap_bw;				/* Frame BW at the time of capture */
+	UINT	num_sc;				/* Number of subcarriers in the payload so that information can be used in conjunction with the number of streams to fully decode valid regions */
+	UCHAR	decimation;			/* Value to indicate degree to which CSI matrix is decimated in terms of number of subcarriers present.*/
+	UINT	channel;			/* Primary Channel of received frame */
+	ULLONG	time_stamp;			/* PHY timestamp of CSI capture with at minimum millisecond	*/
+								/* resolution. Ideally this can be resolved to a standard epoch */
+								/* format with millisecond resolution. */
+} wifi_frame_info_t;
+
+/**
+ * @brief This structure hold the information about the wifi interface.
+ */
+typedef struct _wifi_csi_data
+{
+	wifi_frame_info_t	frame_info;	/* as defined above */
+	wifi_csi_matrix_t	csi_matrix;		/* The NC value representing the number of non-zero columns 
+									in the H matrix is equal to the number of spatial streams in the 
+									packet. The NR value representing the number of rows in the H matrix 
+									is equal to the number of antennas at the receiver. 
+									Irrespective of the NC and NR values, the output H matrix is always 
+									of size 4x4. For example, if the frame uses 2 spatial streams 
+									and the receiver has 3 antennas, NC=2, NR=3. 
+									However, the H matrix will be of size 4x4 with a 3x2 sub-matrix 
+									with non-zero values. Rest of the values of the matrix will be zero. */
+	wifi_evm_matrix_t	evm_matrix;	/* Similar scheme to the CSI matrix, Nc represents the number of non-zero columns and Nr represents the number of nonzero rows. There are 16 elements to accommodate the full number of pilots in a 160 MHz capture. Each element is an EVM value for a pilot expressed in dB. */
+} wifi_csi_data_t;
+
 /**
  * @brief This structure hold the information about the wifi interface.
  */
@@ -668,6 +724,24 @@ typedef struct _wifi_associated_dev3
        wifi_ul_mu_stats_t  cli_DownlinkMuStats;
        wifi_dl_mu_stats_t  cli_UplinkMuStats;
 	   wifi_twt_params_t	cli_TwtParams;
+
+	   /* To facilitate retrieval of CSI data for specific associated client, an existing RDK-B Wi-Fi HAL 
+		function is being extended. In current implementation wifi_getApAssociatedDeviceDiagnosticResult3 
+		retrieves variety of statistics and state specific information for associated clients. 
+		The wifi_associated_dev3_t data structure is filled by native WLAN drivers for each associated client 
+		as and when the function is called by RDK-B application/process. A new component structure 
+		wifi_csi_data_t is being defined that is part of wifi_associated_dev3_t structure and needs to be 
+		allocated and filled for specific client or list of clients when 
+		wifi_getApAssociatedDeviceDiagnosticResult3 API is called by RDK-B application/process. In cases when 
+		application needs CSI data, the RDK-B application will call 
+		INT wifi_getApAssociatedDeviceDiagnosticResult3(INT apIndex, wifi_associated_dev3_t **associated_dev_array, UINT *output_array_size) by allocating the associated_dev_array memory for output_array_size number of client
+		devices. In other words output_array_size will specify the number of client devices in the array for 
+		which CSI data needs to filled by driver. The cli_MACAddress will specify the client devices in each
+		of wifi_associated_dev3_t. Wi-Fi HAL implementation in such case MUST allocate memory for cli_CSIData
+		fill in required fields. The called in such cases is reposnsible for deallocation of memory. 
+		The wifi_csi_data_t is defined above */
+
+	 	wifi_csi_data_t  *cli_CsiData; 
 } wifi_associated_dev3_t;
 
 /**
@@ -10015,5 +10089,79 @@ typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCH
 
 int mgmt_frame_received_callback(INT ap_index, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
 INT wifi_mgmt_frame_callbacks_register(wifi_receivedMgmtFrame_callback dppRecvRxCallback);
+
+/* wifi_enableCSIEngine() function */
+/*
+ * Description: This function enables or disables CSI engine data for a specific STA on a VAP
+ * If the MAC address is NULL mac address, enable argument MUST be false, otherwise function MUST return failure.
+ * If the MAC address is NULL mac address, data engine for all STA(s) need to be disabled on this VAP
+ *
+ * Parameters :
+ * apIndex - Index of VAP
+ * sta - MAC address of the station associated in this VAP for which engine is being enabled/disabled
+ * enable - Enable or diable
+ *
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous.
+ * @sideeffect None.
+ *
+ */
+
+INT wifi_enableCSIEngine(INT apIndex,
+                         mac_address_t sta,
+                         BOOL enable);
+
+/* wifi_sendDataFrame() function */
+/*
+ * Description: This function sends data frame to a client associated in the specified VAP index
+ * If the MAC address is NULL mac address, the data should be broadcast on the VAP
+ *
+ * Parameters :
+ * apIndex - Index of VAP
+ * sta - MAC address of the station associated in this VAP
+ * data - Pointer to the data buffer. The data does not have any layer 2 information but has starts with layer 3.
+ * len - length of data
+ * insert_llc - whether LLC header should be inserted. If set to TRUE, HAL implementation MUST insert the following bytes before type field. DSAP = 0xaa, SSAP = 0xaa, Control = 0x03, followed by 3 bytes each = 0x00
+ * eth_proto - ethernet protocol, the definitions are listed below.a
+ * prio - priority of the frame with which scheduler should transmit the frame, please see the enumeration below.
+ *
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous.
+ * @sideeffect None.
+ *
+ */
+
+#define WIFI_ETH_TYPE_IP 0x0800
+#define WIFI_ETH_TYPE_ARP 0x0806
+#define WIFI_ETH_TYPE_REVARP 0x8035
+#define WIFI_ETH_TYPE_VLAN 0x8100
+#define WIFI_ETH_TYPE_LOOPBACK 0x9000
+#define WIFI_ETH_TYPE_IP6 0x86DD
+#define WIFI_ETH_TYPE_EAPOL 0x888e
+
+typedef enum {
+    wifi_data_priority_be,
+    wifi_data_priority_bk,
+    wifi_data_priority_ee,
+    wifi_data_priority_ca,
+    wifi_data_priority_vi,
+    wifi_data_priority_vo,
+    wifi_data_prioirty_ic,
+    wifi_data_priority_nc
+} wifi_data_priority_t;
+
+INT wifi_sendDataFrame(INT apIndex,
+                       mac_address_t sta,
+                       UCHAR	*data,
+                       UINT	len,
+                       BOOL 	insert_llc,
+                       UINT	eth_proto,
+                       wifi_data_priority_t prio);
 
 #endif
