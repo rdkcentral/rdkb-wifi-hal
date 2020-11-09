@@ -261,6 +261,29 @@ _CCSP_HAL_ETHSW_ADMIN_STATUS
     CCSP_HAL_ETHSW_AdminTest
 }
 CCSP_HAL_ETHSW_ADMIN_STATUS, *PCCSP_HAL_ETHSW_ADMIN_STATUS;
+
+
+typedef  struct
+_CCSP_HAL_ETH_STATS
+{
+    ULONG                           BytesSent;
+    ULONG                           BytesReceived;
+    ULONG                           PacketsSent;
+    ULONG                           PacketsReceived;
+    ULONG                           ErrorsSent;
+    ULONG                           ErrorsReceived;
+    ULONG                           UnicastPacketsSent;
+    ULONG                           UnicastPacketsReceived;
+    ULONG                           DiscardPacketsSent;
+    ULONG                           DiscardPacketsReceived;
+    ULONG                           MulticastPacketsSent;
+    ULONG                           MulticastPacketsReceived;
+    ULONG                           BroadcastPacketsSent;
+    ULONG                           BroadcastPacketsReceived;
+    ULONG                           UnknownProtoPacketsReceived;
+}
+CCSP_HAL_ETH_STATS, *PCCSP_HAL_ETH_STATS;
+
 /**
  * @}
  */
@@ -609,6 +632,33 @@ CcspHalExtSw_setEthWanPort
     UINT Port
   );
 
+/* CcspHalEthSwGetEthPortStats :  */
+/**
+* Description: Retrieve the current port's statistics.
+
+* Parameters :
+    PortId    -- Port ID as defined in CCSP_HAL_ETHSW_PORT
+    pStats    -- Receives port statistics
+
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+
+*
+* @note This function must not suspend and must not invoke any blocking system 
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT
+CcspHalEthSwGetEthPortStats
+ (
+    CCSP_HAL_ETHSW_PORT           PortId,
+    PCCSP_HAL_ETH_STATS           pStats
+ );
 /**
  * @}
  */
