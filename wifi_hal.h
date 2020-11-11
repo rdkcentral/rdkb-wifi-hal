@@ -8817,8 +8817,9 @@ typedef struct {
 } wifi_dpp_config_data_t;
 
 typedef struct {
-	unsigned char 	tran_id;
+	unsigned char 	tran_id[120];
     char            iPubKey[512];
+        unsigned char match_tran_id;
 } wifi_dpp_reconfig_data_t;
 
 typedef enum {
