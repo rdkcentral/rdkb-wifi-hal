@@ -5302,6 +5302,25 @@ INT wifi_getApAclDeviceNum(INT apIndex, UINT *output_uint);           // outputs
 */
 INT wifi_kickApAclAssociatedDevices(INT apIndex,BOOL enable);         // enable kick for devices on acl black list
 
+/**
+* @brief This function is to enable or disable
+grey list Access Control on all applicable VAP
+*
+* @param[in]  enable             enable access control if true, disable if false
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not
+invoke any blocking system
+* calls.
+*
+*/
+INT wifi_enableGreylistAccessControl(BOOL enable);
 /* wifi_setApMacAddressControlMode() function */
 /**
 * @brief Sets the mac address filter control mode.
@@ -6561,6 +6580,60 @@ INT wifi_getApSecuritySecondaryRadiusServer(INT apIndex, CHAR *IP_output, UINT *
 *
 */
 INT wifi_setApSecuritySecondaryRadiusServer(INT apIndex, CHAR *IPAddress, UINT port, CHAR *RadiusSecret); //Tr181	
+
+/*wifi_getApDASRadiusServer function
+* @brief Get the IP Address and port number of the RADIUS DAS server, which are used for WLAN security.
+*
+* Device.WiFi.AccessPoint.{i}.Security.RadiusDASIPAddr
+* Device.WiFi.AccessPoint.{i}.Security.RadiusDASPort
+* Device.WiFi.AccessPoint.{i}.Security.RadiusDASSecret
+
+* @param[in] apIndex                 Access Point index
+* @param[in] IP_output               IP Address
+* @param[in] Port_output             Port
+* @param[in] RadiusdasSecret_output  Radius DAS Secret
+*
+* Radius DAS Secret is not applicable for open ssid
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+
+
+INT wifi_getApDASRadiusServer(INT apIndex, CHAR *IP_output, UINT *Port_output, CHAR *RadiusdasSecret_output);
+
+/* wifi_setApDASRadiusServer() function */
+/**
+* @brief Set the IP Address and port number of the RADIUS DAS server, which are used for WLAN security.
+*
+* Device.WiFi.AccessPoint.{i}.Security.RadiusDASIPAddr
+* Device.WiFi.AccessPoint.{i}.Security.RadiusDASPort
+* Device.WiFi.AccessPoint.{i}.Security.RadiusDASSecret
+*
+* @param[in] IPAddress     IP Address
+* @param[in] port          Port
+* @param[in] RadiusdasSecret  Radius Secret
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_setApDASRadiusServer(INT apIndex, CHAR *IPAddress, UINT port, CHAR *RadiusdasSecret); //Tr181
 
 /* wifi_getApSecurityRadiusSettings() function */
 /**
