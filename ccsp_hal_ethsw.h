@@ -174,6 +174,13 @@
 #endif
 #endif
 
+#ifndef ETHWAN_INTERFACE_NAME_MAX_LENGTH
+/*
+* Define a MAX ETH WAN Interface Name Length for GetEthWanInterfaceName
+* TO DO: GetEthWanInterfaceName HAL/API needs to be updated to pass in buffer size as well
+*/
+#define ETHWAN_INTERFACE_NAME_MAX_LENGTH   32
+#endif
 
 /**********************************************************************
                 STRUCTURE DEFINITIONS
@@ -645,7 +652,8 @@ INT GWP_GetEthWanLinkStatus(); /**< Returns 1 if active, 0 for inactive */ // RD
 INT 
 GWP_GetEthWanInterfaceName
 	(
-		unsigned char * Interface 
+		unsigned char * Interface,
+		ULONG maxSize 
 	); //!< This function will get used to retrieve the ETHWAN interface name. API returns 0 = success and 1 = fail
 
 

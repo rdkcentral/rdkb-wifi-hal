@@ -844,6 +844,31 @@ INT platform_hal_SetMACsecEnable(INT ethPort, BOOLEAN Flag);
 */
 INT platform_hal_GetMACsecOperationalStatus(INT ethPort, BOOLEAN *pFlag);
 
+/* platform_hal_StartMACsec() function */
+/**
+* @description Start MACsec - Call should be Blocking
+*
+* @param ethPort    - Ethernet port (zero-based)
+* @param timeoutSec - MACsec Start Timeout (0 means retry forever)
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*/
+INT platform_hal_StartMACsec(INT ethPort, INT timeoutSec);
+
+/* platform_hal_StopMACsec() function */
+/**
+* @description Stop MACsec - Call should be Blocking
+*
+* @param ethPort    - Ethernet port (zero-based)
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*/
+INT platform_hal_StopMACsec(INT ethPort);
+
 /*  platform_hal_GetMemoryPaths() function : */
 /**
 *@description Get the device specific processors DRAM and eMMC paths
