@@ -385,7 +385,6 @@ typedef struct{
     UCHAR Nper[512]; /**< Each NPER of between two nodes on Corresponding Channel */
     UCHAR Vlper[512]; /**< Each Vlper of between two nodes on Corresponding Channel */
 }moca_scmod_stat_t;
-moca_scmod_stat_t *pscmodStat;
 
 
 typedef struct {
