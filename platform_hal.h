@@ -886,6 +886,29 @@ INT platform_hal_StopMACsec(INT ethPort);
 */
 INT platform_hal_GetMemoryPaths(RDK_CPUS index, PPLAT_PROC_MEM_INFO *ppinfo);
 
+typedef  enum {
+   PSM_UNKNOWN=0,
+   PSM_AC,
+   PSM_BATT,
+   PSM_HOT,
+   PSM_COOLED,
+   PSM_NOT_SUPPORTED,
+} PSM_STATE, *PPSM_STATE; // Power Saving Mode State
+
+/* platform_hal_SetLowPowerModeState() function */
+/**
+* @description Set Low Power Mode State value. Hysteresis currently not accounted for before call.
+*
+* @param seconds - Low Power Mode State.
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT platform_hal_SetLowPowerModeState(PPSM_STATE pState);
+
 #ifdef __cplusplus
 }
 #endif
