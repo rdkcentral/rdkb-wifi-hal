@@ -1317,10 +1317,10 @@ typedef struct _MTAMGMT_PROVISIONING_PARAMS
 INT  MtaIPMode;
 INT  DhcpOption2171CccV6DssID1Len;					// Length of DhcpOption2171CccV6DssID1
 INT  DhcpOption2171CccV6DssID2Len;					// Length of DhcpOption2171CccV6DssID2
-CHAR DhcpOption122Suboption1[MTA_DHCPOPTION122SUBOPTION1_MAX]; 	// 4 byte hex value ie. FFFFFFFF = "255.255.255.255". IPv4 addresses MUST be encoded as 4 binary octets in network  byte-order (high order byte first).
-CHAR DhcpOption122Suboption2[MTA_DHCPOPTION122SUBOPTION2_MAX]; 		//  4 byte hex value ie. FFFFFFFF = "255.255.255.255"
-CHAR DhcpOption2171CccV6DssID1[MTA_DHCPOPTION122CCCV6DSSID1_MAX]; 	// 32 byte hex value
-CHAR DhcpOption2171CccV6DssID2[MTA_DHCPOPTION122CCCV6DSSID2_MAX]; 	// 32 byte hex value
+CHAR DhcpOption122Suboption1[MTA_DHCPOPTION122SUBOPTION1_MAX+1]; 	// 4 byte hex value ie. FFFFFFFF = "255.255.255.255". IPv4 addresses MUST be encoded as 4 binary octets in network  byte-order (high order byte first).
+CHAR DhcpOption122Suboption2[MTA_DHCPOPTION122SUBOPTION2_MAX+1]; 		//  4 byte hex value ie. FFFFFFFF = "255.255.255.255"
+CHAR DhcpOption2171CccV6DssID1[MTA_DHCPOPTION122CCCV6DSSID1_MAX+1]; 	// 32 byte hex value
+CHAR DhcpOption2171CccV6DssID2[MTA_DHCPOPTION122CCCV6DSSID2_MAX+1]; 	// 32 byte hex value
 }
 MTAMGMT_PROVISIONING_PARAMS, *PMTAMGMT_MTA_PROVISIONING_PARAMS;
 
