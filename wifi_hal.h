@@ -9303,8 +9303,8 @@ INT wifi_dppRemoveSTAPassphrase(UINT apIndex,
  *
  * @param apIndex; index of the vAP to send the frame from.
  * @param staMAC; MAC address string of the peer device to send the frame to
- * @param channel; channel on which this action frame should be sent on (for public action frames that 
- *      can be sent tp a device on off channel
+ * @param frequency; frequency of the channel on which this action frame should be sent on (for public action frames that 
+ *      can be sent to a device on/off channel)
  * @param frame; pointer to the frame buffer
  * @param len; length of the buffer
  * @return The status of the operation.
