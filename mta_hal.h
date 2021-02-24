@@ -446,6 +446,10 @@ typedef  enum {
 	MTA_ERROR
 } MTAMGMT_MTA_STATUS;
 
+typedef enum{
+        MTA_PROVISIONED=0,
+        MTA_NON_PROVISIONED=1
+} MTAMGMT_MTA_PROVISION_STATUS;
 /**
  * @}
  */
@@ -1297,6 +1301,23 @@ INT mta_hal_devResetNow(BOOLEAN bResetValue);
 */
 INT mta_hal_getMtaOperationalStatus(MTAMGMT_MTA_STATUS *operationalStatus);
 
+/* mta_hal_getMtaProvisioningStatus: */
+/**
+* @description Get the provisional status of MTA
+* @param MTAMGMT_MTA_PROVISION_STATUS *provisionStatus - return buffer for provision status
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT mta_hal_getMtaProvisioningStatus(MTAMGMT_MTA_PROVISION_STATUS *provisionStatus);
 
 #define MTA_DHCPOPTION122SUBOPTION1_MAX          4
 #define MTA_DHCPOPTION122SUBOPTION2_MAX          4
