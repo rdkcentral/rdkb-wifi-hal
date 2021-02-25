@@ -9877,7 +9877,7 @@ typedef struct _wifi_GASConfiguration_t{   // Values correspond to the dot11GASA
     UINT ComeBackDelay;
     UINT ResponseBufferingTime;
     UINT QueryResponseLengthLimit;
-} wifi_GASConfiguration_t;
+}__attribute__((packed))wifi_GASConfiguration_t;
 
 INT wifi_applyGASConfiguration(wifi_GASConfiguration_t *input_struct);
 
@@ -10305,5 +10305,153 @@ INT wifi_getMultiPskKeys(INT apIndex, wifi_key_multi_psk_t *keys, INT keysNumber
   * @sideeffect None
   */
 INT wifi_getMultiPskClientKey(INT apIndex, mac_address_t mac, wifi_key_multi_psk_t *key);
+
+typedef struct {
+    wifi_GASConfiguration_t gas_config;
+}__attribute__((packed))wifi_config_t;
+
+typedef UINT wifi_vap_index_t;
+
+typedef char    wifi_vap_name_t[64];
+
+typedef enum {
+    wifi_mac_filter_mode_black_list,
+    wifi_mac_filter_mode_white_list,
+} wifi_mac_filter_mode_t;
+
+typedef struct {
+    unsigned char	ip[45];
+    unsigned short 	port;
+    char	key[64];
+    unsigned char	s_ip[45];
+    unsigned short 	s_port;
+    char	s_key[64];
+} wifi_radius_settings_t;
+
+typedef enum {
+    wifi_security_key_type_psk,
+    wifi_security_key_type_pass,
+} wifi_security_key_type_t;
+
+typedef struct {
+    wifi_security_key_type_t type;
+    char 	key[256];
+} wifi_security_key_t;
+
+typedef enum {
+    wifi_encryption_tkip = 1,
+    wifi_encryption_aes,
+    wifi_encryption_aes_tkip,
+} wifi_encryption_method_t;
+
+typedef enum {
+    wifi_security_mode_none = 0x00000001,
+    wifi_security_mode_wep_64 = 0x00000002,
+    wifi_security_mode_wep_128 = 0x00000004,
+    wifi_security_mode_wpa_personal = 0x00000008,
+    wifi_security_mode_wpa2_personal = 0x00000010,
+    wifi_security_mode_wpa_wpa2_personal = 0x00000020,
+    wifi_security_mode_wpa_enterprise = 0x00000040,
+    wifi_security_mode_wpa2_enterprise = 0x00000080,
+    wifi_security_mode_wpa_wpa2_enterprise = 0x00000100
+} wifi_security_modes_t;
+
+typedef struct {
+    wifi_security_modes_t mode;
+    wifi_encryption_method_t	encr;
+    char	mfpConfig[32];
+    union {
+        wifi_radius_settings_t	radius;
+        wifi_security_key_t	key;
+    } u;
+} __attribute__((packed)) wifi_vap_security_t;
+
+typedef struct {
+    int capabilityInfoLength;
+    wifi_capabilityListANQP_t capabilityInfo;
+    int venueInfoLength;
+    wifi_venueNameElement_t venueInfo;
+    int roamInfoLength;
+    wifi_roamingConsortium_t roamInfo;
+    wifi_ipAddressAvailabality_t ipAddressInfo;
+    int realmInfoLength;
+    wifi_naiRealmElement_t realmInfo;
+    int gppInfoLength;
+    wifi_3gppCellularNetwork_t gppInfo;
+    int domainInfoLength;
+    wifi_domainName_t domainNameInfo;
+    UCHAR  passpointStats[1024];
+    UINT   domainRespCount;
+    UINT   realmRespCount;
+    UINT   gppRespCount;
+    UINT   domainFailedCount;
+    UINT   realmFailedCount;
+    UINT   gppFailedCount;
+    UCHAR  anqpParameters[4096];
+} __attribute__((packed)) wifi_anqp_settings_t;
+
+typedef struct {
+    BOOL        enable;
+    BOOL        gafDisable;
+    BOOL        p2pDisable;
+    BOOL        l2tif;
+    BOOL        bssLoad;
+    BOOL        countryIE;
+    BOOL        proxyArp;
+    int capabilityInfoLength;
+    wifi_HS2_CapabilityList_t capabilityInfo;
+    int opFriendlyNameInfoLength;
+    wifi_HS2_OperatorFriendlyName_t opFriendlyNameInfo;
+    int connCapabilityLength;
+    wifi_HS2_ConnectionCapability_t connCapabilityInfo;
+    int realmInfoLength;
+    wifi_HS2_NAI_Home_Realm_Query_t realmInfo;
+    wifi_HS2_WANMetrics_t wanMetricsInfo;
+    UCHAR hs2Parameters[4096];
+} __attribute__((packed)) wifi_passpoint_settings_t;
+
+typedef struct {
+    wifi_InterworkingElement_t   interworking;
+    wifi_roamingConsortiumElement_t roamingConsortium;
+    wifi_anqp_settings_t        anqp;
+    wifi_passpoint_settings_t	passpoint;
+} __attribute__((packed)) wifi_interworking_t;
+
+typedef struct {
+    
+} __attribute__((packed)) wifi_back_haul_sta_t;
+
+typedef struct {
+    char	ssid[32];
+    BOOL	enabled;
+    BOOL	showSsid;
+    BOOL 	isolation;
+    UINT	mgmtPowerControl;
+    UINT	bssMaxSta;
+    BOOL 	bssTransitionActivated;
+    BOOL 	nbrReportActivated;
+    BOOL 	rapidReconnectEnable;
+    UINT	rapidReconnThreshold;
+    BOOL 	vapStatsEnable;
+    wifi_vap_security_t	security;
+    wifi_interworking_t	interworking;
+    BOOL	mac_filter_enable;
+    wifi_mac_filter_mode_t mac_filter_mode;
+    BOOL        sec_changed;
+} wifi_front_haul_bss_t;
+
+typedef struct {
+    wifi_vap_index_t 	vap_index;
+    wifi_vap_name_t     vap_name;
+    union {
+        wifi_front_haul_bss_t	bss_info;
+        wifi_back_haul_sta_t	sta_info;
+    } u;
+} __attribute__((packed)) wifi_vap_info_t;
+
+typedef struct {
+    unsigned int        num_vaps;
+    wifi_vap_info_t vap_array[8];
+} __attribute__((packed)) wifi_vap_info_map_t;
 
 #endif
