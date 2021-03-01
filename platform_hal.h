@@ -744,41 +744,45 @@ INT platform_hal_setLed(PLEDMGMT_PARAMS pValue);
 /**
 * @description Get the fan speed in RPMs
 *
+* @param fanIndex      - Fan index starting from 0.
 * @return FanSpeed in unsigned int
 */
-UINT platform_hal_getFanSpeed();
+UINT platform_hal_getFanSpeed(UINT fanIndex);
 
 
 /* platform_hal_getFanRPM fuction */
 /**
 * @description Get the fan speed
 *
+* @param fanIndex      - Fan index starting from 0.
 * @return FanRPM in unsigned int
 */
-UINT platform_hal_getRPM();
+UINT platform_hal_getRPM(UINT fanIndex);
 
 
 /* platform_hal_getRotorLock function */
 /**
 * @description Get the status of rotor lock
 *
+* @param fanIndex      - Fan index starting from 0.
 * @return The status of the rotor lock
 * @rtnval 1 if locked
 * @rtnval 0 if not locked
 * @rtnval -1 if value not applicable
 */
-INT platform_hal_getRotorLock();
+INT platform_hal_getRotorLock(UINT fanIndex);
 
 
 /* platform_hal_getFanStatus function */
 /**
 * @description Get the fan status
 *
+* @param fanIndex      - Fan index starting from 0.
 * @return the fan status
 * @rtnval 1 if fan is enabled
 * @rtnval 0 if fan disabled
 */
-BOOLEAN platform_hal_getFanStatus();
+BOOLEAN platform_hal_getFanStatus(UINT fanIndex);
 
 /* platform_hal_setFanMaxOverride function */
 /**
@@ -788,7 +792,7 @@ BOOLEAN platform_hal_getFanStatus();
 *
 * @return RETURN_OK on success setting/unsetting the fan to run in high speed mode
 */
-INT platform_hal_setFanMaxOverride(BOOLEAN bOverrideFlag);
+INT platform_hal_setFanMaxOverride(BOOLEAN bOverrideFlag, UINT fanIndex);
 
 /* platform_hal_SetSNMPOnboardRebootEnable() function */
 /**
