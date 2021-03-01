@@ -1209,6 +1209,37 @@ INT cm_hal_snmpv3_kickstart_initialize(snmpv3_kickstart_table_t *pKickstart_Tabl
 
 INT docsis_IsEnergyDetected( BOOLEAN *pEnergyDetected );
 
+
+/*  cm_hal_set_ReinitMacThreshold: */
+/**
+* @description Set ReinitMacThreshold value.
+* @param ULONG value , value to be set
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+INT cm_hal_set_ReinitMacThreshold(ULONG value);
+
+/*  cm_hal_get_ReinitMacThreshold: */
+/**
+* @description Get ReinitMacThreshold value.
+* @param ULONG* pValue , value to be returned
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+INT cm_hal_get_ReinitMacThreshold(ULONG *pValue);
+
 #ifdef __cplusplus
 }
 #endif
