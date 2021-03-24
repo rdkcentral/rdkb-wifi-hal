@@ -105,6 +105,8 @@
       2. Modified HAL definitions for EAP parameters
       3. Updated comments for ChannelUtilization, ActivityFactor, CarrierSenseThreshold_Exceeded
          and RetransmissionMetirc radio metrics
+    What is new for 2.20.0
+      1. Add HAL definitions for Multi PSK support
 **********************************************************************/
 /**
 * @file wifi_hal.h
@@ -10236,5 +10238,72 @@ INT wifi_sendDataFrame(INT apIndex,
                        BOOL 	insert_llc,
                        UINT	eth_proto,
                        wifi_data_priority_t prio);
+
+/**
+ * _wifi_key_multi_psk structure is a container for multi psk keys.
+ * It is based on hostapd wpa_psk_file implementation
+ * https://w1.fi/cgit/hostap/tree/hostapd/hostapd.wpa_psk
+ */
+typedef struct _wifi_key_multi_psk {
+	    CHAR wifi_keyId[64];   //<! Key identifier. for example "key-15" or "key_example"
+	    CHAR wifi_psk[64];     //<! PSK is an ASCII passphrase of 8..63 characters
+} wifi_key_multi_psk_t;
+
+/* wifi_pushMultiPskKeys() function */
+/**
+  * @description Function sets the new set of multi psk keys.
+  * Previously set keys are removed.
+  * This API is for setting all keys except the primary key.
+  * Primary key is set by wifi_setApSecurityKeyPassphrase.
+  *
+  * @param[in] apIndex - access point index
+  * @param[in] keys - Array with all keys that client devices can associate with AP
+  * @param[in] keysNumber - Number of elements in 'keys' array
+  *
+  * @return The status of the operation
+  * @retval RETURN_OK if successful
+  * @retval RETURN_ERR if any error is detected
+  *
+  * @sideeffect None
+  */
+INT wifi_pushMultiPskKeys(INT apIndex, wifi_key_multi_psk_t *keys, INT keysNumber);
+
+/* wifi_getMultiPskKeys() function */
+/**
+  * @description Function gets all keys from multi psk config.
+  * Implementation has to fill all active keys into wifi_key_multi_psk_t array.
+  * The keys should be consecutively written starting at [0] element of the keys array.
+  * This API is for getting all keys the except primary key.
+  * Primary key can be get by wifi_getApSecurityKeyPassphrase.
+  *
+  * @param[in] apIndex - access point index
+  * @param[out] keys - An array to which multi-psk keys active on the AP should be written to. If there are less present keys than 'keysNumber' the unused array elements should contain empty strings (""). Array is allocated by the caller.
+  * @param[in] keysNumber - Number of elements in 'keys' array
+  *
+  * @return The status of the operation
+  * @retval RETURN_OK if successful
+  * @retval RETURN_ERR if any error is detected
+  *
+  * @sideeffect None
+  */
+INT wifi_getMultiPskKeys(INT apIndex, wifi_key_multi_psk_t *keys, INT keysNumber);
+
+/* wifi_getMultiPskClientKey() function */
+/**
+  * @description Function gets multi psk key for the client mac address.
+  * If wifi_key_multi_psk_t.wifi_keyID is null this means that
+  * multi psk key was not used for authentication.
+  *
+  * @param[in] apIndex - access point index
+  * @param[in] mac - client mac address
+  * @param[out] key - multi psk key structure
+  *
+  * @return The status of the operation
+  * @retval RETURN_OK if successful
+  * @retval RETURN_ERR if any error is detected
+  *
+  * @sideeffect None
+  */
+INT wifi_getMultiPskClientKey(INT apIndex, mac_address_t mac, wifi_key_multi_psk_t *key);
 
 #endif
