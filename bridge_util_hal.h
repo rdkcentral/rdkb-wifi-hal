@@ -27,20 +27,13 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <time.h>
-#include <pthread.h> 
-
+#include <pthread.h>
 
 #include "OvsAgentApi.h"
-#include "OvsConfig.h"
-#include "OvsDataTypes.h"
-#include "feedback.h"
-#include "gateway_config.h"
-#include "ovsagent.h"
 
 #define BRIDGE_UTIL_LOG_FNAME "/rdklogs/logs/bridgeUtils.log"
 
-#define GRE_HANDLER_SCRIPT "/etc/utopia/service.d/service_multinet/handle_gre.sh" 
-
+#define GRE_HANDLER_SCRIPT "/etc/utopia/service.d/service_multinet/handle_gre.sh"
 
 #define TOTAL_IFLIST_SIZE 	1024
 #define BRIDGE_NAME_SIZE  	64
@@ -49,14 +42,15 @@
 #define IFLIST_SIZE		256
 #define MAX_LOG_BUFF_SIZE	1024
 #define TIMESTAMP           	64
-extern int DeviceMode ; // router = 0, bridge = 2
 
-extern int MocaIsolation_Val ;
+extern int DeviceMode; // router = 0, bridge = 2
 
-extern int need_wifi_gw_refresh ;
-extern int need_switch_gw_refresh ;
+extern int MocaIsolation_Val;
+
+extern int need_wifi_gw_refresh;
+extern int need_switch_gw_refresh;
 extern int syncMembers;
-extern int BridgeOprInPropgress ;
+extern int BridgeOprInPropgress;
 extern FILE *logFp;
 extern char log_buff[MAX_LOG_BUFF_SIZE];
 extern char log_msg_wtime[MAX_LOG_BUFF_SIZE+TIMESTAMP];
@@ -107,10 +101,9 @@ enum INTERFACE_TYPE {
 enum BridgeOpr {
 	DELETE_BRIDGE = 0,
 	CREATE_BRIDGE = 1
-}; 
+};
 
 typedef struct bridgeDetails {
-
 	char bridgeName[BRIDGE_NAME_SIZE];
 	char vlan_name[BRIDGE_NAME_SIZE];
 	int  vlanID;
@@ -119,10 +112,10 @@ typedef struct bridgeDetails {
 	char GreIfList[IFLIST_SIZE];
 	char WiFiIfList[IFLIST_SIZE];
 	char VlanIfList[IFLIST_SIZE];
-
 }bridgeDetails;
 
 extern int updateBridgeInfo(bridgeDetails *bridgeInfo, char* ifNameToBeUpdated, int Opr , int type);
+
 /*********************************************************************************************
 
     caller:  CreateBrInterface,DeleteBrInterface,SyncBrInterfaces
@@ -143,8 +136,7 @@ extern int updateBridgeInfo(bridgeDetails *bridgeInfo, char* ifNameToBeUpdated, 
 		int InstanceNumber 			-- Instance number
 	return : When success returns 0
 ***********************************************************************************************/
-
-int HandlePreConfigVendor(bridgeDetails *bridgeInfo,int Config) ;
+int HandlePreConfigVendor(bridgeDetails *bridgeInfo,int Config);
 
 /*********************************************************************************************
 
@@ -166,7 +158,6 @@ int HandlePreConfigVendor(bridgeDetails *bridgeInfo,int Config) ;
 		int InstanceNumber 	-- Instance number
 	return : When success returns 0
 ***********************************************************************************************/
-
-int HandlePostConfigVendor(bridgeDetails *bridgeInfo,int Config) ;
+int HandlePostConfigVendor(bridgeDetails *bridgeInfo,int Config);
 
 #endif
