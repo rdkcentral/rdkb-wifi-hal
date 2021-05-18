@@ -739,6 +739,19 @@ LEDMGMT_PARAMS, *PLEDMGMT_PARAMS;
 */
 INT platform_hal_setLed(PLEDMGMT_PARAMS pValue);
 
+/* platform_hal_getLed function */
+/**
+* @description Get Led behavior of the device at time of call
+*
+* @pValue The Current Led Buffer to be populated
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @sideeffect None
+*/
+INT platform_hal_getLed(PLEDMGMT_PARAMS pValue);
+
 
 /* platform_hal_getFanSpeed function */
 /**
