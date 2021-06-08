@@ -9695,7 +9695,7 @@ typedef struct
 } __attribute__((packed)) wifi_HS2_CapabilityList_t;
 
 typedef void (* wifi_anqp_request_callback_t)   (UINT apIndex, mac_address_t sta, unsigned char token,  wifi_anqp_node_t *list);
-INT wifi_anqp_request_callback_register(wifi_anqp_request_callback_t *callback);
+INT wifi_anqp_request_callback_register(wifi_anqp_request_callback_t callback);
 
 INT wifi_anqpSendResponse(UINT apIndex, mac_address_t sta, unsigned char token, wifi_anqp_node_t *list);
 
