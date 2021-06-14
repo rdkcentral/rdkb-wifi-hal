@@ -715,9 +715,13 @@ typedef  enum {
 
 typedef struct _LEDMGMT_PARAMS
 {
-LED_COLOR  LedColor;  //!< LED_COLOR
-INT  State;	//!< 0 for Solid, 1 for Blink
-INT  Interval;	//!< In case fs State is blink then interval per second
+#ifdef FEATURE_RDKB_LED_MANAGER
+    char * led_name;
+    char * led_param;
+#endif
+    LED_COLOR  LedColor;  //!< LED_COLOR
+    INT  State;	//!< 0 for Solid, 1 for Blink
+    INT  Interval;	//!< In case fs State is blink then interval per second
 }
 LEDMGMT_PARAMS, *PLEDMGMT_PARAMS;
 
@@ -730,11 +734,24 @@ LEDMGMT_PARAMS, *PLEDMGMT_PARAMS;
  * @{
  */
 
+#ifdef FEATURE_RDKB_LED_MANAGER
+/* platfom_hal_initLed : */
+/**
+* @description: Initialises HAL layer and return file pointer to config file
+* 
+* @param buffer to hold the config file path
+* @return returns status on successful initialisation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*/
+int platform_hal_initLed (char * config_file_name);
+#endif
+
 /* platform_hal_setLed function */
 /**
 * @description Set Led behavior of the device
 *
-*
+* @param LED identification and control parameters
 * @return The status of the operation
 * @retval RETURN_OK if successful
 * @retval RETURN_ERR if any error is detected
