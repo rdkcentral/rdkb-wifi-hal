@@ -121,6 +121,7 @@ extern int updateBridgeInfo(bridgeDetails *bridgeInfo, char* ifNameToBeUpdated, 
 
 extern int checkIfExists(char* iface_name);
 extern void removeIfaceFromList(char *str, const char *sub);
+extern int checkIfExistsInBridge(char* iface_name, char *bridge_name);
 
 /*********************************************************************************************
 
@@ -165,5 +166,7 @@ int HandlePreConfigVendor(bridgeDetails *bridgeInfo,int Config);
 	return : When success returns 0
 ***********************************************************************************************/
 int HandlePostConfigVendor(bridgeDetails *bridgeInfo,int Config);
+
+char *getVendorIfaces();
 
 #endif
