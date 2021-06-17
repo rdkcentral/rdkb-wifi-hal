@@ -699,13 +699,17 @@ INT platform_hal_setFactoryCmVariant(CHAR *pValue);
  * @{
  */
 
+#define LED_BUFFER_SIZE 3
+
 typedef  enum {
    LED_WHITE=0,
-   LED_YELLOW=1,
+   LED_YELLOW=1, //This is also classified as Amber from RDKB perspective
    LED_GREEN=2,
    LED_RED=3,
    LED_BLUE=4,
-   NOT_SUPPORTED=5,
+   LED_RED_AND_GREEN=5,
+   LED_YELLOW_AND_GREEN= 6,
+   NOT_SUPPORTED=7
 } LED_COLOR; // LED_COLOR
 
 
