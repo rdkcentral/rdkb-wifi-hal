@@ -19,6 +19,7 @@
 SUBDIRS = 
 DIST_SUBDIRS = 
 EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
+             ccsp_hal_emmc.h \
              cm_hal.h \
              dhcp6cApi.h \
              dhcpv4c_api.h \
