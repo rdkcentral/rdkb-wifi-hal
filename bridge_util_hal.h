@@ -43,6 +43,9 @@
 #define MAX_LOG_BUFF_SIZE	1024
 #define TIMESTAMP           	64
 
+#define  INTERFACE_EXIST       0
+#define  INTERFACE_NOT_EXIST  -1
+
 extern int DeviceMode; // router = 0, bridge = 2
 
 extern int MocaIsolation_Val;
@@ -115,6 +118,9 @@ typedef struct bridgeDetails {
 }bridgeDetails;
 
 extern int updateBridgeInfo(bridgeDetails *bridgeInfo, char* ifNameToBeUpdated, int Opr , int type);
+
+extern int checkIfExists(char* iface_name);
+extern void removeIfaceFromList(char *str, const char *sub);
 
 /*********************************************************************************************
 
