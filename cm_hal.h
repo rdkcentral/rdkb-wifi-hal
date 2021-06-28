@@ -411,6 +411,14 @@ typedef struct _snmpv3_kickstart_table {
     snmp_kickstart_row_t *kickstart_values[MAX_KICKSTART_ROWS];
 } snmpv3_kickstart_table_t;
 
+typedef  struct
+_CM_DIPLEXER_SETTINGS
+{
+    UINT    usDiplexerSetting; /*Upper Edge in MHz*/
+    UINT    dsDiplexerSetting; /*Upper Edge in MHz*/
+}
+CM_DIPLEXER_SETTINGS;
+
 /** @} */  //END OF GROUP CM_HAL_TYPES
 
 
@@ -1239,6 +1247,51 @@ INT cm_hal_set_ReinitMacThreshold(ULONG value);
 *
 */
 INT cm_hal_get_ReinitMacThreshold(ULONG *pValue);
+
+/*  cm_hal_get_DiplexerSettings: */
+/**
+* @description Get Current Diplexer Settings.
+* @param CM_DIPLEXER_SETTINGS* pValue , value to be returned
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+INT cm_hal_get_DiplexerSettings(CM_DIPLEXER_SETTINGS *pValue);
+
+/*  cm_hal_Diplexer_Variation_Callback: */
+/**
+* @description Receive Current Diplexer Settings via this callback.
+* @param CM_DIPLEXER_SETTINGS  stCMDiplexerValue , value to be received
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+typedef INT ( * cm_hal_DiplexerVariationCallback)(CM_DIPLEXER_SETTINGS stCMDiplexerValue);
+
+/*  cm_hal_Register_DiplexerVariationCallback: */
+/**
+* @description To register callback for receiving dynamic diplexer settings
+* @param cm_hal_DiplexerVariationCallback callback_proc , callback prototype 
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous.
+* @sideeffect None.
+*
+*/
+INT cm_hal_Register_DiplexerVariationCallback(cm_hal_DiplexerVariationCallback callback_proc);
 
 #ifdef __cplusplus
 }
