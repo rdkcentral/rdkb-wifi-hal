@@ -2393,7 +2393,7 @@ typedef enum {
 typedef struct {
     wifi_security_modes_t   mode;
     wifi_encryption_method_t    encr;
-#ifdef WIFI_HAL_VERSION_3_PHASE2
+#if defined(WIFI_HAL_VERSION_3)
     wifi_mfp_cfg_t  mfp;
 #else
     char    mfpConfig[32];
