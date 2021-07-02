@@ -176,6 +176,10 @@ typedef struct
     unsigned int ACTUALCE;	            /* Reports the actual cyclic extension, as the value of m, in use for the connection.*/     
     char SNRMpbus[24];	                /* The current signal-to-noise ratio margin of each upstream band */  
     char SNRMpbds[24];	                /* The current signal-to-noise ratio margin of each band. */
+    char LATNds[24];                    /* Indicates the downstream line attenuation per usable band */
+    char LATNus[24];                    /* Indicates the upstream line attenuation per usable band */
+    char SATNds[24];                    /* Indicates the downstream signal attenuation per usable band */
+    char SATNus[24];                    /* Indicates the upstream signal attenuation per usable band */
     unsigned int INMIATOds;             /* The Impulse Noise Monitoring (INM) Inter Arrival Time (IAT) Offset, measured in DMT symbols*/
     unsigned int INMIATSds;             /* The Impulse Noise Monitoring (INM) Inter Arrival Time (IAT) Step*/
     unsigned int INMCCds;               /* The Impulse Noise Monitoring (INM) Cluster Continuation value, measured in DMT symbols*/
