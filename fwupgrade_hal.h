@@ -87,29 +87,6 @@ extern "C"{
 #define RETURN_ERR   -1
 #endif
 
-#ifndef IPV4_ADDRESS_SIZE
-#define  IPV4_ADDRESS_SIZE                          4
-#endif
-
-#ifndef IP_ADDRESS_LENGTH
-#define  IP_ADDRESS_LENGTH                          IP_ADDRESS_SIZE
-#endif
-
-#ifndef ANSC_IPV4_ADDRESS
-/*
- * While we're trying really hard to smooth the procedure of switch-over from IPv4 to IPv4, there
- * are many places where using the IP address as an integer for comparision and calculation is much
- * easier than array-based operation.
- */
-#define  ANSC_IPV4_ADDRESS                                                                  \
-         union                                                                              \
-         {                                                                                  \
-            UCHAR                   Dot[IPV4_ADDRESS_SIZE];                                 \
-            ULONG                   Value;                                                  \
-         }
-#endif
-
-
 /* FW Download HAL API Prototype */
 
 /* fwupgrade_hal_set_download_url  - 1 */
