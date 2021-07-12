@@ -9205,8 +9205,6 @@ typedef enum
     WIFI_DATA_FRAME_TYPE_8021x,
 } wifi_dataFrameType_t;
 
-typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type);
-
 typedef enum
 {
     WIFI_FRAME_TYPE_INVALID=-1,
@@ -10161,6 +10159,7 @@ typedef void (* wifi_receivedAssocReqFrame_callback)(unsigned int ap_index, mac_
 typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
 
 typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
+typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
 
 int mgmt_frame_received_callback(INT ap_index, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
 INT wifi_mgmt_frame_callbacks_register(wifi_receivedMgmtFrame_callback dppRecvRxCallback);
