@@ -236,5 +236,9 @@ INT fwupgrade_hal_update_and_factoryreset ();
 */
 INT fwupgrade_hal_download_install(const char *url);
 
+#ifdef __cplusplus
+}
+#endif
+
 #endif //__FWUPGRADE_HAL_H__
 
