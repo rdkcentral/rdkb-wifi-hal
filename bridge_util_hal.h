@@ -59,6 +59,8 @@ extern char log_buff[MAX_LOG_BUFF_SIZE];
 extern char log_msg_wtime[MAX_LOG_BUFF_SIZE+TIMESTAMP];
 extern char primaryBridgeName[64];
 extern int PORT2ENABLE;
+extern int ethWanEnabled;
+extern char ethWanIfaceName[64];
 
 extern struct tm *timeinfo;
 extern time_t utc_time;
