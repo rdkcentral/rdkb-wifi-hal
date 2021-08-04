@@ -232,6 +232,7 @@ typedef char r0r1_key_str_t[33];
 typedef char            mac_addr_str_t[18];
 typedef mac_address_t   bssid_t;
 typedef char            ssid_t[32];
+typedef UINT    wifi_radio_index_t;
 typedef unsigned int u_int32_t;
 typedef struct _wifi_basicTrafficStats
 {
@@ -10355,6 +10356,313 @@ typedef enum {
     wifi_security_mode_wpa_wpa2_enterprise = 0x00000100
 } wifi_security_modes_t;
 
+/**
+ * @brief Wifi Frequency Band Types
+ */
+typedef enum{
+    WIFI_FREQUENCY_2_4_BAND = 0x1,
+    WIFI_FREQUENCY_5_BAND   = 0x2,
+    WIFI_FREQUENCY_5L_BAND  = 0x4,
+    WIFI_FREQUENCY_5H_BAND  = 0x8,
+    WIFI_FREQUENCY_6_BAND   = 0x10,
+    WIFI_FREQUENCY_60_BAND  = 0x20
+} wifi_freq_bands_t;
+
+/**
+ * @brief Wifi Channel Bandwidth Types
+ */
+typedef enum{
+    WIFI_CHANNELBANDWIDTH_20MHZ = 0x1,
+    WIFI_CHANNELBANDWIDTH_40MHZ = 0x2,
+    WIFI_CHANNELBANDWIDTH_80MHZ = 0x4,
+    WIFI_CHANNELBANDWIDTH_160MHZ = 0x8,
+    WIFI_CHANNELBANDWIDTH_80_80MHZ = 0x10
+} wifi_channelBandwidth_t;
+
+/**
+ * @brief Wifi 802.11 variant Types
+ */
+typedef enum {
+    WIFI_80211_VARIANT_A = 0x01,
+    WIFI_80211_VARIANT_B = 0x02,
+    WIFI_80211_VARIANT_G = 0x04,
+    WIFI_80211_VARIANT_N = 0x08,
+    WIFI_80211_VARIANT_H = 0x10,
+    WIFI_80211_VARIANT_AC = 0x20,
+    WIFI_80211_VARIANT_AD = 0x40,
+    WIFI_80211_VARIANT_AX = 0x80
+} wifi_ieee80211Variant_t;
+
+typedef enum {
+    wifi_countrycode_AC, /**< ASCENSION ISLAND */
+    wifi_countrycode_AD, /**< ANDORRA */
+    wifi_countrycode_AE, /**< UNITED ARAB EMIRATES */
+    wifi_countrycode_AF, /**< AFGHANISTAN */
+    wifi_countrycode_AG, /**< ANTIGUA AND BARBUDA */
+    wifi_countrycode_AI, /**< ANGUILLA */
+    wifi_countrycode_AL, /**< ALBANIA */
+    wifi_countrycode_AM, /**< ARMENIA */
+    wifi_countrycode_AN, /**< NETHERLANDS ANTILLES */
+    wifi_countrycode_AO, /**< ANGOLA */
+    wifi_countrycode_AQ, /**< ANTARCTICA */
+    wifi_countrycode_AR, /**< ARGENTINA */
+    wifi_countrycode_AS, /**< AMERICAN SAMOA */
+    wifi_countrycode_AT, /**< AUSTRIA */
+    wifi_countrycode_AU, /**< AUSTRALIA */
+    wifi_countrycode_AW, /**< ARUBA */
+    wifi_countrycode_AZ, /**< AZERBAIJAN */    
+    wifi_countrycode_BA, /**< BOSNIA AND HERZEGOVINA */
+    wifi_countrycode_BB, /**< BARBADOS */
+    wifi_countrycode_BD, /**< BANGLADESH */
+    wifi_countrycode_BE, /**< BELGIUM */
+    wifi_countrycode_BF, /**< BURKINA FASO */
+    wifi_countrycode_BG, /**< BULGARIA */
+    wifi_countrycode_BH, /**< BAHRAIN */
+    wifi_countrycode_BI, /**< BURUNDI */
+    wifi_countrycode_BJ, /**< BENIN */
+    wifi_countrycode_BM, /**< BERMUDA */
+    wifi_countrycode_BN, /**< BRUNEI DARUSSALAM */
+    wifi_countrycode_BO, /**< BOLIVIA */
+    wifi_countrycode_BR, /**< BRAZIL */
+    wifi_countrycode_BS, /**< BAHAMAS */
+    wifi_countrycode_BT, /**< BHUTAN */
+    wifi_countrycode_BV, /**< BOUVET ISLAND */
+    wifi_countrycode_BW, /**< BOTSWANA */
+    wifi_countrycode_BY, /**< BELARUS */
+    wifi_countrycode_BZ, /**< BELIZE */
+    wifi_countrycode_CA, /**< CANADA */
+    wifi_countrycode_CC, /**< COCOS (KEELING) ISLANDS */
+    wifi_countrycode_CD, /**< CONGO, THE DEMOCRATIC REPUBLIC OF THE */
+    wifi_countrycode_CF, /**< CENTRAL AFRICAN REPUBLIC */
+    wifi_countrycode_CG, /**< CONGO */
+    wifi_countrycode_CH, /**< SWITZERLAND */
+    wifi_countrycode_CI, /**< COTE D'IVOIRE */
+    wifi_countrycode_CK, /**< COOK ISLANDS */
+    wifi_countrycode_CL, /**< CHILE */
+    wifi_countrycode_CM, /**< CAMEROON */
+    wifi_countrycode_CN, /**< CHINA */
+    wifi_countrycode_CO, /**< COLOMBIA */
+    wifi_countrycode_CP, /**< CLIPPERTON ISLAND */
+    wifi_countrycode_CR, /**< COSTA RICA */
+    wifi_countrycode_CU, /**< CUBA */
+    wifi_countrycode_CV, /**< CAPE VERDE */
+    wifi_countrycode_CY, /**< CYPRUS */
+    wifi_countrycode_CX, /**< CHRISTMAS ISLAND */
+    wifi_countrycode_CZ, /**< CZECH REPUBLIC */
+    wifi_countrycode_DE, /**< GERMANY */
+    wifi_countrycode_DJ, /**< DJIBOUTI */
+    wifi_countrycode_DK, /**< DENMARK */
+    wifi_countrycode_DM, /**< DOMINICA */
+    wifi_countrycode_DO, /**< DOMINICAN REPUBLIC */
+    wifi_countrycode_DZ, /**< ALGERIA */
+    wifi_countrycode_EC, /**< ECUADOR */
+    wifi_countrycode_EE, /**< ESTONIA */
+    wifi_countrycode_EG, /**< EGYPT */
+    wifi_countrycode_EH, /**< WESTERN SAHARA */
+    wifi_countrycode_ER, /**< ERITREA */
+    wifi_countrycode_ES, /**< SPAIN */
+    wifi_countrycode_ET, /**< ETHIOPIA */
+    wifi_countrycode_FI, /**< FINLAND */
+    wifi_countrycode_FJ, /**< FIJI */
+    wifi_countrycode_FK, /**< FALKLAND ISLANDS (MALVINAS) */
+    wifi_countrycode_FM, /**< MICRONESIA, FEDERATED STATES OF */
+    wifi_countrycode_FO, /**< FAROE ISLANDS */
+    wifi_countrycode_FR, /**< FRANCE */
+    wifi_countrycode_GA, /**< GABON */
+    wifi_countrycode_GB, /**< UNITED KINGDOM */
+    wifi_countrycode_GD, /**< GRENADA */
+    wifi_countrycode_GE, /**< GEORGIA */
+    wifi_countrycode_GF, /**< FRENCH GUIANA */
+    wifi_countrycode_GG, /**< GUERNSEY */
+    wifi_countrycode_GH, /**< GHANA */
+    wifi_countrycode_GI, /**< GIBRALTAR */
+    wifi_countrycode_GL, /**< GREENLAND */    
+    wifi_countrycode_GM, /**< GAMBIA */
+    wifi_countrycode_GN, /**< GUINEA */
+    wifi_countrycode_GP, /**< GUADELOUPE */
+    wifi_countrycode_GQ, /**< EQUATORIAL GUINEA */
+    wifi_countrycode_GR, /**< GREECE */
+    wifi_countrycode_GS, /**< SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS */
+    wifi_countrycode_GT, /**< GUATEMALA */    
+    wifi_countrycode_GU, /**< GUAM */
+    wifi_countrycode_GW, /**< GUINEA-BISSAU */
+    wifi_countrycode_GY, /**< GUYANA */
+    wifi_countrycode_HR, /**< CROATIA */
+    wifi_countrycode_HT, /**< HAITI */
+    wifi_countrycode_HM, /**< HEARD ISLAND AND MCDONALD ISLANDS */
+    wifi_countrycode_HN, /**< HONDURAS */
+    wifi_countrycode_HK, /**< HONG KONG */
+    wifi_countrycode_HU, /**< HUNGARY */
+    wifi_countrycode_IS, /**< ICELAND */
+    wifi_countrycode_IN, /**< INDIA */
+    wifi_countrycode_ID, /**< INDONESIA */
+    wifi_countrycode_IR, /**< IRAN, ISLAMIC REPUBLIC OF */
+    wifi_countrycode_IQ, /**< IRAQ */
+    wifi_countrycode_IE, /**< IRELAND */
+    wifi_countrycode_IL, /**< ISRAEL */
+    wifi_countrycode_IM, /**< MAN, ISLE OF */
+    wifi_countrycode_IT, /**< ITALY */
+    wifi_countrycode_IO, /**< BRITISH INDIAN OCEAN TERRITORY */
+    wifi_countrycode_JM, /**< JAMAICA */
+    wifi_countrycode_JP, /**< JAPAN */
+    wifi_countrycode_JE, /**< JERSEY */
+    wifi_countrycode_JO, /**< JORDAN */
+    wifi_countrycode_KE, /**< KENYA */
+    wifi_countrycode_KG, /**< KYRGYZSTAN */
+    wifi_countrycode_KH, /**< CAMBODIA */
+    wifi_countrycode_KI, /**< KIRIBATI */
+    wifi_countrycode_KM, /**< COMOROS */
+    wifi_countrycode_KN, /**< SAINT KITTS AND NEVIS */
+    wifi_countrycode_KP, /**< KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF */
+    wifi_countrycode_KR, /**< KOREA, REPUBLIC OF */
+    wifi_countrycode_KW, /**< KUWAIT */
+    wifi_countrycode_KY, /**< CAYMAN ISLANDS */
+    wifi_countrycode_KZ, /**< KAZAKHSTAN */
+    wifi_countrycode_LA, /**< LAO PEOPLE'S DEMOCRATIC REPUBLIC */
+    wifi_countrycode_LB, /**< LEBANON */
+    wifi_countrycode_LC, /**< SAINT LUCIA */
+    wifi_countrycode_LI, /**< LIECHTENSTEIN */
+    wifi_countrycode_LK, /**< SRI LANKA */
+    wifi_countrycode_LR, /**< LIBERIA */
+    wifi_countrycode_LS, /**< LESOTHO */
+    wifi_countrycode_LT, /**< LITHUANIA */
+    wifi_countrycode_LU, /**< LUXEMBOURG */
+    wifi_countrycode_LV, /**< LATVIA */
+    wifi_countrycode_LY, /**< LIBYAN ARAB JAMAHIRIYA */
+    wifi_countrycode_MA, /**< MOROCCO */
+    wifi_countrycode_MC, /**< MONACO */
+    wifi_countrycode_MD, /**< MOLDOVA, REPUBLIC OF */
+    wifi_countrycode_ME, /**< MONTENEGRO */
+    wifi_countrycode_MG, /**< MADAGASCAR */
+    wifi_countrycode_MH, /**< MARSHALL ISLANDS */
+    wifi_countrycode_MK, /**< MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF */
+    wifi_countrycode_ML, /**< MALI */
+    wifi_countrycode_MM, /**< MYANMAR */
+    wifi_countrycode_MN, /**< MONGOLIA */
+    wifi_countrycode_MO, /**< MACAO */
+    wifi_countrycode_MQ, /**< MARTINIQUE */
+    wifi_countrycode_MR, /**< MAURITANIA */
+    wifi_countrycode_MS, /**< MONTSERRAT */
+    wifi_countrycode_MT, /**< MALTA */
+    wifi_countrycode_MU, /**< MAURITIUS */
+    wifi_countrycode_MV, /**< MALDIVES */
+    wifi_countrycode_MW, /**< MALAWI */
+    wifi_countrycode_MX, /**< MEXICO */
+    wifi_countrycode_MY, /**< MALAYSIA */
+    wifi_countrycode_MZ, /**< MOZAMBIQUE */
+    wifi_countrycode_NA, /**< NAMIBIA */
+    wifi_countrycode_NC, /**< NEW CALEDONIA */
+    wifi_countrycode_NE, /**< NIGER */
+    wifi_countrycode_NF, /**< NORFOLK ISLAND */
+    wifi_countrycode_NG, /**< NIGERIA */
+    wifi_countrycode_NI, /**< NICARAGUA */
+    wifi_countrycode_NL, /**< NETHERLANDS */
+    wifi_countrycode_NO, /**< NORWAY */
+    wifi_countrycode_NP, /**< NEPAL */    
+    wifi_countrycode_NR, /**< NAURU */
+    wifi_countrycode_NU, /**< NIUE */    
+    wifi_countrycode_NZ, /**< NEW ZEALAND */
+    wifi_countrycode_MP, /**< NORTHERN MARIANA ISLANDS */
+    wifi_countrycode_OM, /**< OMAN */
+    wifi_countrycode_PA, /**< PANAMA */
+    wifi_countrycode_PE, /**< PERU */
+    wifi_countrycode_PF, /**< FRENCH POLYNESIA */
+    wifi_countrycode_PG, /**< PAPUA NEW GUINEA */
+    wifi_countrycode_PH, /**< PHILIPPINES */
+    wifi_countrycode_PK, /**< PAKISTAN */
+    wifi_countrycode_PL, /**< POLAND */
+    wifi_countrycode_PM, /**< SAINT PIERRE AND MIQUELON */
+    wifi_countrycode_PN, /**< PITCAIRN */
+    wifi_countrycode_PR, /**< PUERTO RICO */
+    wifi_countrycode_PS, /**< PALESTINIAN TERRITORY, OCCUPIED */
+    wifi_countrycode_PT, /**< PORTUGAL */    
+    wifi_countrycode_PW, /**< PALAU */
+    wifi_countrycode_PY, /**< PARAGUAY */
+    wifi_countrycode_QA, /**< QATAR */
+    wifi_countrycode_RE, /**< REUNION */
+    wifi_countrycode_RO, /**< ROMANIA */
+    wifi_countrycode_RS, /**< SERBIA */
+    wifi_countrycode_RU, /**< RUSSIAN FEDERATION */
+    wifi_countrycode_RW, /**< RWANDA */
+    wifi_countrycode_SA, /**< SAUDI ARABIA */
+    wifi_countrycode_SB, /**< SOLOMON ISLANDS */
+    wifi_countrycode_SD, /**< SUDAN */
+    wifi_countrycode_SE, /**< SWEDEN */
+    wifi_countrycode_SC, /**< SEYCHELLES */
+    wifi_countrycode_SG, /**< SINGAPORE */
+    wifi_countrycode_SH, /**< SAINT HELENA */
+    wifi_countrycode_SI, /**< SLOVENIA */
+    wifi_countrycode_SJ, /**< SVALBARD AND JAN MAYEN */
+    wifi_countrycode_SK, /**< SLOVAKIA */
+    wifi_countrycode_SL, /**< SIERRA LEONE */
+    wifi_countrycode_SM, /**< SAN MARINO */
+    wifi_countrycode_SN, /**< SENEGAL */
+    wifi_countrycode_SO, /**< SOMALIA */
+    wifi_countrycode_SR, /**< SURINAME */
+    wifi_countrycode_ST, /**< SAO TOME AND PRINCIPE */
+    wifi_countrycode_SV, /**< EL SALVADOR */
+    wifi_countrycode_SY, /**< SYRIAN ARAB REPUBLIC */
+    wifi_countrycode_SZ, /**< SWAZILAND */
+    wifi_countrycode_TA, /**< TRISTAN DA CUNHA */
+    wifi_countrycode_TC, /**< TURKS AND CAICOS ISLANDS */
+    wifi_countrycode_TD, /**< CHAD */
+    wifi_countrycode_TF, /**< FRENCH SOUTHERN TERRITORIES */
+    wifi_countrycode_TG, /**< TOGO */
+    wifi_countrycode_TH, /**< THAILAND */
+    wifi_countrycode_TJ, /**< TAJIKISTAN */
+    wifi_countrycode_TK, /**< TOKELAU */
+    wifi_countrycode_TL, /**< TIMOR-LESTE (EAST TIMOR) */
+    wifi_countrycode_TM, /**< TURKMENISTAN */
+    wifi_countrycode_TN, /**< TUNISIA */
+    wifi_countrycode_TO, /**< TONGA */
+    wifi_countrycode_TR, /**< TURKEY */
+    wifi_countrycode_TT, /**< TRINIDAD AND TOBAGO */
+    wifi_countrycode_TV, /**< TUVALU */
+    wifi_countrycode_TW, /**< TAIWAN, PROVINCE OF CHINA */
+    wifi_countrycode_TZ, /**< TANZANIA, UNITED REPUBLIC OF */
+    wifi_countrycode_UA, /**< UKRAINE */
+    wifi_countrycode_UG, /**< UGANDA */
+    wifi_countrycode_UM, /**< UNITED STATES MINOR OUTLYING ISLANDS */
+    wifi_countrycode_US, /**< UNITED STATES */
+    wifi_countrycode_UY, /**< URUGUAY */
+    wifi_countrycode_UZ, /**< UZBEKISTAN */
+    wifi_countrycode_VA, /**< HOLY SEE (VATICAN CITY STATE) */
+    wifi_countrycode_VC, /**< SAINT VINCENT AND THE GRENADINES */
+    wifi_countrycode_VE, /**< VENEZUELA */
+    wifi_countrycode_VG, /**< VIRGIN ISLANDS, BRITISH */
+    wifi_countrycode_VI, /**< VIRGIN ISLANDS, U.S. */
+    wifi_countrycode_VN, /**< VIET NAM */
+    wifi_countrycode_VU, /**< VANUATU */
+    wifi_countrycode_WF, /**< WALLIS AND FUTUNA */
+    wifi_countrycode_WS, /**< SAMOA */
+    wifi_countrycode_YE, /**< YEMEN */
+    wifi_countrycode_YT, /**< MAYOTTE */
+    wifi_countrycode_YU, /**< YUGOSLAVIA */
+    wifi_countrycode_ZA, /**< SOUTH AFRICA */
+    wifi_countrycode_ZM, /**< ZAMBIA */
+    wifi_countrycode_ZW, /**< ZIMBABWE */
+    wifi_countrycode_max /**< Max number of country code */
+} wifi_countrycode_type_t;
+
+/**
+ * @brief Wifi supported bitrates
+ */
+typedef enum {
+    WIFI_BITRATE_DEFAULT = 0x0001,      /* WIFI_BITRATE_DEFAULT is used in the set api to default the bitrate configuration */
+    WIFI_BITRATE_1MBPS   = 0x0002,
+    WIFI_BITRATE_2MBPS   = 0x0004,
+    WIFI_BITRATE_5_5MBPS = 0x0008,
+    WIFI_BITRATE_6MBPS   = 0x0010,
+    WIFI_BITRATE_9MBPS   = 0x0020,
+    WIFI_BITRATE_11MBPS  = 0x0040,
+    WIFI_BITRATE_12MBPS  = 0x0080,
+    WIFI_BITRATE_18MBPS  = 0x0100,
+    WIFI_BITRATE_24MBPS  = 0x0200,
+    WIFI_BITRATE_36MBPS  = 0x0400,
+    WIFI_BITRATE_48MBPS  = 0x0800,
+    WIFI_BITRATE_54MBPS  = 0x1000
+} wifi_bitrate_t;
+
 typedef struct {
     wifi_security_modes_t mode;
     wifi_encryption_method_t	encr;
@@ -10436,21 +10744,74 @@ typedef struct {
     wifi_interworking_t	interworking;
     BOOL	mac_filter_enable;
     wifi_mac_filter_mode_t mac_filter_mode;
+    BOOL    wmm_enabled;
+    BOOL    UAPSDEnabled;
+    mac_address_t bssid;                    /**< The BSSID. This variable should only be used in the get API. It can't used to change the interface MAC */
+    UINT   wmmNoAck;
+    UINT   wepKeyLength;
+    BOOL   bssHotspot;
+    UINT   wpsPushButton;
+    char   beaconRateCtl[32];
     BOOL        sec_changed;
 } wifi_front_haul_bss_t;
 
+
+#define MAXNUMSECONDARYCHANNELS     7
+
+/**
+ * @brief Wifi Radio Operation Parameters
+ */
 typedef struct {
-    wifi_vap_index_t 	vap_index;
+    BOOL enable;                                        /**< The radio enable. */
+    wifi_freq_bands_t   band;                           /**< the radio frequency band. */
+    BOOL autoChannelEnabled;                            /**< set bAutoChannelEnabled to TRUE to enable Auto Channel. */
+    UINT channel;                                       /**< The radio primary channel. */
+    UINT numSecondaryChannels;                          /**< The number odf secondary channels in the list */
+    UINT channelSecondary[MAXNUMSECONDARYCHANNELS];     /**< The List of secondary radio channel. */
+    wifi_channelBandwidth_t channelWidth;               /**< The channel bandwidth. */
+    wifi_ieee80211Variant_t variant;                    /**< The radio operating mode */
+    UINT csa_beacon_count;                              /**< Specifies how long CSA need to be announced. */
+    wifi_countrycode_type_t countryCode;                /**< The country code. */
+    BOOL DCSEnabled;                                    /**< set DCSEnabled to TRUE to enable DCS. */
+    UINT dtimPeriod;                                    /**< The DTIM period. */
+    UINT beaconInterval;                                /**< The beacon interval. */
+    UINT operatingClass;                                /**< The Operating class. */
+    UINT basicDataTransmitRates;                        /**< The basic data transmit rates in Mbps. It uses bitmask to return multiples bitrates and wifi_bitrate_t has the definition of valid values*/
+    UINT operationalDataTransmitRates;                  /**< The operational data transmit rates in Mbps. It uses bitmask to return multiples bitrates and wifi_bitrate_t has the definition of valid values*/
+    UINT fragmentationThreshold;                        /**< The fragmentation threshold in bytes. */
+    wifi_guard_interval_t guardInterval;               /**< The guard interval. */
+    UINT transmitPower;                                /**<  The transmit power in percentage, eg "75", "100". */
+    UINT rtsThreshold;                                 /**< The packet size threshold in bytes to apply RTS/CTS backoff rules. */
+    BOOL factoryResetSsid;
+    UINT radioStatsMeasuringRate;
+    UINT radioStatsMeasuringInterval;
+    BOOL ctsProtection;
+    BOOL obssCoex;
+    BOOL stbcEnable;
+    BOOL greenFieldEnable;
+    UINT userControl;
+    UINT adminControl;
+    UINT chanUtilThreshold;
+    BOOL chanUtilSelfHealEnable;
+} wifi_radio_operationParam_t;
+
+#define WIFI_BRIDGE_NAME_LEN  32
+#define MAX_NUM_VAP_PER_RADIO    8
+
+typedef struct {
+    wifi_vap_index_t    vap_index;
     wifi_vap_name_t     vap_name;
+    wifi_radio_index_t  radio_index;
+    CHAR                bridge_name[WIFI_BRIDGE_NAME_LEN];
     union {
-        wifi_front_haul_bss_t	bss_info;
-        wifi_back_haul_sta_t	sta_info;
+        wifi_front_haul_bss_t   bss_info;
+        wifi_back_haul_sta_t    sta_info;
     } u;
 } __attribute__((packed)) wifi_vap_info_t;
 
 typedef struct {
     unsigned int        num_vaps;
-    wifi_vap_info_t vap_array[8];
+    wifi_vap_info_t vap_array[MAX_NUM_VAP_PER_RADIO];
 } __attribute__((packed)) wifi_vap_info_map_t;
 
 #endif
