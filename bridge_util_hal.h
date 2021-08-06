@@ -92,11 +92,10 @@ enum Config {
 enum INTERFACE_TYPE {
     IF_BRIDGE_BRIDGEUTIL = 1,
     IF_VLAN_BRIDGEUTIL = 2,
-    IF_VLAN_LIST_BRIDGEUTIL = 3,
-    IF_GRE_BRIDGEUTIL = 4,
-    IF_MOCA_BRIDGEUTIL = 5,
-    IF_WIFI_BRIDGEUTIL = 6,
-    IF_ETH_BRIDGEUTIL = 7,
+    IF_GRE_BRIDGEUTIL = 3,
+    IF_MOCA_BRIDGEUTIL = 4,
+    IF_WIFI_BRIDGEUTIL = 5,
+    IF_ETH_BRIDGEUTIL = 6,
     IF_OTHER_BRIDGEUTIL
 };
 
@@ -113,7 +112,6 @@ typedef struct bridgeDetails {
 	char MoCAIfList[IFLIST_SIZE];
 	char GreIfList[IFLIST_SIZE];
 	char WiFiIfList[IFLIST_SIZE];
-	char VlanIfList[IFLIST_SIZE];
 }bridgeDetails;
 
 extern int updateBridgeInfo(bridgeDetails *bridgeInfo, char* ifNameToBeUpdated, int Opr , int type);
