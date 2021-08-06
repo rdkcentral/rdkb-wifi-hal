@@ -2476,7 +2476,7 @@ typedef struct {
     BOOL    enabled;
     BOOL    showSsid;
     BOOL    isolation;
-    UINT    mgmtPowerControl;
+    INT     mgmtPowerControl;
     UINT    bssMaxSta;
     BOOL    bssTransitionActivated;
     BOOL    nbrReportActivated;
