@@ -147,6 +147,30 @@ extern "C"{
  * @}
  */
 
+//DHCPv6 Options
+#define DHCPV6_OPT_82  82  // OPTION_SOL_MAX_RT: Solicite Maximum Retry Time
+#define DHCPV6_OPT_23  23  // OPTION_SOL_MAX_RT: Solicite Maximum Retry Time
+#define DHCPV6_OPT_95  95  // OPTION_SOL_MAX_RT: Solicite Maximum Retry Time
+#define DHCPV6_OPT_24  24  // OPTION_DOMAIN_LIST
+#define DHCPV6_OPT_83  83  // OPTION_INF_MAX_RT
+#define DHCPV6_OPT_17  17  // OPTION_VENDOR_OPTS
+#define DHCPV6_OPT_31  31  // OPTION_SNTP_SERVERS
+
+
+//DHCPv4 Options
+#define DHCPV4_OPT_42  42  // NTP Server Addresses
+#define DHCPV4_OPT_43  43  // Vendor Specific Information
+#define DHCPV4_OPT_58  58  // DHCP Renewal (T1) Time
+#define DHCPV4_OPT_59  59  // DHCP Rebinding (T2) Time
+#define DHCPV4_OPT_60  60  // Class Identifier
+#define DHCPV4_OPT_61  61  // Client Identifier
+#define DHCPV4_OPT_100 100 // IEEE 1003.1 TZ String
+#define DHCPV4_OPT_122 122 // CableLabs Client Configuration
+#define DHCPV4_OPT_125 125 // Vendor-Identifying Vendor-Specific Information
+#define DHCPV4_OPT_242 242 // Private Use
+#define DHCPV4_OPT_243 243 // Private Use
+#define DHCPV4_OPT_END 255 // DHCP Option End - used to check if option is valid
+
 /**********************************************************************
                 ENUMERATION DEFINITIONS
 **********************************************************************/
@@ -923,6 +947,37 @@ INT platform_hal_StopMACsec(INT ethPort);
 *
 */
 INT platform_hal_GetMemoryPaths(RDK_CPUS index, PPLAT_PROC_MEM_INFO *ppinfo);
+
+/*
+ * dhcpv4_req_opt_to_hal - is used to fill options to request values
+ * from platform
+ */
+
+typedef struct dhcp_opt_list {
+    int dhcp_opt;
+    char * dhcp_opt_val;
+    struct dhcp_opt_list * next;
+} dhcp_opt_list;
+
+/* 
+ * platform_hal_GetDhcpv4Options ()
+ * @description: This function fills in 2 list, 1 for request option and 1 for send option.
+ * @params     : v4_req_opt_list - list to be filled for request dhcp options 
+ *               v4_send_opt_list - list to be filled for send dhcp options
+ * @return     : RETURN_OK for success or RETURN_ERR for failure
+ *
+ */
+INT platform_hal_GetDhcpv4_Options ( dhcp_opt_list ** req_opt_list, dhcp_opt_list ** send_opt_list);
+
+/*
+ * platform_hal_GetDhcpv6Options ()
+ * @description: This function fills in 2 list, 1 for request option and 1 for send option.
+ * @params     : v6_req_opt_list - list to be filled for request dhcp options
+ *               v6_send_opt_list - list to be filled for send dhcp options
+ * @return     : RETURN_OK for success or RETURN_ERR for failure
+ *
+ */
+INT platform_hal_GetDhcpv6_Options ( dhcp_opt_list ** req_opt_list, dhcp_opt_list ** send_opt_list);
 
 typedef  enum {
    PSM_UNKNOWN=0,
