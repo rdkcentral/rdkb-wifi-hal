@@ -930,6 +930,8 @@ typedef  enum {
 */
 INT platform_hal_SetLowPowerModeState(PPSM_STATE pState);
 
+INT platform_hal_getCMTSMac(CHAR *pValue);
+
 #ifdef __cplusplus
 }
 #endif
