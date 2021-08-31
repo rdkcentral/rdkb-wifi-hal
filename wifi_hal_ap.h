@@ -2550,6 +2550,9 @@ INT wifi_getAPCapabilities(INT ap_index, wifi_ap_capabilities_t *apCapabilities)
 INT wifi_getApWpsConfiguration(INT ap_index, wifi_wps_t* wpsConfig);
 INT wifi_setApWpsConfiguration(INT ap_index, wifi_wps_t* wpsConfig);
 
+INT wifi_getLibhostapd(BOOL *output_bool);
+INT wifi_updateLibHostApdConfig(int apIndex);
+
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 
 #ifdef __cplusplus
