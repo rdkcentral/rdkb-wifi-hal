@@ -155,6 +155,9 @@ extern "C"{
 #define DHCPV6_OPT_83  83  // OPTION_INF_MAX_RT
 #define DHCPV6_OPT_17  17  // OPTION_VENDOR_OPTS
 #define DHCPV6_OPT_31  31  // OPTION_SNTP_SERVERS
+#define DHCPV6_OPT_15  15  // User Class Option
+#define DHCPV6_OPT_16  16  // Vendor Class Option
+#define DHCPV6_OPT_20  20  // Reconfigure Accept Option
 
 
 //DHCPv4 Options
