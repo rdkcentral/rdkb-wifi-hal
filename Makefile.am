@@ -48,7 +48,8 @@ EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
              xtm_hal.h \
              vlan_eth_hal.h \
 	         fwupgrade_hal.h \
-             bridge_util_hal.h
+             bridge_util_hal.h \
+             nfc_hal.h
 
 otherincludedir = $(includedir)/ccsp
 otherinclude_HEADERS = $(EXTRA_DIST)
