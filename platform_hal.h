@@ -1007,6 +1007,68 @@ INT platform_hal_SetLowPowerModeState(PPSM_STATE pState);
 
 INT platform_hal_getCMTSMac(CHAR *pValue);
 
+
+typedef  enum {
+   DOCSIS=1,
+   EWAN=2,
+} WAN_INTERFACE;
+
+typedef  enum {
+   TRAFFIC_CNT_START=1,
+   TRAFFIC_CNT_STOP=2,
+} TRAFFIC_CNT_COMMAND;
+
+typedef struct DSCP_traffic_client {
+	char mac[18]; // e.g. 00:AA:BB:CC:DD:EE
+	UINT dscp;
+	ULONG rxBytes;
+	ULONG txBytes;
+} DSCP_traffic_client_t, *pDSCP_traffic_client_t;
+
+typedef struct DSCP_traffic_client_list {
+	UINT numElements;
+	pDSCP_traffic_client_t pClient;
+} DSCP_traffic_client_list_t, *pDSCP_traffic_client_list_t;
+
+/* platform_hal_setDscp() */
+/**
+* @description Control/Set traffic counting based on Dscp value
+*
+* @param interfaceType - 1 for DOCSIS , 2 for EWAN
+* @param cmd - START/STOP
+* @param dscpVal comma seperated string , e.g. "10,0" , NULL
+* NULL is for all DSCP values , values are base 10
+*
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*/
+INT platform_hal_setDscp(WAN_INTERFACE interfaceType , TRAFFIC_CNT_COMMAND cmd , char* pDscpVals);
+
+/* platform_hal_resetDscpCounts() */
+/**
+* @description To reset Dscp Counter values
+*
+* @param interfaceType - 1 for DOCSIS , 2 for EWAN
+*
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*/
+INT platform_hal_resetDscpCounts(WAN_INTERFACE interfaceType);
+
+/* platform_hal_getDscpClientList() */
+/**
+* @description To get counter data 
+* e.g. DSCP_traffic_client_list_t ClientList;
+*      platform_hal_getDscpClientList(DOCSIS,&ClientList);
+*      ClientList should be filled by hal. pClient is the array of clients. Memory will be allocated by hal and freed by RDKB.
+*
+* @param interfaceType - 1 for DOCSIS , 2 for EWAN
+* @param pClientList - List of client structure to be filled by hal
+*
+*/
+INT platform_hal_getDscpClientList(WAN_INTERFACE interfaceType , pDSCP_traffic_client_list_t pClientList);
+
+
 #ifdef __cplusplus
 }
 #endif
