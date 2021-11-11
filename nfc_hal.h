@@ -20,6 +20,8 @@
 #ifndef _NFC_HAL_H
 #define _NFC_HAL_H
 
+#include <stdint.h>
+
  /**********************************************************************
                 CONSTANT DEFINITIONS
  **********************************************************************/
@@ -41,6 +43,10 @@
 
 #ifndef UINT
 #define UINT  unsigned int
+#endif
+
+#ifndef UINT8
+#define UINT8 uint8_t
 #endif
 
 #ifndef ULONG
@@ -79,7 +85,7 @@
  /**
   * The following type definitions and macros are used to inform the capabilities of an underlying NFC device / driver.
   */
- #define CAP_NFC_FORUM_TAG_ANY 0x00000000
+#define CAP_NFC_FORUM_TAG_ANY 0x00000000
 #define CAP_NFC_FORUM_TAG_TYPE1 0x00000001
 #define CAP_NFC_FORUM_TAG_TYPE2 0x00000002
 #define CAP_NFC_FORUM_TAG_TYPE3 0x00000004
@@ -102,15 +108,11 @@ typedef enum {
 /**
  * The following type definitions are used to hold information for memory mappings.
  */
-typedef struct {
+typedef struct nfc_map_list_t {
+    UINT8* mem_ptr;
     UINT handle;
-    CHAR* mem_ptr;
     UINT base_addr;
     UINT size;
-} nfc_map_t; // a single mapping
-
-typedef struct nfc_map_list_t {
-    nfc_map_t* mapping;
     struct nfc_map_list_t* next;
 } nfc_map_list_t; // list of all mappings
 
@@ -126,10 +128,17 @@ typedef void (*callback_t)(nfc_event_t);
 
 
 /**
+ * @brief Intialize the NFC chip.
+ *
+ * @return  e_Ok on success else return corresponding error type
+ */
+nfc_err_t NFC_hal_init (void);
+
+/**
  * @brief Reset the NFC device and driver clearing all state and setting back to power on defaults.  Any memory mappings existing prior to
 calling this API shall be removed with all resources freed.
 */
-nfc_err_t NFC_reset(void);
+nfc_err_t NFC_hal_reset(void);
 
 /**
  * @brief Toggle the enable / disable of the NFC device.  Disable does not clear all state nor does it remove any active mappings.  Disable only
@@ -138,7 +147,7 @@ prevents the local NFC device from participating in any further NFC interactions
 * @param Enable boolean value indicates enable/disable the NFC device.
 * @return e_Ok on success else return corresponding error type.
 */
-nfc_err_t NFC_enable(BOOLEAN enable);
+nfc_err_t NFC_hal_enable(BOOLEAN enable);
 
 /**
  * @brief Returns information about the capabilities of the underlying NFC device.
@@ -146,14 +155,14 @@ nfc_err_t NFC_enable(BOOLEAN enable);
  * @param caps Pointer to nfc_caps_t structure to store capabilities.
  * @return e_Ok on success else return corresponding error type.
  */
-nfc_err_t NFC_get_caps(nfc_caps_t* caps);
+nfc_err_t NFC_hal_get_caps(nfc_caps_t* caps);
 
 /**
  * @brief Returns basic status about the NFC device.
  *
  * @return Returns the enable or disable status as enum type of nfc_status_t
  */
-nfc_status_t NFC_get_status(void);
+nfc_status_t NFC_hal_get_status(void);
 
 /**
  * @brief Retrieves pointer to mapped device memory as specified by the input parameters.
@@ -165,7 +174,7 @@ nfc_status_t NFC_get_status(void);
  *
  * @return nfc_err_t [RET] Success or error condition
  */
-nfc_err_t NFC_map_memory(UINT handle, unsigned char* mem_ptr, UINT base_addr, UINT size);
+nfc_err_t NFC_hal_map_memory(UINT handle, UINT8* mem_ptr, UINT base_addr, UINT size);
 
 /**
  * @brief Instructs the driver to unmap the memory specified by the handle.  After this operation completes,  any references or pointers for the
@@ -175,7 +184,7 @@ previously mapped region shall be invalid and must no longer be used.
  *
  * @return nfc_err_t [RET] Success or error condition
  */
-nfc_err_t NFC_unmap_memory(UINT handle);
+nfc_err_t NFC_hal_unmap_memory(UINT handle);
 
 /**
  * @brief Instructs the driver to sync (apply) the content of the mapped memory to the device.   This makes it easier for the driver to know when
@@ -185,7 +194,7 @@ to commit the memory content to the physical device and allows any client of the
  *
  * @return nfc_err_t [RET] Success or error condition
  */
-nfc_err_t NFC_sync_memory(UINT handle);
+nfc_err_t NFC_hal_sync_memory(UINT handle);
 
 /**
  * @brief Returns a linked list of active mappings.
@@ -194,7 +203,7 @@ nfc_err_t NFC_sync_memory(UINT handle);
  *
  * @return nfc_err_t [RET] Success or error condition
  */
-nfc_err_t NFC_get_maplist(nfc_map_list_t* maplist);
+nfc_err_t NFC_hal_get_maplist(nfc_map_list_t* maplist);
 
 /**
  * @brief The NFC HAL shall support asynchronous notifications through the registration of a callback handler. The callback mechanism shall
@@ -204,39 +213,5 @@ nfc_err_t NFC_get_maplist(nfc_map_list_t* maplist);
  *
  * @return nfc_err_t [RET] Success or error condition
  */
-nfc_err_t NFC_register_callback(callback_t function);
-
-/**
- * @brief Get SSID Name of radio.
- *
- * @param ssid [OUT] String to store ssid name
- * @param ssid_length [IN] Length of the string to hold the ssid name
- *
- * @return nfc_err_t [RET] Success or error condition
- */
-nfc_err_t NFC_get_Ssid(char* ssid, int ssid_length);
-
-/**
- * @brief Get Network key (password/passphrase) of radio.
- *
- * @param networkkey [OUT] String to store network key
- * @param key_length [IN] Length of the string to hold the network key
- *
- * @return nfc_err_t [RET] Success or error condition
- */
-nfc_err_t NFC_get_NetworkKey(char* networkKey, int key_length);
-
-/**
- * @brief Get to know the status of WPS feature supported in platform
- *
- * @return TRUE if supports else return FALSE
- */
-BOOLEAN NFC_doesWpsSupported(void);
-
-/**
- * @brief Get to know the status of WPA3 feature supported in platform
- *
- * @return TRUE if supports else return FALSE
- */
-BOOLEAN NFC_doesWpa3Supported(void);
+nfc_err_t NFC_hal_register_callback(callback_t function);
 #endif
