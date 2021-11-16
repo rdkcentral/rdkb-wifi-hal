@@ -35,6 +35,7 @@ EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
              wifi_hal_client_mgt.h \
              wifi_hal_deprecated.h \
              wifi_hal_extender.h \
+             wifi_hal_sta.h \
              ccsp_hal_ethsw.h \
              dhcp4cApi.h \
              moca_hal.h \
@@ -47,7 +48,7 @@ EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
              xdsl_hal.h \
              xtm_hal.h \
              vlan_eth_hal.h \
-	         fwupgrade_hal.h \
+             fwupgrade_hal.h \
              bridge_util_hal.h
 
 otherincludedir = $(includedir)/ccsp

@@ -48,6 +48,7 @@ typedef struct {
     BOOL enable;                                        /**< The radio enable. */
     wifi_freq_bands_t   band;                           /**< the radio frequency band. */
     BOOL autoChannelEnabled;                            /**< set bAutoChannelEnabled to TRUE to enable Auto Channel. */
+    UINT op_class;                                      /**< The Operating class. */
     UINT channel;                                       /**< The radio primary channel. */
     UINT numSecondaryChannels;                          /**< The number odf secondary channels in the list */
     UINT channelSecondary[MAXNUMSECONDARYCHANNELS];     /**< The List of secondary radio channel. */
@@ -76,7 +77,7 @@ typedef struct {
     UINT adminControl;
     UINT chanUtilThreshold;
     BOOL chanUtilSelfHealEnable;
-} wifi_radio_operationParam_t;
+} __attribute__((packed)) wifi_radio_operationParam_t;
 
 
 /**
@@ -925,6 +926,31 @@ INT wifi_setRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operat
  *
  */
 INT wifi_getRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operationParam_t *operationParam);
+
+/* wifi_getScanResults() function */
+ /**
+ * Description: Return scan results 
+ * Parameters :
+ *      ap_index - index of client VAP
+ *      channel  - scan channel
+ *      bss      - bss stats
+ *      num_bss  - number of bss returned
+ *
+ * @return status of the operation
+ *  return RETURN_OK - on success
+ *  return RETURN_ERR - on failure
+ *
+ * @execution Synchronous.
+ * @sideeffect None.
+ *
+ */
+INT wifi_getScanResults(wifi_radio_index_t index, wifi_channel_t *channel, wifi_bss_info_t **bss, UINT *num_bss);
+ 
+
+typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_info_t **bss, UINT *num_bss);
+
+void wifi_scanResults_callback_register(wifi_scanResults_callback callback_proc);
+
 
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 

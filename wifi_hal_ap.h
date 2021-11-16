@@ -352,6 +352,41 @@ typedef enum
     WIFI_RADIO_SCAN_MODE_SURVEY
 } wifi_neighborScanMode_t;
 
+/**
+ * @brief Eap types
+ */
+typedef enum {
+    WIFI_EAP_TYPE_NONE = 0,
+    WIFI_EAP_TYPE_IDENTITY = 1 /* RFC 3748 */,
+    WIFI_EAP_TYPE_NOTIFICATION = 2 /* RFC 3748 */,
+    WIFI_EAP_TYPE_NAK = 3 /* Response only, RFC 3748 */,
+    WIFI_EAP_TYPE_MD5 = 4, /* RFC 3748 */
+    WIFI_EAP_TYPE_OTP = 5 /* RFC 3748 */,
+    WIFI_EAP_TYPE_GTC = 6, /* RFC 3748 */
+    WIFI_EAP_TYPE_TLS = 13 /* RFC 2716 */,
+    WIFI_EAP_TYPE_LEAP = 17 /* Cisco proprietary */,
+    WIFI_EAP_TYPE_SIM = 18 /* RFC 4186 */,
+    WIFI_EAP_TYPE_TTLS = 21 /* RFC 5281 */,
+    WIFI_EAP_TYPE_AKA = 23 /* RFC 4187 */,
+    WIFI_EAP_TYPE_PEAP = 25 /* draft-josefsson-pppext-eap-tls-eap-06.txt */,
+    WIFI_EAP_TYPE_MSCHAPV2 = 26 /* draft-kamath-pppext-eap-mschapv2-00.txt */,
+    WIFI_EAP_TYPE_TLV = 33 /* draft-josefsson-pppext-eap-tls-eap-07.txt */,
+    WIFI_EAP_TYPE_TNC = 38 /* TNC IF-T v1.0-r3; note: tentative assignment;
+                            * type 38 has previously been allocated for
+                            * EAP-HTTP Digest, (funk.com) */,
+    WIFI_EAP_TYPE_FAST = 43 /* RFC 4851 */,
+    WIFI_EAP_TYPE_PAX = 46 /* RFC 4746 */,
+    WIFI_EAP_TYPE_PSK = 47 /* RFC 4764 */,
+    WIFI_EAP_TYPE_SAKE = 48 /* RFC 4763 */,
+    WIFI_EAP_TYPE_IKEV2 = 49 /* RFC 5106 */,
+    WIFI_EAP_TYPE_AKA_PRIME = 50 /* RFC 5448 */,
+    WIFI_EAP_TYPE_GPSK = 51 /* RFC 5433 */,
+    WIFI_EAP_TYPE_PWD = 52 /* RFC 5931 */,
+    WIFI_EAP_TYPE_EKE = 53 /* RFC 6124 */,
+    WIFI_EAP_TYPE_TEAP = 55 /* RFC 7170 */,
+    WIFI_EAP_TYPE_EXPANDED = 254 /* RFC 3748 */
+} wifi_eap_t;
+
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
 
 /**
@@ -2309,7 +2344,7 @@ typedef struct
     BOOL enable;
     wifi_onboarding_methods_t methods;
     CHAR pin[WIFI_AP_MAX_WPSPIN_LEN];
-}wifi_wps_t;
+} __attribute__((packed)) wifi_wps_t;
 
 typedef enum {
     wifi_mfp_cfg_disabled,
@@ -2333,6 +2368,7 @@ typedef struct {
 #endif
     unsigned short  port;               /**< The primary RADIUS server port. */
     char            key[64];            /**< The primary secret. */
+    char            identity[64];       /**< The primary identity. */
 #ifdef WIFI_HAL_VERSION_3_PHASE2
     ip_addr_t       s_ip;                 /**< The secondary RADIUS server IP address. */
 #else
@@ -2347,7 +2383,8 @@ typedef struct {
     UINT            blacklist_table_timeout;
     UINT            identity_req_retry_interval;
     UINT            server_retries;
-} wifi_radius_settings_t;
+    wifi_eap_t      eap_type;
+} __attribute__((packed)) wifi_radius_settings_t;
 
 typedef enum {
     wifi_security_key_type_psk,
@@ -2359,7 +2396,7 @@ typedef enum {
 typedef struct {
     wifi_security_key_type_t type;
     char    key[256];
-} wifi_security_key_t;
+} __attribute__((packed)) wifi_security_key_t;
 
 /**
  * @brief Wifi encryption types
@@ -2466,8 +2503,24 @@ typedef struct {
     wifi_passpoint_settings_t   passpoint;
 } __attribute__((packed)) wifi_interworking_t;
 
+typedef enum {
+    wifi_vap_mode_ap,
+    wifi_vap_mode_sta,
+    wifi_vap_mode_monitor,
+} wifi_vap_mode_t;
+
 typedef struct {
-    
+    unsigned int period;        // period in seconds    
+    wifi_channel_t  channel;    // channel to scan, 0 means scan all in the band
+} __attribute__((packed)) wifi_scan_params_t;
+
+typedef struct {
+    ssid_t              ssid;
+    bssid_t             bssid; // if bssid is set to all 0, scan the ssid with probes, otherwise connect to specified bssid
+    BOOL                enabled;
+    wifi_connection_status_t    conn_status;
+    wifi_scan_params_t  scan_params;
+    wifi_vap_security_t security;
 } __attribute__((packed)) wifi_back_haul_sta_t;
 
 #define WIFI_AP_MAX_SSID_LEN    33
@@ -2498,7 +2551,7 @@ typedef struct {
     BOOL   bssHotspot;
     UINT   wpsPushButton;
     char   beaconRateCtl[32];
-} wifi_front_haul_bss_t;
+} __attribute__((packed)) wifi_front_haul_bss_t;
 
 #define WIFI_BRIDGE_NAME_LEN  32
 
@@ -2507,6 +2560,7 @@ typedef struct {
     wifi_vap_name_t     vap_name;
     wifi_radio_index_t  radio_index;
     CHAR                bridge_name[WIFI_BRIDGE_NAME_LEN];
+    wifi_vap_mode_t     vap_mode;
     union {
         wifi_front_haul_bss_t   bss_info;
         wifi_back_haul_sta_t    sta_info;
@@ -2529,7 +2583,7 @@ typedef struct {
     BOOL UAPSDSupported;                                        /**< if bUAPSDSupported is TRUE, WMM Unscheduled Automatic Power Save Delivery (U-APSD) is supported. */
     BOOL interworkingServiceSupported;                          /**< if bInterworkingServiceSupported is TRUE, indicates whether the access point supports interworking with external networks. */
     BOOL BSSTransitionImplemented;                              /**< if BSSTransitionImplemented is TRUE, BTM implemented. */
-} wifi_ap_capabilities_t;
+} __attribute__((packed)) wifi_ap_capabilities_t;
 
 
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
@@ -2552,6 +2606,54 @@ INT wifi_setApWpsConfiguration(INT ap_index, wifi_wps_t* wpsConfig);
 
 INT wifi_getLibhostapd(BOOL *output_bool);
 INT wifi_updateLibHostApdConfig(int apIndex);
+
+/**
+ * @brief VAP status possible values
+ */
+typedef enum {
+    wifi_vapstatus_down,
+    wifi_vapstatus_up
+} wifi_vapstatus_t;
+
+/* wifi_vapstatus_callback() function */
+/**
+* @brief This call back will be invoked when VAP status changes
+*
+* @param[in] apIndex          VAP Index
+* @param[in] status           VAP status
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+typedef INT(* wifi_vapstatus_callback)(INT apIndex, wifi_vapstatus_t status);
+
+/* wifi_vapstatus_callback_register() function */
+/**
+* @brief VAP Status call back registration function.
+*
+* @param[in] callback    wifi_vapstatus_callback callback function
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_vapstatus_callback_register(wifi_vapstatus_callback callback);
+
 
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 

@@ -119,11 +119,13 @@ extern "C"{
 #define AP_INDEX_24 24
 #endif
 
+
 #ifdef WIFI_HAL_VERSION_3
 #define MAX_NUM_RADIOS           3
 #else
 #define MAX_NUM_RADIOS           2
 #endif
+
 #define MAX_NUM_VAP_PER_RADIO    8
 
 #define MAC_STR_LEN        18
@@ -203,6 +205,16 @@ typedef char            nas_id_t[49];
 typedef unsigned char   r0r1_key_t[16];
 typedef char            r0r1_key_str_t[33];
 
+typedef struct {
+    bssid_t        bssid;
+    ssid_t         ssid;
+    int            rssi; 
+    unsigned short caps;
+    unsigned int   beacon_int;
+    unsigned int   freq;
+    size_t         ie_len;
+} wifi_bss_info_t;
+
 typedef enum {
     wifi_ip_family_ipv4,
     wifi_ip_family_ipv6
@@ -214,7 +226,7 @@ typedef struct {
         UINT   IPv4addr;           /* 32-bit IPv4 address */
         UCHAR  IPv6addr[16];       /* 128-bit IPv6 address */
     } u;
-}ip_addr_t;
+}__attribute__((packed)) ip_addr_t;
 
 typedef enum {
     WIFI_HAL_DISABLE = 0,
@@ -227,7 +239,7 @@ typedef enum {
 typedef struct {
     UINT    major;
     UINT    minor;
-} wifi_hal_version_t;
+}__attribute__((packed)) wifi_hal_version_t;
 
 /**
  * @brief Wifi Frequency Band Types
@@ -254,6 +266,11 @@ typedef enum{
     WIFI_CHANNELBANDWIDTH_80_80MHZ = 0x10
 } wifi_channelBandwidth_t;
 
+typedef struct {
+    INT channel;
+    wifi_freq_bands_t   band;
+}__attribute__((packed)) wifi_channel_t;
+
 #define MAX_CHANNELS    64
 
 /**
@@ -262,7 +279,7 @@ typedef enum{
 typedef struct {
     INT num_channels;                  /**< The number of available channels in channels_list. */
     INT channels_list[MAX_CHANNELS];   /**< List of channels. */
-} wifi_channels_list_t;
+}__attribute__((packed)) wifi_channels_list_t;
 
 /**
  * @brief Wifi 802.11 variant Types
@@ -286,7 +303,7 @@ typedef enum {
 typedef struct {
     UINT transmitPowerSupported[MAXNUMBEROFTRANSMIPOWERSUPPORTED]; /**< List of transmit power supported. */
     UINT numberOfElements;                                         /**< The number of valid elements in transmitPowerSupported. */
-} wifi_radio_trasmitPowerSupported_list_t;
+}__attribute__((packed)) wifi_radio_trasmitPowerSupported_list_t;
 
 /**
  * @brief Wifi supported bitrates
@@ -600,7 +617,7 @@ typedef enum {
 typedef struct {
     UINT maxDevices;              /**< The maximun number of stations that can be configured to collect the CSI data.  Return 0 if CSI is not supported. */
     BOOL soudingFrameSupported;   /**< The value is TRUE, if the radio supports to sending souding frames in the MAC layer. */
-} wifi_radio_csi_capabilities_t;
+}__attribute__((packed)) wifi_radio_csi_capabilities_t;
 
 #define MAXIFACENAMESIZE    64
 
@@ -608,6 +625,7 @@ typedef struct {
  * @brief Wifi Radio Capabilities
  */
 typedef struct {
+    UINT index;
     CHAR ifaceName[MAXIFACENAMESIZE];                                     /**< The interface name. */
     UINT numSupportedFreqBand;                                           /**< The Number of supported frequencies band */
     wifi_freq_bands_t band[MAX_NUM_FREQ_BAND];                           /**< The frequencies band list */
@@ -625,8 +643,20 @@ typedef struct {
     UINT numcountrySupported;                                            /**< Number of supported countries. */
     wifi_countrycode_type_t countrySupported[wifi_countrycode_max];      /**< The Supported country list. it should return the current country code on first entry. */
     UINT maxNumberVAPs;                                                  /**< Max number of VAPs */
-} wifi_radio_capabilities_t;
+}__attribute__((packed)) wifi_radio_capabilities_t;
 
+/**
+ * @brief Wifi interface Property info
+ */
+typedef struct {
+    unsigned int  phy_index;           /**< actual index of the phy device */
+    unsigned int  rdk_radio_index;     /**< radio index of upper layer */
+    char          interface_name[32];
+    char          bridge_name[32];
+    BOOL          primary;
+    unsigned int  index;
+    char          vap_name[32];
+}__attribute__((packed)) wifi_interface_name_idex_map_t;
 
 /**
  * @brief Wifi Plataform Property
@@ -634,7 +664,8 @@ typedef struct {
 typedef struct {
      UINT numRadios;                               /**< Number of radios. */
      wifi_radio_capabilities_t radiocap[MAX_NUM_RADIOS]; /**< Radio capabilities */
-} wifi_platform_property_t;
+     wifi_interface_name_idex_map_t interface_map[(MAX_NUM_RADIOS * MAX_NUM_VAP_PER_RADIO)];
+}__attribute__((packed)) wifi_platform_property_t;
 
 /**
  * @brief Wifi HAL Capabilities
@@ -643,7 +674,7 @@ typedef struct {
     wifi_hal_version_t  version;            /**< The HAL version. */
     wifi_platform_property_t wifi_prop;     /**< The plataform Property that includes the number of radios and supported frequency bands. */
     BOOL BandSteeringSupported;             /**< If BandSteeringSupported is TRUE, bandsteering is support by the HAL */
-} wifi_hal_capability_t;
+}__attribute__((packed)) wifi_hal_capability_t;
 
 /**
  * @brief Wifi TWT agreement type
@@ -762,6 +793,14 @@ typedef enum {
     WIFI_EVENT_CHANNELS_CHANGED,
     WIFI_EVENT_DFS_RADAR_DETECTED
 } wifi_chan_eventType_t;
+
+/* connection status of STA */
+typedef enum {
+   wifi_connection_status_disabled,
+   wifi_connection_status_disconnected,
+   wifi_connection_status_connected,
+   wifi_connection_status_ap_not_found
+} wifi_connection_status_t;
 
 
 #define MAX_NR                  8

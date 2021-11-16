@@ -92,6 +92,11 @@
  */
 #include "wifi_hal_ap.h"
 /**
+* Wifi STA specific APIs.
+* Includes API to create, configure and read configuration the STA VAP. 
+*/
+#include "wifi_hal_sta.h"
+/**
  * Wifi measurement and Telemetry specific APIs.
  * 
  */
