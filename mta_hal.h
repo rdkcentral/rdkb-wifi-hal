@@ -261,7 +261,7 @@ typedef  struct
 _MTAMGMT_MTA_DHCPv6_INFO
 {
     CHAR                            IPV6Address[INET6_ADDRSTRLEN];
-    CHAR                            BootFileName[40];
+    CHAR                            BootFileName[64];
     CHAR                            FQDN[64];
     CHAR                            Prefix[INET6_ADDRSTRLEN];
     CHAR                            Gateway[INET6_ADDRSTRLEN];
