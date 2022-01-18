@@ -37,7 +37,6 @@ EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
              wifi_hal_extender.h \
              ccsp_hal_ethsw.h \
              dhcp4cApi.h \
-             hal_firewall.h \
              moca_hal.h \
              mta_hal.h \
              Tr69_Tlv.h \
