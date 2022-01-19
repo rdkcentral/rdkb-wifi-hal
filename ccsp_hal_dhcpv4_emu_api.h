@@ -19,6 +19,7 @@
 #ifndef __DHCPV4_EMU_API_H__
 #define __DHCPV4_EMU_API_H__
 
+#include <stdint.h>
 
 
 #define GATEWAY 1
@@ -72,8 +73,8 @@
 #define  ANSC_IPV4_ADDRESS                                                                  \
          union                                                                              \
          {                                                                                  \
-            UCHAR                   Dot[IPV4_ADDRESS_SIZE];                                 \
-            ULONG                   Value;                                                  \
+            unsigned char           Dot[IPV4_ADDRESS_SIZE];                                 \
+            uint32_t                Value;                                                  \
          }
 #endif
 
