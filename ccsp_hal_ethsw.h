@@ -536,6 +536,11 @@ typedef INT ( * CcspHalExtSw_ethAssociatedDevice_callback)(eth_device_t *eth_dev
 
 void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociatedDevice_callback callback_proc); //!< Callback registration function.
 
+#ifdef FEATURE_RDKB_WAN_MANAGER
+#ifdef FEATURE_RDKB_AUTO_PORT_SWITCH
+int CcspHalExtSw_ethPortConfigure(char *ifname, BOOLEAN WanMode);
+#endif  //FEATURE_RDKB_AUTO_PORT_SWITCH
+#endif
 //<<
 
 /* CcspHalExtSw_getEthWanEnable() function */
