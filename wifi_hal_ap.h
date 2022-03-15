@@ -1655,6 +1655,8 @@ typedef struct _wifi_associated_dev
     UINT  cli_Disassociations;    /**< This parameter  represents the total number of client disassociations. Reset the parameter evey 24hrs or reboot */
     UINT  cli_AuthenticationFailures;    /**< This parameter indicates the total number of authentication failures.  Reset the parameter evey 24hrs or reboot */
 
+    UINT cli_CapableNumSpatialStreams; /**< The number of spatial streams supported by the associated client device. */
+
 } wifi_associated_dev_t;    //~COSA_DML_WIFI_AP_ASSOC_DEVICE
 
 

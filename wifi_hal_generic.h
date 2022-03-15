@@ -920,6 +920,9 @@ typedef struct _wifi_associated_dev3
         The wifi_csi_data_t is defined above */
 
          wifi_csi_data_t  *cli_CsiData; 
+
+        UINT cli_activeNumSpatialStreams; /**< The number of active spatial streams in the session between AP and client at the moment of polling */
+
 } wifi_associated_dev3_t;
 
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
