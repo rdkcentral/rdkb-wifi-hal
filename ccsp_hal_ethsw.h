@@ -579,6 +579,20 @@ CcspHalExtSw_setEthWanEnable
     BOOLEAN Flag
   );
 
+#ifdef FEATURE_RDKB_AUTO_PORT_SWITCH
+/* CcspHalExtSw_getCurrentWanHWConf() function */
+/**
+* @description Returns running HW configuration.
+*
+* @return Returns running HW configuration.
+* @retval TRUE if WAN is enabled.
+* @retval FALSE IF LAN is enabled.
+*
+* @sideeffect None
+*/
+BOOLEAN CcspHalExtSw_getCurrentWanHWConf();
+#endif
+
 /* CcspHalExtSw_getEthWanPort() function */
 /**
 * @description Get EthernetWAN port number value.
