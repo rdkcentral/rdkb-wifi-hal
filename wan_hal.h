@@ -228,20 +228,6 @@ int wan_hal_GetWanOEDownstreamCurrRate(unsigned int *pValue);
 */
 int wan_hal_SetQoSConfiguration(PWAN_QOS_QUEUE pQueue, unsigned int QueueNumberOfEntries, const char* baseifname, const char* wanifname);
 
-/* wan_hal_restart_wan_service() function */
-/**
-* @description Sets the current QoS configuration
-*
-* @param queueInfo - QoS configurations to be set
-* @param QueueNumberOfEntries - The number of QoS profiles
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-*/ 
-int wan_hal_RestartWanService(void);
-
 /* wan_hal_ConfigureIpv4() function */
 /**
 * @description configure IPv4 dnsservers, netmask and ip address for the required interface
