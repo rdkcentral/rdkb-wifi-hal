@@ -205,6 +205,9 @@ typedef char            nas_id_t[49];
 typedef unsigned char   r0r1_key_t[16];
 typedef char            r0r1_key_str_t[33];
 
+typedef char	wifi_interface_name_t[32];
+typedef char	wifi_vap_name_t[64];
+
 typedef struct {
     bssid_t        bssid;
     ssid_t         ssid;
@@ -649,13 +652,14 @@ typedef struct {
  * @brief Wifi interface Property info
  */
 typedef struct {
-    unsigned int  phy_index;           /**< actual index of the phy device */
-    unsigned int  rdk_radio_index;     /**< radio index of upper layer */
-    char          interface_name[32];
-    char          bridge_name[32];
-    BOOL          primary;
-    unsigned int  index;
-    char          vap_name[32];
+    unsigned int     phy_index;           /**< actual index of the phy device */
+    unsigned int     rdk_radio_index;     /**< radio index of upper layer */
+    wifi_interface_name_t  interface_name;
+    wifi_interface_name_t  bridge_name;
+    int              vlan_id;
+    BOOL             primary;
+    unsigned int     index;
+    wifi_vap_name_t  vap_name;
 }__attribute__((packed)) wifi_interface_name_idex_map_t;
 
 /**

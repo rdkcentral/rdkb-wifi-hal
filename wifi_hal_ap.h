@@ -2317,9 +2317,6 @@ typedef struct {
 
 typedef UINT wifi_vap_index_t;
 
-typedef char    wifi_vap_name_t[64];
-
-
 /**
  * @brief Wifi onboarding methods
  */
@@ -2523,6 +2520,7 @@ typedef struct {
     wifi_connection_status_t    conn_status;
     wifi_scan_params_t  scan_params;
     wifi_vap_security_t security;
+    mac_address_t       mac;
 } __attribute__((packed)) wifi_back_haul_sta_t;
 
 #define WIFI_AP_MAX_SSID_LEN    33
