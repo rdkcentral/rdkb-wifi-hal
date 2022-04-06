@@ -19,6 +19,8 @@
 #ifndef __WIFI_HAL_GENERIC_H__
 #define __WIFI_HAL_GENERIC_H__
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C"{
 #endif
