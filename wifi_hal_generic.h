@@ -215,8 +215,9 @@ typedef struct {
     unsigned short caps;
     unsigned int   beacon_int;
     unsigned int   freq;
+    unsigned char  ie[256];
     size_t         ie_len;
-} wifi_bss_info_t;
+}__attribute__((packed)) wifi_bss_info_t;
 
 typedef enum {
     wifi_ip_family_ipv4,
