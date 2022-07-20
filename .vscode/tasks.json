@@ -3,14 +3,13 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-
         {
             "label": "Generate Doxygen",
             "type": "shell",
             "command": "make",
             "options": {
                 "cwd": "${workspaceFolder}/docs"
-            }, 
+            },
             "problemMatcher": {
                 "owner": "c",
                 "fileLocation": [
@@ -18,13 +17,16 @@
                     "${workspaceFolder}/docs"
                 ],
                 "pattern": {
-                    "regexp": "^.*\/(.+):([0-9]+): ([a-zA-Z]+): (.+)$",
+                    "regexp": "^.*/(.+):([0-9]+): ([a-zA-Z]+): (.+)$",
                     "file": 1,
                     "line": 2,
-                    //"column": 3,
                     "severity": 3,
                     "message": 4
                 }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
             }
         }
     ]

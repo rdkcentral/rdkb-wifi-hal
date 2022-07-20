@@ -239,7 +239,7 @@ all the behavioural aspects of the components.
 
 #### Example Sequence Diagram
 
-![Example Sequence Diagram](../images/sequence1.png)
+![Example Sequence Diagram](sequence1.png)
 
 ### Example sequenceDiagram using mermaid
 
@@ -261,20 +261,27 @@ sequenceDiagram
 
 #### Example State Diagram
 
-![Example State Diagram](../images/state1.png)
+![Example State Diagram](state1.png)
 
 ### Example State Diagram using mermaid
 
 [mermaid Diagrams](https://mermaid-js.github.io/mermaid)
 
-```mermaid
+<div class="mermaid">
 stateDiagram-v2
     state if_state <<choice>>
     [*] --> IsPositive
     IsPositive --> if_state
     if_state --> False: if n < 0
     if_state --> True : if n >= 0
-```
+</div>
+
+<div class="mermaid">
+graph LR
+  A --- B
+  B-->C[fa:fa-ban forbidden]
+  B-->D(fa:fa-spinner);
+</div>
 
 ## Data Structures and Defines
 
