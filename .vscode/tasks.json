@@ -6,7 +6,7 @@
         {
             "label": "Generate Doxygen",
             "type": "shell",
-            "command": "make",
+            "command": "./generate_docs.sh",
             "options": {
                 "cwd": "${workspaceFolder}/docs"
             },
