@@ -1,6 +1,4 @@
 # Ignore the output files for doxygen
 
 output
-doxyproject2
-doxygen-awesome-css
-*.bak
+build
