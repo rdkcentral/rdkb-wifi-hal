@@ -16,40 +16,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
+
+#@TODO - Check if this is correct
+
 SUBDIRS = 
 DIST_SUBDIRS = 
-EXTRA_DIST = ccsp_hal_dhcpv4_emu_api.h  \
-             ccsp_hal_emmc.h \
-             cm_hal.h \
-             dhcp6cApi.h \
-             dhcpv4c_api.h \
-             mso_mgmt_hal.h \
-             platform_hal.h \
-             vlan_hal.h \
-             voice_hal.h \
-             wifi_hal.h \
-             wifi_hal_generic.h \
-             wifi_hal_radio.h \
-             wifi_hal_ap.h \
-             wifi_hal_telemetry.h \
-             wifi_hal_client_mgt.h \
-             wifi_hal_deprecated.h \
-             wifi_hal_extender.h \
-             wifi_hal_sta.h \
-             ccsp_hal_ethsw.h \
-             dhcp4cApi.h \
-             moca_hal.h \
-             mta_hal.h \
-             Tr69_Tlv.h \
-             wifi_hal_emu.h \
-             dpoe_hal.h \
-             bt_hal.h \
-             wan_hal.h \
-             xdsl_hal.h \
-             xtm_hal.h \
-             vlan_eth_hal.h \
-             fwupgrade_hal.h \
-             bridge_util_hal.h
+EXTRA_DIST = ./include/wifi_hal.h \
+             ./include/wifi_hal_generic.h \
+             ./include/wifi_hal_radio.h \
+             ./include/wifi_hal_ap.h \
+             ./include/wifi_hal_telemetry.h \
+             ./include/wifi_hal_client_mgt.h \
+             ./include/wifi_hal_deprecated.h \
+             ./include/wifi_hal_extender.h \
+             ./include/wifi_hal_sta.h
 
-otherincludedir = $(includedir)/ccsp
 otherinclude_HEADERS = $(EXTRA_DIST)
