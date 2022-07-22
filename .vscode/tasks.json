@@ -28,6 +28,24 @@
                 "kind": "build",
                 "isDefault": true
             }
-        }
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}/stubs"
+            },
+            "linux": {
+                "command": "bash"
+            },
+            "args": [
+                "-c",
+                "make"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
     ]
 }
