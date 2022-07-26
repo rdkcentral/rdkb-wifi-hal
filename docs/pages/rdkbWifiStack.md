@@ -2,32 +2,35 @@
 
 | Date | Author | Comment | Version |
 | --- | --- | --- | --- |
-| 25/07/22 | M. Kandasamy | Draft | 0.0.1 |
+| 25/07/22 | M. Kandasamy | Draft | 0.0.2 |
 
 ## Table of Contents
 
 - [Overview](#overview)
 - [Architecture](#architecture)
-  - [Systems Architecture](#systemsarchitecture)
-    - [Configuration](#configuration)
+  - [Systems Architecture](#systems-architecture)
+    - [Configuration Command Control](#configuration-command--control)
       - [WebConfig](#webconfig)
-      - [Interaction With Webconfig Server](#interactionwithwebconfigserver)
-    - [OVSDB Manager](#ovsdbmanager)
-      - [OneWifi WebConfig Schema](#onewifiwebconfigschema)
-      - [WebConfig Use Case Matrix](#webconfigusecasematrix)
+      - [Interaction With Webconfig Server](#interaction-with-webconfig-server)
+    - [OVSDB Manager](#ovsdb-manager)
+      - [OneWifi WebConfig Schema](#onewifi-webconfig-schema)
+      - [Considerations for Schema Definition](#considerations-for-schema-definition)
+      - [Device Type vs WebConfig Usecase Matrix](#device-type-vs-webconfig-usecase-matrix)
     - [Statistics](#statistics)
-    - [OneWifi Internal Architecture](#onewifiinternalarchitecture)
-      - [Component Architecture](#componentarchitecture)
-      - [OneWiFi Thread And Management](#onewifithreadandmanagement)
-      - [Core Functional Blocks Or Subsystem](#corefunctionalblocksorsubsystem)
-      - [Core Thread Software Architecture](#corethreadsoftwarearchitecture)
-      - [Apps_Functional_Blocks_Or_Subsystem](#appsfunctionalblocksorsubsystem)
+  - [OneWifi Internal Architecture](#onewifi-internal-architecture)
+    - [Component Architecture](#component-architecture)
+    - [OneWiFi Thread Management, Inter Thread Communication and Data Handling](#onewifi-thread-management-inter-thread-communication-and-data-handling)
+    - [Core Functional Blocks Or Subsystem](#core-functional-blocks-or-subsystem)
+    - [Core Thread Software Architecture](#core-thread-software-architecture)
+    - [Apps Functional Blocks Or Subsystem](#apps-functional-blocks-or-subsystem)
 - [Appendix](#appendix)
-  - [OneWifi Schema Definition](#onewifischemadefinition)
+  - [OneWifi Schema Definition](#onewifi-schema-definition)
     - [SouthBound](#southbound)
     - [NorthBound](#northbound)
-  - [Flow Diagram Or Pseudo Code](#flowdiagramorpseudocode)
-  - [Message Sequence Diagrams](#messagesequencediagrams)
+  - [Flow Diagram Or Pseudo Code](#flow-diagram-or-pseudo-code)
+  - [Message Sequence Diagrams](#message-sequence-diagrams)
+    - [Initialization](#initialization)
+    - [Client Authentication](#client-authentication)
 
 ## Overview
 
@@ -42,37 +45,34 @@ The purpose of OneWifi project is to create a unified software architecture that
 
 ## Architecture
 
-### Systems_Architecture
+### Systems Architecture
 
 ![OneWifi Systems Architecture](images/OneWifi-Systems-Architecture.png)
 
-### Configuration
+### Configuration, Command & Control
 
-#### Configuration, Command & Control
+#### WebConfig
 
-### WebConfig
+Cloud components can configure Wi-Fi parameters in gateway, extender or other Comcast controlled CPE running RDK-B using WebConfig or WebPA technology. Command parameters are specified in JSON schema formats that are populated with either default or operational parameters by Cloud components. Such JSON encoded command data is sent to RDK-B CPE and eventually received by OneWifi process by mechanisms of RBUS call backs. The data is decoded and applied to Wi-Fi drivers or baseband by making use of Wi-Fi HAL functions. Detail architecture of Wi-Fi Webconfig design and implementation can be found at Wi-Fi [WebConfig](rdkbWifiStackWebConfig.md)
 
-Cloud components can configure Wi-Fi parameters in gateway, extender or other Comcast controlled CPE running RDK-B using WebConfig or WebPA technology. Command parameters are specified in JSON schema formats that are populated with either default or operational parameters by Cloud components. Such JSON encoded command data is sent to RDK-B CPE and eventually received by OneWifi process by mechanisms of RBUS call backs. The data is decoded and applied to Wi-Fi drivers or baseband by making use of Wi-Fi HAL functions. Detail architecture of Wi-Fi Webconfig design and implementation can be found at Wi-Fi WebConfig (&&Need to add page link)
-
-### Interaction_With_WebConfig_Server
+### Interaction With WebConfig Server
 
 Detail at <https://etwiki.sys.comcast.net/pages/viewpage.action?pageId=880673017>
 
-## OVSDB_Manager
+## OVSDB Manager
 
 Cloud controller can configure Wi-Fi parameters in gateway, extender or other Comcast controlled CPE using OVSDB & Manager entities. OVSDB is a database server that executes in RDK-B CPE. Any update of parameters in this database by cloud controller is notified to OneWifi process by OVSDB manager entity over RBUS. OneWifi process validates the parameter or set of parameters and applies the configuration in WiFi driver or baseband. If successfully applied, OneWifi also notifies OVSDB manager about the successful completion so that the database tables are updated with the right state of WiFi subsystem of the CPE.
 
-### OneWifi_WebConfig_Schema
+### OneWifi WebConfig Schema
 
 Please refer to schema definition in Appendix section
 
-Considerations for Schema Definition
+### Considerations for Schema Definition
+
 Backward compatibility with legacy stack/schema
 No disruption of WebConfig Use cases across old or new stack deployments on any platform.
 
-### WebConfig_Use_Case_Matrix
-
-#### Device Type vs WebConfig Use Case Matrix
+### Device Type vs WebConfig Usecase Matrix
 
 | **Type**  | **Private**                                         | **xfinity**                                                      | **Mesh**                                        |
 |:-----------|:-----------------------------------------------------:|:------------------------------------------------------------------|-------------------------------------------------|
@@ -89,11 +89,11 @@ No disruption of WebConfig Use cases across old or new stack deployments on any 
 
 ### Statistics
 
-(&& Need to check content for statistics)
+(TODO : ??Need to check content for statistics)
 
-## OneWifi_Internal_Architecture
+## OneWifi Internal Architecture
 
-### Component_Architecture
+### Component Architecture
 
 ![OneWifi-Internal-Architecture](images/OneWifi-Internal-Architecture.png)
 
@@ -104,15 +104,13 @@ DML thread: this thread handles the TR-181 set/get handlers.
 Apps thread: this thread is responsible for supporting all WiFi related application/features such as harvester, motion sensing, blaster, single client measurements etc.
 The software architecture of working of each thread is detailed below.
 
-### OneWiFi_Thread_And_Management
-
-#### OneWiFi Thread Management, Inter Thread Communication and Data Handling
+### OneWiFi Thread Management, Inter Thread Communication and Data Handling
 
 The diagram below depicts thread management and inter thread communication and data transfer in OneWifi. Threads essentially wait for condition and timeouts. If data needs to be processed, the data is posted into queue and the thread is signaled. The thread retrieves the data from the queue and processes the data.
 
 ![OneWifi ITC](images/onewifi-itc.png)
 
-### Core_Functional_Blocks_Or_Subsystem
+### Core Functional Blocks Or Subsystem
 
 ![OneWifi Core Blocks](images/OneWifi-Core-Blocks.png)
 
@@ -129,7 +127,7 @@ All south bound messages are decoded, parsed and validated by core thread. In ca
 
 All north bound events are translated to state update in ovddb state tables using WebConfig encoded messages sent by core to ovsdb manager.
 
-### Core_Thread_Software_Architecture
+### Core Thread Software Architecture
 
 ![OneWifi Core Thread Components](images/OneWifi_Core_Thread_components.png)
 
@@ -149,19 +147,20 @@ Some of the components described are as follows:
 
 All components are intended to schedule most of the actual work through separate dispatch handlers per object entities. This allows easy batching (to debounce and reduce ping-pong), time occupancy (to provide insight into possible stalls, or aid scheduling), forces idempotency (avoids some ab/ba logic issues, provides failure recovery procedures without additional explicit logic) and makes sure memory resource allocation is bound.
 
-### Apps_Functional_Blocks_Or_Subsystem
+### Apps Functional Blocks Or Subsystem
 
 ![OneWifi Apps Blocks](images/OneWifi-Apps-Blocks.png)
 
 ## Appendix
 
-### OneWifi_Schema_Definition
+### OneWifi Schema Definition
 
 #### SouthBound
 
 (OvsDb Mgr/Webconfig/DML to OneWifi)
 
 ```c
+{
     "DocName":"string",
     "SubDocName":"string",
     "Version":"string",
@@ -464,14 +463,18 @@ All components are intended to schedule most of the actual work through separate
 }
 ```
 
-## Flow_Diagram_Or_Pseudo_Code
+## Flow Diagram Or Pseudo Code
 
 Core Thread Pseudo Code
 
 ![Core Thread Pseudo Code](images/Core%20Thread%20Pseudo%20Code.png)
 
-## Message_Sequence_Diagrams
+## Message Sequence Diagrams
 
 ### Initialization
 
 ![Message Sequence Diagram](images/Message_Sequence_Diagram.png)
+
+### Client Authentication
+
+![](images/plantuml221250850097517383.png)
