@@ -1,70 +1,51 @@
 
-# Wifi HAL Documentation
+# RDKB Wifi HAL Documentation
 
-# History
+## History
 
-|Document Version|Date (YY-MM-DD)|Author|
-|-------|-----|-----|
-|1.0.0| 22/07/21|M.Kandasamy|
- 
-# Description
+| Date | Author | Comment | Version |
+| --- | --- | --- | --- |
+| 27/07/22 | M. Kandasamy | Draft | 0.0.1 |
 
-A description of services provided by the interface.
+## Description
 
-Where salient, what it does not need to do.
+Abstraction layer to the diverse functionalities a WiFi-Driver provides in the several aspects of Configuration, Subscription and Commanding. Primarily used to maintain intercommunication between the user space and kernel layers.
 
-# Component Runtime Execution Requirements
+## Component Runtime Execution Requirements
 
-These requirements ensure that the component implementing the interface,
-executes correctly within the run-time environment that it will be used.
+It's a statically loaded library. The lifetime of which exists throughout the lifetime of process riding this.
 
 Failure to meet these requirements will likely result in undefined and
 unexpected behaviour.
 
-## Initialization and Startup
+### Initialization and Startup
 
-Is the RDK-V middleware expected to have complete control over the life cycle
-over the entity controlled by the interface?  
-For example we have potential two types of entity for which an interface is
-being abstracted:
+No specific Initialization is required, unless housed in a Host-offload architecture. In such architecture, Initialization of Few remote
+services involving initialization of a common Host-DB are implemented using constructor attributes.
 
-  1. an entity that only needs to exist from initialisation and termination by the and RDK MW manager. When initialised, all resources are acquired, any hardware is opened and configured as a result of calls to interface methods and when terminated all resources are released. Typically the implementation would be self-contained within the library exposing the HAL interface, very probably providing a direct mapping onto a Linux device through a dev node
+ 1. What should happen when the component/sub-system is not ready. Should the interface block or return not ready. How should the client behave in both respects?
 
-  2. an entity for which the HAL interface is a proxy. Here the entity is expected to be initialized from outside of the RDK middleware to perform some function before the RDK middleware is executing and ready
+      The interface should block. The init API may have go into Wait state and keeps polling every 10s to unblock.
 
-The first type is relatively straight forward, the second is more problematic
-and needs to be called out and special cases need to be defined:
+ 2. Certain subsystems may have responsibility during system startup before RDK takes control. What is then the behaviour of the interface and how should it affect this initial state. When is the control hand-over and what state is the sub-system left in at that point? When is the sub-system initialized?
 
-  1. What should happen when the component/sub-system is not ready. Should the interface block or return not ready. How should the client behave in both respects?
-
-  2. Certain subsystems may have responsibility during system startup before RDK takes control. e.g FrontPanel, Panel and HDMI need to display a splash, etc. What is then the behaviour of the interface and how should it affect this initial state. When is the control hand-over and what state is the sub-system left in at that point? When is the sub-system initialized?
-
-  3. etc.
-
-All these points and others need to be called out so that the system behaves
-in a deterministic manner, every time.
-
+      No significant impact. No handover. It's dynamically put to use by the subsystem. The subsystem operation may have no impact but the User Requirements may not fulfilled. Subsystem is initialized in the LAN init sequence.
+  
 ## Threading Model
 
 Is it a requirement for the methods exposed by the interface to be thread
 safe?
+Not necessarily.
 
-Another point is to define whether the library exposing the interface is
-allowed to create threads. If it is allowed, explain the constraints, if any,
-around signal handling that the component needs to comply with. If the library
-is not allowed to create threads, and a separate thread of execution is
-required, it is likely that this dictates the need for a separate process and
-the proxy information above applies.
+HAL is allowed to create threads. Subscription of several services and catering to those are implemented as separate threads.
 
 ## Process Model
 
-Is it a requirement for the component to support multiple instantiation from
-multiple processes, or is there only ever one process that uses the interface?
+Multiple processes can statically link and ride the HAL.
 
 ## Memory Model
 
-If the interface is expected to allocate and return pointers to memory, what
-are the expected rules with respect to ownership, clean up and termination.
+ Some APIs may allocate memory in HAL and expects upper layers to free it. while, some APIs free the memory within function.
 
 ## Power Management Requirements
 
@@ -186,7 +167,7 @@ resulting customization is invisible to the RDK and applications, it is useful
 to state that customization is required at integration time for planning
 purposes.
 
-# Interface API Documentation
+## Interface API Documentation
 
 The information above mostly, but not only, details how the component/sub-
 system behaves, realizes the interface, and the requirements/constrains that
@@ -277,31 +258,31 @@ select the foobar. " adds value.
 
 ## For Each Method
 
-  * Description
+* Description
 
-    * Detailed semantic description on how to use.
+  * Detailed semantic description on how to use.
 
-  * Argument description, range of valid values, array lengths, etc.
+* Argument description, range of valid values, array lengths, etc.
   
-    * Be especially careful with string arrays. Ideally the function would define exactly the mutability of the array contents.
-    The classic error is where the client passes a pointer to a character array that has been created on the caller stack. If this is unknown to the component it may simply store the pointer value to the string expecting it to be valid if used at a later time. 
+  * Be especially careful with string arrays. Ideally the function would define exactly the mutability of the array contents.
+    The classic error is where the client passes a pointer to a character array that has been created on the caller stack. If this is unknown to the component it may simply store the pointer value to the string expecting it to be valid if used at a later time.
 
-  * Pre-conditions: What must be done before calling. What happens if the pre-condition is not met
+* Pre-conditions: What must be done before calling. What happens if the pre-condition is not met
 
-  * Post-conditions: What is the successful result
+* Post-conditions: What is the successful result
 
-  * Return values. All possible return values and why
+* Return values. All possible return values and why
 
-  * Error handling. Based on the error returned what should the Client do
+* Error handling. Based on the error returned what should the Client do
 
-  * Is the method allowed to block?
+* Is the method allowed to block?
 
-  * Is the method thread safe?
+* Is the method thread safe?
 
 More on buffers:
 char* is a mutable pointer to a mutable character/string.
 
-const char* is a mutable pointer to an immutable character/string. You cannot change the contents of the location(s) this pointer points to. Also, compilers are required to give error messages when you try to do so. For the same reason, conversion from const char * to char* is deprecated.
+const char*is a mutable pointer to an immutable character/string. You cannot change the contents of the location(s) this pointer points to. Also, compilers are required to give error messages when you try to do so. For the same reason, conversion from const char* to char* is deprecated.
 
 char* const is an immutable pointer (it cannot point to any other location) but the contents of location at which it points are mutable.
 

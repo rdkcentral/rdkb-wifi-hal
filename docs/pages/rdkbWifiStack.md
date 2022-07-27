@@ -1,5 +1,7 @@
 # RDKB Wi-Fi Stack
 
+## History
+
 | Date | Author | Comment | Version |
 | --- | --- | --- | --- |
 | 25/07/22 | M. Kandasamy | Draft | 0.0.2 |
@@ -57,7 +59,7 @@ Cloud components can configure Wi-Fi parameters in gateway, extender or other Co
 
 ### Interaction With WebConfig Server
 
-Detail at <https://etwiki.sys.comcast.net/pages/viewpage.action?pageId=880673017>
+Detail at [GW & POD config management using Webconfig](rdkbWifiStackGwPodConfigMgmt.md)
 
 ## OVSDB Manager
 
@@ -133,11 +135,11 @@ All north bound events are translated to state update in ovddb state tables usin
 
 Some of the components described are as follows:
 
-    **Config Tracker** - serves as an internal database for all Radio and VAP attributes. To be consumed by OneWifi internals, eg. stats policies, steering policies, configuration applicator, etc. Intended to be acting as a south bound interface and called by adapters to integrate them into specific systems, eg. rbus+webconfig.
+    Config Tracker - serves as an internal database for all Radio and VAP attributes. To be consumed by OneWifi internals, eg. stats policies, steering policies, configuration applicator, etc. Intended to be acting as a south bound interface and called by adapters to integrate them into specific systems, eg. rbus+webconfig.
 
     State Tracker - serves as a layer to shield OneWifi business logic modules from HAL API which is intended to not be fully object oriented.and to simplify its implementation, eg. event buffer overrun recovery handling, event order sanitization (sometimes implementations source events from multiple streams and their processing ordering is undefined).
 
-    **Configuration Applicator** - uses inputs: Config Tracker and other mutators (coming from, eg. Stats or Steering policies) to generate configuration command(s) and submit them only if the assembled configuration command is out-of-sync with what State Tracker is reporting. Configuration Applicator is triggered for recompute by either Config Tracker, State Tracker or any of the registered mutators.
+    Configuration Applicator - uses inputs: Config Tracker and other mutators (coming from, eg. Stats or Steering policies) to generate configuration command(s) and submit them only if the assembled configuration command is out-of-sync with what State Tracker is reporting. Configuration Applicator is triggered for recompute by either Config Tracker, State Tracker or any of the registered mutators.
 
     Steering/Stats/Other policies - multiple entities implementing specific actions. Mostly interact with State Tracker, Configuration Applicator (as mutators), HAL wrapper (to perform world-visible actions) or between each other modules (Steering modules using some Stats).
 
@@ -477,4 +479,4 @@ Core Thread Pseudo Code
 
 ### Client Authentication
 
-![](images/plantuml221250850097517383.png)
+![Client Authentication](images/plantuml221250850097517383.png)
