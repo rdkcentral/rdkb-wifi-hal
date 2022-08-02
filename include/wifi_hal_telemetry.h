@@ -169,76 +169,13 @@ typedef struct {
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
-/* wifi_getRadioTrafficStats2() function */
-/**
-* @brief Get detail radio traffic static info.
-*
-* @param[in]  radioIndex      Index of Wi-Fi radio channel
-* @param[out] output_struct   wifi_radioTrafficStats2_t *output_struct, all traffic stats info to be returned
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_getRadioTrafficStats2(INT radioIndex, wifi_radioTrafficStats2_t *output_struct);
-
-/* wifi_getSSIDTrafficStats2() function */
-/**
-* @brief Get the basic SSID traffic static info.
-*
-* @param[in]  ssidIndex      SSID index
-* @param[out] output_struct  SSID traffic status.
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_getSSIDTrafficStats2(INT ssidIndex, wifi_ssidTrafficStats2_t *output_struct);
-
-
-#ifdef WIFI_HAL_VERSION_3_PHASE2
-/**
-* @brief Returns the Wifi scan status.
-*
-* @param[in]  radioIndex           Radio index
-* @param[in]  scan                 Start a neighbour scan
-* @param[out] neighbor_ap_array    Neighbour access point info to be returned
-* @param[out] output_array_size    Length of the output array.
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_getNeighboringWiFiStatus(INT radioIndex, BOOL scan, wifi_neighbor_ap2_t **neighbor_ap_array, UINT *output_array_size);
-#endif
 
 /* wifi_getRadioBandUtilization() function */
 /**
 * @brief To read the radio band utilization.
 *
-* @param[in]  radioIndex         Radio Index
-* @param[out] output_percentage  Radio band utilization percentage, to be returned
+* @param[in]  radioIndex         - Radio Index
+* @param[out] output_percentage  - Radio band utilization percentage, to be returned
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -253,84 +190,68 @@ INT wifi_getNeighboringWiFiStatus(INT radioIndex, BOOL scan, wifi_neighbor_ap2_t
 */
 INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
 
-INT wifi_getApAssociatedDeviceDiagnosticResult3(INT apIndex, wifi_associated_dev3_t **associated_dev_array, UINT *output_array_size);
-
-#ifdef WIFI_HAL_VERSION_3_PHASE2
-INT wifi_getApAssociatedClientDiagnosticResult(INT apIndex, mac_address_t mac_addr, wifi_associated_dev3_t *dev_conn);
-#endif
-
-/* wifi_setClientDetailedStatisticsEnable() function */
-/**
-* @brief This function enabled/disabled collection of detailed statistics of associated clients on Access Point. 
-*
-* @param[in] radioIndex          Radio Index
-* @param[in] enable              enable/disable 
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_setClientDetailedStatisticsEnable(INT radioIndex, BOOL enable);
-
-/**
-* @brief This API returns the radio enabled status.
-*
-* The radio status switch in driver include Transmission status, background channel scan, capacity status etc
-* Radio Status should be disabled by default.
-* If driver do not support those switch, or switch has enabled by default, please just fillup with stumb function.
-*
-* @param[in]  radioIndex      Index of the radio array.
-* @param[out] output_enable   Radio enabled status.
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_getRadioStatsEnable(INT radioIndex, BOOL *output_enable);
-
-/**
-* @brief This API is to enable/disable radio status.
-*
-* @param[in]  radioIndex      Index of the radio array.
-* @param[out] output_enable   Radio enabled status.
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_setRadioStatsEnable(INT radioIndex, BOOL enable);
-
-/* @description Get the VAP Telemetry data.
+ /* wifi_getApAssociatedDeviceDiagnosticResult3() function */
+ /**
+ * @brief To read the client's current connectivity statistics.
  *
- * @param[in] apIndex - Access Point index.
- * @param[out] telemetry - structure for vap telemetry data.
+ * @param[in]  apIndex         			- AP Index
+ * @param[out] wifi_associated_dev3_t  	- This structure hold the information about the wifi client, Values to be returned
+ * @param[out] output_array_size		- Number of clients connected to the AP, Values to be returned 
  *
- * @return The status of the operation.
- * @retval RETURN_OK if successful.
- * @retval RETURN_ERR if any error is detected.
+ * @return The status of the operation
+ * @retval RETURN_OK if successful
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ *
  */
-INT wifi_getVAPTelemetry(UINT apIndex, wifi_VAPTelemetry_t *telemetry);
+ INT wifi_getApAssociatedDeviceDiagnosticResult3(INT apIndex, wifi_associated_dev3_t **associated_dev_array, UINT *output_array_size);
+
+/* wifi_getApAssociatedClientDiagnosticResult() function */
+ /**
+ /**
+ * @brief To read the client's current connectivity statistics.
+ *
+ * @param[in]  apIndex         			- AP Index
+ * @param[in] mac_address_t  			- mac address of the client 
+ * @param[out] wifi_associated_dev3_t	- This structure hold the information about the wifi client, Values to be returned
+ *
+ * @return The status of the operation
+ * @retval RETURN_OK if successful
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ *
+ */
+INT wifi_getApAssociatedClientDiagnosticResult(INT apIndex, mac_address_t mac_addr, wifi_associated_dev3_t *dev_conn);
+
+/* wifi_getRadioTrafficStats2() function */
+/**
+* @brief Get detail radio traffic static info.
+*
+* @param[in]  radioIndex      - Index of Wi-Fi radio channel
+* @param[out] output_struct   - wifi_radioTrafficStats2_t *output_struct, all traffic stats info to be returned
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_getRadioTrafficStats2(INT radioIndex, wifi_radioTrafficStats2_t *output_struct);
 
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 

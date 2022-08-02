@@ -393,17 +393,15 @@ typedef enum {
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
-INT wifi_getWifiTrafficStats(INT apIndex, wifi_trafficStats_t *output_struct); //!< Outputs more detailed traffic stats per AP
 
-#ifdef WIFI_HAL_VERSION_3_PHASE2
 /* wifi_getApAssociatedDevice() function */
 /**
 * @brief Gets the ApAssociatedDevice list for client MAC addresses
 *
-* @param[in]  apIndex                         Access Point index
-* @param[out] output_deviceMacAddressArray    List of devices MAC, to be returned
-* @param[in]  maxNumDevices                   Max number of devices that can be returned
-* @param[out] output_numDevices               number of entries returned in the array
+* @param[in]  apIndex                         - Access Point index
+* @param[out] output_deviceMacAddressArray    - List of devices MAC, to be returned
+* @param[in]  maxNumDevices                   - Max number of devices that can be returned
+* @param[out] output_numDevices               - Number of entries returned in the array
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -412,10 +410,35 @@ INT wifi_getWifiTrafficStats(INT apIndex, wifi_trafficStats_t *output_struct); /
 * @execution Synchronous
 * @sideeffect None
 *
-*
 */
 INT wifi_getApAssociatedDevice(INT ap_index, mac_address_t *output_deviceMacAddressArray, UINT maxNumDevices, UINT *output_numDevices);
-#endif
+
+/* wifi_enableCSIEngine() function */
+/*
+ * Description: This function enables or disables CSI engine data for a specific STA on a VAP
+ * If the MAC address is NULL mac address, enable argument MUST be false, otherwise function MUST return failure.
+ * If the MAC address is NULL mac address, data engine for all STA(s) need to be disabled on this VAP
+ *
+ * Parameters :
+ * apIndex  - Index of VAP
+ * sta      - MAC address of the station associated in this VAP for which engine is being enabled/disabled
+ * enable   - Enable or diable
+ *
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous.
+ * @sideeffect None.
+ *
+ */
+
+INT wifi_enableCSIEngine(INT apIndex,
+                         mac_address_t sta,
+                         BOOL enable);
+
+
+INT wifi_getWifiTrafficStats(INT apIndex, wifi_trafficStats_t *output_struct); //!< Outputs more detailed traffic stats per AP
 
 /* wifi_factoryResetAP() function */
 /**
@@ -1920,30 +1943,6 @@ typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCH
 INT wifi_mgmt_frame_callbacks_register(wifi_receivedMgmtFrame_callback mgmtRxCallback);
 
 
-/* wifi_enableCSIEngine() function */
-/*
- * Description: This function enables or disables CSI engine data for a specific STA on a VAP
- * If the MAC address is NULL mac address, enable argument MUST be false, otherwise function MUST return failure.
- * If the MAC address is NULL mac address, data engine for all STA(s) need to be disabled on this VAP
- *
- * Parameters :
- * apIndex - Index of VAP
- * sta - MAC address of the station associated in this VAP for which engine is being enabled/disabled
- * enable - Enable or diable
- *
- * @return The status of the operation.
- * @retval RETURN_OK if successful.
- * @retval RETURN_ERR if any error is detected
- *
- * @execution Synchronous.
- * @sideeffect None.
- *
- */
-
-INT wifi_enableCSIEngine(INT apIndex,
-                         mac_address_t sta,
-                         BOOL enable);
-
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 
 
@@ -2592,7 +2591,7 @@ typedef struct {
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
-INT wifi_createVAP(wifi_radio_index_t index, wifi_vap_info_map_t *map);
+
 
 INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
