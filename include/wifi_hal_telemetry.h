@@ -213,7 +213,6 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
 
 /* wifi_getApAssociatedClientDiagnosticResult() function */
  /**
- /**
  * @brief To read the client's current connectivity statistics.
  *
  * @param[in]  apIndex  - AP Index
@@ -258,5 +257,4 @@ INT wifi_getRadioTrafficStats2(INT radioIndex, wifi_radioTrafficStats2_t *output
 #ifdef __cplusplus
 }
 #endif
-
 #endif

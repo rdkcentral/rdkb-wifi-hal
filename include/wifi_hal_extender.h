@@ -716,5 +716,3 @@ INT wifi_getRadioChannelStats(INT radioIndex, wifi_channelStats_t *input_output_
 #ifdef __cplusplus
 }
 #endif
-
-#endif
