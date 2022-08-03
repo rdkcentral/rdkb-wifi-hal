@@ -683,7 +683,6 @@ typedef struct {
  * @{
  */
 
-//SURVEY CHANNEL
 /* wifi_getRadioChannelStats() function */
 /**
 * @brief Get the channels utilization status.

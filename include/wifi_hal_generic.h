@@ -938,6 +938,30 @@ typedef struct _wifi_associated_dev3
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
+
+/* wifi_init() function */
+/**
+* @brief Initializes all the radios of wifi subsystem 
+*
+* A Specific implementation may dictate some functionalities since different hardware implementations
+* may have different requirements.
+*
+* @param None
+*
+* @return The status of the operation.
+* @retval RETURN_OK if successful.
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_init();
+
+/* wifi_getHalCapability() function */
 /**
  * @brief Get HAL Capabilities
  *
@@ -957,210 +981,10 @@ typedef struct _wifi_associated_dev3
  * @execution Synchronous
  * @sideeffect None
  *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
  */
 INT wifi_getHalCapability(wifi_hal_capability_t *cap);
-
-/* wifi_factoryReset() function */
-/**
-* @brief Clears internal variables to implement a factory reset of the Wi-Fi subsystem.
-*
-* A Specific implementation may dictate some functionalities since different hardware implementations
-* may have different requirements.
-*
-* @param None
-*
-* @return The status of the operation.
-* @retval RETURN_OK if successful.
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-//clears internal variables to implement a factory reset of the Wi-Fi subsystem
-INT wifi_factoryReset();
-
-/* wifi_setLED() function */
-/**
-* @brief Set the system LED status
-*
-* @param radioIndex  Index of Wi-Fi Radio channel
-* @param enable      LED status
-*
-* @return The status of the operation.
-* @retval RETURN_OK if successful.
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous.
-* @sideeffect None.
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-//Set the system LED status
-INT wifi_setLED(INT radioIndex, BOOL enable);
-
-/**
-* @brief This function call initializes all Wi-Fi radios.
-*
-* A specific implementation  may dictate some functionality since different hardware implementations
-* may have different initilization requirements.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-// Initializes the wifi subsystem (all radios)
-INT wifi_init();
-
-/* wifi_reset() function */
-/**
-* @brief Resets the Wifi subsystem.
-* This includes reset of all Access Point variables.
-*
-* Implementation specifics may dictate what is actualy reset since different hardware
-* implementations may have different requirements.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-// resets the wifi subsystem, deletes all APs
-INT wifi_reset();
-
-/* wifi_down() function */
-/**
-* @brief Turns off transmit power for the entire Wifi subsystem, for all radios.
-*
-* Implementation specifics may dictate some functionality since
-* different hardware implementations may have different requirements.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-// turns off transmit power for the entire Wifi subsystem, for all radios
-INT wifi_down();
-
-/* wifi_createInitialConfigFiles() function */
-/**
-* @brief This function creates wifi configuration files.
-*
-* The format and content of these files are implementation dependent.  This function call is
-* used to trigger this task if necessary. Some implementations may not need this
-* function. If an implementation does not need to create config files the function call can
-* do nothing and return RETURN_OK.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_createInitialConfigFiles();
-
-/* wifi_createHostApdConfig() function */
-/**
-* @brief Creates configuration variables needed for WPA/WPS.
-*
-* These variables are implementation dependent and in some implementations these variables are used by hostapd when it is started.
-* Specific variables that are needed are dependent on the hostapd implementation.
-* These variables are set by WPA/WPS security functions in this wifi HAL.
-* If not needed for a particular implementation this function may simply return no error.
-*
-* @param[in] apIndex       Access Point index
-* @param[in] createWpsCfg  Enable/Disable WPS Configuration creation
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_createHostApdConfig(INT apIndex, BOOL createWpsCfg);       // creates configuration variables needed for WPA/WPS.  These variables are implementation dependent and in some implementations these variables are used by hostapd when it is started.  Specific variables that are needed are dependent on the hostapd implementation. These variables are set by WPA/WPS security functions in this wifi HAL.  If not needed for a particular implementation this function may simply return no error.
-
-/* wifi_startHostApd() function */
-/**
-* @brief Starts hostapd.
-*
-* Uses the variables in the hostapd config with format compatible with the specific hostapd implementation.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_startHostApd();                                            // starts hostapd, uses the variables in the hostapd config with format compatible with the specific hostapd implementation
-
-/* wifi_stopHostApd() function */
-/**
-* @brief Stops hostapd
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_stopHostApd();                                             // stops hostapd
 
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 

@@ -620,8 +620,8 @@ INT wifi_getFTResourceRequestSupported(INT apIndex, BOOL *supported);
  * @brief Set the Fast Transition Resource Request Support value.  
  * See 802.11-2016 section 13.3.
  * 
- * @param apIndex - AP Index the setting applies to.
- * @param suppored - True is FT resource request supported, false is not
+ * @param[in] apIndex - AP Index the setting applies to.
+ * @param[in] supported - True is FT resource request supported, false is not
  * supported.
  *
  * @return The status of the operation.

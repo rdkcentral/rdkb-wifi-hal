@@ -127,47 +127,6 @@ typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_in
 */
 INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *output_ulong);
 
-/* wifi_setRadioOperatingParameters() */
-/**
- * @brief Set Radio Operating Parameters
- *
- * This API is used to configured all radio operation parameter in a
- * single set. it includes channel number, channelWidth, mode and
- * auto channel configuration.
- *
- * @param[in]   radio_index     - Index of Wi-Fi radio
- * @param[in]   operationParam  - Radio Operating Parameters
- *
- * @return The status of the operation
- * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
- *
- * @execution Synchronous
- * @sideeffect None
- *
- */
-INT wifi_setRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operationParam_t *operationParam);
-
-/* wifi_scanResults_callback_register() */
-/**
- * @brief scan results function call back register
- *
- * This API is used to register the scan results call back function
- *
- * @param[in]   wifi_scanResults_callback     - Scan result callback function
- *
- * @return Void
- *
- * @execution Synchronous
- * @sideeffect None
- *
- */
-void wifi_scanResults_callback_register(wifi_scanResults_callback callback_proc);
-
 /* wifi_getRadioOperatingChannelBandwidth() function */
 /**
 * @description Get the Operating Channel Bandwidth. eg "20MHz", "40MHz", "80MHz", "80+80", "160".
@@ -191,6 +150,51 @@ void wifi_scanResults_callback_register(wifi_scanResults_callback callback_proc)
 * The output_string is a max length 64 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
 */
 INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *output_string); //Tr181
+
+/* wifi_setRadioOperatingParameters() */
+/**
+ * @brief Set Radio Operating Parameters
+ *
+ * This API is used to configured all radio operation parameter in a
+ * single set. it includes channel number, channelWidth, mode and
+ * auto channel configuration.
+ *
+ * @param[in]   index           - Index of Wi-Fi radio
+ * @param[in]   operationParam  - Radio Operating Parameters
+ *
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ * 
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ */
+INT wifi_setRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operationParam_t *operationParam);
+
+/* wifi_scanResults_callback_register() */
+/**
+ * @brief scan results function call back register
+ *
+ * This API is used to register the scan results call back function
+ *
+ * @param[in]   callback_proc   - Scan result callback function
+ *
+ * @return Void None
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ *  @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task
+ */
+void wifi_scanResults_callback_register(wifi_scanResults_callback callback_proc);
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 
 #ifdef __cplusplus

@@ -387,6 +387,53 @@ typedef enum {
     WIFI_EAP_TYPE_EXPANDED = 254 /* RFC 3748 */
 } wifi_eap_t;
 
+
+typedef enum
+{
+    WIFI_MGMT_FRAME_TYPE_INVALID=-1,
+    WIFI_MGMT_FRAME_TYPE_PROBE_REQ=0,
+    WIFI_MGMT_FRAME_TYPE_PROBE_RSP=1,
+    WIFI_MGMT_FRAME_TYPE_ASSOC_REQ=2,
+    WIFI_MGMT_FRAME_TYPE_ASSOC_RSP=3,
+    WIFI_MGMT_FRAME_TYPE_AUTH=4,
+    WIFI_MGMT_FRAME_TYPE_DEAUTH=5,
+    WIFI_MGMT_FRAME_TYPE_REASSOC_REQ=6,
+    WIFI_MGMT_FRAME_TYPE_REASSOC_RSP=7,
+    WIFI_MGMT_FRAME_TYPE_DISASSOC=8,
+    WIFI_MGMT_FRAME_TYPE_ACTION=9,
+} wifi_mgmtFrameType_t;
+
+typedef enum
+{
+    WIFI_DATA_FRAME_TYPE_INVALID=-1,
+    WIFI_DATA_FRAME_TYPE_8021x,
+} wifi_dataFrameType_t;
+
+typedef enum
+{
+    WIFI_FRAME_TYPE_INVALID=-1,
+    WIFI_FRAME_TYPE_MGMT,
+    WIFI_FRAME_TYPE_CTRL,
+    WIFI_FRAME_TYPE_DATA,
+} wifi_frameType_t;
+  
+typedef void (* wifi_received8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
+typedef void (* wifi_sent8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
+
+typedef void (* wifi_receivedAuthFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
+typedef void (* wifi_sentAuthFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
+
+typedef void (* wifi_receivedAssocReqFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
+typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
+
+#ifdef WIFI_HAL_VERSION_3_PHASE2
+typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
+typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
+#else
+typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
+typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
+#endif
+
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
 
 /**
@@ -410,19 +457,20 @@ typedef enum {
 * @execution Synchronous
 * @sideeffect None
 *
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
 */
-INT wifi_getApAssociatedDevice(INT ap_index, mac_address_t *output_deviceMacAddressArray, UINT maxNumDevices, UINT *output_numDevices);
+INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *output_deviceMacAddressArray, UINT maxNumDevices, UINT *output_numDevices);
 
 /* wifi_enableCSIEngine() function */
-/*
- * Description: This function enables or disables CSI engine data for a specific STA on a VAP
+/**
+ * @brief This function enables or disables CSI engine data for a specific STA on a VAP
  * If the MAC address is NULL mac address, enable argument MUST be false, otherwise function MUST return failure.
  * If the MAC address is NULL mac address, data engine for all STA(s) need to be disabled on this VAP
  *
- * Parameters :
- * apIndex  - Index of VAP
- * sta      - MAC address of the station associated in this VAP for which engine is being enabled/disabled
- * enable   - Enable or diable
+ * @param[in] apIndex  - Index of VAP
+ * @param[in] sta      - MAC address of the station associated in this VAP for which engine is being enabled/disabled
+ * @param[in] enable   - Enable or diable
  *
  * @return The status of the operation.
  * @retval RETURN_OK if successful.
@@ -430,15 +478,127 @@ INT wifi_getApAssociatedDevice(INT ap_index, mac_address_t *output_deviceMacAddr
  *
  * @execution Synchronous.
  * @sideeffect None.
+ * 
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
  *
  */
+INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 
-INT wifi_enableCSIEngine(INT apIndex,
-                         mac_address_t sta,
-                         BOOL enable);
+/* wifi_createVAP() function */
+/**
+ * @brief This function enables or disables CSI engine data for a specific STA on a VAP
+ * If the MAC address is NULL mac address, enable argument MUST be false, otherwise function MUST return failure.
+ * If the MAC address is NULL mac address, data engine for all STA(s) need to be disabled on this VAP
+ *
+ * @param[in] index     - Index of Wifi radio
+ * @param[in,out] map   - Contains wifi vap info that is created
+ *  *
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous.
+ * @sideeffect None.
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ *
+ */
+ INT wifi_createVAP(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
+/* wifi_getRadioVapInfoMap() function */
+/**
+ * @brief This function gets the VAP information
+ *
+ * @param[in] index     - Index of Wifi radio
+ * @param[in,out] map   - Contains wifi vap info that is created
+ *  *
+ * @return The status of the operation.
+ * @retval RETURN_OK if successful.
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous.
+ * @sideeffect None.
+ * 
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ * 
+ *
+ */
+INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
-INT wifi_getWifiTrafficStats(INT apIndex, wifi_trafficStats_t *output_struct); //!< Outputs more detailed traffic stats per AP
+/* wifi_mgmt_frame_callbacks_register() function */
+/**
+* @brief Callback registration function.
+*
+* @param[in] mgmtRxCallback  - wifi_receivedMgmtFrame/wifi_receivedDataFrame_callback function
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*/
+ INT wifi_mgmt_frame_callbacks_register(wifi_receivedMgmtFrame_callback mgmtRxCallback);
+
+/* wifi_newApAssociatedDevice_callback_register() function */
+/**
+* @brief Callback registration function.    
+*
+* @param[in] callback_proc  - wifi_newApAssociatedDevice_callback callback function
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+void wifi_newApAssociatedDevice_callback_register(wifi_newApAssociatedDevice_callback callback_proc);
+
+/* wifi_apDeAuthEvent_callback_register() function */
+/**
+* @brief Callback registration function.
+*
+* @param[in] callback_proc  - wifi_apDeAuthEvent_callback callback function
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*/
+void wifi_apDeAuthEvent_callback_register(wifi_apDeAuthEvent_callback callback_proc);
+
+/* wifi_apDisassociatedDevice_callback_register() function */
+/**
+* @brief Callback registration function.    
+*
+* @param[in] callback_proc  wifi_apDisassociatedDevice_callback callback function
+*
+* @return None
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+void wifi_apDisassociatedDevice_callback_register(wifi_apDisassociatedDevice_callback callback_proc);
+
 
 /* wifi_factoryResetAP() function */
 /**
@@ -577,7 +737,6 @@ INT wifi_disableApEncryption(INT apIndex);                            // changes
 */
 INT wifi_getApNumDevicesAssociated(INT apIndex, ULONG *output_ulong); // Outputs the number of stations associated per AP
 
-#ifdef WIFI_HAL_VERSION_3_PHASE2
 /* wifi_kickApAssociatedDevice() function */
 /**
 * @brief Manually removes any active wi-fi association with the device specified on this access point.
@@ -597,7 +756,6 @@ INT wifi_getApNumDevicesAssociated(INT apIndex, ULONG *output_ulong); // Outputs
 *
 */
 INT wifi_kickApAssociatedDevice(INT apIndex, mac_address_t client_mac);      // manually removes any active wi-fi association with the device specified on this ap
-#endif
 
 /* wifi_getApRadioIndex() function */
 /**
@@ -665,11 +823,11 @@ INT wifi_getApAclDevices(INT apIndex, mac_address_t *macArray, UINT maxArraySize
 INT wifi_addApAclDevice(INT apIndex, mac_address_t DeviceMacAddress);         // adds the mac address to the filter list
 #endif
 
-
+/* wifi_delApAclDevices() function */
 /**
 * @brief Deletes all Device MAC address from the Access control filter list.
 *
-* @param[in]  apIndex           Access Point index
+* @param[in]  apIndex   - Access Point index
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -679,7 +837,7 @@ INT wifi_addApAclDevice(INT apIndex, mac_address_t DeviceMacAddress);         //
 * @sideeffect None
 *
 */
-INT wifi_delApAclDevices(INT apINdex);
+INT wifi_delApAclDevices(INT apIndex);
 
 /* wifi_getApAclDeviceNum() function */
 /**
@@ -1070,7 +1228,7 @@ INT wifi_setApWmmUapsdEnable(INT apIndex, BOOL enable);               // enables
 * AckPolicy false means do not acknowledge, true means acknowledge.
 *
 * @param[in] apIndex    Access Point index
-* @param[in] class
+* @param[in] class      Class
 * @param[in] ackPolicy  Acknowledge policy
 *
 * @return The status of the operation
@@ -1085,7 +1243,7 @@ INT wifi_setApWmmUapsdEnable(INT apIndex, BOOL enable);               // enables
 *
 */
 // Sets the WMM ACK polity on the hardware. AckPolicy false means do not acknowledge, true means acknowledge
-INT wifi_setApWmmOgAckPolicy(INT apIndex, INT cla, BOOL ackPolicy);
+INT wifi_setApWmmOgAckPolicy(INT apIndex, INT class, BOOL ackPolicy);
             
 /* wifi_getApIsolationEnable() function */
 /**
@@ -1248,7 +1406,7 @@ INT wifi_setApSecurityReset(INT apIndex);
 * @brief To retrive the MFPConfig for each VAP
 *
 * @param[in] apIndex  Access Point index
-* @param[out] output_string. Preallocated buffer for 64bytes. Allowed output string are "Disabled", "Optional", "Required"
+* @param[out] output_string Preallocated buffer for 64bytes. Allowed output string are "Disabled", "Optional", "Required"
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -1265,12 +1423,12 @@ INT wifi_getApSecurityMFPConfig(INT apIndex, CHAR *output_string);
 
 /* wifi_setApSecurityMFPConfig() function */
 /**
-* @brief the hal is used to set the MFP config for each VAP.
+* @brief The hal is used to set the MFP config for each VAP.
 *        1. mfpconfig need to be saved into wifi config in persistent way (so that it could be automatically applied after the wifi or vap restart)
 *        2. mfpconfig need to be applied right away.
 *
 * @param[in] apIndex  Access Point index
-* @param[in] MfpConfig,  The allowed string for MFPConfig are "Disabled", "Optional", "Required"
+* @param[in] MfpConfig  The allowed string for MFPConfig are "Disabled", "Optional", "Required"
 *
 * @return The status of the operation
 * @retval RETURN_OK if successful
@@ -1294,7 +1452,7 @@ INT wifi_setApSecurityMFPConfig(INT apIndex, CHAR *MfpConfig);
 * (i.e. WPA-Enterprise, WPA2-Enterprise or WPA-WPA2-Enterprise).
 *  String is 64 bytes max.
 *
-* @param[in]  Index                 Access Point index
+* @param[in]  apIndex                 Access Point index
 * @param[out] IP_output             IP Address, to be returned
 * @param[out] Port_output           Port output, to be returned
 * @param[out] RadiusSecret_output   Radius Secret output, to be returned
@@ -1427,6 +1585,7 @@ INT wifi_getApDASRadiusServer(INT apIndex, CHAR *IP_output, UINT *Port_output, C
 * Device.WiFi.AccessPoint.{i}.Security.RadiusDASPort
 * Device.WiFi.AccessPoint.{i}.Security.RadiusDASSecret
 *
+* @param[in] apIndex       ApIndex 
 * @param[in] IPAddress     IP Address
 * @param[in] port          Port
 * @param[in] RadiusdasSecret  Radius Secret
@@ -1692,24 +1851,7 @@ typedef INT(* wifi_newApAssociatedDevice_callback)(INT apIndex, wifi_associated_
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
-/* wifi_newApAssociatedDevice_callback_register() function */
-/**
-* @brief Callback registration function.    
-*
-* @param[in] callback_proc  wifi_newApAssociatedDevice_callback callback function
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-void wifi_newApAssociatedDevice_callback_register(wifi_newApAssociatedDevice_callback callback_proc);
+
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 
 /**
@@ -1742,24 +1884,7 @@ typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
-/* wifi_apDisassociatedDevice_callback_register() function */
-/**
-* @brief Callback registration function.    
-*
-* @param[in] callback_proc  wifi_apDisassociatedDevice_callback callback function
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-void wifi_apDisassociatedDevice_callback_register(wifi_apDisassociatedDevice_callback callback_proc);
+
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 
 /**
@@ -1792,20 +1917,7 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int ap_index, char *mac, int reason
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
-/* wifi_apDeAuthEvent_callback_register() function */
-/**
-* @brief Callback registration function.
-*
-* @param[in] callback_proc  wifi_apDeAuthEvent_callback callback function
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*/
-void wifi_apDeAuthEvent_callback_register(wifi_apDeAuthEvent_callback callback_proc);
+
 
 INT wifi_setInterworkingAccessNetworkType(INT apIndex, INT accessNetworkType);   // P3
 INT wifi_getInterworkingAccessNetworkType(INT apIndex, UINT *output_uint);   // P3
@@ -1883,67 +1995,6 @@ INT    wifi_pushApInterworkingElement(INT apIndex,
                                 wifi_InterworkingElement_t    *infoEelement);
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 
-/**
- * @addtogroup WIFI_HAL_TYPES
- * @{
- */
-
-typedef enum
-{
-    WIFI_MGMT_FRAME_TYPE_INVALID=-1,
-    WIFI_MGMT_FRAME_TYPE_PROBE_REQ=0,
-    WIFI_MGMT_FRAME_TYPE_PROBE_RSP=1,
-    WIFI_MGMT_FRAME_TYPE_ASSOC_REQ=2,
-    WIFI_MGMT_FRAME_TYPE_ASSOC_RSP=3,
-    WIFI_MGMT_FRAME_TYPE_AUTH=4,
-    WIFI_MGMT_FRAME_TYPE_DEAUTH=5,
-    WIFI_MGMT_FRAME_TYPE_REASSOC_REQ=6,
-    WIFI_MGMT_FRAME_TYPE_REASSOC_RSP=7,
-    WIFI_MGMT_FRAME_TYPE_DISASSOC=8,
-    WIFI_MGMT_FRAME_TYPE_ACTION=9,
-} wifi_mgmtFrameType_t;
-
-typedef enum
-{
-    WIFI_DATA_FRAME_TYPE_INVALID=-1,
-    WIFI_DATA_FRAME_TYPE_8021x,
-} wifi_dataFrameType_t;
-
-typedef enum
-{
-    WIFI_FRAME_TYPE_INVALID=-1,
-    WIFI_FRAME_TYPE_MGMT,
-    WIFI_FRAME_TYPE_CTRL,
-    WIFI_FRAME_TYPE_DATA,
-} wifi_frameType_t;
-  
-typedef void (* wifi_received8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
-typedef void (* wifi_sent8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
-
-typedef void (* wifi_receivedAuthFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
-typedef void (* wifi_sentAuthFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
-
-typedef void (* wifi_receivedAssocReqFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
-typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
-
-#ifdef WIFI_HAL_VERSION_3_PHASE2
-typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
-typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
-#else
-typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
-typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
-#endif
-/** @} */  //END OF GROUP WIFI_HAL_TYPES
-
-/**
- * @addtogroup WIFI_HAL_APIS
- * @{
- */
-
-INT wifi_mgmt_frame_callbacks_register(wifi_receivedMgmtFrame_callback mgmtRxCallback);
-
-
-/** @} */  //END OF GROUP WIFI_HAL_APIS
 
 
 /**
@@ -2194,7 +2245,7 @@ INT wifi_getTWTsessions(INT ap_index, UINT maxNumberSessions, wifi_twt_sessions_
 * @param[in]  ap_index  access point index
 * @param[in]  twtParams  twt params to create or update a broadcast TWT session
 * @param[in]  create  Flag to indicate if it should create a new broadcast TWT Session
-* @param[in/out]  sessionID  Input when create flag is false and session exist; and output when 
+* @param[in,out]  sessionID  Input when create flag is false and session exist; and output when 
 *                            create flag is true, in this case sessionID is the ID for the new session 
 *
 * @return The status of the operation
@@ -2593,7 +2644,7 @@ typedef struct {
  */
 
 
-INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
+
 
 INT wifi_setApSecurity(INT ap_index, wifi_vap_security_t *security);
 INT wifi_getApSecurity(INT ap_index, wifi_vap_security_t *security);

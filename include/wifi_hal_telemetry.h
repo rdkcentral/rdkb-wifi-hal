@@ -195,7 +195,7 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
  * @brief To read the client's current connectivity statistics.
  *
  * @param[in]  apIndex         			- AP Index
- * @param[out] wifi_associated_dev3_t  	- This structure hold the information about the wifi client, Values to be returned
+ * @param[out] associated_dev_array  	- This structure hold the information about the wifi client, Values to be returned
  * @param[out] output_array_size		- Number of clients connected to the AP, Values to be returned 
  *
  * @return The status of the operation
@@ -216,9 +216,9 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
  /**
  * @brief To read the client's current connectivity statistics.
  *
- * @param[in]  apIndex         			- AP Index
- * @param[in] mac_address_t  			- mac address of the client 
- * @param[out] wifi_associated_dev3_t	- This structure hold the information about the wifi client, Values to be returned
+ * @param[in]  apIndex  - AP Index
+ * @param[in] mac_addr  - mac address of the client 
+ * @param[out] dev_conn	- This structure hold the information about the wifi client, Values to be returned
  *
  * @return The status of the operation
  * @retval RETURN_OK if successful
