@@ -19,9 +19,9 @@ Failure to meet these requirements will likely result in undefined and unexpecte
 
 ## Initialization and Startup
 
-No specific Initialization is required, unless housed in a Host-offload architecture. In such architecture, Initialization of Few remote services involving initialization of a common Host-DB are implemented using constructor attributes. So Type-2 is the closest option.
-
 Is the RDK-B middleware expected to have complete control over the life cycle over the entity controlled by the interface?  
+A) 
+No specific Initialization is required, unless housed in a Host-offload architecture. In such architecture, Initialization of Few remote services involving initialization of a common Host-DB are implemented using constructor attributes. RDKB Middleware will be initialized at the start up as mentioned in Type-2 option.
 
 E.g., we have potential two types of entity for which an interface is being abstracted:
 
@@ -32,19 +32,17 @@ E.g., we have potential two types of entity for which an interface is being abst
 The first type is relatively straight forward, the second is more problematic and needs to be called out and special cases need to be defined:
 
   1. What should happen when the component/sub-system is not ready. Should the interface block or return not ready. How should the client behave in both respects?  
-A) The interface should block. The init. API may have go into Wait state and keeps polling every 10s to unblock.
+  A) The interface should block. The init API needs to be in Wait state and keeps polling for every 10s once to ucheck the component readiness state.
 
-  2. Certain subsystems may have responsibility during system startup before RDK takes control. e.g FrontPanel, Panel and HDMI need to display a splash, etc. What is then the behaviour of the interface and how should it affect this initial state. When is the control hand-over and what state is the sub-system left in at that point? When is the sub-system initialized?  
-  A) No significant impact. No handover. It's dynamically put to use by the subsystem. The subsystem operation may have no impact but the User Requirements may not fulfilled. Subsystem is initialized in the LAN init sequence.
+  2. Certain subsystems may have responsibility during system startup before RDK takes control.  What is then the behaviour of the interface and how should it affect this initial state. When is the control hand-over and what state is the sub-system left in at that point? When is the sub-system initialized?  
+  A) No significant impact. No handover. It's dynamically set to use by the subsystem. Subsystem is initialized in the LAN init sequence.
   
-All these points and others need to be called out so that the system behaves
-in a deterministic manner, every time.
+All these points and others need to be called out so that the system behaves in a deterministic manner, every time.
 
 ## Threading Model
 
-Is it a requirement for the methods exposed by the interface to be thread
-safe?
-A) Not necessarily.
+Is it a requirement for the methods exposed by the interface to be thread safe?
+A) Thread safe should be handled based on application/user/system requirements. 
 
 Another point is to define whether the library exposing the interface is allowed to create threads. If it is allowed, explain the constraints, if any, around signal handling that the component needs to comply with. If the library is not allowed to create threads, and a separate thread of execution is required, it is likely that this dictates the need for a separate process and the proxy information above applies.
 A) HAL is allowed to create threads. Subscription of several services and catering to those are implemented as separate threads.
@@ -52,12 +50,13 @@ A) HAL is allowed to create threads. Subscription of several services and cateri
 ## Process Model
 
 Is it a requirement for the component to support multiple instantiation from multiple processes, or is there only ever one process that uses the interface?
-A) Multiple processes can statically link and ride the HAL.
+A) Multiple processes can statically link and use the HAL.
 
 ## Memory Model
 
 If the interface is expected to allocate and return pointers to memory, what are the expected rules with respect to ownership, clean up and termination.
-A) Bi-directional. Some APIs may allocate memory in HAL and expects upper layers to free it. while, some APIs free the memory in same functional block.
+A) Some APIs may allocate memory in HAL then return the pointers to its reference and expects the upper layers (applicaion etc) to free it.
+While some APIs allocate and free the memory in same functional block.
 
 ## Power Management Requirements
 
@@ -66,137 +65,118 @@ A) Not applicable.
 
 If so how?  
 e.g.  
-Is it explicit: The component is terminated by the client before entering a
-low power state and it expected that the component puts any associated
-hardware in a low power mode?  
-Is it implicit, in that when the system, is put in a low power state the
-associated hardware is put into a low power state by the operating system
-cooperating with the drivers?  
-etc.
+Is it explicit: The component is terminated by the client before entering a low power state and it expected that the component puts any associated hardware in a low power mode?  
+Is it implicit, in that when the system, is put in a low power state the associated hardware is put into a low power state by the operating system cooperating with the drivers?  etc.
 
 ## Asynchronous Notification Model
 
 Must the component support asynchronous notifications?  
+A) Yes
 If yes what is the approach?  
-Callbacks?  A) Yes
-Blocked call? A) Yes
-If callbacks, the component will be providing the execution context, what are
-the threading rules?
+A) Callbacks or Blocked call
+If callbacks, the component will be providing the execution context, what are the threading rules?
 A) Calling thread may have to read the return codes.
-If messages are shared, what are responsibilities for managing the memory
-allocation, etc.
-A) In this case, memory is atmost shared between 2 layers. In many cases, Execution is sequential and
-   upon successful execution, memory is handled likewise. Sometimes, Proper synchronisation is adopted with return codes.
+
+If messages are shared, what are responsibilities for managing the memory allocation, etc?
+A) In Shared memory, the memory is shared between two layers. In many cases execution is sequential and upon successful execution, the memory is handled likewise. Sometimes proper synchronisation is adopted with return codes.
 
 ## Blocking calls
 
-Are any of the exposed methods allowed to block (sleep or make system calls
-that can block)?  
+Are any of the exposed methods allowed to block (sleep or make system calls that can block)?  
 A) Yes
 
 Call out specific methods that are allowed to block.
 A)  wifi_init()
-    Following are Not allowed, but may block occasionally,
-    wifi_startNeighborScan
-    wifi_apDisassociatedDevice_callback_register
-    wifi_newApAssociatedDevice_callback_register
-    wifi_mgmt_frame_callbacks_register
+    The following API may call and get blocked based on invocation
+    wifi_startNeighborScan()
+    wifi_apDisassociatedDevice_callback_register()
+    wifi_newApAssociatedDevice_callback_register()
+    wifi_mgmt_frame_callbacks_register()
 
-How is a blocked call prematurely terminated? No manual possibility. It's automatically terminated after Fulfillment / wait for poll period.
+How is a blocked call prematurely terminated? 
+A) No manual possibility. It should be automatically terminated after execution or wait for poll period.
 
 ## Internal Error Handling
 
-If the component detects an internal error (e.g. out of memory) what should it
-do?
-A) This is not handled at component level. Rely on SIGKILL.
+If the component detects an internal error (e.g. out of memory) what should it do?
+A) This is not handled at component level. Rely on HAL return error codes and OS exceptions.
 
 ## Persistence Model
 
-Is the sub-system interfaced to by the HAL interface expected to remember any
-configuration set by calls to the HAL interface?
+Is the sub-system interfaced to by the HAL interface expected to remember any configuration set by calls to the HAL interface?
 A) YES  
-How and when is the expected configuration to be applied. Linked to
-Initialization and startup above.
-A) Predominantly during the subsystem init's.
-If configuration is expected to be maintained, how is it reset back to
-defaults and what implications are there w.r.t upgrading and downgrading of
-the subsystem.
-A) A seperate standalone config is maintained for the Reset case. Also, the Client abstracted
-would always be in sync with the defaulted config.
+
+How and when is the expected configuration to be applied. Linked to Initialization and startup above.
+A) During the subsystem initialization stage.
+
+If configuration is expected to be maintained, how is it reset back to defaults and what implications are there w.r.t upgrading and downgrading of the subsystem.
+A) A seperate standalone config is maintained for the Reset case. Also, the Client abstracted config would always be in sync with the defaulted config.
+
 How would this be managed?
-A) A seperate reset indicator is looked up while initialisation and acted accordingly.
+A) A seperate reset indicator is looked up while initialization and acted accordingly.
 
 # Non functional requirements
 
-Any non-functional requirements not specific to the operation of the
-components and interfaces.
+Any non-functional requirements not specific to the operation of the components and interfaces.
 A) Retrieving revisions and capabilities.
 
 ## Logging and debugging requirements
 
-Is the component expected to provide logging for debug and diagnostic
-purposes?  
+Is the component expected to provide logging for debug and diagnostic purposes?  
 A) Yes
-If yes, are there any rules (file naming conventions, etc.) that the component
-should abide by?
-A) No. Yet, there are few requirements of redirecting logs to specified files.
+If yes, are there any rules (file naming conventions, etc.) that the component should abide by?
+A) Yes the log files has naming convention depends upon the logs. There are few requirements of redirecting logs to specified files.
+E.g,
+ 1. Wifi initialization log file name - WiFilog.txt.0
+ 2. Wifi telemtery related related log file name - wifihealth.txt
+ 3. Device Image version - version.txt
 
 ## Memory and performance requirements
 
-Where memory and performance are of concern, Architecture may of imposed
-limits on memory and CPU usage.
-When the component is delivered, is there a requirement to state memory and
-CPU usage statistics for auditing purposes
+Where memory and performance are of concern, Architecture may of imposed limits on memory and CPU usage.
+When the component is delivered, is there a requirement to state memory and CPU usage statistics for auditing purposes
 A) No
 
 ## Quality Control
 
-Are there any requirements for the use of static code analysis tools:
-
-e.g. Coverity, Black duck, etc.
+Are there any requirements for the use of static code analysis tools: e.g. Coverity, Black duck, etc.
+A) Yes, Coverity tool is used
 
 Testing requirements: valgrind, etc. Any specific test to focus on, e.g.
 longevity testing, etc.
+A) Basic wifi sanity (CPU, Memory etc), regression and functionality test should be performed. If defects would it should be fixed and verified again.
 
 What specific component tests should be run.
-A) All sorts of coverity and memory analysis tools may prove beneficial.
+A) All functional and non- functional tests related to Wifi component.
 
 ## Licensing
 
 Are there any licensing requirements?
-A) YES. Common Repo is subjected to GPLV 2.0 license, While Additional OEM patches may not.
+A) YES. Common Repo is subjected to GPLV 2.0 license, While Additional OEM patches may not  reuired license.
 
 ## Build Requirements
 
 Any build requirements, specific tooling, library format, etc.
-versions of specific support libraries. Ideally this would be a systemwide for
-the RDK.
-A) No. Regular ANSI C toolchain would be enough.
+versions of specific support libraries. Ideally this would be a systemwide for the RDK.
+A) Regular ANSI C toolchain would be enough to build.
 
 ## Variability Management
 
 How is evolution managed?
 A) Compile time CFLAGS with revision info mentioned in Version and Version History.
 
-What optional methods are there and how are the capabilities of the interface
-discovered?
+What optional methods are there and how are the capabilities of the interface discovered?
 A) Feature defined Flags. Seperation of files in the build sequence with every introduced versions.
-If a method is not supported by a component or component dependent hardware.
 
+If a method is not supported by a component or component dependent hardware.
 How is that managed?
 A) Vendor specific Flags or device specific C defines.
 
-Is there an expected approach for managing different interface library
-versions?
-A) all of the above
+Is there an expected approach for managing different interface library versions?
+A) Vendor specific Flags and Feature defined Flags
 
 What approaches have been taken to make the interface extensible and amenable
-to customization on a per product basis. For example, picture modes on TV
-products are defined on a per product basis. The interface therefore
-implements a discovery method to obtain and set product defined
-configurations.  
-Call out that this is expected and that at integration, work would be required
-to define these product defined configuration.
+to customization on a per product basis. 
 A) The driving layers are expected to use the provisional APIs to retrieve the supported standards and act accordingly.
 
 # Interface API Documentation
@@ -209,7 +189,7 @@ the client.
 
 Any specific coding conventions that should be followed when extending the
 interface.
-A) Standard guidelines. Nothing specific.
+A) Starndard ANSCI C coding guidelines to be followed for coding.
 
 ## Theory of operation and key concepts
 
@@ -234,53 +214,11 @@ Is there a state model?
 State diagrams, sequence diagram, etc. are always a useful tool to describe
 all the behavioural aspects of the components.### Example Diagrams
 
-### Example Sequence Diagram
+### Sequence Diagram - 1
+![Sequence Diagram](images/Message_Sequence_Diagram.png)
 
-![Example Sequence Diagram](sequence1.png)
-
-### Example sequenceDiagram using mermaid
-
-[mermaid Diagrams](https://mermaid-js.github.io/mermaid)
-
-```mermaid
-sequenceDiagram
-    participant Alice
-    participant Bob
-    Alice->>John: Hello John, how are you?
-    loop Healthcheck
-        John->>John: Fight against hypochondria
-    end
-    Note right of John: Rational thoughts <br/>prevail!
-    John-->>Alice: Great!
-    John->>Bob: How about you?
-    Bob-->>John: Jolly good!
-```
-
-#### Example State Diagram
-
-![Example State Diagram](state1.png)
-
-### Example State Diagram using mermaid
-
-[mermaid Diagrams](https://mermaid-js.github.io/mermaid)
-
-```mermaid
-stateDiagram-v2
-    state if_state <<choice>>
-    [*] --> IsPositive
-    IsPositive --> if_state
-    if_state --> False: if n < 0
-    if_state --> True : if n >= 0
-```
-
-```
-<div class="mermaid">
-graph LR
-  A --- B
-  B-->C[fa:fa-ban forbidden]
-  B-->D(fa:fa-spinner);
-</div>
-```
+### Sequence Diagram - 2 
+![State Diagram](images/plantuml221250850097517383.png)
 
 ## Data Structures and Defines
 
@@ -320,3 +258,4 @@ const char*is a mutable pointer to an immutable character/string. You cannot cha
 char* const is an immutable pointer (it cannot point to any other location) but the contents of location at which it points are mutable.
 
 const char* const is an immutable pointer to an immutable character/string.
+A) Refer Doxygen comments and documentaion
