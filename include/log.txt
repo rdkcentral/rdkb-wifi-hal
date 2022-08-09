@@ -1,1 +1,0 @@
-bash: ./generate_docs.sh: No such file or directory
