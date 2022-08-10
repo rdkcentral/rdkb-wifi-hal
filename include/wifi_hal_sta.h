@@ -87,7 +87,7 @@ INT wifi_disconnect(INT ap_index);
  * @brief To disconnect the client VAP 
  * @param[in] callback_proc - Call back function name
  *
- * @return void 
+ * @return None
  *
  * @execution Synchronous.
  * @sideeffect None.

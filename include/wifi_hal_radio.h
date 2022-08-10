@@ -186,7 +186,7 @@ INT wifi_setRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operat
  *
  * @param[in]   callback_proc   - Scan result callback function
  *
- * @return Void None
+ * @return None
  *
  * @execution Synchronous
  * @sideeffect None

@@ -515,7 +515,7 @@ typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT
 * @brief This call back will be invoked when DeAuth Event (reason 2 wrong password) comes from client.
 *
 * @param[in] apIndex          Access Point Index
-* @param[in] MAC              MAC address of client device
+* @param[in] mac              MAC address of client device
 * @param[in] reason           reason for Auth Event
 *
 * @return The status of the operation
@@ -529,7 +529,7 @@ typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT
 * calls. It should probably just send a message to a driver event handler task.
 *
 */
-typedef INT ( * wifi_apDeAuthEvent_callback)(int ap_index, char *mac, int reason);
+typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason);
 
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
 
@@ -648,9 +648,7 @@ INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 *
 * @param[in] callback_proc  - wifi_newApAssociatedDevice_callback callback function
 *
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
+* @return None
 *
 * @execution Synchronous
 * @sideeffect None
@@ -667,9 +665,7 @@ void wifi_newApAssociatedDevice_callback_register(wifi_newApAssociatedDevice_cal
 *
 * @param[in] callback_proc  - wifi_apDeAuthEvent_callback callback function
 *
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
+* @return None
 *
 * @execution Synchronous
 * @sideeffect None
