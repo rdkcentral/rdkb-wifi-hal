@@ -1,323 +1,130 @@
 
 # RDKB Wifi HAL Documentation
 
-## History
+## Version History
 
 | Date | Author | Comment | Version |
 | --- | --- | --- | --- |
-| 28/07/22 | M. Kandasamy | Draft | 0.0.1 |
+| 07/28/22 | M. Kandasamy | Draft | 0.0.1 |
 
 ## Description
-```
-  TODO: Soumya to Review :-
-Abstraction layer to the diverse functionalities a WiFi-Driver provides in the several aspects of Configuration, Subscription and Commanding. Primarily used to maintain intercommunication between the user space and kernel layers.
-```
+ Abstraction layer to the diverse functionalities a Wi-Fi-Driver provides in the several aspects of Configuration, Subscription and Commanding. Primarily used to maintain intercommunication between the user space and kernel layers. 
+ The diagram below describes a high-level software architecture of the RDKB Wifi module stack.
+![OneWifi-Internal-Architecture](images/OneWifi-Internal-Architecture.png)
 
 # Component Runtime Execution Requirements
-```
-  TODO: Soumya to Review :-
-It is statically loaded library. The lifetime of which exists throughout the lifetime of process.
 
+It should be statically loadable library. The lifetime of which shall exists throughout the lifetime of process.
 Failure to meet these requirements will likely result in undefined and unexpected behaviour.
-```
 
 ## Initialization and Startup
 
-Is the RDK-B middleware expected to have complete control over the life cycle over the entity controlled by the interface? 
+Initialize the Wifi subsystem using wifi_init() API before making any other WiFi HAL API calls. This includes initialization of all radios. Implementation specifics may dictate what initializes since different hardware implementations may have different requirements. In such architecture, Initialization of Few remote services involving initialization of a common Host-DB are implemented using constructor attributes. Here the Wifi driver is expected to be initialized from outside of the RDK middleware to perform some function before the RDK middleware is executing and ready.
 
-```
-TODO: Soumya to Review :-
-No specific Initialization is required, unless housed in a Host-offload architecture. In such architecture, Initialization of Few remote services involving initialization of a common Host-DB are implemented using constructor attributes. RDKB Middleware will be initialized at the start up as mentioned in Type-2 option.
-```
+During system start-up before RDK takes control, Wifi subsystem would be initialized in the LAN init sequence. The interface should be in blocked state when the component/sub-system is not ready. The init API needs to be in Wait state and keeps polling for every 10s once to check the component readiness state.
 
-E.g., we have potential two types of entity for which an interface is being abstracted:
-
-  1. An entity that only needs to exist from initialisation and termination by the and RDK MW manager. When initialised, all resources are acquired, any hardware is opened and configured as a result of calls to interface methods and when terminated all resources are released. Typically the implementation would be self-contained within the library exposing the HAL interface, very probably providing a direct mapping onto a Linux device through a dev node
-
-  2. An entity for which the HAL interface is a proxy. Here the entity is expected to be initialized from outside of the RDK middleware to perform some function before the RDK middleware is executing and ready
-
-The first type is relatively straight forward, the second is more problematic and needs to be called out and special cases need to be defined:
-
-  1. What should happen when the component/sub-system is not ready. Should the interface block or return not ready. How should the client behave in both respects? 
-  ```
-  TODO: Soumya to Review :- 
-  A) The interface should block. The init API needs to be in Wait state and keeps polling for every 10s once to check the component readiness state.
-  ```
-
-  2. Certain subsystems may have responsibility during system startup before RDK takes control.  What is then the behaviour of the interface and how should it affect this initial state. When is the control hand-over and what state is the sub-system left in at that point? When is the sub-system initialized? 
-  ```
-TODO: Soumya to Review :- 
-  A) No significant impact. No handover. It's dynamically set to use by the subsystem. Subsystem is initialized in the LAN init sequence.
- ```
-
-All these points and others need to be called out so that the system behaves in a deterministic manner, every time.
+Wifi HAL API wifi_getHalCapability() call should return features/configuration supported by the HAL.
 
 ## Threading Model
 
-Is it a requirement for the methods exposed by the interface to be thread safe?
-```
-  TODO: Soumya to Review :-
-A) Thread safe should be handled based on application/user/system requirements. 
-```
-Another point is to define whether the library exposing the interface is allowed to create threads. If it is allowed, explain the constraints, if any, around signal handling that the component needs to comply with. If the library is not allowed to create threads, and a separate thread of execution is required, it is likely that this dictates the need for a separate process and the proxy information above applies.
-```
-  TODO: Soumya to Review :-
-A) HAL is allowed to create threads. Subscription of several services and catering to those are implemented as separate threads.
-```
+WIFI HAL does not thread safe, any module which is invoking the WIFI HAL API
+should ensure calls are made in a thread safe manner.
+Different Wifi SOC vendors allowed to create internal threads to meet the requirements of underlaying Wifi driver module and meet the operational requirements. SOC should be responsible to synchronize between the calls, events, and clean-up the thread.
+
 ## Process Model
 
-Is it a requirement for the component to support multiple instantiation from multiple processes, or is there only ever one process that uses the interface?
-```
-  TODO: Soumya to Review :-
-A) Multiple processes can statically link and use the HAL.
-```
+CccspWifiSsp agent process will take care of Initializing Wifi HAL library. At any point of time a single instance of CccspWifiSsp process will exist to Respond to any Wifi HAL related functionality to the application.
+
 ## Memory Model
 
-If the interface is expected to allocate and return pointers to memory, what are the expected rules with respect to ownership, clean up and termination.
-```
-  TODO: Soumya to Review :-
-A) Some APIs may allocate memory in HAL then return the pointers to its reference and expects the upper layers (applicaion etc) to free it.
-While some APIs allocate and free the memory in same functional block.
-```
+WiFi HAL is responsible to pass message buffer and free it for transmit request. For Receive message HAL will pass message buffer in the callback and Wifi agent is responsible to copy to its internal buffer before callback is returned.
 
 ## Power Management Requirements
 
-Is there a requirement for the component to participate in power management.
-```
-  TODO: Soumya to Review :-  
-A) Not applicable.
-```
-
-If so how?  
-e.g.  
-Is it explicit: The component is terminated by the client before entering a low power state and it expected that the component puts any associated hardware in a low power mode?  
-Is it implicit, in that when the system, is put in a low power state the associated hardware is put into a low power state by the operating system cooperating with the drivers?  etc.
+There is no requirement for the component to participate in power management.
 
 ## Asynchronous Notification Model
 
-Must the component support asynchronous notifications? 
-```
-  TODO: Soumya to Review :- 
-A) Yes
-```
-If yes what is the approach?  
-```
-  TODO: Soumya to Review :-
-A) Callbacks or Blocked call
-```
-If callbacks, the component will be providing the execution context, what are the threading rules?
-```
-  TODO: Soumya to Review :-
-A) Calling thread may have to read the return codes.
-```
-
-If messages are shared, what are responsibilities for managing the memory allocation, etc?
-```
-  TODO: Soumya to Review :-
-A) In Shared memory, the memory is shared between two layers. In many cases execution is sequential and upon successful execution, the memory is handled likewise. Sometimes proper synchronisation is adopted with return codes.
-```
+Asynchronous CEC transmit and receive operations following API's and callback registrations are used.
+- For asynchronous management frames transmission - wifi_mgmt_frame_callbacks_register  
+- For asynchronous notification on client connection - wifi_newApAssociatedDevice_callback_register
+- For asynchronous notification on client deauthentication - wifi_apDeAuthEvent_callback_register
+- For asynchronous notification on client dissocciation - wifi_apDisassociatedDevice_callback_register
+- For asynchronous notification on client connection status - wifi_staConnectionStatus_callback_register
+- For asynchronous notification on client scan results - wifi_scanResults_callback_register
 
 ## Blocking calls
 
-Are any of the exposed methods allowed to block (sleep or make system calls that can block)?
-```
-  TODO: Soumya to Review :-  
-A) Yes
-```
-
-Call out specific methods that are allowed to block.
-```
-  TODO: Soumya to Review :-
-A)  wifi_init()
-    The following API may call and get blocked based on invocation
-    wifi_startNeighborScan()
-    wifi_apDisassociatedDevice_callback_register()
-    wifi_newApAssociatedDevice_callback_register()
-    wifi_mgmt_frame_callbacks_register()
-```
-How is a blocked call prematurely terminated? 
-```
-  TODO: Soumya to Review :-
-A) No manual possibility. It should be automatically terminated after execution or wait for poll period.
-```
+Please see the blocking calls used in Wifi HAL:
+- wifi_init()
+- wifi_startNeighborScan()
+- wifi_getHalCapability()
+- wifi_setRadioOperatingParameters()
+- wifi_createVAP()
+- wifi_getRadioVapInfoMap()
+- wifi_kickAssociatedDevice()
+- wifi_startScan()
+- wifi_connect()
+- wifi_disconnect()
 
 ## Internal Error Handling
 
-If the component detects an internal error (e.g. out of memory) what should it do?
-```
-  TODO: Soumya to Review :-
-A) This is not handled at component level. Rely on HAL return error codes and OS exceptions.
-```
+All the Wifi HAL APIs should return error synchronously as a return argument. HAL is responsible to handle system errors (e.g., failure of memory allocation, array boundary out of memory, return code check) internally.
+
 ## Persistence Model
 
-Is the sub-system interfaced to by the HAL interface expected to remember any configuration set by calls to the HAL interface?
-```
-  TODO: Soumya to Review :-
-A) YES  
-```
-
-How and when is the expected configuration to be applied. Linked to Initialization and startup above.
-```
-  TODO: Soumya to Review :-
-A) During the subsystem initialization stage.
-```
-
-If configuration is expected to be maintained, how is it reset back to defaults and what implications are there w.r.t upgrading and downgrading of the subsystem.
-```
-  TODO: Soumya to Review :-
-A) A seperate standalone config is maintained for the Reset case. Also, the Client abstracted config would always be in sync with the defaulted config.
-```
-
-How would this be managed?
-```
-  TODO: Soumya to Review :-
-A) A seperate reset indicator is looked up while initialization and acted accordingly.
-```
+WiFi HAL interface expected to persist VAP configuration set by calls to the HAL interface. This configuration should persist for device firmware upgrade and downgrade.
+During the Wifi initialization VAP configuration shall be retrieved and applied to the WiFi driver.
+A separate standalone config is maintained for the Reset case. A reset indicator is looked up while initialization and apply the configuration accordingly.
 
 # Non functional requirements
 
-Any non-functional requirements not specific to the operation of the components and interfaces.
-```
-  TODO: Soumya to Review :-
-A) Retrieving revisions and capabilities.
-```
+Following non-functional requirement should be supported by the CEC HAL component.
 
 ## Logging and debugging requirements
 
-Is the component expected to provide logging for debug and diagnostic purposes? 
-```
-  TODO: Soumya to Review :- 
-A) Yes
-```
-If yes, are there any rules (file naming conventions, etc.) that the component should abide by?
-```
-  TODO: Soumya to Review :-
-A) Yes the log files has naming convention depends upon the logs. There are few requirements of redirecting logs to specified files.
-E.g,
+Wi-Fi HAL component should log all the error and critical informative messages which helps to debug/triage the issues and understand the functional flow of the system.
+
+The log files have naming convention depends upon the logs. There are few requirements of redirecting logs to specified files.
+E.g.,
  1. Wifi initialization log file name - WiFilog.txt.0
- 2. Wifi telemtery related related log file name - wifihealth.txt
+ 2. Wifi telemetry related log file name - wifihealth.txt
  3. Device Image version - version.txt
-```
+ 4. Wifi HAL log file name - wifi_vendor_hal.log
+
 ## Memory and performance requirements
 
-Where memory and performance are of concern, Architecture may of imposed limits on memory and CPU usage.
-When the component is delivered, is there a requirement to state memory and CPU usage statistics for auditing purposes
-```
-  TODO: Soumya to Review :-
-A) No
-```
+WiFi HAL should not contribute more to memory and CPU utilization while performing normal Wifi operations and in idle mode and STANDBY mode.
 
 ## Quality Control
 
-Are there any requirements for the use of static code analysis tools: e.g. Coverity, Black duck, etc.
-```
-  TODO: Soumya to Review :-
-A) Yes, Coverity tool is used
-```
+WiFi HAL implementation should not introduce any warnings and errors while running with Coverity static analysis tool
+There should not be any memory leaks/corruption introduced by HAL and underneath SOC software.
+Basic WiFi sanity (CPU, Memory etc), regression and functionality test should be performed. 
 
-Testing requirements: valgrind, etc. Any specific test to focus on, e.g.
-longevity testing, etc.
-```
-  TODO: Soumya to Review :-
-A) Basic wifi sanity (CPU, Memory etc), regression and functionality test should be performed. If defects would it should be fixed and verified again.
-```
-
-What specific component tests should be run.
-```
-  TODO: Soumya to Review :-
-A) All functional and non- functional tests related to Wifi component.
-```
 ## Licensing
 
-Are there any licensing requirements?
-```
-  TODO: Soumya to Review :-
-A) YES. Common Repo is subjected to GPLV 2.0 license, While Additional OEM patches may not  reuired license.
-```
+ Licensed under the Apache License, Version 2.0 (the "License").
+ you may not use this file except in compliance with the License.
 
 ## Build Requirements
 
-Any build requirements, specific tooling, library format, etc.
-versions of specific support libraries. Ideally this would be a systemwide for the RDK.
-```
-  TODO: Soumya to Review :-
-A) Regular ANSI C toolchain would be enough to build.
-```
+WiFi HAL source code should be built under Linux Yocto environment and should be delivered as a shared library.
 
 ## Variability Management
 
-How is evolution managed?
-```
-  TODO: Soumya to Review :-
-A) Compile time CFLAGS with revision info mentioned in Version and Version History.
-```
+Any new API introduced should be implemented by all SOC vendor and RDKB generic code will be compatible with specific version of WiFi HAL software. HAL evolution shall be managed by Compile time CFLAGS with revision info.
 
-What optional methods are there and how are the capabilities of the interface discovered?
-```
-  TODO: Soumya to Review :-
-A) Feature defined Flags. Seperation of files in the build sequence with every introduced versions.
-```
-
-If a method is not supported by a component or component dependent hardware.
-How is that managed?
-```
-  TODO: Soumya to Review :-
-A) Vendor specific Flags or device specific C defines.
-```
-
-Is there an expected approach for managing different interface library versions?
-```
-  TODO: Soumya to Review :-
-A) Vendor specific Flags and Feature defined Flags
-```
-
-What approaches have been taken to make the interface extensible and amenable
-to customization on a per product basis. 
-```
-  TODO: Soumya to Review :-
-A) The driving layers are expected to use the provisional APIs to retrieve the supported standards and act accordingly.
-```
+The capabilities of the HAL interface discovered by Feature defined Flags, version, and version history.
 
 # Interface API Documentation
 
-The information above mostly, but not only, details how the component/sub-
-system behaves, realizes the interface, and the requirements/constrains that
-it must abide by in doing so.  
-This information below is more focused on how the interface should be used by
-the client.
-
-Any specific coding conventions that should be followed when extending the
-interface.
-```
-  TODO: Soumya to Review :-
-A) Starndard ANSCI C coding guidelines to be followed for coding.
-```
+Covered as per Doxygen documentations format.
 
 ## Theory of operation and key concepts
 
-Describe anything useful to the stakeholders to help them understand the
-expected operation of the interfaced component/s.  
-For example,
+Covered as per "Description" sections in the API documentation.
 
-If the component is expected to create instances of objects then describe
-their life cycle and how they are identified.  
-Is there an order in which methods are expected to be called?  
-For example:
-
-  1. Initialization/Open
-
-  2. Configure
-
-  3. Start
-
-Are there specific methods that will only be called when in a specific state.  
-Is there a state model?
-
-State diagrams, sequence diagram, etc. are always a useful tool to describe
-all the behavioural aspects of the components.### Example Diagrams
-```
-  TODO: Soumya to Review blow diagrams:-
-```
 ### Sequence Diagram - 1
 ![Sequence Diagram](images/Message_Sequence_Diagram.png)
 
@@ -326,43 +133,6 @@ all the behavioural aspects of the components.### Example Diagrams
 
 ## Data Structures and Defines
 
-Each data structure should have a description of its role.  
-Each field should have a description if it adds value. unsigned int index;
-//is an index . Adds no value. "//Is an index to the array of foobars, to
-select the foobar. " adds value.
+ Refer Doxygen comments and documentation
 
-## For Each Method
 
-* Description
-
-  * Detailed semantic description on how to use.
-
-* Argument description, range of valid values, array lengths, etc.
-  
-  * Be especially careful with string arrays. Ideally the function would define exactly the mutability of the array contents.
-    The classic error is where the client passes a pointer to a character array that has been created on the caller stack. If this is unknown to the component it may simply store the pointer value to the string expecting it to be valid if used at a later time.
-
-* Pre-conditions: What must be done before calling. What happens if the pre-condition is not met
-
-* Post-conditions: What is the successful result
-
-* Return values. All possible return values and why
-
-* Error handling. Based on the error returned what should the Client do
-
-* Is the method allowed to block?
-
-* Is the method thread safe?
-
-More on buffers:
-char* is a mutable pointer to a mutable character/string.
-
-const char*is a mutable pointer to an immutable character/string. You cannot change the contents of the location(s) this pointer points to. Also, compilers are required to give error messages when you try to do so. For the same reason, conversion from const char* to char* is deprecated.
-
-char* const is an immutable pointer (it cannot point to any other location) but the contents of location at which it points are mutable.
-
-const char* const is an immutable pointer to an immutable character/string.
-```
-  TODO: Soumya to Review :-
-A) Refer Doxygen comments and documentaion
-```
