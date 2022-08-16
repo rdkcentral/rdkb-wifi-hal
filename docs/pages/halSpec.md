@@ -5,7 +5,7 @@
 
 | Date | Author | Comment | Version |
 | --- | --- | --- | --- |
-| 08/16/22 | M. Kandasamy | Block diagram updated | 0.0.2 |
+| 08/16/22 | M. Kandasamy | Initial Release | 0.1.0 |
 
 ## Acronyms
 
