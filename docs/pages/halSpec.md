@@ -5,27 +5,30 @@
 
 | Date | Author | Comment | Version |
 | --- | --- | --- | --- |
-| 07/28/22 | M. Kandasamy | Draft | 0.0.1 |
+| 08/16/22 | M. Kandasamy | Block diagram updated | 0.0.1 |
 
 ## Acronyms
 
 - `HAL` \- Hardware Abstraction Layer, may include some common components
-- `HAL.h` \- Abtracted defined API to control the hardware
-- `HAL.c` \- Implmentation wrapper layer created by the `OEM` or `SoC` Vendor.
+- `HAL.h` \- Abstracted defined API to control the hardware
+- `HAL.c` \- Implementation wrapper layer created by the `OEM` or `SoC` Vendor
 - `RDK` \- Reference Design Kit for All Devices
 - `RDK-B` \- Reference Design Kit for Broadband Devices
-- `Wi-Fi` \- Wireless Radio Ntworking
+- `Wi-Fi` \- Wireless Radio Networking
 - `HATS` \- HAL Automated Testing System
-- `OEM` \- Origional Equipment Manufactuer (Sky is also an OEM)
+- `OEM` \- Original Equipment Manufacturer 
 - `SoC` \- System on a Chip
 
 ## Description
 
-The Hardware Abstraction Layer (HAL) is to abstract the RDK Wi-Fi requirements at a general level to allow platform independant control.
+The Hardware Abstraction Layer (HAL) is to abstract the RDK Wi-Fi requirements at a general level to allow platform independent control.
 
-The picture below shows the realtionship between the `HAL` and the `Kernel` and `WiFi Driver`.
+The picture below shows the relationship between the `HAL` and the `Kernel` and `WiFi Driver`.
+![WiFi HAL](images/WifiHALDiagram.PNG)
 
-@TODO: Draw picture here for how the kernel / hal / driver relate to each other.
+`hostapd` (host access point daemon) is a user space daemon software enabling a network interface card to act as an access point and authentication server
+
+`nl80211` is the interface between user space software (iw etc.) and the kernel (cfg80211 and mac80211 kernel modules, and specific drivers)
 
 # Component Runtime Execution Requirements
 
@@ -39,7 +42,7 @@ Failure to meet these requirements will likely result in undefined and unexpecte
 
 Initialize the Wifi `HAL` using `wifi_init()` before making any other calls.
 
-The kernel boot sequence is expected to start all the dependencies for the wifi hal.
+The kernel boot sequence is expected to start all the dependencies for the WiFi HAL.
 
 ## Threading Model
 
@@ -56,7 +59,7 @@ A single instance is expected to exist. And only once instance will be initialis
 Where `HAL` creates any memory, then `HAL` will be expected to own it.
 Where `client` creates memory, then `client` is expected to own it.
 
-Expection to the rules above are specified in the API documentation.
+Expectation to the rules above are specified in the API documentation.
 
 ## Power Management Requirements
 
@@ -64,7 +67,7 @@ There is no requirement for the component to participate in power management.
 
 ## Asynchronous Notification Model
 
-There are a number of asynchronous callback registration functions these are defined by `xxx_callback_register()`
+There are number of asynchronous callback registration functions these are defined by `xxx_callback_register()`
 and marked in the doxygen comments with token `@execution callback`
 
 As a few examples of this are:-
@@ -80,11 +83,11 @@ During callbacks the client is responsible for create a copy of data, unless oth
 
 ## Blocking calls
 
-There is a number of blocking calls in the API docuemtation, thense are tagged with the `@execution blocks/blocking` token in the documentation.
+The blocking calls documented in the API documetation, they are tagged with the `@execution blocks/blocking` token in the documentation.
 
 ## Internal Error Handling
 
-All the APIs define a list return codes, each API must be capable of returning all of the codes defined, the `HTS` if possible will create cases
+All the APIs define a list return codes, each API must be capable of returning all of the codes defined, the `HTS` if possible, will create cases
 for the error codes to be exercised.
 
 HAL is responsible to handle system errors (e.g., failure of memory allocation, array boundary out of memory, return code check), and returning
@@ -96,11 +99,11 @@ WiFi HAL interface expected to persist configuration set by calls to the HAL int
 
 This configuration should also persist if the device firmware upgraded or downgraded.
 
-During the initialization the driver will retrieve configuration and re-apply it.
+During the initialization, the driver will retrieve configuration and re-apply it.
 
-The vendor must have the capability of a separate factory reset configuration, this will be configured at factory programming.
+The vendor must have the capability of a separate factory reset configuration; this will be configured at factory programming.
 
-A reset flag is normally read during boot initialization and applys the configuration accordingly.
+A reset flag is normally read during boot initialization and apply the configuration accordingly.
 
 # Non functional requirements
 
@@ -126,16 +129,16 @@ E.g.
 
 During idle and Standby, memory and CPU utilization will be a minimal footprint.
 
-Under maxiumum load CPU should aim for under 85% usage, and a max memory footprint of xMB.
+Under maximum load CPU should aim for under 85% usage, and a max memory footprint of xMB.
 
 ## Quality Control
 
-The vendor should endaviour to:-
+The vendor should endeavour to:-
 
 - Run a static analysis tool like Coverity
-- Have a zero warning policy with regards to compling. All warnings should be enabled by default in the makefiles.
-- Use of memory analysis tools like Valgrind is encouraged, or identify leaks or corruptions.
-- `HAL` Tests will endevour to create worst case scenrio's to assist investigations.
+- Have a zero-warning policy with regards to compiling. All warnings should be enabled by default in the makefiles.
+- Use of memory analysis tools like Valgrind are encouraged, or identify leaks or corruptions.
+- `HAL` Tests will endeavour to create worst case scenarios to assist investigations
 
 ## Licensing
 
@@ -148,12 +151,12 @@ The source code should be built under Linux environment using `cmake`, `make`, `
 
 ## Variability Management
 
-Ideally the source code should be delivered into comcast/sky git repoistories and tagged based on the requirements for the project.
-The vendor will follow the `comcast federatated delivery model` whereever possible.
+Ideally the source code should be delivered into Comcast/Sky git repositories and tagged based on the requirements for the project.
+The vendor will follow the `Comcast federated delivery model` wherever possible.
 
-Compile time flags `config` flags can control compliation:-
+Compile time flags `config` flags can control compilation:-
 
-example of this would be :-
+example of this would be:-
 
 ```
 #ifdef HUB4 && HUB5 && HUB6
@@ -163,7 +166,7 @@ example of this would be :-
 #endif
 ```
 
-`config` flags are encouraged, so this can be defined at the top level compile time
+`config` flags are encouraged, so this can be defined at the top-level compile time
 
 ```
 #ifdef CONFIG_WIFI_V6
@@ -183,23 +186,40 @@ The interface is documented by Doxygen and will be included with this document.
 
 Covered as per "Description" sections in the API documentation.
 
-## Diag
+## Sequence Diagram
 
 ```mermaid
 sequenceDiagram
     participant coreThread
-    participant Wifi_Hal
+    participant Wifi_HAL
+    participant Wifi_Hostap
     participant Wifi_Driver
+    participant Linux_System   
     
-    coreThread->>Wifi_Hal: getHalCapabilty()
-    Wifi_Hal->>Wifi_Driver: get phy device capabilities
-    Wifi_Driver->>Wifi_Hal: return phy device capabilities
+    coreThread->>Wifi_HAL: wifi_init()
+    Wifi_HAL->>Linux_System: init wifi
+    Wifi_HAL->>Wifi_Hostap: eloop_init
+    Wifi_HAL->>Wifi_Hostap: eap_server_register_methods
+
+    Wifi_Driver->>Wifi_HAL: return wifi init status
+    Wifi_HAL->>coreThread: success
+    coreThread->>Wifi_HAL: getHalCapabilty()
+    Wifi_HAL->>Wifi_Driver: get phy device capabilities
+    Wifi_Driver->>Wifi_HAL: return phy device capabilities
+    Wifi_HAL->>coreThread: getHalCapabilty() status
+    coreThread->>Wifi_HAL:wifi_setRadioOperatingParameters
+    Wifi_HAL->>Wifi_Driver: set radio parameters
+    Wifi_HAL->>Wifi_Hostap: update_hostap_config_params
+    Wifi_HAL->>coreThread: success
+    coreThread->>Wifi_HAL: wifi_createVAP()
+    Wifi_HAL->>Linux_System: create interface
+    Wifi_HAL->>coreThread: success
+    coreThread->>Wifi_HAL: wifi_run
+    Wifi_HAL->>Wifi_Hostap: eloop_run
+    Wifi_Hostap->>Wifi_Hostap: eloop_run
+    
+    
 ```
 
-### Sequence Diagram - 1
-![Sequence Diagram](images/Message_Sequence_Diagram.png)
-
-### Sequence Diagram - 2 
-![State Diagram](images/plantuml221250850097517383.png)
 
 
