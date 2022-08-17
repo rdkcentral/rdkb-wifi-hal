@@ -96,6 +96,25 @@ typedef enum {
     wifi_dl_data_block_ack_deferred,
 } wifi_dl_data_ack_type_t;
 
+/* wifi_scanResults_callback() */
+/**
+ * @brief To get the scan results for particular radio
+ * 
+ * @param[in]  index    - Index of Wi-Fi radio 
+ * @param[in,out] bss   - BSS Info of the current radio channel
+ * @param[out] num_bss  - Number of bss channels
+ *
+ * @return The status of the operation
+ * @retval RETURN_OK if successful
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ *
+ */
 typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_info_t **bss, UINT *num_bss);
 
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
@@ -180,13 +199,9 @@ INT wifi_setRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operat
 
 /* wifi_scanResults_callback_register() */
 /**
- * @brief scan results function call back register
- *
- * This API is used to register the scan results call back function
+ * @brief Callback function to get scan results 
  *
  * @param[in]   callback_proc   - Scan result callback function
- *
- * @return None
  *
  * @execution Synchronous
  * @sideeffect None

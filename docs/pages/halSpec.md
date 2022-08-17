@@ -192,11 +192,7 @@ sequenceDiagram
     Wifi_HAL->>coreThread: success
     note over Wifi_HAL: System is up and running
     coreThread->>Wifi_HAL: wifi_createVAP()
-    Wifi_HAL->>coreThread: success
-   
-  
-    
-    
+    Wifi_HAL->>coreThread: success  
 ```
 
 
