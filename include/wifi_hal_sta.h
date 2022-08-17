@@ -45,9 +45,13 @@ typedef struct {
  * @param[in,out] bss_dev   - To get connected client Bss information
  * @param[in,out] sta       - To get the connection status of the Vap index
  * 
- * @return status of the operation
- * @retval RETURN_OK if successful
- * @retval RETURN_ERR if any error is detected
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous.
  * @sideeffect None.
