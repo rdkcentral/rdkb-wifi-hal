@@ -427,6 +427,28 @@ typedef void (* wifi_receivedAssocReqFrame_callback)(unsigned int ap_index, mac_
 typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
 
 #ifdef WIFI_HAL_VERSION_3_PHASE2
+/* wifi_receivedMgmtFrame_callback()*/
+/**
+ * @brief Receive management callback function
+ * 
+ * @param[in] apIndex   - index of the AP
+ * @param[out] sta_mac  - station mac address
+ * @param[out] frame    - Receive frame
+ * @param[in] len       - length of the frame
+ * @param[in] type      - Management frame type
+ * @param[in] dir       - Wifi uplink/downlink direction        
+ * 
+ * @return The status of the operation
+ * @retval RETURN_OK if successful
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ *
+*/
 typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
 typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
 #else

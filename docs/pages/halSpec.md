@@ -24,7 +24,8 @@
 The Hardware Abstraction Layer (HAL) is to abstract the RDK Wi-Fi requirements at a general level to allow platform independent control.
 
 The picture below shows the relationship between the `HAL`, `Kernel` and the `WiFi Driver`.
-![WiFi HAL](images/WifiHALDiagram.PNG)
+
+![WiFi HAL DIAGRAM](images/WifiHALDiagram.PNG)
 
 ## Optional Components
 
