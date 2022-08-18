@@ -434,6 +434,294 @@ typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCH
 typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
 #endif
 
+/**
+ * @addtogroup WIFI_HAL_TYPES
+ * @{
+ */
+
+typedef UINT wifi_vap_index_t;
+
+/**
+ * @brief Wifi onboarding methods
+ */
+typedef enum{
+    WIFI_ONBOARDINGMETHODS_USBFLASHDRIVE = 0x0001,
+    WIFI_ONBOARDINGMETHODS_ETHERNET = 0x0002,
+    WIFI_ONBOARDINGMETHODS_LABEL = 0x0004,
+    WIFI_ONBOARDINGMETHODS_DISPLAY = 0x0008,
+    WIFI_ONBOARDINGMETHODS_EXTERNALNFCTOKEN = 0x0010,
+    WIFI_ONBOARDINGMETHODS_INTEGRATEDNFCTOKEN = 0x0020,
+    WIFI_ONBOARDINGMETHODS_NFCINTERFACE = 0x0040,
+    WIFI_ONBOARDINGMETHODS_PUSHBUTTON = 0x0080,
+    WIFI_ONBOARDINGMETHODS_PIN = 0x0100,
+    WIFI_ONBOARDINGMETHODS_PHYSICALPUSHBUTTON = 0x0200,
+    WIFI_ONBOARDINGMETHODS_PHYSICALDISPLAY = 0x0400,
+    WIFI_ONBOARDINGMETHODS_VIRTUALPUSHBUTTON = 0x0800,
+    WIFI_ONBOARDINGMETHODS_VIRTUALDISPLAY = 0x1000,
+    WIFI_ONBOARDINGMETHODS_EASYCONNECT = 0x2000,
+} wifi_onboarding_methods_t;
+
+#define WIFI_AP_MAX_WPSPIN_LEN  9
+typedef struct 
+{
+    BOOL enable;
+    wifi_onboarding_methods_t methods;
+    CHAR pin[WIFI_AP_MAX_WPSPIN_LEN];
+} __attribute__((packed)) wifi_wps_t;
+
+typedef enum {
+    wifi_mfp_cfg_disabled,
+    wifi_mfp_cfg_optional,
+    wifi_mfp_cfg_required,
+} wifi_mfp_cfg_t;
+
+typedef enum {
+    wifi_mac_filter_mode_black_list,
+    wifi_mac_filter_mode_white_list,
+} wifi_mac_filter_mode_t;
+
+/**
+ * @brief Wifi RADIUS Settings
+ */
+typedef struct {
+#ifdef WIFI_HAL_VERSION_3_PHASE2
+    ip_addr_t       ip;                 /**< The primary RADIUS server IP address. */
+#else
+    unsigned char   ip[45];
+#endif
+    unsigned short  port;               /**< The primary RADIUS server port. */
+    char            key[64];            /**< The primary secret. */
+    char            identity[64];       /**< The primary identity. */
+#ifdef WIFI_HAL_VERSION_3_PHASE2
+    ip_addr_t       s_ip;                 /**< The secondary RADIUS server IP address. */
+#else
+    unsigned char   s_ip[45];
+#endif
+    unsigned short  s_port;             /**< The secondary RADIUS server port. */
+    char            s_key[64];          /**< The secondary secret. */
+    ip_addr_t       dasip;
+    USHORT          dasport;
+    char            daskey[64];
+    UINT            max_auth_attempts;
+    UINT            blacklist_table_timeout;
+    UINT            identity_req_retry_interval;
+    UINT            server_retries;
+    wifi_eap_t      eap_type;
+} __attribute__((packed)) wifi_radius_settings_t;
+
+typedef enum {
+    wifi_security_key_type_psk,
+    wifi_security_key_type_pass,
+    wifi_security_key_type_sae,
+    wifi_security_key_type_psk_sae
+} wifi_security_key_type_t;
+
+typedef struct {
+    wifi_security_key_type_t type;
+    char    key[256];
+} __attribute__((packed)) wifi_security_key_t;
+
+/**
+ * @brief Wifi encryption types
+ */
+typedef enum {
+    wifi_encryption_none,
+    wifi_encryption_tkip = 1,
+    wifi_encryption_aes,
+    wifi_encryption_aes_tkip,
+} wifi_encryption_method_t;
+
+
+/**
+ * @brief Wifi security mode types
+ */
+typedef enum {
+    wifi_security_mode_none = 0x00000001,
+    wifi_security_mode_wep_64 = 0x00000002,
+    wifi_security_mode_wep_128 = 0x00000004,
+    wifi_security_mode_wpa_personal = 0x00000008,
+    wifi_security_mode_wpa2_personal = 0x00000010,
+    wifi_security_mode_wpa_wpa2_personal = 0x00000020,
+    wifi_security_mode_wpa_enterprise = 0x00000040,
+    wifi_security_mode_wpa2_enterprise = 0x00000080,
+    wifi_security_mode_wpa_wpa2_enterprise = 0x00000100,
+    wifi_security_mode_wpa3_personal = 0x00000200,
+    wifi_security_mode_wpa3_transition = 0x00000400,
+    wifi_security_mode_wpa3_enterprise = 0x00000800
+} wifi_security_modes_t;
+
+typedef struct {
+    wifi_security_modes_t   mode;
+    wifi_encryption_method_t    encr;
+    wifi_mfp_cfg_t  mfp;
+    BOOL  wpa3_transition_disable;
+    UINT  rekey_interval;
+    BOOL  strict_rekey;  // must be set for enterprise VAPs
+    UINT  eapol_key_timeout;
+    UINT  eapol_key_retries;
+    UINT  eap_identity_req_timeout;
+    UINT  eap_identity_req_retries;
+    UINT  eap_req_timeout;
+    UINT  eap_req_retries;
+    BOOL  disable_pmksa_caching;
+    union {
+        wifi_radius_settings_t  radius;
+        wifi_security_key_t key;
+    } u;
+} __attribute__((packed)) wifi_vap_security_t;
+
+typedef struct {
+    int capabilityInfoLength;
+    wifi_capabilityListANQP_t capabilityInfo;
+    int venueInfoLength;
+    wifi_venueNameElement_t venueInfo;
+    int roamInfoLength;
+    wifi_roamingConsortium_t roamInfo;
+    wifi_ipAddressAvailabality_t ipAddressInfo;
+    int realmInfoLength;
+    wifi_naiRealmElement_t realmInfo;
+    int gppInfoLength;
+    wifi_3gppCellularNetwork_t gppInfo;
+    int domainInfoLength;
+    wifi_domainName_t domainNameInfo;
+    UCHAR  passpointStats[1024];
+    UINT   domainRespCount;
+    UINT   realmRespCount;
+    UINT   gppRespCount;
+    UINT   domainFailedCount;
+    UINT   realmFailedCount;
+    UINT   gppFailedCount;
+    UCHAR  anqpParameters[4096];
+} __attribute__((packed)) wifi_anqp_settings_t;
+
+typedef struct {
+    BOOL        enable;
+    BOOL        gafDisable;
+    BOOL        p2pDisable;
+    BOOL        l2tif;
+    BOOL        bssLoad;
+    BOOL        countryIE;
+    BOOL        proxyArp;
+
+    int capabilityInfoLength;                           //should not be implemented in the hal
+    wifi_HS2_CapabilityList_t capabilityInfo;           //should not be implemented in the hal
+    int opFriendlyNameInfoLength;                       //should not be implemented in the hal
+    wifi_HS2_OperatorFriendlyName_t opFriendlyNameInfo; //should not be implemented in the hal
+    int connCapabilityLength;                           //should not be implemented in the hal
+    wifi_HS2_ConnectionCapability_t connCapabilityInfo; //should not be implemented in the hal
+    int realmInfoLength;                                //should not be implemented in the hal
+    wifi_HS2_NAI_Home_Realm_Query_t realmInfo;          //should not be implemented in the hal
+    wifi_HS2_WANMetrics_t wanMetricsInfo;               //should not be implemented in the hal
+    UCHAR hs2Parameters[4096];                          //should not be implemented in the hal
+} __attribute__((packed)) wifi_passpoint_settings_t;
+
+// Interworking Element structure; see 802.11-2016 section 9.4.2.92 for field definition.
+typedef struct {
+    BOOL            interworkingEnabled;
+    UINT            accessNetworkType;
+    BOOL            internetAvailable;
+    BOOL            asra;
+    BOOL            esr;
+    BOOL            uesa;
+    BOOL            venueOptionPresent;    /**< True when venue information has not been provided, e.g. the hotspot is in a residence. */
+    UCHAR           venueGroup;
+    UCHAR           venueType;
+    BOOL            hessOptionPresent;
+    mac_addr_str_t  hessid;    /**< Optional; use empty string to indicate no value provided. */
+} wifi_InterworkingElement_t;
+
+typedef struct {
+    wifi_InterworkingElement_t   interworking;
+    wifi_roamingConsortiumElement_t roamingConsortium;
+    wifi_anqp_settings_t        anqp;                   //should not be implemented in the hal
+    wifi_passpoint_settings_t   passpoint;
+} __attribute__((packed)) wifi_interworking_t;
+
+typedef enum {
+    wifi_vap_mode_ap,
+    wifi_vap_mode_sta,
+    wifi_vap_mode_monitor,
+} wifi_vap_mode_t;
+
+typedef struct {
+    unsigned int period;        // period in seconds    
+    wifi_channel_t  channel;    // channel to scan, 0 means scan all in the band
+} __attribute__((packed)) wifi_scan_params_t;
+
+typedef struct {
+    ssid_t              ssid;
+    bssid_t             bssid; // if bssid is set to all 0, scan the ssid with probes, otherwise connect to specified bssid
+    BOOL                enabled;
+    wifi_connection_status_t    conn_status;
+    wifi_scan_params_t  scan_params;
+    wifi_vap_security_t security;
+    mac_address_t       mac;
+} __attribute__((packed)) wifi_back_haul_sta_t;
+
+#define WIFI_AP_MAX_SSID_LEN    33
+typedef struct {
+    CHAR    ssid[WIFI_AP_MAX_SSID_LEN];
+    BOOL    enabled;
+    BOOL    showSsid;
+    BOOL    isolation;
+    INT     mgmtPowerControl;
+    UINT    bssMaxSta;
+    BOOL    bssTransitionActivated;
+    BOOL    nbrReportActivated;
+    BOOL    rapidReconnectEnable;       //should not be implemented in the hal
+    UINT    rapidReconnThreshold;       //should not be implemented in the hal
+    BOOL    vapStatsEnable;             //should not be implemented in the hal
+    wifi_vap_security_t security;
+    wifi_interworking_t interworking;
+    BOOL    mac_filter_enable;
+    wifi_mac_filter_mode_t mac_filter_mode;
+    BOOL    sec_changed;                //should not be implemented in the hal
+    wifi_wps_t   wps;
+    BOOL    wmm_enabled;
+    BOOL    UAPSDEnabled;
+    wifi_bitrate_t beaconRate;
+    mac_address_t bssid;                    /**< The BSSID. This variable should only be used in the get API. It can't used to change the interface MAC */
+    UINT   wmmNoAck;
+    UINT   wepKeyLength;
+    BOOL   bssHotspot;
+    UINT   wpsPushButton;
+    char   beaconRateCtl[32];
+} __attribute__((packed)) wifi_front_haul_bss_t;
+
+#define WIFI_BRIDGE_NAME_LEN  32
+
+typedef struct {
+    wifi_vap_index_t    vap_index;
+    wifi_vap_name_t     vap_name;
+    wifi_radio_index_t  radio_index;
+    CHAR                bridge_name[WIFI_BRIDGE_NAME_LEN];
+    wifi_vap_mode_t     vap_mode;
+    union {
+        wifi_front_haul_bss_t   bss_info;
+        wifi_back_haul_sta_t    sta_info;
+    } u;
+} __attribute__((packed)) wifi_vap_info_t;
+
+typedef struct {
+    unsigned int        num_vaps;
+    wifi_vap_info_t vap_array[MAX_NUM_VAP_PER_RADIO];
+} __attribute__((packed)) wifi_vap_info_map_t;
+
+/**
+ * @brief Wifi AP Capabilities
+ */
+typedef struct {
+    BOOL rtsThresholdSupported;                                 /**< if bRtsThresholdSupported is TRUE, packet size threshold to apply RTS/CTS backoff rules is supported. */
+    wifi_security_modes_t securityModesSupported;               /**< The security modes supported (uses bitmask to return multiples modes). */
+    wifi_onboarding_methods_t methodsSupported;                 /**< The on boarding methods supported (uses bitmask to return multiples values). */
+    BOOL WMMSupported;                                          /**< if bWMMSupported is TRUE, WiFi Multimedia (WMM) Access Categories (AC) is supported. */
+    BOOL UAPSDSupported;                                        /**< if bUAPSDSupported is TRUE, WMM Unscheduled Automatic Power Save Delivery (U-APSD) is supported. */
+    BOOL interworkingServiceSupported;                          /**< if bInterworkingServiceSupported is TRUE, indicates whether the access point supports interworking with external networks. */
+    BOOL BSSTransitionImplemented;                              /**< if BSSTransitionImplemented is TRUE, BTM implemented. */
+} __attribute__((packed)) wifi_ap_capabilities_t;
+
+/** @} */  //END OF GROUP WIFI_HAL_TYPES
+
 #ifdef WIFI_HAL_VERSION_3_PHASE2
 /* wifi_newApAssociatedDevice_callback() function */
 /**
