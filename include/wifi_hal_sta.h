@@ -38,6 +38,27 @@ typedef struct {
     wifi_connection_status_t    connect_status;
 } wifi_station_stats_t;
 
+/* wifi_staConnectionStatus_callback() */
+/**
+ * @brief To get the station connection status
+ * @param[in] apIndex       - VAP index
+ * @param[in,out] bss_dev   - To get connected client Bss information
+ * @param[in,out] sta       - To get the connection status of the Vap index
+ * 
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+ *
+ * @execution Synchronous.
+ * @sideeffect None.
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task
+ */
 typedef INT ( * wifi_staConnectionStatus_callback)(INT apIndex, wifi_bss_info_t *bss_dev, wifi_station_stats_t *sta);
 
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
@@ -50,7 +71,7 @@ typedef INT ( * wifi_staConnectionStatus_callback)(INT apIndex, wifi_bss_info_t 
 /* wifi_connect() function */
  /**
  * @brief To connect the client VAP to specified BSS
- * @param[in] ap_index  - VAP index
+ * @param[in] apIndex  - VAP index
  * @param[in] bss       - Information about BSS that client will connect to
  *
  * @return status of the operation
@@ -63,12 +84,12 @@ typedef INT ( * wifi_staConnectionStatus_callback)(INT apIndex, wifi_bss_info_t 
  * @note This function must not suspend and must not invoke any blocking system
  * calls. It should probably just send a message to a driver event handler task
  */
-INT wifi_connect(INT ap_index, wifi_bss_info_t *bss);
+INT wifi_connect(INT apIndex, wifi_bss_info_t *bss);
 
  /* wifi_disconnect() function */
  /**
  * @brief To disconnect the client VAP 
- * @param[in] ap_index          - VAP index
+ * @param[in] apIndex          - VAP index
  *
  * @return status of the operation
  * @retval RETURN_OK if successful
@@ -80,14 +101,12 @@ INT wifi_connect(INT ap_index, wifi_bss_info_t *bss);
  * @note This function must not suspend and must not invoke any blocking system
  * calls. It should probably just send a message to a driver event handler task
  */
-INT wifi_disconnect(INT ap_index);
+INT wifi_disconnect(INT apIndex);
 
  /* wifi_staConnectionStatus_callback_register() function */
  /**
- * @brief To disconnect the client VAP 
+ * @brief Callback function to disconnect the client VAP 
  * @param[in] callback_proc - Call back function name
- *
- * @return None
  *
  * @execution Synchronous.
  * @sideeffect None.

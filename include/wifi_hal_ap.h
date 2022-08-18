@@ -427,9 +427,61 @@ typedef void (* wifi_receivedAssocReqFrame_callback)(unsigned int ap_index, mac_
 typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
 
 #ifdef WIFI_HAL_VERSION_3_PHASE2
+/* wifi_receivedMgmtFrame_callback()*/
+/**
+ * @brief Receive management callback function
+ * 
+ * @param[in] apIndex   - index of the AP
+ * @param[out] sta_mac  - station mac address
+ * @param[out] frame    - Receive frame
+ * @param[in] len       - length of the frame
+ * @param[in] type      - Management frame type
+ * @param[in] dir       - Wifi uplink/downlink direction        
+ * 
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ *
+*/
 typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
 typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
 #else
+/* wifi_receivedMgmtFrame_callback()*/
+/**
+ * @brief Receive management callback function
+ * 
+ * @param[in] apIndex   - index of the AP
+ * @param[out] sta_mac  - station mac address
+ * @param[out] frame    - Receive frame
+ * @param[in] len       - length of the frame
+ * @param[in] type      - Management frame type
+ * @param[in] dir       - Wifi uplink/downlink direction        
+ * 
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ *
+*/
 typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
 typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
 #endif
@@ -731,8 +783,12 @@ typedef struct {
 * @param[in] associated_dev   Associated device info
 *
 * @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
@@ -773,7 +829,28 @@ typedef struct _wifi_associated_dev
 
 } wifi_associated_dev_t;    //~COSA_DML_WIFI_AP_ASSOC_DEVICE
 
-
+/* wifi_newApAssociatedDevice_callback() function */
+/**
+* @brief This call back will be invoked when wifi client associates to an Access Point.    
+*
+* @param[in] apIndex            - Access Point Index
+* @param[out] associated_dev    - Associated device information like Mac, IP, Authentication state, uplink and down link rate, RSSI, SNR etc
+*
+* @return The status of the operation
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
 typedef INT(* wifi_newApAssociatedDevice_callback)(INT apIndex, wifi_associated_dev_t *associated_dev);
 #endif
 
@@ -781,13 +858,17 @@ typedef INT(* wifi_newApAssociatedDevice_callback)(INT apIndex, wifi_associated_
 /**
 * @brief This call back will be invoked when new wifi client disassociates from Access Point.    
 *
-* @param[in] apIndex          Access Point Index
-* @param[in] MAC                 MAC address of disassociated device
-* @param[in] event_type         type of disassociation, explicit or due to client inactivity
+* @param[in] apIndex    - Access Point Index
+* @param[in] MAC        - MAC address of disassociated device
+* @param[in] event_type - Type of disassociation, explicit or due to client inactivity
 *
 * @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
@@ -802,13 +883,17 @@ typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT
 /**
 * @brief This call back will be invoked when DeAuth Event (reason 2 wrong password) comes from client.
 *
-* @param[in] apIndex          Access Point Index
-* @param[in] mac              MAC address of client device
-* @param[in] reason           reason for Auth Event
+* @param[in] apIndex    - Access Point Index
+* @param[in] mac        - MAC address of client device
+* @param[in] reason     - Reason for Auth Event
 *
 * @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
@@ -837,7 +922,11 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval Error code if any error is detected (WIFI_HAL_ERROR, WIFI_HAL_UNSUPPORTED, etc)
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
@@ -857,9 +946,13 @@ INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *output_deviceMacAddre
  * @param[in] sta      - MAC address of the station associated in this VAP for which engine is being enabled/disabled
  * @param[in] enable   - Enable or diable
  *
- * @return The status of the operation.
- * @retval RETURN_OK if successful.
- * @retval RETURN_ERR if any error is detected
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -878,11 +971,15 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
  *
  * @param[in] index     - Index of Wifi radio
  * @param[in,out] map   - Contains wifi vap info that is created
- *  *
- * @return The status of the operation.
- * @retval RETURN_OK if successful.
- * @retval RETURN_ERR if any error is detected
- *
+ *  
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+ * 
  * @execution Synchronous.
  * @sideeffect None.
  * @note This function must not suspend and must not invoke any blocking system
@@ -897,10 +994,14 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
  *
  * @param[in] index     - Index of Wifi radio
  * @param[in,out] map   - Contains wifi vap info that is created
- *  *
- * @return The status of the operation.
- * @retval RETURN_OK if successful.
- * @retval RETURN_ERR if any error is detected
+ *  
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -914,13 +1015,17 @@ INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
 /* wifi_mgmt_frame_callbacks_register() function */
 /**
-* @brief Callback registration function.
+* @brief Callback to receive 802.11 management frames
 *
-* @param[in] mgmtRxCallback  - wifi_receivedMgmtFrame/wifi_receivedDataFrame_callback function
+* @param[in] mgmtRxCallback  - wifi_receivedMgmtFrame function
 *
 * @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
@@ -932,11 +1037,9 @@ INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
 /* wifi_newApAssociatedDevice_callback_register() function */
 /**
-* @brief Callback registration function.    
+* @brief Callback function to indicate the association of client device    
 *
 * @param[in] callback_proc  - wifi_newApAssociatedDevice_callback callback function
-*
-* @return None
 *
 * @execution Synchronous
 * @sideeffect None
@@ -949,11 +1052,9 @@ void wifi_newApAssociatedDevice_callback_register(wifi_newApAssociatedDevice_cal
 
 /* wifi_apDeAuthEvent_callback_register() function */
 /**
-* @brief Callback registration function.
+* @brief Callback function to indicate deauthentication of client device.
 *
 * @param[in] callback_proc  - wifi_apDeAuthEvent_callback callback function
-*
-* @return None
 *
 * @execution Synchronous
 * @sideeffect None
@@ -965,11 +1066,9 @@ void wifi_apDeAuthEvent_callback_register(wifi_apDeAuthEvent_callback callback_p
 
 /* wifi_apDisassociatedDevice_callback_register() function */
 /**
-* @brief Callback registration function.    
+* @brief Callback function to indicate dissociation of client device    
 *
 * @param[in] callback_proc  wifi_apDisassociatedDevice_callback callback function
-*
-* @return None
 *
 * @execution Synchronous
 * @sideeffect None

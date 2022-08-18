@@ -178,8 +178,12 @@ typedef struct {
 * @param[out] output_percentage  - Radio band utilization percentage, to be returned
 *
 * @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
@@ -199,8 +203,12 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
  * @param[out] output_array_size		- Number of clients connected to the AP, Values to be returned 
  *
  * @return The status of the operation
- * @retval RETURN_OK if successful
- * @retval RETURN_ERR if any error is detected
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous
  * @sideeffect None
@@ -220,8 +228,12 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
  * @param[out] dev_conn	- This structure hold the information about the wifi client, Values to be returned
  *
  * @return The status of the operation
- * @retval RETURN_OK if successful
- * @retval RETURN_ERR if any error is detected
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+ * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous
  * @sideeffect None
@@ -240,8 +252,12 @@ INT wifi_getApAssociatedClientDiagnosticResult(INT apIndex, mac_address_t mac_ad
 * @param[out] output_struct   - wifi_radioTrafficStats2_t *output_struct, all traffic stats info to be returned
 *
 * @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
+* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
+* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
