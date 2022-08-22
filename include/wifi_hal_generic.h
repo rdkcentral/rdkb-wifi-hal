@@ -954,10 +954,6 @@ typedef struct _wifi_associated_dev3
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
 * @retval WIFI_HAL_ERROR if an generic error is detected
-* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
-* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
-* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
-* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
@@ -974,15 +970,11 @@ INT wifi_init();
  * This API will return features & configuration supported by the baseband 
  * and other hardware components of the WiFi subsystem
  *
- * @param[out]  cap             HAL Capabilities
+ * @param[out]  cap HAL Capabilities
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
  * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous
  * @sideeffect None

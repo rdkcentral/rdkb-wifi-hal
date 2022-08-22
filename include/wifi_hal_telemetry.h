@@ -175,8 +175,8 @@ typedef struct {
 /**
 * @brief To read the radio band utilization.
 *
-* @param[in]  radioIndex         - Radio Index
-* @param[out] output_percentage  - Radio band utilization percentage, to be returned
+* @param[in]  radioIndex         Radio Index
+* @param[out] output_percentage  Radio band utilization percentage, to be returned
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -196,17 +196,13 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
  /**
  * @brief To read the client's current connectivity statistics.
  *
- * @param[in]  apIndex         			- AP Index
- * @param[out] associated_dev_array  	- This structure hold the information about the wifi client, Values to be returned
- * @param[out] output_array_size		- Number of clients connected to the AP, Values to be returned 
+ * @param[in]  apIndex         			AP Index
+ * @param[out] associated_dev_array  	This structure hold the information about the wifi client, Values to be returned
+ * @param[out] output_array_size		Number of clients connected to the AP, Values to be returned 
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
  * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous
  * @sideeffect None
@@ -221,17 +217,13 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
  /**
  * @brief To read the client's current connectivity statistics.
  *
- * @param[in]  apIndex  - AP Index
- * @param[in] mac_addr  - mac address of the client 
- * @param[out] dev_conn	- This structure hold the information about the wifi client, Values to be returned
+ * @param[in]  apIndex  AP Index
+ * @param[in] mac_addr  Mac address of the client 
+ * @param[out] dev_conn	This structure hold the information about the wifi client, Values to be returned
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
  * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous
  * @sideeffect None
@@ -246,16 +238,12 @@ INT wifi_getApAssociatedClientDiagnosticResult(INT apIndex, mac_address_t mac_ad
 /**
 * @brief Get detail radio traffic static info.
 *
-* @param[in]  radioIndex      - Index of Wi-Fi radio channel
-* @param[out] output_struct   - wifi_radioTrafficStats2_t *output_struct, all traffic stats info to be returned
+* @param[in]  radioIndex      Index of Wi-Fi radio channel
+* @param[out] output_struct   wifi_radioTrafficStats2_t *output_struct, all traffic stats info to be returned
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
 * @retval WIFI_HAL_ERROR if an generic error is detected
-* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
-* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
-* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
-* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None

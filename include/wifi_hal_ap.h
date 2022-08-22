@@ -433,20 +433,16 @@ typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_addr
 /**
  * @brief Receive management callback function
  * 
- * @param[in] apIndex   - index of the AP
- * @param[out] sta_mac  - station mac address
- * @param[out] frame    - Receive frame
- * @param[in] len       - length of the frame
- * @param[in] type      - Management frame type
- * @param[in] dir       - Wifi uplink/downlink direction        
+ * @param[in] apIndex   Index of the AP
+ * @param[out] sta_mac  Station mac address
+ * @param[out] frame    Receive frame
+ * @param[in] len       length of the frame
+ * @param[in] type      Management frame type
+ * @param[in] dir       Wifi uplink/downlink direction        
  * 
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
  * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous
  * @sideeffect None
@@ -462,12 +458,12 @@ typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_m
 /**
  * @brief Receive management callback function
  * 
- * @param[in] apIndex   - index of the AP
- * @param[out] sta_mac  - station mac address
- * @param[out] frame    - Receive frame
- * @param[in] len       - length of the frame
- * @param[in] type      - Management frame type
- * @param[in] dir       - Wifi uplink/downlink direction        
+ * @param[in] apIndex    Index of the AP
+ * @param[out] sta_mac   Station mac address
+ * @param[out] frame     Receive frame
+ * @param[in] len        Length of the frame
+ * @param[in] type       Management frame type
+ * @param[in] dir        Wifi uplink/downlink direction        
  * 
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -829,8 +825,8 @@ typedef struct _wifi_associated_dev
 /**
 * @brief This call back will be invoked when wifi client associates to an Access Point.    
 *
-* @param[in] apIndex            - Access Point Index
-* @param[out] associated_dev    - Associated device information like Mac, IP, Authentication state, uplink and down link rate, RSSI, SNR etc
+* @param[in] apIndex            Access Point Index
+* @param[out] associated_dev    Associated device information like Mac, IP, Authentication state, uplink and down link rate, RSSI, SNR etc
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -851,17 +847,13 @@ typedef INT(* wifi_newApAssociatedDevice_callback)(INT apIndex, wifi_associated_
 /**
 * @brief This call back will be invoked when new wifi client disassociates from Access Point.    
 *
-* @param[in] apIndex    - Access Point Index
-* @param[in] MAC        - MAC address of disassociated device
-* @param[in] event_type - Type of disassociation, explicit or due to client inactivity
+* @param[in] apIndex    Access Point Index
+* @param[in] MAC        MAC address of disassociated device
+* @param[in] event_type Type of disassociation, explicit or due to client inactivity
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
 * @retval WIFI_HAL_ERROR if an generic error is detected
-* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
-* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
-* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
-* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
@@ -876,9 +868,9 @@ typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT
 /**
 * @brief This call back will be invoked when DeAuth Event (reason 2 wrong password) comes from client.
 *
-* @param[in] apIndex    - Access Point Index
-* @param[in] mac        - MAC address of client device
-* @param[in] reason     - Reason for Auth Event
+* @param[in] apIndex    Access Point Index
+* @param[in] mac        MAC address of client device
+* @param[in] reason     Reason for Auth Event
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -905,10 +897,10 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
 /**
 * @brief Gets the ApAssociatedDevice list for client MAC addresses
 *
-* @param[in]  apIndex                         - Access Point index
-* @param[out] output_deviceMacAddressArray    - List of devices MAC, to be returned
-* @param[in]  maxNumDevices                   - Max number of devices that can be returned
-* @param[out] output_numDevices               - Number of entries returned in the array
+* @param[in]  apIndex                         Access Point index
+* @param[out] output_deviceMacAddressArray    List of devices MAC, to be returned
+* @param[in]  maxNumDevices                   Max number of devices that can be returned
+* @param[out] output_numDevices               Number of entries returned in the array
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -929,9 +921,9 @@ INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *output_deviceMacAddre
  * If the MAC address is NULL, enable argument MUST be false, otherwise function MUST return failure.
  * If the MAC address is NULL, data engine for all STA(s) need to be disabled on this VAP
  *
- * @param[in] apIndex  - Index of VAP
- * @param[in] sta      - MAC address of the station associated in this VAP for which engine is being enabled/disabled
- * @param[in] enable   - Enable or diable
+ * @param[in] apIndex  Index of VAP
+ * @param[in] sta      MAC address of the station associated in this VAP for which engine is being enabled/disabled
+ * @param[in] enable   Enable or diable
  *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -951,16 +943,12 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 /**
  * @brief This function created the VAP, #TODO: Check the function and update the @brief
  *
- * @param[in] index     - Index of Wifi radio
- * @param[in,out] map   - Contains wifi vap info that is created
+ * @param[in] index     Index of Wifi radio
+ * @param[in,out] map   Contains wifi vap info that is created
  *  
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
  * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  * 
  * @execution Synchronous.
  * @sideeffect None.
@@ -974,16 +962,12 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 /**
  * @brief This function gets the VAP information
  *
- * @param[in] index  - Index of Wifi radio
- * @param[out] map   - Contains wifi vap info that is created
+ * @param[in] index  Index of Wifi radio
+ * @param[out] map   Contains wifi vap info that is created
  *  
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
  * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -999,15 +983,11 @@ INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 /**
 * @brief Callback to receive 802.11 management frames
 *
-* @param[in] mgmtRxCallback  - wifi_receivedMgmtFrame function
+* @param[in] mgmtRxCallback  wifi_receivedMgmtFrame function
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
 * @retval WIFI_HAL_ERROR if an generic error is detected
-* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
-* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
-* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
-* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
 *
 * @execution Synchronous
 * @sideeffect None
