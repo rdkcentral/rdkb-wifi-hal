@@ -67,12 +67,34 @@ typedef INT ( * wifi_staConnectionStatus_callback)(INT apIndex, wifi_bss_info_t 
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
+ /* wifi_startScan() function */
+ /**
+ * @brief Scan for neighbour BSS on a specific frequency or list of frequencies, 
+ * If the number of the elements in the frequency is zero then scan all frequencies
+ * 
+ * @param[in] index     - Radio index
+ * @param[in] scan_mode - Mode  how to scan
+ * @param[in] dwell_time- Amount of time in millisec remain on a specific channel
+ * @param[in] num       - Number of elements in the array
+ * @param[in] chan_list - List of frequencies
+ *
+ * @return status of the operation
+ * @retval RETURN_OK if successful
+ * @retval RETURN_ERR if any error is detected
+ *
+ * @execution Synchronous.
+ * @sideeffect None.
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task
+ */
+INT wifi_startScan(wifi_radio_index_t index, wifi_neighborScanMode_t scan_mode, INT dwell_time, UINT num, UINT *chan_list);
 
 /* wifi_connect() function */
  /**
- * @brief To connect the client VAP to specified BSS
+ * @brief To connect the BSS to the specified bss
  * @param[in] apIndex  - VAP index
- * @param[in] bss       - Information about BSS that client will connect to
+ * @param[in] bss      - Information about BSS that client will connect to
  *
  * @return status of the operation
  * @retval RETURN_OK if successful

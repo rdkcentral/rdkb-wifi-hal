@@ -98,11 +98,12 @@ typedef enum {
 
 /* wifi_scanResults_callback() */
 /**
- * @brief To get the scan results for particular radio
+ * @brief To get the scan results for particular radio. 
+ * The client is responsible for copying the data  
  * 
- * @param[in]  index    - Index of Wi-Fi radio 
- * @param[in,out] bss   - BSS Info of the current radio channel
- * @param[out] num_bss  - Number of bss channels
+ * @param[in] index    - Index of Wi-Fi radio 
+ * @param[in] bss      - BSS Info of the current radio channel
+ * @param[in] num_bss  - Number of bss channels
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
@@ -130,8 +131,7 @@ typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_in
 
 /* wifi_getRadioTransmitPower() function */
 /**
-* @brief Get current Transmit Power in dBm units.
-*
+* @brief Get current Transmit Power in dBm units.*
 * The transmit power value is in dBm units of full power for this radio.
 *
 * @param[in]  radioIndex   - Index of Wi-Fi radio channel

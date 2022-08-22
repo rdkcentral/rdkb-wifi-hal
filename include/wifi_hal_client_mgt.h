@@ -17,12 +17,15 @@
  * limitations under the License.
 */
 
+/* #TODO: Soumya to review*/
 #ifndef __WIFI_HAL_CLIENTMGT_H__
 #define __WIFI_HAL_CLIENTMGT_H__
 
 #ifdef __cplusplus
 extern "C"{
 #endif
+
+#include "wifi_hal_generic.h"
 
 /**
  * @addtogroup WIFI_HAL_APIS

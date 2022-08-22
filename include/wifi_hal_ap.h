@@ -23,6 +23,8 @@
 extern "C"{
 #endif
 
+#include "wifi_hal_generic.h"
+
 /**
  * @addtogroup WIFI_HAL_TYPES
  * @{
@@ -467,13 +469,10 @@ typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_m
  * @param[in] type      - Management frame type
  * @param[in] dir       - Wifi uplink/downlink direction        
  * 
- * @return The status of the operation
- * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+* @return The status of the operation
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* #TODO:Return codes need to be reviewed
  *
  * @execution Synchronous
  * @sideeffect None
@@ -785,10 +784,7 @@ typedef struct {
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
 * @retval WIFI_HAL_ERROR if an generic error is detected
-* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
-* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
-* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
-* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+* #TODO:Return codes need to be reviewed
 *
 * @execution Synchronous
 * @sideeffect None
@@ -839,10 +835,7 @@ typedef struct _wifi_associated_dev
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
 * @retval WIFI_HAL_ERROR if an generic error is detected
-* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
-* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
-* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
-* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+* #TODO:Return codes need to be reviewed
 *
 * @execution Synchronous
 * @sideeffect None
@@ -890,10 +883,7 @@ typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
 * @retval WIFI_HAL_ERROR if an generic error is detected
-* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
-* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
-* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
-* @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+* #TODO:Return codes need to be reviewed
 *
 * @execution Synchronous
 * @sideeffect None
@@ -923,10 +913,7 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
 * @retval WIFI_HAL_ERROR if an generic error is detected
-* @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
-* @retval WIFI_HAL_UNSUPPORTED if the API is not supported
-* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+* #TODO:Return codes need to be reviewed
 *
 * @execution Synchronous
 * @sideeffect None
@@ -939,20 +926,17 @@ INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *output_deviceMacAddre
 /* wifi_enableCSIEngine() function */
 /**
  * @brief This function enables or disables CSI engine data for a specific STA on a VAP
- * If the MAC address is NULL mac address, enable argument MUST be false, otherwise function MUST return failure.
- * If the MAC address is NULL mac address, data engine for all STA(s) need to be disabled on this VAP
+ * If the MAC address is NULL, enable argument MUST be false, otherwise function MUST return failure.
+ * If the MAC address is NULL, data engine for all STA(s) need to be disabled on this VAP
  *
  * @param[in] apIndex  - Index of VAP
  * @param[in] sta      - MAC address of the station associated in this VAP for which engine is being enabled/disabled
  * @param[in] enable   - Enable or diable
  *
- * @return The status of the operation
- * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+* @return The status of the operation
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if an generic error is detected
+* #TODO:Return codes need to be reviewed
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -965,9 +949,7 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 
 /* wifi_createVAP() function */
 /**
- * @brief This function enables or disables CSI engine data for a specific STA on a VAP
- * If the MAC address is NULL mac address, enable argument MUST be false, otherwise function MUST return failure.
- * If the MAC address is NULL mac address, data engine for all STA(s) need to be disabled on this VAP
+ * @brief This function created the VAP, #TODO: Check the function and update the @brief
  *
  * @param[in] index     - Index of Wifi radio
  * @param[in,out] map   - Contains wifi vap info that is created
@@ -992,8 +974,8 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 /**
  * @brief This function gets the VAP information
  *
- * @param[in] index     - Index of Wifi radio
- * @param[in,out] map   - Contains wifi vap info that is created
+ * @param[in] index  - Index of Wifi radio
+ * @param[out] map   - Contains wifi vap info that is created
  *  
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful

@@ -941,7 +941,10 @@ typedef struct _wifi_associated_dev3
 
 /* wifi_init() function */
 /**
-* @brief Initializes all the radios of wifi subsystem 
+* @brief Initializes the wifi subsystem including baseband
+* necessary wifi stacks and software datastructter associated with above modules. 
+* After this function returns upper layer application should be able to execute other HAl functions
+* Do successful input/output with the wifi subsystem. 
 *
 * A Specific implementation may dictate some functionalities since different hardware implementations
 * may have different requirements.
@@ -967,12 +970,11 @@ INT wifi_init();
 
 /* wifi_getHalCapability() function */
 /**
- * @brief Get HAL Capabilities
+ * @brief Get HAL Capabilities. 
+ * This API will return features & configuration supported by the baseband 
+ * and other hardware components of the WiFi subsystem
  *
  * @param[out]  cap             HAL Capabilities
- *
- * This API will return features/configuration supported by
- * the HAL
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
