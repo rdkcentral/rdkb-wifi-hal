@@ -18,7 +18,7 @@
 */
 /**********************************************************************
     Notes:
-    #TODO: Need to update the history, ideally move this to autochange-log
+    All new history has to move it to CHANGELOG.md
     What is new for 2.2.0
       1. Add Country Code support
       2. Add more DCS function
