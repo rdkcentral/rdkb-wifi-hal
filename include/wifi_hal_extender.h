@@ -686,7 +686,13 @@ typedef struct {
 
 /* wifi_getRadioChannelStats() function */
 /**
-* @brief Get the channels utilization status.
+* @brief Get the radio channel information like average noise floor in dbm,
+* average non 802.11 noise, utilization in percent, radio detected that channel 
+* was busy, Time that radio detected that extended channel was busy, Time that 
+* radio spent receiving on channel (Rx = Rx_obss + Rx_self + Rx_errr(self and 
+* obss errors)), Time radio spend receiving on channel from its own connected 
+* clients,time radio spent transmitting on channel and Total time radio spent 
+* receiveing or transmitting on that channel (channel utilization active)
 *
 * @param[in]      radioIndex                      The index of the radio
 * @param[in, out] input_output_channelStats_array The array initially filled with requested channel numbers.
@@ -698,8 +704,8 @@ typedef struct {
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
-* #TODO:Return codes need to be reviewed
+* @retval WIFI_HAL_ERROR if error
+* 
 * @execution Synchronous
 * @sideeffect None
 *

@@ -434,7 +434,7 @@ typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_addr
  * @brief Receive management callback function
  * 
  * @param[in] apIndex   Index of the AP
- * @param[out] sta_mac  Station mac address
+ * @param[in] sta_mac  Station mac address
  * @param[out] frame    Receive frame
  * @param[in] len       length of the frame
  * @param[in] type      Management frame type
@@ -442,7 +442,7 @@ typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_addr
  * 
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous
  * @sideeffect None
@@ -459,16 +459,15 @@ typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_m
  * @brief Receive management callback function
  * 
  * @param[in] apIndex    Index of the AP
- * @param[out] sta_mac   Station mac address
+ * @param[in] sta_mac   Station mac address
  * @param[out] frame     Receive frame
  * @param[in] len        Length of the frame
  * @param[in] type       Management frame type
  * @param[in] dir        Wifi uplink/downlink direction        
  * 
-* @return The status of the operation
-* @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
-* #TODO:Return codes need to be reviewed
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous
  * @sideeffect None
@@ -480,11 +479,6 @@ typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_m
 typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
 typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
 #endif
-
-/**
- * @addtogroup WIFI_HAL_TYPES
- * @{
- */
 
 typedef UINT wifi_vap_index_t;
 
@@ -767,7 +761,15 @@ typedef struct {
     BOOL BSSTransitionImplemented;                              /**< if BSSTransitionImplemented is TRUE, BTM implemented. */
 } __attribute__((packed)) wifi_ap_capabilities_t;
 
-/** @} */  //END OF GROUP WIFI_HAL_TYPES
+typedef struct _wifi_device
+{
+    UCHAR wifi_devMacAddress[6];
+    CHAR wifi_devIPAddress[64];
+    BOOL wifi_devAssociatedDeviceAuthentiationState;
+    INT  wifi_devSignalStrength;
+    INT  wifi_devTxRate;
+    INT  wifi_devRxRate;
+} wifi_device_t;
 
 #ifdef WIFI_HAL_VERSION_3_PHASE2
 /* wifi_newApAssociatedDevice_callback() function */
@@ -779,8 +781,7 @@ typedef struct {
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
-* #TODO:Return codes need to be reviewed
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
@@ -830,8 +831,7 @@ typedef struct _wifi_associated_dev
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
-* #TODO:Return codes need to be reviewed
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
@@ -853,7 +853,7 @@ typedef INT(* wifi_newApAssociatedDevice_callback)(INT apIndex, wifi_associated_
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
@@ -874,8 +874,7 @@ typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
-* #TODO:Return codes need to be reviewed
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
@@ -895,7 +894,7 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
 
 /* wifi_getApAssociatedDevice() function */
 /**
-* @brief Gets the ApAssociatedDevice list for client MAC addresses
+* @brief Gets the Ap Associated Device list for client MAC addresses
 *
 * @param[in]  apIndex                         Access Point index
 * @param[out] output_deviceMacAddressArray    List of devices MAC, to be returned
@@ -904,8 +903,7 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
-* #TODO:Return codes need to be reviewed
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
@@ -925,10 +923,9 @@ INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *output_deviceMacAddre
  * @param[in] sta      MAC address of the station associated in this VAP for which engine is being enabled/disabled
  * @param[in] enable   Enable or diable
  *
-* @return The status of the operation
-* @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
-* #TODO:Return codes need to be reviewed
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -941,17 +938,22 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 
 /* wifi_createVAP() function */
 /**
- * @brief This function created the VAP, #TODO: Check the function and update the @brief
+ * @brief This function initialize, set and configure all the VAP functionalities
+ * BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
+ * ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
+ * Configure FT Security mode - enable_neighbor_report, setApSecurity, setApInterworking,
+ * acl_mode, wmm(wireless multimedia)  
  *
  * @param[in] index     Index of Wifi radio
- * @param[in,out] map   Contains wifi vap info that is created
+ * @param[in] map       Contains Wifi vap bss info
  *  
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_ERROR if error
  * 
  * @execution Synchronous.
- * @sideeffect None.
+ * @sideeffect None
+ * 
  * @note This function must not suspend and must not invoke any blocking system
  * calls. It should probably just send a message to a driver event handler task.
  *
@@ -960,14 +962,18 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 
 /* wifi_getRadioVapInfoMap() function */
 /**
- * @brief This function gets the VAP information
- *
+ * @brief This function gets the VAP BSS information
+ * BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
+ * ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
+ * Configure FT Security mode - enable_neighbor_report, ApSecurity, ApInterworking,
+ * ApWpsConfiguration, acl_mode, wmm(wireless multimedia) & beacon_rate
+ *  
  * @param[in] index  Index of Wifi radio
  * @param[out] map   Contains wifi vap info that is created
  *  
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -979,6 +985,26 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
  */
 INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
+/* wifi_kickAssociatedDevice() function */
+/**
+* @brief This function manually removes any active wi-fi association with the
+* device specified on this AP.
+*  
+* @param[in] apIndex  Index of Wifi radio
+* @param[in] device Contains device mac address
+*  
+* @return The status of the operation
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if error
+*
+* @execution Synchronous.
+* @sideeffect None.
+* 
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*/
+INT wifi_kickAssociatedDevice(INT apIndex, wifi_device_t *device);
+
 /* wifi_mgmt_frame_callbacks_register() function */
 /**
 * @brief Callback to receive 802.11 management frames
@@ -987,7 +1013,7 @@ INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None

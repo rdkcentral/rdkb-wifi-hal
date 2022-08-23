@@ -107,7 +107,7 @@ typedef enum {
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous
  * @sideeffect None
@@ -135,7 +135,7 @@ typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_in
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
@@ -148,15 +148,17 @@ INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *output_ulong);
 
 /* wifi_getRadioOperatingChannelBandwidth() function */
 /**
-* @description Get the Operating Channel Bandwidth. eg "20MHz", "40MHz", "80MHz", "80+80", "160".
-* The output_string is a max length 64 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
+* @brief Get the Operating Channel Bandwidth. eg "20MHz", "40MHz", "80MHz", "80+80", "160".
+* The output_string is a max length 64 octet string that is allocated by the upper layer.  
+* Implementations must ensure that strings are not longer than this.
 *
 * @param[in] radioIndex     Index of Wi-Fi radio channel
-* @param[out] output_string Get operating channel bandwidth for the selected radio channel in the pre-allocated char buffer
+* @param[out] output_string Get operating channel bandwidth for the selected 
+* radio channel in the pre-allocated char buffer
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
@@ -183,7 +185,7 @@ INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *output_string);
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous
  * @sideeffect None

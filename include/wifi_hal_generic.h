@@ -942,9 +942,9 @@ typedef struct _wifi_associated_dev3
 /* wifi_init() function */
 /**
 * @brief Initializes the wifi subsystem including baseband
-* necessary wifi stacks and software datastructter associated with above modules. 
-* After this function returns upper layer application should be able to execute other HAl functions
-* Do successful input/output with the wifi subsystem. 
+* necessary wifi stacks and software data structure associated with above modules. 
+* After this function returns, upper layer application should be able to execute other HAL functions
+* Do successful input/output with the WiFi subsystem. 
 *
 * A Specific implementation may dictate some functionalities since different hardware implementations
 * may have different requirements.
@@ -953,7 +953,7 @@ typedef struct _wifi_associated_dev3
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
@@ -974,7 +974,7 @@ INT wifi_init();
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous
  * @sideeffect None

@@ -42,12 +42,12 @@ typedef struct {
 /**
  * @brief To get the station connection status
  * @param[in] apIndex       VAP index
- * @param[in,out] bss_dev   To get connected client Bss information
- * @param[in,out] sta       To get the connection status of the Vap index
+ * @param[in,out] bss_dev   To get connected client BSS information
+ * @param[in,out] sta       Station stats
  * 
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -68,11 +68,11 @@ typedef INT ( * wifi_staConnectionStatus_callback)(INT apIndex, wifi_bss_info_t 
  * @brief Scan for neighbour BSS on a specific frequency or list of frequencies, 
  * If the number of the elements in the frequency is zero then scan all frequencies
  * 
- * @param[in] index     - Radio index
- * @param[in] scan_mode - Mode  how to scan
- * @param[in] dwell_time- Amount of time in millisec remain on a specific channel
- * @param[in] num       - Number of elements in the array
- * @param[in] chan_list - List of frequencies
+ * @param[in] index      Radio index
+ * @param[in] scan_mode  Mode  how to scan
+ * @param[in] dwell_time Amount of time in millisec remain on a specific channel
+ * @param[in] num        Number of elements in the array
+ * @param[in] chan_list  List of frequencies
  *
  * @return status of the operation
  * @retval RETURN_OK if successful
@@ -88,9 +88,9 @@ INT wifi_startScan(wifi_radio_index_t index, wifi_neighborScanMode_t scan_mode, 
 
 /* wifi_connect() function */
  /**
- * @brief To connect the BSS to the specified bss
- * @param[in] apIndex  - VAP index
- * @param[in] bss      - Information about BSS that client will connect to
+ * @brief To connect the client VAP to specified BSS
+ * @param[in] apIndex   VAP index
+ * @param[in] bss       Information about BSS that client will connect to
  *
  * @return status of the operation
  * @retval RETURN_OK if successful
@@ -106,8 +106,8 @@ INT wifi_connect(INT apIndex, wifi_bss_info_t *bss);
 
  /* wifi_disconnect() function */
  /**
- * @brief To disconnect the client VAP 
- * @param[in] apIndex          - VAP index
+ * @brief To disconnect the client  
+ * @param[in] apIndex   Index of client VAP
  *
  * @return status of the operation
  * @retval RETURN_OK if successful
@@ -124,7 +124,7 @@ INT wifi_disconnect(INT apIndex);
  /* wifi_staConnectionStatus_callback_register() function */
  /**
  * @brief Callback function to disconnect the client VAP 
- * @param[in] callback_proc - Call back function name
+ * @param[in] callback_proc  Call back function name
  *
  * @execution Synchronous.
  * @sideeffect None.

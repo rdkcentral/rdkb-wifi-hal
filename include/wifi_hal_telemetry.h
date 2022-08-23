@@ -173,15 +173,14 @@ typedef struct {
 
 /* wifi_getRadioBandUtilization() function */
 /**
-* @brief To read the radio band utilization.
+* @brief To get the usage of radio band utilization in percentage.
 *
 * @param[in]  radioIndex         Radio Index
 * @param[out] output_percentage  Radio band utilization percentage, to be returned
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
-* #TODO:Return codes need to be reviewed
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
@@ -194,15 +193,17 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
 
  /* wifi_getApAssociatedDeviceDiagnosticResult3() function */
  /**
- * @brief To read the client's current connectivity statistics.
+ * @brief To get the client's current connectivity statistics.
  *
  * @param[in]  apIndex         			AP Index
  * @param[out] associated_dev_array  	This structure hold the information about the wifi client, Values to be returned
- * @param[out] output_array_size		Number of clients connected to the AP, Values to be returned 
+ * @param[in] output_array_size		    Number of clients connected to the AP, Values to be returned
+ * (0) if output_array_size=0, allocate memory for associated_dev_array and fill out with assoc STAs info 
+ * (1) if output_array_size>0, STAs MAC in associated_dev_array; fetch csi data and STAs info
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous
  * @sideeffect None
@@ -215,15 +216,15 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
 
 /* wifi_getApAssociatedClientDiagnosticResult() function */
  /**
- * @brief To read the client's current connectivity statistics.
+ * @brief To get the client's current connectivity statistics.
  *
- * @param[in]  apIndex  AP Index
+ * @param[in] apIndex   AP Index
  * @param[in] mac_addr  Mac address of the client 
  * @param[out] dev_conn	This structure hold the information about the wifi client, Values to be returned
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
+ * @retval WIFI_HAL_ERROR if error
  *
  * @execution Synchronous
  * @sideeffect None
@@ -243,7 +244,7 @@ INT wifi_getApAssociatedClientDiagnosticResult(INT apIndex, mac_address_t mac_ad
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
-* @retval WIFI_HAL_ERROR if an generic error is detected
+* @retval WIFI_HAL_ERROR if error
 *
 * @execution Synchronous
 * @sideeffect None
