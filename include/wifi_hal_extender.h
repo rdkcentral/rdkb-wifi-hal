@@ -695,7 +695,7 @@ typedef struct {
 * receiveing or transmitting on that channel (channel utilization active)
 *
 * @param[in]      radioIndex                      The index of the radio
-* @param[in, out] input_output_channelStats_array The array initially filled with requested channel numbers.
+* @param[out] input_output_channelStats_array The array initially filled with requested channel numbers.
 *                                                 The same array is used as an output with channel statistics
 *                                                 details. Data for each channel must be written to the corresponding
 *                                                 element of the array. When array_size = 0, the API returns ONCHAN

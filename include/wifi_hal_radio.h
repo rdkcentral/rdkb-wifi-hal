@@ -102,8 +102,8 @@ typedef enum {
  * The client is responsible for copying the data  
  * 
  * @param[in] index    Index of Wi-Fi radio 
- * @param[in] bss      BSS Info of the current radio channel
- * @param[in] num_bss  Number of bss channels
+ * @param[out] bss      BSS Info of the current radio channel
+ * @param[out] num_bss  Number of bss channels
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
@@ -127,11 +127,11 @@ typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_in
 
 /* wifi_getRadioTransmitPower() function */
 /**
-* @brief Get current Transmit Power in dBm units.*
+* @brief Get current Transmit Power in dBm units.
 * The transmit power value is in dBm units of full power for this radio.
 *
-* @param[in]  radioIndex   Index of Wi-Fi radio channel
-* @param[out] output_ulong Current Transmit power value, to be returned
+* @param[in]  radioIndex        Index of Wi-Fi radio channel
+* @param[out] opRadioTxPower    Current Transmit power value, to be returned
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -144,7 +144,7 @@ typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_in
 * calls. It should probably just send a message to a driver event handler task.
 *
 */
-INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *output_ulong);
+INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *opRadioTxPower);
 
 /* wifi_getRadioOperatingChannelBandwidth() function */
 /**
@@ -153,7 +153,7 @@ INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *output_ulong);
 * Implementations must ensure that strings are not longer than this.
 *
 * @param[in] radioIndex     Index of Wi-Fi radio channel
-* @param[out] output_string Get operating channel bandwidth for the selected 
+* @param[out] opRadioOpChnBw Get operating channel bandwidth for the selected 
 * radio channel in the pre-allocated char buffer
 *
 * @return The status of the operation
@@ -170,14 +170,14 @@ INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *output_ulong);
 * Get the Operating Channel Bandwidth. eg "20MHz", "40MHz", "80MHz", "80+80", "160"
 * The output_string is a max length 64 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
 */
-INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *output_string); //Tr181
+INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *opRadioOpChnBw); //Tr181
 
 /* wifi_setRadioOperatingParameters() */
 /**
  * @brief Set Radio Operating Parameters
  *
- * This API is used to configured all radio operation parameter in a
- * single set. it includes channel number, channelWidth, mode and
+ * This API is used to configure all radio operation parameter in a
+ * single set. Tt includes channel number, channelWidth, mode and
  * auto channel configuration.
  *
  * @param[in]   index           Index of Wi-Fi radio

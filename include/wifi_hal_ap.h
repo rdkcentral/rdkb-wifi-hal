@@ -459,11 +459,11 @@ typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_m
  * @brief Receive management callback function
  * 
  * @param[in] apIndex    Index of the AP
- * @param[in] sta_mac   Station mac address
+ * @param[out] sta_mac   Station mac address
  * @param[out] frame     Receive frame
- * @param[in] len        Length of the frame
- * @param[in] type       Management frame type
- * @param[in] dir        Wifi uplink/downlink direction        
+ * @param[out] len        Length of the frame
+ * @param[out] type       Management frame type
+ * @param[out] dir        Wifi uplink/downlink direction        
  * 
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
@@ -896,10 +896,10 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
 /**
 * @brief Gets the Ap Associated Device list for client MAC addresses
 *
-* @param[in]  apIndex                         Access Point index
-* @param[out] output_deviceMacAddressArray    List of devices MAC, to be returned
-* @param[in]  maxNumDevices                   Max number of devices that can be returned
-* @param[out] output_numDevices               Number of entries returned in the array
+* @param[in]  apIndex                Access Point index
+* @param[out] opDeviceMacAddArray    List of devices MAC, to be returned
+* @param[in]  maxNumDevices          Max number of devices that can be returned
+* @param[out] opNumOfDevices         Number of entries returned in the array
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -911,7 +911,7 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
 */
-INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *output_deviceMacAddressArray, UINT maxNumDevices, UINT *output_numDevices);
+INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *opDeviceMacAddArray, UINT maxNumDevices, UINT *opNumOfDevices);
 
 /* wifi_enableCSIEngine() function */
 /**
@@ -987,8 +987,8 @@ INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
 /* wifi_kickAssociatedDevice() function */
 /**
-* @brief This function manually removes any active wi-fi association with the
-* device specified on this AP.
+* @brief This function manually removes any client that has an active wi-fi 
+* association with this VAP.
 *  
 * @param[in] apIndex  Index of Wifi radio
 * @param[in] device Contains device mac address

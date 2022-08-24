@@ -189,7 +189,7 @@ typedef struct {
 * calls. It should probably just send a message to a driver event handler task.
 *
 */
-INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
+INT wifi_getRadioBandUtilization(INT radioIndex, INT *output_percentage);
 
  /* wifi_getApAssociatedDeviceDiagnosticResult3() function */
  /**
@@ -197,7 +197,7 @@ INT wifi_getRadioBandUtilization (INT radioIndex, INT *output_percentage);
  *
  * @param[in]  apIndex         			AP Index
  * @param[out] associated_dev_array  	This structure hold the information about the wifi client, Values to be returned
- * @param[in] output_array_size		    Number of clients connected to the AP, Values to be returned
+ * @param[out] output_array_size		Number of clients connected to the AP, Values to be returned
  * (0) if output_array_size=0, allocate memory for associated_dev_array and fill out with assoc STAs info 
  * (1) if output_array_size>0, STAs MAC in associated_dev_array; fetch csi data and STAs info
  *
@@ -239,8 +239,8 @@ INT wifi_getApAssociatedClientDiagnosticResult(INT apIndex, mac_address_t mac_ad
 /**
 * @brief Get detail radio traffic static info.
 *
-* @param[in]  radioIndex      Index of Wi-Fi radio channel
-* @param[out] output_struct   wifi_radioTrafficStats2_t *output_struct, all traffic stats info to be returned
+* @param[in]  radioIndex            Index of Wi-Fi radio channel
+* @param[out] opRadioTrafficStats   All traffic stats info to be returned
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -253,7 +253,7 @@ INT wifi_getApAssociatedClientDiagnosticResult(INT apIndex, mac_address_t mac_ad
 * calls. It should probably just send a message to a driver event handler task.
 *
 */
-INT wifi_getRadioTrafficStats2(INT radioIndex, wifi_radioTrafficStats2_t *output_struct);
+INT wifi_getRadioTrafficStats2(INT radioIndex, wifi_radioTrafficStats2_t *opRadioTrafficStats);
 
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 

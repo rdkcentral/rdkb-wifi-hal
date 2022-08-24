@@ -41,9 +41,9 @@ typedef struct {
 /* wifi_staConnectionStatus_callback() */
 /**
  * @brief To get the station connection status
- * @param[in] apIndex       VAP index
- * @param[in,out] bss_dev   To get connected client BSS information
- * @param[in,out] sta       Station stats
+ * @param[in] apIndex    VAP index
+ * @param[out] bss_dev   To get connected client BSS information
+ * @param[out] sta       Station stats
  * 
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
@@ -88,7 +88,7 @@ INT wifi_startScan(wifi_radio_index_t index, wifi_neighborScanMode_t scan_mode, 
 
 /* wifi_connect() function */
  /**
- * @brief To connect the client VAP to specified BSS
+ * @brief To connect the client to specified BSS
  * @param[in] apIndex   VAP index
  * @param[in] bss       Information about BSS that client will connect to
  *
@@ -107,7 +107,7 @@ INT wifi_connect(INT apIndex, wifi_bss_info_t *bss);
  /* wifi_disconnect() function */
  /**
  * @brief To disconnect the client  
- * @param[in] apIndex   Index of client VAP
+ * @param[in] apIndex   VAP index
  *
  * @return status of the operation
  * @retval RETURN_OK if successful
