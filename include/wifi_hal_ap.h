@@ -418,7 +418,8 @@ typedef enum
     WIFI_FRAME_TYPE_CTRL,
     WIFI_FRAME_TYPE_DATA,
 } wifi_frameType_t;
-  
+
+/* #TODO: Callbacks require documentation */
 typedef void (* wifi_received8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
 typedef void (* wifi_sent8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
 
@@ -429,13 +430,12 @@ typedef void (* wifi_receivedAssocReqFrame_callback)(unsigned int ap_index, mac_
 typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
 
 #ifdef WIFI_HAL_VERSION_3_PHASE2
-/* wifi_receivedMgmtFrame_callback()*/
 /**
  * @brief Receive management callback function
  * 
  * @param[in] apIndex   Index of the AP
  * @param[in] sta_mac  Station mac address
- * @param[out] frame    Receive frame
+ * @param[in] frame    Receive frame
  * @param[in] len       length of the frame
  * @param[in] type      Management frame type
  * @param[in] dir       Wifi uplink/downlink direction        
@@ -452,18 +452,39 @@ typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_addr
  *
 */
 typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
+
+/**
+ * @brief Receive Data callback function
+ * 
+ * @param[in] apIndex    Index of the AP
+ * @param[in] sta_mac   Station mac address
+ * @param[in] frame     Receive frame
+ * @param[in] len        Length of the frame
+ * @param[in] type       Data frame type
+ * @param[in] dir        Wifi uplink/downlink direction        
+ * 
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if error
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ * 
+ */
 typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
 #else
-/* wifi_receivedMgmtFrame_callback()*/
 /**
  * @brief Receive management callback function
  * 
  * @param[in] apIndex    Index of the AP
- * @param[out] sta_mac   Station mac address
- * @param[out] frame     Receive frame
- * @param[out] len        Length of the frame
- * @param[out] type       Management frame type
- * @param[out] dir        Wifi uplink/downlink direction        
+ * @param[in] sta_mac   Station mac address
+ * @param[in] frame     Receive frame
+ * @param[in] len        Length of the frame
+ * @param[in] type       Management frame type
+ * @param[in] dir        Wifi uplink/downlink direction        
  * 
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
@@ -477,6 +498,28 @@ typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, mac_address_t sta_m
  *
 */
 typedef INT (* wifi_receivedMgmtFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_mgmtFrameType_t type, wifi_direction_t dir);
+
+/**
+ * @brief Receive Data callback function
+ * 
+ * @param[in] apIndex    Index of the AP
+ * @param[in] sta_mac   Station mac address
+ * @param[in] frame     Receive frame
+ * @param[in] len        Length of the frame
+ * @param[in] type       Data frame type
+ * @param[in] dir        Wifi uplink/downlink direction        
+ * 
+ * @return The status of the operation
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if error
+ *
+ * @execution Synchronous
+ * @sideeffect None
+ *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
+ * 
+ */
 typedef INT (* wifi_receivedDataFrame_callback)(INT apIndex, UCHAR *sta_mac, UCHAR *frame, UINT len, wifi_dataFrameType_t type, wifi_direction_t dir);
 #endif
 
@@ -772,7 +815,6 @@ typedef struct _wifi_device
 } wifi_device_t;
 
 #ifdef WIFI_HAL_VERSION_3_PHASE2
-/* wifi_newApAssociatedDevice_callback() function */
 /**
 * @brief This call back will be invoked when new wifi client come to associate to Access Point.    
 *
@@ -826,7 +868,7 @@ typedef struct _wifi_associated_dev
 * @brief This call back will be invoked when wifi client associates to an Access Point.    
 *
 * @param[in] apIndex            Access Point Index
-* @param[out] associated_dev    Associated device information like Mac, IP, Authentication state, uplink and down link rate, RSSI, SNR etc
+* @param[in] associated_dev    Associated device information like Mac, IP, Authentication state, uplink and down link rate, RSSI, SNR etc
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful

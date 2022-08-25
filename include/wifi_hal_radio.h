@@ -102,8 +102,8 @@ typedef enum {
  * The client is responsible for copying the data  
  * 
  * @param[in] index     Index of Wi-Fi radio 
- * @param[out] bss      BSS Info of the current radio channel
- * @param[out] num_bss  Number of bss channels
+ * @param[in] bss      BSS Info of the current radio channel
+ * @param[in] num_bss  Number of bss channels
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful

@@ -44,8 +44,8 @@ typedef struct {
  * @brief To get the station connection status
  * 
  * @param[in] apIndex    VAP index
- * @param[out] bss_dev   To get connected client BSS information
- * @param[out] sta       Station stats
+ * @param[in] bss_dev   To get connected client BSS information
+ * @param[in] sta       Station stats
  * 
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
