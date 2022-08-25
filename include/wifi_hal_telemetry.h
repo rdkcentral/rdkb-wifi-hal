@@ -171,7 +171,6 @@ typedef struct {
  * @{
  */
 
-/* wifi_getRadioBandUtilization() function */
 /**
 * @brief To get the usage of radio band utilization in percentage.
 *
@@ -191,15 +190,17 @@ typedef struct {
 */
 INT wifi_getRadioBandUtilization(INT radioIndex, INT *output_percentage);
 
- /* wifi_getApAssociatedDeviceDiagnosticResult3() function */
  /**
  * @brief To get the client's current connectivity statistics.
  *
  * @param[in]  apIndex         			AP Index
  * @param[out] associated_dev_array  	This structure hold the information about the wifi client, Values to be returned
  * @param[out] output_array_size		Number of clients connected to the AP, Values to be returned
+ * 
  * (0) if output_array_size=0, allocate memory for associated_dev_array and fill out with assoc STAs info 
  * (1) if output_array_size>0, STAs MAC in associated_dev_array; fetch csi data and STAs info
+ * 
+ * #todo: Description requires review ? (0) if which flag is this talking about?
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
@@ -214,7 +215,6 @@ INT wifi_getRadioBandUtilization(INT radioIndex, INT *output_percentage);
  */
  INT wifi_getApAssociatedDeviceDiagnosticResult3(INT apIndex, wifi_associated_dev3_t **associated_dev_array, UINT *output_array_size);
 
-/* wifi_getApAssociatedClientDiagnosticResult() function */
  /**
  * @brief To get the client's current connectivity statistics.
  *

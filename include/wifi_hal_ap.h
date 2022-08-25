@@ -199,7 +199,7 @@ typedef struct // figure 9-595
 
 //WAN Info Bit fields
 //        B0     B1                  B2                      B3                 B4    B7
-//        Link Status              Symetric Link          At Capacity          Reserved
+//        Link Status              Symmetric Link          At Capacity          Reserved
 //Bits:        2                        1                    1                     4
 typedef enum
 {
@@ -334,7 +334,7 @@ typedef struct _wifi_radius_setting_t
      INT  PMKLifetime;                  /**< Default time in seconds after which a Wi-Fi client is forced to ReAuthenticate (def 8 hrs)      */
      BOOL PMKCaching;                   /**< Enable or disable caching of PMK.     */
      INT  PMKCacheInterval;             /**< Time interval in seconds after which the PMKSA (Pairwise Master Key Security Association) cache is purged (def 5 minutes).     */
-     INT  MaxAuthenticationAttempts;    /**< Indicates the # of time, a client can attempt to login with incorrect credentials. When this limit is reached, the client is blacklisted and not allowed to attempt loging into the network. Settings this parameter to 0 (zero) disables the blacklisting feature. */
+     INT  MaxAuthenticationAttempts;    /**< Indicates the # of time, a client can attempt to login with incorrect credentials. When this limit is reached, the client is blacklisted and not allowed to attempt logging into the network. Settings this parameter to 0 (zero) disables the blacklisting feature. */
      INT  BlacklistTableTimeout;        /**< Time interval in seconds for which a client will continue to be blacklisted once it is marked so.  */
      INT  IdentityRequestRetryInterval; /**< Time Interval in seconds between identity requests retries. A value of 0 (zero) disables it    */
      INT  QuietPeriodAfterFailedAuthentication;  /**< The enforced quiet period (time interval) in seconds following failed authentication. A value of 0 (zero) disables it. */
@@ -664,7 +664,7 @@ typedef struct {
     BOOL            asra;
     BOOL            esr;
     BOOL            uesa;
-    BOOL            venueOptionPresent;    /**< True when venue information has not been provided, e.g. the hotspot is in a residence. */
+    BOOL            venueOptionPresent;    /**< TRUE when venue information has not been provided, e.g. the hotspot is in a residence. */
     UCHAR           venueGroup;
     UCHAR           venueType;
     BOOL            hessOptionPresent;
@@ -797,7 +797,7 @@ typedef struct _wifi_associated_dev
 {
     UCHAR cli_MACAddress[6];        /**< The MAC address of an associated device. */
     CHAR  cli_IPAddress[64];        /**< IP of the associated device */
-    BOOL  cli_AuthenticationState; /**< Whether an associated device has authenticated (true) or not (false). */
+    BOOL  cli_AuthenticationState; /**< Whether an associated device has authenticated (TRUE) or not (FALSE). */
     UINT  cli_LastDataDownlinkRate; /**< The data transmit rate in kbps that was most recently used for transmission from the access point to the associated device. */
     UINT  cli_LastDataUplinkRate;     /**< The data transmit rate in kbps that was most recently used for transmission from the associated device to the access point. */
     INT   cli_SignalStrength;         /**< An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device. */
@@ -807,22 +807,21 @@ typedef struct _wifi_associated_dev
     CHAR  cli_OperatingStandard[64];    /**< Radio standard the associated Wi-Fi client device is operating under. Enumeration of: */
     CHAR  cli_OperatingChannelBandwidth[64];    /**< The operating channel bandwidth of the associated device. The channel bandwidth (applicable to 802.11n and 802.11ac specifications only). Enumeration of: */
     INT   cli_SNR;        /**< A signal-to-noise ratio (SNR) compares the level of the Wi-Fi signal to the level of background noise. Sources of noise can include microwave ovens, cordless phone, bluetooth devices, wireless video cameras, wireless game controllers, fluorescent lights and more. It is measured in decibels (dB). */
-    CHAR  cli_InterferenceSources[64]; /**< Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma seperated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others */
+    CHAR  cli_InterferenceSources[64]; /**< Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma separated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others */
     ULONG cli_DataFramesSentAck;    /**< The DataFramesSentAck parameter indicates the total number of MSDU frames marked as duplicates and non duplicates acknowledged. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification. */
     ULONG cli_DataFramesSentNoAck;    /**< The DataFramesSentNoAck parameter indicates the total number of MSDU frames retransmitted out of the interface (i.e., marked as duplicate and non-duplicate) and not acknowledged, but does not exclude those defined in the DataFramesLost parameter. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification. */
     ULONG cli_BytesSent;    /**< The total number of bytes transmitted to the client device, including framing characters. */
     ULONG cli_BytesReceived;    /**< The total number of bytes received from the client device, including framing characters. */
-    INT   cli_RSSI;    /**< The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets recevied from the device. */
+    INT   cli_RSSI;    /**< The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets received from the device. */
     INT   cli_MinRSSI;    /**< The Minimum Received Signal Strength Indicator, RSSI, parameter is the minimum energy observed at the antenna receiver for past transmissions (100 packets). */
     INT   cli_MaxRSSI;    /**< The Maximum Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for past transmissions (100 packets). */
-    UINT  cli_Disassociations;    /**< This parameter  represents the total number of client disassociations. Reset the parameter evey 24hrs or reboot */
-    UINT  cli_AuthenticationFailures;    /**< This parameter indicates the total number of authentication failures.  Reset the parameter evey 24hrs or reboot */
+    UINT  cli_Disassociations;    /**< This parameter  represents the total number of client disassociations. Reset the parameter every 24hrs or reboot */
+    UINT  cli_AuthenticationFailures;    /**< This parameter indicates the total number of authentication failures.  Reset the parameter every 24hrs or reboot */
 
     UINT cli_CapableNumSpatialStreams; /**< The number of spatial streams supported by the associated client device. */
 
 } wifi_associated_dev_t;    //~COSA_DML_WIFI_AP_ASSOC_DEVICE
 
-/* wifi_newApAssociatedDevice_callback() function */
 /**
 * @brief This call back will be invoked when wifi client associates to an Access Point.    
 *
@@ -843,7 +842,6 @@ typedef struct _wifi_associated_dev
 typedef INT(* wifi_newApAssociatedDevice_callback)(INT apIndex, wifi_associated_dev_t *associated_dev);
 #endif
 
-/* wifi_apDisassociatedDevice_callback() function */
 /**
 * @brief This call back will be invoked when new wifi client disassociates from Access Point.    
 *
@@ -864,7 +862,6 @@ typedef INT(* wifi_newApAssociatedDevice_callback)(INT apIndex, wifi_associated_
 */
 typedef INT ( * wifi_apDisassociatedDevice_callback)(INT apIndex, char *MAC, INT event_type);
 
-/* wifi_apDeAuthEvent_callback() function */
 /**
 * @brief This call back will be invoked when DeAuth Event (reason 2 wrong password) comes from client.
 *
@@ -892,7 +889,6 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
  * @{
  */
 
-/* wifi_getApAssociatedDevice() function */
 /**
 * @brief Gets the Ap Associated Device list for client MAC addresses
 *
@@ -913,15 +909,15 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
 */
 INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *opDeviceMacAddArray, UINT maxNumDevices, UINT *opNumOfDevices);
 
-/* wifi_enableCSIEngine() function */
 /**
  * @brief This function enables or disables CSI engine data for a specific STA on a VAP
- * If the MAC address is NULL, enable argument MUST be false, otherwise function MUST return failure.
+ * 
+ * If the MAC address is NULL, enable argument MUST be FALSE, otherwise function MUST return failure.
  * If the MAC address is NULL, data engine for all STA(s) need to be disabled on this VAP
  *
  * @param[in] apIndex  Index of VAP
  * @param[in] sta      MAC address of the station associated in this VAP for which engine is being enabled/disabled
- * @param[in] enable   Enable or diable
+ * @param[in] enable   Enable or disable
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
@@ -936,9 +932,9 @@ INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *opDeviceMacAddArray, 
  */
 INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 
-/* wifi_createVAP() function */
 /**
  * @brief This function initialize, set and configure all the VAP functionalities
+ * 
  * BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
  * ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
  * Configure FT Security mode - enable_neighbor_report, setApSecurity, setApInterworking,
@@ -960,13 +956,15 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
  */
  INT wifi_createVAP(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
-/* wifi_getRadioVapInfoMap() function */
 /**
  * @brief This function gets the VAP BSS information
+ * 
  * BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
  * ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
  * Configure FT Security mode - enable_neighbor_report, ApSecurity, ApInterworking,
  * ApWpsConfiguration, acl_mode, wmm(wireless multimedia) & beacon_rate
+ * 
+ * #TODO: These fields should be described in wifi_vap_info_map_t, not clear why the purpose of putting them here
  *  
  * @param[in] index  Index of Wifi radio
  * @param[out] map   Contains wifi vap info that is created
@@ -985,9 +983,8 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
  */
 INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
-/* wifi_kickAssociatedDevice() function */
 /**
-* @brief This function manually removes any client that has an active wi-fi 
+* @brief This function will manually removes any client that has an active wi-fi 
 * association with this VAP.
 *  
 * @param[in] apIndex  Index of Wifi radio
@@ -1005,7 +1002,6 @@ INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 */
 INT wifi_kickAssociatedDevice(INT apIndex, wifi_device_t *device);
 
-/* wifi_mgmt_frame_callbacks_register() function */
 /**
 * @brief Callback to receive 802.11 management frames
 *
@@ -1023,7 +1019,6 @@ INT wifi_kickAssociatedDevice(INT apIndex, wifi_device_t *device);
 */
  INT wifi_mgmt_frame_callbacks_register(wifi_receivedMgmtFrame_callback mgmtRxCallback);
 
-/* wifi_newApAssociatedDevice_callback_register() function */
 /**
 * @brief Callback function to indicate the association of client device    
 *
@@ -1038,9 +1033,8 @@ INT wifi_kickAssociatedDevice(INT apIndex, wifi_device_t *device);
 */
 void wifi_newApAssociatedDevice_callback_register(wifi_newApAssociatedDevice_callback callback_proc);
 
-/* wifi_apDeAuthEvent_callback_register() function */
 /**
-* @brief Callback function to indicate deauthentication of client device.
+* @brief Callback function to indicate de-authentication of client device.
 *
 * @param[in] callback_proc  - wifi_apDeAuthEvent_callback callback function
 *
@@ -1052,7 +1046,6 @@ void wifi_newApAssociatedDevice_callback_register(wifi_newApAssociatedDevice_cal
 */
 void wifi_apDeAuthEvent_callback_register(wifi_apDeAuthEvent_callback callback_proc);
 
-/* wifi_apDisassociatedDevice_callback_register() function */
 /**
 * @brief Callback function to indicate dissociation of client device    
 *

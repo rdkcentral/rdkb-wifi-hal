@@ -32,13 +32,13 @@ extern "C"{
 
 typedef struct _wifi_channelStats {
     INT  ch_number;                        /**< each channel is only 20MHz bandwidth */
-    BOOL ch_in_pool;                    /**< If ch_in_pool is false, driver do not need to scan this channel */
+    BOOL ch_in_pool;                    /**< If ch_in_pool is FALSE, driver do not need to scan this channel */
     INT  ch_noise;                      /**< this is used to return the average noise floor in dbm */
     BOOL ch_radar_noise;                /**< if ch_number is in DFS channel, this is used to return if radar signal is present on DFS channel (5G only) */
     INT  ch_max_80211_rssi;             /**< max RSSI from the neighbor AP in dbm on this channel. */
     INT  ch_non_80211_noise;            /**< average non 802.11 noise */
     INT  ch_utilization;                /**< this is used to return the 802.11 utilization in percent */
-    ULLONG ch_utilization_total;        /**<  Total time radio spent receiveing or transmitting on that channel (ch_utilization_active) */
+    ULLONG ch_utilization_total;        /**<  Total time radio spent receiving or transmitting on that channel (ch_utilization_active) */
     ULLONG ch_utilization_busy;         /**<  Time radio detected that channel was busy (Busy = Rx + Tx + Interference) */
     ULLONG ch_utilization_busy_tx;      /**<  Time time radio spent transmitting on channel */
     ULLONG ch_utilization_busy_rx;      /**<  Time radio spent receiving on channel (Rx = Rx_obss + Rx_self + Rx_errr (self and obss errors) */
@@ -46,7 +46,7 @@ typedef struct _wifi_channelStats {
     ULLONG ch_utilization_busy_ext;     /**< Time radio detected that extended channel was busy (40MHz extention channel busy */
 } wifi_channelStats_t;                  //<!This data structure is for each channel
 
-/* MCS/NSS/BW rate table and indexes that shoul be used for supported rates
+/* MCS/NSS/BW rate table and indexes that should be used for supported rates
 ----------------------------------------------
 | type | bw         | nss        |  mcs     
 ----------------------------------------------
@@ -81,7 +81,7 @@ NOTE: The size of this table on 4x4 can be big - we could send only non zero ele
 */
 typedef struct _wifi_associated_dev_rate_info_rx_stats {
         // rate table index see table above
-    UCHAR nss;                  /**< 0 equals legacy protocolss (OFDM, CCK) 1 - n spatial stream (HT, VHT) */
+    UCHAR nss;                  /**< 0 equals legacy protocols (OFDM, CCK) 1 - n spatial stream (HT, VHT) */
     UCHAR mcs;                  /**< 0 - 7 (HT) - 9 (VHT) */
     USHORT bw;                  /**< 20, 40, 80, 160 ... (to be considered 5 , 10, 80+80) ... */
     ULLONG flags;               /**< Flag indicating data validation that HAS_BYTES, HAS_MSDUS, HAS_MPDUS, HAS_PPDUS, HAS_BW_80P80, HAS_RSSI_COMB, HAS_RSSI_ARRAY */
@@ -107,7 +107,7 @@ typedef struct _wifi_associated_dev_rate_info_rx_stats {
 
 typedef struct _wifi_associated_dev_rate_info_tx_stats {
         // rate table index see table above
-    UCHAR nss;                      /**< 0 equals legacy protocolss (OFDM, CCK) 1 - n spatial stream (HT, VHT) */
+    UCHAR nss;                      /**< 0 equals legacy protocols (OFDM, CCK) 1 - n spatial stream (HT, VHT) */
     UCHAR mcs;                      /**< 0 - 7 (HT) - 9 (VHT) */
     USHORT bw;                      /**< 20, 40, 80, 160 ... (to be considered 5 , 10, 80+80) ... */
     ULLONG flags;                   /**< Flag indicating data validation that HAS_BYTES, HAS_MSDUS, HAS_MPDUS, HAS_PPDUS, HAS_BW_80P80, HAS_RSSI_COMB, HAS_RSSI_ARRAY */
@@ -115,8 +115,8 @@ typedef struct _wifi_associated_dev_rate_info_tx_stats {
     ULLONG msdus;                   /**< number of MSDUs transmitted for given rate */
     ULLONG mpdus;                   /**< number of MPDUs transmitted for given rate */
     ULLONG ppdus;                   /**< number of PPDUs transmitted for given rate */
-    ULLONG retries;                 /**< number of transmittion retries for given rate */
-    ULLONG attempts;                /**< number of attempts trying transmitt on given rate */
+    ULLONG retries;                 /**< number of transmission retries for given rate */
+    ULLONG attempts;                /**< number of attempts trying transmit on given rate */
 } wifi_associated_dev_rate_info_tx_stats_t;
 
 typedef struct wifi_associated_dev_tid_entry
@@ -170,7 +170,7 @@ typedef struct {
     UINT        utilCheckIntervalSec;   /**< Channel utilization check interval        */
     UINT        utilAvgCount;           /**< Number of samples to average           */
 
-    UINT        inactCheckIntervalSec;  /**< Client inactive check internval        */
+    UINT        inactCheckIntervalSec;  /**< Client inactive check interval        */
     UINT        inactCheckThresholdSec; /**< Client inactive threshold              */
 } wifi_steering_apConfig_t;
 
@@ -225,7 +225,7 @@ typedef enum {
 typedef enum {
     DISCONNECT_TYPE_UNKNOWN                 = 0,    /**< Unknown type               */
     DISCONNECT_TYPE_DISASSOC,                       /**< Disassociation             */
-    DISCONNECT_TYPE_DEAUTH                          /**< Deauthentication           */
+    DISCONNECT_TYPE_DEAUTH                          /**< De-authentication           */
 } wifi_disconnectType_t;
 
 /**
@@ -285,8 +285,8 @@ typedef struct {
 typedef struct {
     mac_address_t                   client_mac;     /**< Client MAC Address         */
     UINT                            rssi;           /**< RSSI of probe frame        */
-    BOOL                            broadcast;      /**< True if broadcast probe    */
-    BOOL                            blocked;        /**< True if response blocked   */
+    BOOL                            broadcast;      /**< TRUE if broadcast probe    */
+    BOOL                            blocked;        /**< TRUE if response blocked   */
 } wifi_steering_evProbeReq_t;
 
 #ifdef WIFI_HAL_VERSION_3_PHASE2
@@ -337,7 +337,7 @@ typedef struct {
  */
 typedef struct {
     mac_address_t                   client_mac;     /**< Client MAC Address         */
-    BOOL                            active;         /**< True if client is active   */
+    BOOL                            active;         /**< TRUE if client is active   */
 } wifi_steering_evActivity_t;
 
 /**
@@ -378,8 +378,8 @@ typedef struct {
     mac_address_t                   client_mac;     /**< Client MAC Address         */
     UINT                            rssi;           /**< RSSI of auth frame         */
     UINT                            reason;         /**< Reject Reason              */
-    BOOL                            bsBlocked;      /**< True if purposely blocked  */
-    BOOL                            bsRejected;     /**< True if rejection sent     */
+    BOOL                            bsBlocked;      /**< TRUE if purposely blocked  */
+    BOOL                            bsRejected;     /**< TRUE if rejection sent     */
 } wifi_steering_evAuthFail_t;
 
 /**
@@ -526,7 +526,7 @@ typedef struct {
     //  b3 key scope
     //  b4 to b9 capabilities
     //  b10 mobility domain
-    //  b11 high troughput
+    //  b11 high throughput
     //  b12 very high throughput
     //  b13 ftm
     //  b14 to b31 reserved
@@ -684,23 +684,27 @@ typedef struct {
  * @{
  */
 
-/* wifi_getRadioChannelStats() function */
 /**
-* @brief Get the radio channel information like average noise floor in dbm,
+* @brief Get the radio channel information
+* 
+* like average noise floor in dbm,
 * average non 802.11 noise, utilization in percent, radio detected that channel 
 * was busy, Time that radio detected that extended channel was busy, Time that 
 * radio spent receiving on channel (Rx = Rx_obss + Rx_self + Rx_errr(self and 
 * obss errors)), Time radio spend receiving on channel from its own connected 
 * clients,time radio spent transmitting on channel and Total time radio spent 
-* receiveing or transmitting on that channel (channel utilization active)
+* receiving or transmitting on that channel (channel utilization active)
 *
-* @param[in]      radioIndex                      The index of the radio
-* @param[out] input_output_channelStats_array The array initially filled with requested channel numbers.
-*                                                 The same array is used as an output with channel statistics
-*                                                 details. Data for each channel must be written to the corresponding
-*                                                 element of the array. When array_size = 0, the API returns ONCHAN
-*                                                 stats in a single wifi_channelStats_t element.
-* @param[out]     array_size                      The length of the output array
+* @param[in]  radioIndex                        The index of the radio
+* @param[out] input_output_channelStats_array   The array initially filled with requested channel numbers.
+*                                               The same array is used as an output with channel statistics
+*                                               details. Data for each channel must be written to the corresponding
+*                                               element of the array. When array_size = 0, the API returns ONCHAN
+*                                               stats in a single wifi_channelStats_t element.
+* @param[out]     array_size                    The length of the output array
+*
+* #TODO: array_size if this an output it should be *array_size?
+* #TODO: Description needs revew, since wifi_channelStats_t should be fully documented
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful

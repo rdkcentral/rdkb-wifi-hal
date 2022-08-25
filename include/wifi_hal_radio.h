@@ -23,6 +23,8 @@
 extern "C"{
 #endif
 
+#include "wifi_hal_ap.h"
+
 /**
  * @addtogroup WIFI_HAL_TYPES
  * @{
@@ -79,7 +81,6 @@ typedef struct {
     BOOL chanUtilSelfHealEnable;
 } __attribute__((packed)) wifi_radio_operationParam_t;
 
-
 /**
  * @brief Enhanced Distributed Channel Access parameters
  */
@@ -96,12 +97,11 @@ typedef enum {
     wifi_dl_data_block_ack_deferred,
 } wifi_dl_data_ack_type_t;
 
-/* wifi_scanResults_callback() */
 /**
  * @brief To get the scan results for particular radio. 
  * The client is responsible for copying the data  
  * 
- * @param[in] index    Index of Wi-Fi radio 
+ * @param[in] index     Index of Wi-Fi radio 
  * @param[out] bss      BSS Info of the current radio channel
  * @param[out] num_bss  Number of bss channels
  *
@@ -116,7 +116,7 @@ typedef enum {
  * calls. It should probably just send a message to a driver event handler task.
  *
  */
-typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_info_t **bss, UINT *num_bss);
+typedef INT (*wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_info_t **bss, UINT *num_bss);
 
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
 
@@ -125,9 +125,9 @@ typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_in
  * @{
  */
 
-/* wifi_getRadioTransmitPower() function */
 /**
 * @brief Get current Transmit Power in dBm units.
+*
 * The transmit power value is in dBm units of full power for this radio.
 *
 * @param[in]  radioIndex        Index of Wi-Fi radio channel
@@ -146,9 +146,10 @@ typedef INT ( * wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_in
 */
 INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *opRadioTxPower);
 
-/* wifi_getRadioOperatingChannelBandwidth() function */
 /**
-* @brief Get the Operating Channel Bandwidth. eg "20MHz", "40MHz", "80MHz", "80+80", "160".
+* @brief Get the Operating Channel Bandwidth
+* 
+* eg "20MHz", "40MHz", "80MHz", "80+80", "160".
 * The output_string is a max length 64 octet string that is allocated by the upper layer.  
 * Implementations must ensure that strings are not longer than this.
 *
@@ -159,6 +160,7 @@ INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *opRadioTxPower);
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
 * @retval WIFI_HAL_ERROR if error
+* @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
 *
 * @execution Synchronous
 * @sideeffect None
@@ -166,13 +168,13 @@ INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *opRadioTxPower);
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
 *
+* #TODO: to what does the following statement refer? Will need rewording Tr181
 * Device.WiFi.Radio.{i}.OperatingChannelBandwidth
 * Get the Operating Channel Bandwidth. eg "20MHz", "40MHz", "80MHz", "80+80", "160"
 * The output_string is a max length 64 octet string that is allocated by the RDKB code.  Implementations must ensure that strings are not longer than this.
 */
-INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *opRadioOpChnBw); //Tr181
+INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *opRadioOpChnBw);
 
-/* wifi_setRadioOperatingParameters() */
 /**
  * @brief Set Radio Operating Parameters
  *
@@ -186,6 +188,10 @@ INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *opRadioOpChnBw)
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
  * @retval WIFI_HAL_ERROR if error
+ * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
+ * 
+ * #TODO: previously this function also was stated to return WIFI_HAL_UNSUPPORTED & WIFI_HAL_INVALID_VALUE
+ * #TODO: the wifi_getRadioOperatingParameters() is now missing, and this required checking
  *
  * @execution Synchronous
  * @sideeffect None
@@ -195,7 +201,6 @@ INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *opRadioOpChnBw)
  */
 INT wifi_setRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operationParam_t *operationParam);
 
-/* wifi_scanResults_callback_register() */
 /**
  * @brief Callback function to get scan results 
  *

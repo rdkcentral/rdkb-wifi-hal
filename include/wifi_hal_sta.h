@@ -23,6 +23,8 @@
 extern "C"{
 #endif
 
+#include "wifi_hal_ap.h"
+
 /**
  * @addtogroup WIFI_HAL_TYPES
  * @{
@@ -38,9 +40,9 @@ typedef struct {
     wifi_connection_status_t    connect_status;
 } wifi_station_stats_t;
 
-/* wifi_staConnectionStatus_callback() */
 /**
  * @brief To get the station connection status
+ * 
  * @param[in] apIndex    VAP index
  * @param[out] bss_dev   To get connected client BSS information
  * @param[out] sta       Station stats
@@ -63,9 +65,10 @@ typedef INT ( * wifi_staConnectionStatus_callback)(INT apIndex, wifi_bss_info_t 
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
- /* wifi_startScan() function */
+ 
  /**
- * @brief Scan for neighbour BSS on a specific frequency or list of frequencies, 
+ * @brief Scan for neighbour BSS on a specific frequency or list of frequencies
+ *  
  * If the number of the elements in the frequency is zero then scan all frequencies
  * 
  * @param[in] index      Radio index
@@ -75,8 +78,8 @@ typedef INT ( * wifi_staConnectionStatus_callback)(INT apIndex, wifi_bss_info_t 
  * @param[in] chan_list  List of frequencies
  *
  * @return status of the operation
- * @retval RETURN_OK if successful
- * @retval RETURN_ERR if any error is detected
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if any error is detected
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -86,15 +89,15 @@ typedef INT ( * wifi_staConnectionStatus_callback)(INT apIndex, wifi_bss_info_t 
  */
 INT wifi_startScan(wifi_radio_index_t index, wifi_neighborScanMode_t scan_mode, INT dwell_time, UINT num, UINT *chan_list);
 
-/* wifi_connect() function */
  /**
  * @brief To connect the client to specified BSS
+ * 
  * @param[in] apIndex   VAP index
  * @param[in] bss       Information about BSS that client will connect to
  *
  * @return status of the operation
- * @retval RETURN_OK if successful
- * @retval RETURN_ERR if any error is detected
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if any error is detected
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -104,14 +107,14 @@ INT wifi_startScan(wifi_radio_index_t index, wifi_neighborScanMode_t scan_mode, 
  */
 INT wifi_connect(INT apIndex, wifi_bss_info_t *bss);
 
- /* wifi_disconnect() function */
  /**
- * @brief To disconnect the client  
- * @param[in] apIndex   VAP index
+ * @brief To disconnect the client
+ * 
+ * @param[in] apIndex   -   VAP index
  *
  * @return status of the operation
- * @retval RETURN_OK if successful
- * @retval RETURN_ERR if any error is detected
+ * @retval WIFI_HAL_SUCCESS if successful
+ * @retval WIFI_HAL_ERROR if any error is detected
  *
  * @execution Synchronous.
  * @sideeffect None.
@@ -121,10 +124,10 @@ INT wifi_connect(INT apIndex, wifi_bss_info_t *bss);
  */
 INT wifi_disconnect(INT apIndex);
 
- /* wifi_staConnectionStatus_callback_register() function */
  /**
  * @brief Callback function to disconnect the client VAP 
- * @param[in] callback_proc  Call back function name
+ * 
+ * @param[in] callback_proc  -  Call back function name
  *
  * @execution Synchronous.
  * @sideeffect None.
