@@ -2,6 +2,10 @@
     "makefile.extensionOutputFolder": "./.vscode",
     "cSpell.words": [
         "Amlogic",
-        "Kandasamy"
+        "anker",
+        "Eigen",
+        "Kandasamy",
+        "Minicom",
+        "VENV"
     ]
 }

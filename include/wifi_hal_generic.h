@@ -73,15 +73,6 @@ extern "C"{
 #define ENABLE   1
 #endif
 
-#ifndef RETURN_OK
-#define RETURN_OK   0
-#endif
-
-#ifndef RETURN_ERR
-#define RETURN_ERR   -1
-#endif
-
-
 #define WIFI_HAL_SUCCESS             0
 #define WIFI_HAL_ERROR              -1
 #define WIFI_HAL_INTERNAL_ERROR     -2
@@ -121,13 +112,7 @@ extern "C"{
 #define AP_INDEX_24 24
 #endif
 
-
-#ifdef WIFI_HAL_VERSION_3
 #define MAX_NUM_RADIOS           3
-#else
-#define MAX_NUM_RADIOS           2
-#endif
-
 #define MAX_NUM_VAP_PER_RADIO    8
 
 #define MAC_STR_LEN        18
@@ -146,8 +131,8 @@ extern "C"{
 #define NVRAM_LINE_MAX       (1024)
 
 //defines for HAL version 3.0.0
-#define WIFI_HAL_MAJOR_VERSION 3        /**< This is the major verion of this HAL. */
-#define WIFI_HAL_MINOR_VERSION 0        /**< This is the minor verson of the HAL. */
+#define WIFI_HAL_MAJOR_VERSION 3        /**< This is the major version of this HAL. */
+#define WIFI_HAL_MINOR_VERSION 0        /**< This is the minor version of the HAL. */
 #define WIFI_HAL_MAINTENANCE_VERSION 0  /**< This is the maintenance version of the HAL. */
 #define WIFI_HAL_VERSION (WIFI_HAL_MAJOR_VERSION *1000+ WIFI_HAL_MINOR_VERSION *10+ WIFI_HAL_MAINTENANCE_VERSION)
 
@@ -621,7 +606,7 @@ typedef enum {
  * @brief Wifi Radio CSI capabilities
  */
 typedef struct {
-    UINT maxDevices;              /**< The maximun number of stations that can be configured to collect the CSI data.  Return 0 if CSI is not supported. */
+    UINT maxDevices;              /**< The maximum number of stations that can be configured to collect the CSI data.  Return 0 if CSI is not supported. */
     BOOL soudingFrameSupported;   /**< The value is TRUE, if the radio supports to sending souding frames in the MAC layer. */
 }__attribute__((packed)) wifi_radio_csi_capabilities_t;
 
@@ -666,7 +651,7 @@ typedef struct {
 }__attribute__((packed)) wifi_interface_name_idex_map_t;
 
 /**
- * @brief Wifi Plataform Property
+ * @brief Wifi Platform Property
  */
 typedef struct {
      UINT numRadios;                               /**< Number of radios. */
@@ -679,8 +664,8 @@ typedef struct {
  */
 typedef struct {
     wifi_hal_version_t  version;            /**< The HAL version. */
-    wifi_platform_property_t wifi_prop;     /**< The plataform Property that includes the number of radios and supported frequency bands. */
-    BOOL BandSteeringSupported;             /**< If BandSteeringSupported is TRUE, bandsteering is support by the HAL */
+    wifi_platform_property_t wifi_prop;     /**< The platform Property that includes the number of radios and supported frequency bands. */
+    BOOL BandSteeringSupported;             /**< If BandSteeringSupported is TRUE, band-steering is support by the HAL */
 }__attribute__((packed)) wifi_hal_capability_t;
 
 /**
@@ -695,8 +680,8 @@ typedef enum {
  * @brief Wifi TWT Operation
  */
 typedef struct {
-    BOOL    implicit;           /**< True if the TWT session is implicit, or false to be explicit*/
-    BOOL    announced;          /**< True if the TWT session is announced, or false to be unannounced */
+    BOOL    implicit;           /**< TRUE if the TWT session is implicit, or FALSE to be explicit*/
+    BOOL    announced;          /**< TRUE if the TWT session is announced, or FALSE to be unannounced */
     BOOL    trigger_enabled;    /**< Enable the TWT trigger */
     UINT    flowID;             /**< Agreement identifier */
 } wifi_twt_operation_t;
@@ -873,7 +858,7 @@ typedef struct _wifi_associated_dev3
 {
         mac_address_t cli_MACAddress;           /**< The MAC address of an associated device. */
         CHAR  cli_IPAddress[64];                /**< IP of the associated device  (deprecated, keep it empty) */
-        BOOL  cli_AuthenticationState; /**< Whether an associated device has authenticated (true) or not (false). */
+        BOOL  cli_AuthenticationState; /**< Whether an associated device has authenticated (TRUE) or not (FALSE). */
         UINT  cli_LastDataDownlinkRate; /**< The median PHY rate in Mbps of the most recent 16 unicast data frame transmissions from the access point to the associated device. */
         UINT  cli_LastDataUplinkRate;   /**< The median PHY rate in Mbps of the most recent 16 unicast data frame transmissions from the associated device to the access point. */
         INT   cli_SignalStrength;               /**< An indicator of radio signal strength of the uplink from the associated device to the access point, measured in dBm, as an average of the last 100 packets received from the device. */
@@ -883,18 +868,18 @@ typedef struct _wifi_associated_dev3
         CHAR  cli_OperatingStandard[64];        /**< Radio standard the associated Wi-Fi client device is operating under. Enumeration of: */
         CHAR  cli_OperatingChannelBandwidth[64];        /**< The operating channel bandwidth of the associated device. The channel bandwidth (applicable to 802.11n and 802.11ac specifications only). Enumeration of: */
         INT   cli_SNR;          /**< A signal-to-noise ratio (SNR) compares the level of the Wi-Fi signal to the level of background noise. Sources of noise can include microwave ovens, cordless phone, bluetooth devices, wireless video cameras, wireless game controllers, fluorescent lights and more. It is measured in decibels (dB). */
-        CHAR  cli_InterferenceSources[64]; /**< Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma seperated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others */
+        CHAR  cli_InterferenceSources[64]; /**< Wi-Fi operates in two frequency ranges (2.4 Ghz and 5 Ghz) which may become crowded other radio products which operate in the same ranges. This parameter reports the probable interference sources that this Wi-Fi access point may be observing. The value of this parameter is a comma separated list of the following possible sources: eg: MicrowaveOven,CordlessPhone,BluetoothDevices,FluorescentLights,ContinuousWaves,Others */
         ULONG cli_DataFramesSentAck;    /**< The DataFramesSentAck parameter indicates the total number of MSDU frames marked as duplicates and non duplicates acknowledged. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification. */
         ULONG cli_DataFramesSentNoAck;  /**< The DataFramesSentNoAck parameter indicates the total number of MSDU frames retransmitted out of the interface (i.e., marked as duplicate and non-duplicate) and not acknowledged, but does not exclude those defined in the DataFramesLost parameter. The value of this counter may be reset to zero when the CPE is rebooted. Refer section A.2.3.14 of CableLabs Wi-Fi MGMT Specification. */
         ULONG cli_BytesSent;    /**< The total number of bytes transmitted to the client device, including framing characters. */
         ULONG cli_BytesReceived;        /**< The total number of bytes received from the client device, including framing characters. */
-        INT   cli_RSSI; /**< The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets recevied from the device. */
+        INT   cli_RSSI; /**< The Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for transmissions from the device averaged over past 100 packets received from the device. */
         INT   cli_MinRSSI;      /**< The Minimum Received Signal Strength Indicator, RSSI, parameter is the minimum energy observed at the antenna receiver for past transmissions (100 packets). */
         INT   cli_MaxRSSI;      /**< The Maximum Received Signal Strength Indicator, RSSI, parameter is the energy observed at the antenna receiver for past transmissions (100 packets). */
-        UINT  cli_Disassociations;      /**< This parameter  represents the total number of client disassociations. Reset the parameter evey 24hrs or reboot */
-        UINT  cli_AuthenticationFailures;       /**< This parameter indicates the total number of authentication failures.  Reset the parameter evey 24hrs or reboot */
+        UINT  cli_Disassociations;      /**< This parameter  represents the total number of client disassociations. Reset the parameter every 24hrs or reboot */
+        UINT  cli_AuthenticationFailures;       /**< This parameter indicates the total number of authentication failures.  Reset the parameter every 24hrs or reboot */
 
-        ULLONG   cli_Associations;      /**<  Stats handle used to determine reconnects; increases for every association (stat delta calcualtion) */
+        ULLONG   cli_Associations;      /**<  Stats handle used to determine reconnects; increases for every association (stat delta calculation) */
 
         ULONG cli_PacketsSent; /**< The total number of packets transmitted to the Associated Device. */
         ULONG cli_PacketsReceived; /**< The total number of packets received from the Associated Device. */
@@ -923,7 +908,7 @@ typedef struct _wifi_associated_dev3
         devices. In other words output_array_size will specify the number of client devices in the array for 
         which CSI data needs to filled by driver. The cli_MACAddress will specify the client devices in each
         of wifi_associated_dev3_t. Wi-Fi HAL implementation in such case MUST allocate memory for cli_CSIData
-        fill in required fields. The called in such cases is reposnsible for deallocation of memory. 
+        fill in required fields. The called in such cases is responsible for deallocation of memory. 
         The wifi_csi_data_t is defined above */
 
          wifi_csi_data_t  *cli_CsiData; 
@@ -938,229 +923,51 @@ typedef struct _wifi_associated_dev3
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
+
+/**
+* @brief Initializes the wifi subsystem
+*
+* Including baseband necessary wifi stack and software data structure 
+* associated with above modules. 
+* After this function returns, upper layer application should be 
+* able to execute other HAL functions. 
+* 
+* And perform successful input/output with the WiFi subsystem. 
+*
+* @return The status of the operation
+* @retval WIFI_HAL_SUCCESS if successful
+* @retval WIFI_HAL_ERROR if error
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_init(void);
+
 /**
  * @brief Get HAL Capabilities
+ * 
+ * This API will return features & configuration supported by the baseband 
+ * and other hardware components of the WiFi subsystem
  *
- * @param[out]  cap             HAL Capabilities
- *
- * This API will return features/configuration supported by
- * the HAL
+ * @param[out]  cap -   HAL Capabilities
  *
  * @return The status of the operation
- * @retval WIFI_HAL_SUCCESS if successful
- * @retval WIFI_HAL_ERROR if an generic error is detected
- * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
- * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
- * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
- * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
+ * @retval WIFI_HAL_SUCCESS           - if successful
+ * @retval WIFI_HAL_ERROR             - if a generic error is detected
+ * @retval WIFI_HAL_UNSUPPORTED       - if the API is not supported
+ * @retval WIFI_HAL_INVALID_ARGUMENTS - if an invalid argument is passed
  *
  * @execution Synchronous
  * @sideeffect None
  *
+ * @note This function must not suspend and must not invoke any blocking system
+ * calls. It should probably just send a message to a driver event handler task.
  */
 INT wifi_getHalCapability(wifi_hal_capability_t *cap);
-
-/* wifi_factoryReset() function */
-/**
-* @brief Clears internal variables to implement a factory reset of the Wi-Fi subsystem.
-*
-* A Specific implementation may dictate some functionalities since different hardware implementations
-* may have different requirements.
-*
-* @param None
-*
-* @return The status of the operation.
-* @retval RETURN_OK if successful.
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-//clears internal variables to implement a factory reset of the Wi-Fi subsystem
-INT wifi_factoryReset();
-
-/* wifi_setLED() function */
-/**
-* @brief Set the system LED status
-*
-* @param radioIndex  Index of Wi-Fi Radio channel
-* @param enable      LED status
-*
-* @return The status of the operation.
-* @retval RETURN_OK if successful.
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous.
-* @sideeffect None.
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-//Set the system LED status
-INT wifi_setLED(INT radioIndex, BOOL enable);
-
-/**
-* @brief This function call initializes all Wi-Fi radios.
-*
-* A specific implementation  may dictate some functionality since different hardware implementations
-* may have different initilization requirements.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-// Initializes the wifi subsystem (all radios)
-INT wifi_init();
-
-/* wifi_reset() function */
-/**
-* @brief Resets the Wifi subsystem.
-* This includes reset of all Access Point variables.
-*
-* Implementation specifics may dictate what is actualy reset since different hardware
-* implementations may have different requirements.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-// resets the wifi subsystem, deletes all APs
-INT wifi_reset();
-
-/* wifi_down() function */
-/**
-* @brief Turns off transmit power for the entire Wifi subsystem, for all radios.
-*
-* Implementation specifics may dictate some functionality since
-* different hardware implementations may have different requirements.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-// turns off transmit power for the entire Wifi subsystem, for all radios
-INT wifi_down();
-
-/* wifi_createInitialConfigFiles() function */
-/**
-* @brief This function creates wifi configuration files.
-*
-* The format and content of these files are implementation dependent.  This function call is
-* used to trigger this task if necessary. Some implementations may not need this
-* function. If an implementation does not need to create config files the function call can
-* do nothing and return RETURN_OK.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_createInitialConfigFiles();
-
-/* wifi_createHostApdConfig() function */
-/**
-* @brief Creates configuration variables needed for WPA/WPS.
-*
-* These variables are implementation dependent and in some implementations these variables are used by hostapd when it is started.
-* Specific variables that are needed are dependent on the hostapd implementation.
-* These variables are set by WPA/WPS security functions in this wifi HAL.
-* If not needed for a particular implementation this function may simply return no error.
-*
-* @param[in] apIndex       Access Point index
-* @param[in] createWpsCfg  Enable/Disable WPS Configuration creation
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_createHostApdConfig(INT apIndex, BOOL createWpsCfg);       // creates configuration variables needed for WPA/WPS.  These variables are implementation dependent and in some implementations these variables are used by hostapd when it is started.  Specific variables that are needed are dependent on the hostapd implementation. These variables are set by WPA/WPS security functions in this wifi HAL.  If not needed for a particular implementation this function may simply return no error.
-
-/* wifi_startHostApd() function */
-/**
-* @brief Starts hostapd.
-*
-* Uses the variables in the hostapd config with format compatible with the specific hostapd implementation.
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_startHostApd();                                            // starts hostapd, uses the variables in the hostapd config with format compatible with the specific hostapd implementation
-
-/* wifi_stopHostApd() function */
-/**
-* @brief Stops hostapd
-*
-* @param None
-*
-* @return The status of the operation
-* @retval RETURN_OK if successful
-* @retval RETURN_ERR if any error is detected
-*
-* @execution Synchronous
-* @sideeffect None
-*
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
-*
-*/
-INT wifi_stopHostApd();                                             // stops hostapd
 
 /** @} */  //END OF GROUP WIFI_HAL_APIS
 
