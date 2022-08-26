@@ -695,16 +695,13 @@ typedef struct {
 * clients,time radio spent transmitting on channel and Total time radio spent 
 * receiving or transmitting on that channel (channel utilization active)
 *
-* @param[in]  radioIndex                        The index of the radio
-* @param[out] input_output_channelStats_array   The array initially filled with requested channel numbers.
-*                                               The same array is used as an output with channel statistics
-*                                               details. Data for each channel must be written to the corresponding
-*                                               element of the array. When array_size = 0, the API returns ONCHAN
-*                                               stats in a single wifi_channelStats_t element.
-* @param[out]     array_size                    The length of the output array
-*
-* #TODO: array_size if this an output it should be *array_size?
-* #TODO: Description needs revew, since wifi_channelStats_t should be fully documented
+* @param[in]  radioIndex                The index of the radio
+* @param[out] channelStatsArray         The array initially filled with requested channel numbers.
+*                                       The same array is used as an output with channel statistics
+*                                       details. Data for each channel must be written to the corresponding
+*                                       element of the array. When array_size = 0, the API returns ONCHAN
+*                                       stats in a single wifi_channelStats_t element.
+* @param[in] sizeOfchannelStatsArray    The length of the output array
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
@@ -718,7 +715,7 @@ typedef struct {
 *
 */
 //Get the basic Radio channel traffic static info
-INT wifi_getRadioChannelStats(INT radioIndex, wifi_channelStats_t *input_output_channelStats_array, INT array_size);
+INT wifi_getRadioChannelStats(INT radioIndex, wifi_channelStats_t *channelStatsArray, INT sizeOfchannelStatsArray);
 
 #endif
 /** @} */  //END OF GROUP WIFI_HAL_APIS
