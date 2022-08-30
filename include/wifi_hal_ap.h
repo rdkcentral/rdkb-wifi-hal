@@ -970,7 +970,7 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
  * 
  * BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
  * ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
- * Configure FT Security mode - enable_neighbor_report, setApSecurity, setApInterworking,
+ * Configure FT Security mode - enable_neighbor_report, set Ap Security, set Ap Interworking,
  * acl_mode, wmm(wireless multimedia)  
  *
  * @param[in] index     Index of Wifi radio

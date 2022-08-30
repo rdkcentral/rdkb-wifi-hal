@@ -101,9 +101,9 @@ typedef enum {
  * @brief To get the scan results for particular radio. 
  * The client is responsible for copying the data  
  * 
- * @param[in] index     Index of Wi-Fi radio 
- * @param[in] bss      BSS Info of the current radio channel
- * @param[in] num_bss  Number of bss channels
+ * @param[in] radioIndex    Index of Wi-Fi radio 
+ * @param[in] bss           BSS Info of the current radio channel
+ * @param[in] num_bss       Number of bss channels
  *
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
@@ -116,7 +116,7 @@ typedef enum {
  * calls. It should probably just send a message to a driver event handler task.
  *
  */
-typedef INT (*wifi_scanResults_callback)(wifi_radio_index_t index, wifi_bss_info_t **bss, UINT *num_bss);
+typedef INT (*wifi_scanResults_callback)(wifi_radio_index_t radioIndex, wifi_bss_info_t **bss, UINT *num_bss);
 
 /** @} */  //END OF GROUP WIFI_HAL_TYPES
 
@@ -149,7 +149,7 @@ INT wifi_getRadioTransmitPower(INT radioIndex, ULONG *opRadioTxPower);
 /**
 * @brief Get the Operating Channel Bandwidth
 * 
-* eg "20MHz", "40MHz", "80MHz", "80+80", "160".
+* Eg "20MHz", "40MHz", "80MHz", "80+80", "160".
 * The output_string is a max length 64 octet string that is allocated by the upper layer.  
 * Implementations must ensure that strings are not longer than this.
 *
@@ -180,7 +180,7 @@ INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *opRadioOpChnBw)
  * single set. Tt includes channel number, channelWidth, mode and
  * auto channel configuration.
  *
- * @param[in]   index           Index of Wi-Fi radio
+ * @param[in]   radioIndex      Index of Wi-Fi radio
  * @param[in]   operationParam  Radio Operating Parameters
  *
  * @return The status of the operation
@@ -197,12 +197,12 @@ INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *opRadioOpChnBw)
  * @note This function must not suspend and must not invoke any blocking system
  * calls. It should probably just send a message to a driver event handler task.
  */
-INT wifi_setRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operationParam_t *operationParam);
+INT wifi_setRadioOperatingParameters(wifi_radio_index_t radioIndex, wifi_radio_operationParam_t *operationParam);
 
 /**
   * @brief Get Radio Operating Parameters
   *
-  * @param[in]   radio_index     Index of Wi-Fi radio
+  * @param[in]   radioIndex      Index of Wi-Fi radio
   * @param[out]  operationParam  Radio Operating Parameters
   *
   * @return The status of the operation
@@ -217,7 +217,7 @@ INT wifi_setRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operat
   * @sideeffect None
   *
   */
- INT wifi_getRadioOperatingParameters(wifi_radio_index_t index, wifi_radio_operationParam_t *operationParam);
+ INT wifi_getRadioOperatingParameters(wifi_radio_index_t radioIndex, wifi_radio_operationParam_t *operationParam);
 
 /**
  * @brief Callback function to get scan results 

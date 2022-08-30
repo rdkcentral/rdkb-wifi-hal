@@ -701,7 +701,7 @@ typedef struct {
 *                                       details. Data for each channel must be written to the corresponding
 *                                       element of the array. When array_size = 0, the API returns ONCHAN
 *                                       stats in a single wifi_channelStats_t element.
-* @param[in] sizeOfchannelStatsArray    The length of the output array
+* @param[in] sizeOfchannelStatsArray    The number of elements in channelStatsArray
 *
 * @return The status of the operation
 * @retval WIFI_HAL_SUCCESS if successful
