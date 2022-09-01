@@ -5,16 +5,20 @@
         "anker",
         "ANQP",
         "CMOCK",
+        "cunit",
         "duples",
         "Eigen",
+        "gnueabi",
         "haltest",
         "Kandasamy",
         "Minicom",
         "MSDU",
         "nated",
         "plmn",
+        "rdkb",
         "SSID",
-        "VENV"
+        "VENV",
+        "Yocto"
     ],
     "files.associations": {
         "wifi_hal_generic.h": "c",
