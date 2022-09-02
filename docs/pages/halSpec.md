@@ -93,7 +93,7 @@ None of the calls in the interface should block.
 
 ## Internal Error Handling
 
-All the APIs define a list of return codes, each API must be capable of returning all of the codes defined, the `HTS` if possible, will create cases
+All the APIs define a list of return codes, each API must be capable of returning all of the codes defined, the `UT` if possible, will create cases
 for the error codes to be exercised.
 
 HAL is responsible to handle system errors (e.g., failure of memory allocation, array boundary out of memory, return code check), and returning

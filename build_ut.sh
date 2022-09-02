@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-# Clone the HTS Testing Suit for this repo, it follows a standard convention
+# Clone the Unit Testing Suit for this repo, it follows a standard convention
 # HAL Name is replaced with haltest, allowing this script to be part of the template for all
 TEST_REPO=$(git remote -vv | head -n1 | awk -F ' ' '{print $2}' | sed 's/hal/haltest/g')
 
 # This will look up the last tag in the git repo, depending on the project this may require modification
-PROJECT_VERSION=feature/RDKB-43403_v4_hal_creation
+PROJECT_VERSION=master
 
 UT_DIR="./ut"
 
@@ -24,8 +24,8 @@ if [ -d ${UT_DIR} ]; then
     ./build.sh $@
     popd > /dev/null
 else
-    echo "Cloning Hal Test Suite for this module"
-    git clone ${TEST_REPO} hts
+    echo "Cloning uinit Test Suite for this module"
+    git clone ${TEST_REPO} ut
     pushd ${UT_DIR} > /dev/null
     git flow init -d
     git checkout ${PROJECT_VERSION}

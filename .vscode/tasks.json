@@ -24,17 +24,16 @@
                     "message": 4
                 }
             },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
         },
         {
             "label": "build",
             "type": "shell",
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "options": {
-                "cwd": "${workspaceFolder}/stubs"
+                "cwd": "${workspaceFolder}/ut"
             },
             "linux": {
                 "command": "bash"
@@ -46,6 +45,6 @@
             "problemMatcher": [
                 "$gcc"
             ]
-        },
+        }
     ]
 }

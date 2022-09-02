@@ -3,9 +3,27 @@
     "cSpell.words": [
         "Amlogic",
         "anker",
+        "ANQP",
+        "CMOCK",
+        "cunit",
+        "duples",
         "Eigen",
+        "gnueabi",
+        "haltest",
         "Kandasamy",
         "Minicom",
-        "VENV"
-    ]
+        "MSDU",
+        "nated",
+        "plmn",
+        "rdkb",
+        "SSID",
+        "VENV",
+        "Yocto"
+    ],
+    "files.associations": {
+        "wifi_hal_generic.h": "c",
+        "wifi_hal.h": "c",
+        "string.h": "c",
+        "*.tbc": "c"
+    }
 }
