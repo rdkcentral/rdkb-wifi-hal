@@ -5,7 +5,7 @@
 TEST_REPO=$(git remote -vv | head -n1 | awk -F ' ' '{print $2}' | sed 's/hal/haltest/g')
 
 # This will look up the last tag in the git repo, depending on the project this may require modification
-PROJECT_VERSION=develop
+PROJECT_VERSION=master
 
 UT_DIR="./ut"
 
