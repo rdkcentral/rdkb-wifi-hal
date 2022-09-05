@@ -966,12 +966,9 @@ INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *opDeviceMacAddArray, 
 INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 
 /**
- * @brief This function initialize, set and configure all the VAP functionalities
+ * @brief This function create, configure and apply all the VAP 
+ * functionalities settings as per 802.11 Standard for Access point
  * 
- * BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
- * ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
- * Configure FT Security mode - enable_neighbor_report, set Ap Security, set Ap Interworking,
- * acl_mode, wmm(wireless multimedia)  
  *
  * @param[in] index     Index of Wifi radio
  * @param[in] map       Contains Wifi vap bss info
@@ -990,19 +987,11 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
  INT wifi_createVAP(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
 /**
- * @brief This function gets the VAP BSS information
- * 
- * BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
- * ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
- * Configure FT Security mode - enable_neighbor_report, ApSecurity, ApInterworking,
- * ApWpsConfiguration, acl_mode, wmm(wireless multimedia) & beacon_rate
+ * @brief This function gets the VAP information
  * 
  * @param[in] index     Index of Wifi radio
  * @param[out] map      Contains wifi vap info that is created
- *                      BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
- *                      ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
- *                      Configure FT Security mode - enable_neighbor_report, ApSecurity, ApInterworking,
- *                      ApWpsConfiguration, acl_mode, wmm(wireless multimedia) & beacon_rate
+ *                      
  *  
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
