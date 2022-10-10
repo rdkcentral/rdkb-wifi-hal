@@ -419,15 +419,6 @@ typedef enum
     WIFI_FRAME_TYPE_DATA,
 } wifi_frameType_t;
 
-/* #TODO: Callbacks require documentation */
-typedef void (* wifi_received8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
-typedef void (* wifi_sent8021xFrame_callback)(unsigned int ap_index, mac_address_t sta, wifi_eapol_type_t type, void *data, unsigned int len);
-
-typedef void (* wifi_receivedAuthFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
-typedef void (* wifi_sentAuthFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
-
-typedef void (* wifi_receivedAssocReqFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
-typedef void (* wifi_sentAssocRspFrame_callback)(unsigned int ap_index, mac_address_t sta, void *data, unsigned int len);
 
 #ifdef WIFI_HAL_VERSION_3_PHASE2
 /**
@@ -975,12 +966,9 @@ INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *opDeviceMacAddArray, 
 INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
 
 /**
- * @brief This function initialize, set and configure all the VAP functionalities
+ * @brief This function create, configure and apply all the VAP 
+ * functionalities settings as per 802.11 Standard for Access point
  * 
- * BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
- * ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
- * Configure FT Security mode - enable_neighbor_report, setApSecurity, setApInterworking,
- * acl_mode, wmm(wireless multimedia)  
  *
  * @param[in] index     Index of Wifi radio
  * @param[in] map       Contains Wifi vap bss info
@@ -999,17 +987,11 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
  INT wifi_createVAP(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
 /**
- * @brief This function gets the VAP BSS information
+ * @brief This function gets the VAP information
  * 
- * BSS informations - bss enabled, ssid, ssid broadcast, Advertisement enable,
- * ApIsolation, mgmt_power_backoff, mgmtPowerControl, max_sta, enable_btm.
- * Configure FT Security mode - enable_neighbor_report, ApSecurity, ApInterworking,
- * ApWpsConfiguration, acl_mode, wmm(wireless multimedia) & beacon_rate
- * 
- * #TODO: These fields should be described in wifi_vap_info_map_t, not clear why the purpose of putting them here
- *  
- * @param[in] index  Index of Wifi radio
- * @param[out] map   Contains wifi vap info that is created
+ * @param[in] index     Index of Wifi radio
+ * @param[out] map      Contains wifi vap info that is created
+ *                      
  *  
  * @return The status of the operation
  * @retval WIFI_HAL_SUCCESS if successful
