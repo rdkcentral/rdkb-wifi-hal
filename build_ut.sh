@@ -2,10 +2,14 @@
 
 # Clone the Unit Testing Suit for this repo, it follows a standard convention
 # HAL Name is replaced with haltest, allowing this script to be part of the template for all
-TEST_REPO=$(git remote -vv | head -n1 | awk -F ' ' '{print $2}' | sed 's/hal/haltest/g')
 
 # This will look up the last tag in the git repo, depending on the project this may require modification
-PROJECT_VERSION=master
+TEST_REPO=$(git remote -vv | head -n1 | awk -F ' ' '{print $2}' | sed 's/hal/haltest/g')
+
+# Set default UT_PROJECT_VERSION to master
+if [ -z "${UT_PROJECT_VERSION}" ]; then
+    UT_PROJECT_VERSION=master
+fi
 
 UT_DIR="./ut"
 
@@ -24,11 +28,10 @@ if [ -d ${UT_DIR} ]; then
     ./build.sh $@
     popd > /dev/null
 else
-    echo "Cloning uinit Test Suite for this module"
+    echo "Cloning unit Test Suite for this module"
     git clone ${TEST_REPO} ut
     pushd ${UT_DIR} > /dev/null
-    git flow init -d
-    git checkout ${PROJECT_VERSION}
+    git checkout ${UT_PROJECT_VERSION}
     popd > /dev/null
-    ${0}
+    ./${0} $@
 fi
