@@ -103,10 +103,6 @@
  */
 #include "wifi_hal_telemetry.h"
 /**
-* Wifi client management specific APIs.
- */
-#include "wifi_hal_client_mgt.h"
-/**
 * Wifi extender specific APIs.
 * Includes API's used by Plume Mesh.
  */

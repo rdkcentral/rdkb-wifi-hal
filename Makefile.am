@@ -26,8 +26,6 @@ EXTRA_DIST = ./include/wifi_hal.h \
              ./include/wifi_hal_radio.h \
              ./include/wifi_hal_ap.h \
              ./include/wifi_hal_telemetry.h \
-             ./include/wifi_hal_client_mgt.h \
-             ./include/wifi_hal_deprecated.h \
              ./include/wifi_hal_extender.h \
              ./include/wifi_hal_sta.h
 

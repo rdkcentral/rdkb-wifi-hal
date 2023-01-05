@@ -200,26 +200,6 @@ INT wifi_getRadioOperatingChannelBandwidth(INT radioIndex, CHAR *opRadioOpChnBw)
 INT wifi_setRadioOperatingParameters(wifi_radio_index_t radioIndex, wifi_radio_operationParam_t *operationParam);
 
 /**
-  * @brief Get Radio Operating Parameters
-  *
-  * @param[in]   radioIndex      Index of Wi-Fi radio
-  * @param[out]  operationParam  Radio Operating Parameters
-  *
-  * @return The status of the operation
-  * @retval WIFI_HAL_SUCCESS if successful
-  * @retval WIFI_HAL_ERROR if an generic error is detected
-  * @retval WIFI_HAL_INTERNAL_ERROR if an internal error is detected
-  * @retval WIFI_HAL_UNSUPPORTED if the API is not supported
-  * @retval WIFI_HAL_INVALID_ARGUMENTS if any of the arguments is invalid
-  * @retval WIFI_HAL_INVALID_VALUE if the value is invalid
-  *
-  * @execution Synchronous
-  * @sideeffect None
-  *
-  */
- INT wifi_getRadioOperatingParameters(wifi_radio_index_t radioIndex, wifi_radio_operationParam_t *operationParam);
-
-/**
  * @brief Callback function to get scan results 
  *
  * @param[in]   callback_proc   - Scan result callback function
