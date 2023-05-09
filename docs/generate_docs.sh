@@ -11,7 +11,7 @@ if [ -d "./build" ]; then
     make -C ./build PROJECT_NAME="RDK-B Wifi HAL" PROJECT_VERSION=${PROJECT_VERSION}
 else
     echo "Cloning Common documentation generation"
-    git clone git@github.com:comcast-sky/rdk-components-hal-doxygen.git build
+    git clone git@github.com:rdkcentral/hal-doxygen.git build
     cd ./build
     git flow init -d
     git checkout ${HAL_GENERATOR_VERSION}

@@ -3,9 +3,9 @@
 
 ## Version History
 
-| Date | Author | Comment | Version |
-| --- | --- | --- | --- |
-| 08/16/22 | M. Kandasamy | Initial Release | 0.1.0 |
+| Date | Comment | Version |
+| --- | --- | --- |
+| 08/16/22 | Initial Release | 0.1.0 |
 
 ## Acronyms
 
@@ -143,8 +143,7 @@ The source code should be built under Linux environment using `cmake`, `make`, `
 
 ## Variability Management
 
-Ideally the source code should be delivered into Comcast/Sky git repositories and tagged based on the requirements for the project.
-The vendor will follow the `Comcast federated delivery model` wherever possible.
+Ideally the source code should be delivered into git repositories and tagged based on the requirements for the project.
 
 Compile time flags `config` flags can control compilation:-
 

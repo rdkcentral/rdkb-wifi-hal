@@ -24,6 +24,7 @@
         "wifi_hal_generic.h": "c",
         "wifi_hal.h": "c",
         "string.h": "c",
-        "*.tbc": "c"
+        "*.tbc": "c",
+        "stdint.h": "c"
     }
 }
