@@ -1,0 +1,30 @@
+{
+    "makefile.extensionOutputFolder": "./.vscode",
+    "cSpell.words": [
+        "Amlogic",
+        "anker",
+        "ANQP",
+        "CMOCK",
+        "cunit",
+        "duples",
+        "Eigen",
+        "gnueabi",
+        "haltest",
+        "Kandasamy",
+        "Minicom",
+        "MSDU",
+        "nated",
+        "plmn",
+        "rdkb",
+        "SSID",
+        "VENV",
+        "Yocto"
+    ],
+    "files.associations": {
+        "wifi_hal_generic.h": "c",
+        "wifi_hal.h": "c",
+        "string.h": "c",
+        "*.tbc": "c",
+        "stdint.h": "c"
+    }
+}

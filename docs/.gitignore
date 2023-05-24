@@ -1,0 +1,5 @@
+# Ignore the output files for doxygen
+node_modules
+
+output
+build

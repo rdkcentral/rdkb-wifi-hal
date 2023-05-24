@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "UINT=unsigned int",
+                "ULONG=unsigned long",
+                "UCHAR=unsigned char",
+                "USHORT=unsigned short",
+                "BOOL=unsigned char",
+                "CHAR=char",
+                "INT=int",
+                "ULLONG=unsigned long long"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}
