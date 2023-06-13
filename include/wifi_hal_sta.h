@@ -38,6 +38,9 @@ typedef struct {
 typedef struct {
     UINT                        vap_index;
     wifi_connection_status_t    connect_status;
+    UINT                        channel;
+    UINT                        channelWidth;
+    UINT                        op_class;
 } wifi_station_stats_t;
 
 /**
