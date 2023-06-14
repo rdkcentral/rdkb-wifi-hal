@@ -130,10 +130,10 @@ extern "C"{
 #define RESTORE_CNFG_FILE_NAME  "/data/.nvram_restore_cfg.txt"
 #define NVRAM_LINE_MAX       (1024)
 
-//defines for HAL version 3.0.0
+//defines for HAL version 3.0.1
 #define WIFI_HAL_MAJOR_VERSION 3        /**< This is the major version of this HAL. */
 #define WIFI_HAL_MINOR_VERSION 0        /**< This is the minor version of the HAL. */
-#define WIFI_HAL_MAINTENANCE_VERSION 0  /**< This is the maintenance version of the HAL. */
+#define WIFI_HAL_MAINTENANCE_VERSION 1  /**< This is the maintenance version of the HAL. */
 #define WIFI_HAL_VERSION (WIFI_HAL_MAJOR_VERSION *1000+ WIFI_HAL_MINOR_VERSION *10+ WIFI_HAL_MAINTENANCE_VERSION)
 
 #define MAX_NUM_TWT_SESSION  50    /**< Maximum number of TWT sessions for an AP (TODO to be defined) */
@@ -602,6 +602,13 @@ typedef enum {
     wifi_countrycode_max /**< Max number of country code */
 } wifi_countrycode_type_t;
 
+typedef enum {
+    wifi_operating_env_all,
+    wifi_operating_env_indoor,
+    wifi_operating_env_outdoor,
+    wifi_operating_env_non_country
+} wifi_operating_env_t;
+
 /**
  * @brief Wifi Radio CSI capabilities
  */
@@ -634,6 +641,7 @@ typedef struct {
     UINT numcountrySupported;                                            /**< Number of supported countries. */
     wifi_countrycode_type_t countrySupported[wifi_countrycode_max];      /**< The Supported country list. it should return the current country code on first entry. */
     UINT maxNumberVAPs;                                                  /**< Max number of VAPs */
+    BOOL mcast2ucastSupported;                                           /**< The value is TRUE, if 'multicast to unicast' conversion is supported. */
 }__attribute__((packed)) wifi_radio_capabilities_t;
 
 /**
@@ -650,6 +658,13 @@ typedef struct {
     wifi_vap_name_t  vap_name;
 }__attribute__((packed)) wifi_interface_name_idex_map_t;
 
+typedef struct {
+    unsigned int phy_index;
+    unsigned int radio_index;
+    char radio_name[16];
+    wifi_interface_name_t interface_name;
+}__attribute__((packed)) radio_interface_mapping_t;
+
 /**
  * @brief Wifi Platform Property
  */
@@ -657,6 +672,8 @@ typedef struct {
      UINT numRadios;                               /**< Number of radios. */
      wifi_radio_capabilities_t radiocap[MAX_NUM_RADIOS]; /**< Radio capabilities */
      wifi_interface_name_idex_map_t interface_map[(MAX_NUM_RADIOS * MAX_NUM_VAP_PER_RADIO)];
+     radio_interface_mapping_t radio_interface_map[MAX_NUM_RADIOS];
+     BOOL radio_presence[MAX_NUM_RADIOS];         /**< Indicates if the interfaces is present (not in deep sleep)*/
 }__attribute__((packed)) wifi_platform_property_t;
 
 /**

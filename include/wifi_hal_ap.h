@@ -639,6 +639,7 @@ typedef struct {
     UINT  eap_req_timeout;
     UINT  eap_req_retries;
     BOOL  disable_pmksa_caching;
+    char  key_id[32];  // Openflow Tag associated with a PSK.
     union {
         wifi_radius_settings_t  radius;
         wifi_security_key_t key;
@@ -761,6 +762,8 @@ typedef struct {
     BOOL   bssHotspot;
     UINT   wpsPushButton;
     char   beaconRateCtl[32];
+    BOOL   network_initiated_greylist;
+    BOOL   mcast2ucast;                    /**< True if 'multicast to unicast' feature is enabled for this VAP, false otherwise */
 } __attribute__((packed)) wifi_front_haul_bss_t;
 
 #define WIFI_BRIDGE_NAME_LEN  32
