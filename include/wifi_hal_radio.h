@@ -43,6 +43,28 @@ typedef enum {
 
 #define MAXNUMSECONDARYCHANNELS     7
 
+typedef enum {
+    WIFI_EVENT_RADAR_DETECTED,
+    WIFI_EVENT_RADAR_CAC_FINISHED,
+    WIFI_EVENT_RADAR_CAC_ABORTED,
+    WIFI_EVENT_RADAR_NOP_FINISHED,
+    WIFI_EVENT_RADAR_PRE_CAC_EXPIRED,
+    WIFI_EVENT_RADAR_CAC_STARTED
+} wifi_radar_eventType_t;
+
+typedef enum {
+    CHAN_STATE_AVAILABLE = 1,
+    CHAN_STATE_DFS_NOP_FINISHED,
+    CHAN_STATE_DFS_NOP_START,
+    CHAN_STATE_DFS_CAC_START,
+    CHAN_STATE_DFS_CAC_COMPLETED
+} wifi_channelState_t;
+
+typedef struct _wifi_channelMap_t {
+    INT ch_number;
+    wifi_channelState_t ch_state;
+} wifi_channelMap_t;
+
 /**
  * @brief Wifi Radio Operation Parameters
  */
@@ -58,6 +80,8 @@ typedef struct {
     wifi_ieee80211Variant_t variant;                    /**< The radio operating mode */
     UINT csa_beacon_count;                              /**< Specifies how long CSA need to be announced. */
     wifi_countrycode_type_t countryCode;                /**< The country code. */
+    wifi_operating_env_t operatingEnvironment;          /**< The wifi Operating environment */
+    wifi_channelMap_t channel_map[64];
     BOOL DCSEnabled;                                    /**< set DCSEnabled to TRUE to enable DCS. */
     UINT dtimPeriod;                                    /**< The DTIM period. */
     UINT beaconInterval;                                /**< The beacon interval. */
@@ -79,6 +103,9 @@ typedef struct {
     UINT adminControl;
     UINT chanUtilThreshold;
     BOOL chanUtilSelfHealEnable;
+    BOOL DfsEnabled;
+    BOOL DfsEnabledBootup;
+    BOOL EcoPowerDown;
 } __attribute__((packed)) wifi_radio_operationParam_t;
 
 /**
