@@ -419,6 +419,18 @@ typedef enum
     WIFI_FRAME_TYPE_DATA,
 } wifi_frameType_t;
 
+typedef struct {
+    INT ap_index;
+    mac_address_t sta_mac;
+    wifi_mgmtFrameType_t type;
+    wifi_direction_t dir;
+    INT     sig_dbm;
+    INT     phy_rate;
+    UCHAR   token;
+    UINT    len;
+    UCHAR   *data;
+} __attribute__((packed)) wifi_frame_t;
+
 
 #ifdef WIFI_HAL_VERSION_3_PHASE2
 /**
@@ -622,7 +634,8 @@ typedef enum {
     wifi_security_mode_wpa_wpa2_enterprise = 0x00000100,
     wifi_security_mode_wpa3_personal = 0x00000200,
     wifi_security_mode_wpa3_transition = 0x00000400,
-    wifi_security_mode_wpa3_enterprise = 0x00000800
+    wifi_security_mode_wpa3_enterprise = 0x00000800,
+    wifi_security_mode_enhanced_open = 0x00001000
 } wifi_security_modes_t;
 
 typedef struct {
@@ -713,6 +726,29 @@ typedef struct {
     wifi_passpoint_settings_t   passpoint;
 } __attribute__((packed)) wifi_interworking_t;
 
+typedef struct {
+    char rssi_up_threshold[32];
+    char snr_threshold[32];
+    char cu_threshold[32];
+    char basic_data_transmit_rates[32];
+    char operational_data_transmit_rates[32];
+    char supported_data_transmit_rates[32];
+    char minimum_advertised_mcs[32];
+    char sixGOpInfoMinRate[32];
+    char client_deny_assoc_info[32];
+    wifi_vap_name_t vap_name;
+} __attribute__((packed)) wifi_preassoc_control_t;
+
+typedef struct {
+    char sampling_interval[32]; //up_discard
+    char sampling_count[32];
+    char rssi_up_threshold[32];
+    char snr_threshold[32]; // retrans_up
+    char cu_threshold[32];
+    char client_force_disassoc_info[32];
+    wifi_vap_name_t vap_name;
+} __attribute__((packed)) wifi_postassoc_control_t;
+
 typedef enum {
     wifi_vap_mode_ap,
     wifi_vap_mode_sta,
@@ -749,6 +785,8 @@ typedef struct {
     BOOL    vapStatsEnable;             //should not be implemented in the hal
     wifi_vap_security_t security;
     wifi_interworking_t interworking;
+    wifi_preassoc_control_t preassoc;
+    wifi_postassoc_control_t postassoc;
     BOOL    mac_filter_enable;
     wifi_mac_filter_mode_t mac_filter_mode;
     BOOL    sec_changed;                //should not be implemented in the hal
@@ -764,6 +802,7 @@ typedef struct {
     char   beaconRateCtl[32];
     BOOL   network_initiated_greylist;
     BOOL   mcast2ucast;                    /**< True if 'multicast to unicast' feature is enabled for this VAP, false otherwise */
+    BOOL   connected_building_enabled;
 } __attribute__((packed)) wifi_front_haul_bss_t;
 
 #define WIFI_BRIDGE_NAME_LEN  32
@@ -774,6 +813,7 @@ typedef struct {
     wifi_radio_index_t  radio_index;
     CHAR                bridge_name[WIFI_BRIDGE_NAME_LEN];
     wifi_vap_mode_t     vap_mode;
+    wifi_vap_name_t     repurposed_vap_name;
     union {
         wifi_front_haul_bss_t   bss_info;
         wifi_back_haul_sta_t    sta_info;
@@ -924,6 +964,84 @@ typedef INT ( * wifi_apDeAuthEvent_callback)(int apIndex, char *mac, int reason)
  * @addtogroup WIFI_HAL_APIS
  * @{
  */
+
+/* wifi_addApAclDevice() function */
+/**
+* @brief Adds the mac address to the filter list.
+*
+* @param[in] apIndex            Access Point index
+* @param[in] DeviceMacAddress    Mac Address of a device
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+#ifdef WIFI_HAL_VERSION_3_PHASE2
+INT wifi_addApAclDevice(INT apIndex, mac_address_t DeviceMacAddress);         // adds the mac address to the filter list
+#endif
+
+/* wifi_delApAclDevice() function */
+/**
+* @brief Deletes the Device MAC address from the Access control filter list.
+*
+* @param[in]  apIndex           Access Point index
+* @param[in]  deviceMacAddress  Mac Address of a device
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+#ifdef WIFI_HAL_VERSION_3_PHASE2
+INT wifi_delApAclDevice(INT apIndex, mac_address_t deviceMacAddress);
+#endif
+
+/**
+* @brief Deletes all Device MAC address from the Access control filter list.
+*
+* @param[in]  apIndex           Access Point index
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+*/
+INT wifi_delApAclDevices(INT apINdex);
+
+typedef INT (* wifi_hal_frame_hook_fn_t)(INT ap_index, wifi_mgmtFrameType_t type);
+
+/* wifi_hal_register_frame_hook() function */
+/**
+* @brief Frame hook callregistration function. Hook will be executed when
+* the mgmt frame is received from the HAL. Is used by applications, if 
+* application doesn't define this hook it will not be executed.
+*
+* @param[in] hook    wifi_hal_frame_hook_fn_t callback function
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a hal event handler task.
+*
+*/
+void wifi_hal_register_frame_hook(wifi_hal_frame_hook_fn_t hook_fn);
 
 /**
 * @brief Gets the Ap Associated Device list for client MAC addresses

@@ -812,8 +812,8 @@ typedef enum {
 } wifi_connection_status_t;
 
 
-#define MAX_NR                  8
-#define MAX_NC                  4
+#define MAX_NR                  4
+#define MAX_NC                  1
 #define MAX_SUB_CARRIERS        256
 #define MAX_PILOTS              26
 
@@ -844,6 +844,7 @@ typedef struct _wifi_frame_info
     USHORT    cap_bw;                /* Frame BW at the time of capture */
     UINT    num_sc;                /* Number of subcarriers in the payload so that information can be used in conjunction with the number of streams to fully decode valid regions */
     UCHAR    decimation;            /* Value to indicate degree to which CSI matrix is decimated in terms of number of subcarriers present.*/
+    INT       cfo;              /* center frequency offset when demodulated, offset can be positive or negative */
     UINT    channel;            /* Primary Channel of received frame */
     ULLONG    time_stamp;            /* PHY timestamp of CSI capture with at minimum millisecond    */
                                 /* resolution. Ideally this can be resolved to a standard epoch */
@@ -928,9 +929,13 @@ typedef struct _wifi_associated_dev3
         fill in required fields. The called in such cases is responsible for deallocation of memory. 
         The wifi_csi_data_t is defined above */
 
-         wifi_csi_data_t  *cli_CsiData; 
-
+        wifi_csi_data_t  *cli_CsiData; 
+        
         UINT cli_activeNumSpatialStreams; /**< The number of active spatial streams in the session between AP and client at the moment of polling */
+
+        ULLONG     cli_TxFrames;         /**< The total number of frames transmitted to the client */
+        ULLONG     cli_RxRetries;        /**< Number of rx retries */
+        ULLONG     cli_RxErrors;         /**< Number of rx error */
 
 } wifi_associated_dev3_t;
 
