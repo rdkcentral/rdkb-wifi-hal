@@ -130,10 +130,10 @@ extern "C"{
 #define RESTORE_CNFG_FILE_NAME  "/data/.nvram_restore_cfg.txt"
 #define NVRAM_LINE_MAX       (1024)
 
-//defines for HAL version 3.0.1
+//defines for HAL version 3.0.3
 #define WIFI_HAL_MAJOR_VERSION 3        /**< This is the major version of this HAL. */
 #define WIFI_HAL_MINOR_VERSION 0        /**< This is the minor version of the HAL. */
-#define WIFI_HAL_MAINTENANCE_VERSION 1  /**< This is the maintenance version of the HAL. */
+#define WIFI_HAL_MAINTENANCE_VERSION 3  /**< This is the maintenance version of the HAL. */
 #define WIFI_HAL_VERSION (WIFI_HAL_MAJOR_VERSION *1000+ WIFI_HAL_MINOR_VERSION *10+ WIFI_HAL_MAINTENANCE_VERSION)
 
 #define MAX_NUM_TWT_SESSION  50    /**< Maximum number of TWT sessions for an AP (TODO to be defined) */
@@ -254,7 +254,8 @@ typedef enum{
     WIFI_CHANNELBANDWIDTH_40MHZ = 0x2,
     WIFI_CHANNELBANDWIDTH_80MHZ = 0x4,
     WIFI_CHANNELBANDWIDTH_160MHZ = 0x8,
-    WIFI_CHANNELBANDWIDTH_80_80MHZ = 0x10
+    WIFI_CHANNELBANDWIDTH_80_80MHZ = 0x10,
+    WIFI_CHANNELBANDWIDTH_320MHZ = 0x20
 } wifi_channelBandwidth_t;
 
 typedef struct {
@@ -283,8 +284,20 @@ typedef enum {
     WIFI_80211_VARIANT_H = 0x10,
     WIFI_80211_VARIANT_AC = 0x20,
     WIFI_80211_VARIANT_AD = 0x40,
-    WIFI_80211_VARIANT_AX = 0x80
+    WIFI_80211_VARIANT_AX = 0x80,
+    WIFI_80211_VARIANT_BE = 0x100
 } wifi_ieee80211Variant_t;
+
+/**
+ * @brief Wifi Multi Link supported bands
+ */
+typedef enum {
+    WIFI_BAND_NONE  = 0x1,
+    WIFI_BAND_2_5   = 0x2,
+    WIFI_BAND_2_6   = 0x4,
+    WIFI_BAND_5_6   = 0x8,
+    WIFI_BAND_2_5_6 = 0x10
+} wifi_multi_link_bands_t;
 
 #define MAXNUMBEROFTRANSMIPOWERSUPPORTED 21
 
@@ -674,6 +687,7 @@ typedef struct {
      wifi_interface_name_idex_map_t interface_map[(MAX_NUM_RADIOS * MAX_NUM_VAP_PER_RADIO)];
      radio_interface_mapping_t radio_interface_map[MAX_NUM_RADIOS];
      BOOL radio_presence[MAX_NUM_RADIOS];         /**< Indicates if the interfaces is present (not in deep sleep)*/
+     wifi_multi_link_bands_t mu_bands;
 }__attribute__((packed)) wifi_platform_property_t;
 
 /**

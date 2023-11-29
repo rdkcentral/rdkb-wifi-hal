@@ -761,6 +761,22 @@ typedef struct {
 } __attribute__((packed)) wifi_scan_params_t;
 
 typedef struct {
+    BOOL mld_enable;
+    UINT mld_id;
+    mac_address_t mld_addr;
+} __attribute__((packed)) wifi_mld_common_info_t;
+
+typedef struct {
+    mac_address_t local_addr;
+    mac_address_t peer_addr;
+    wifi_mld_common_info_t common_info;
+} __attribute__((packed)) wifi_mld_info_sta_t;
+
+typedef struct {
+    wifi_mld_common_info_t common_info;
+} __attribute__((packed)) wifi_mld_info_ap_t;
+
+typedef struct {
     ssid_t              ssid;
     bssid_t             bssid; // if bssid is set to all 0, scan the ssid with probes, otherwise connect to specified bssid
     BOOL                enabled;
@@ -768,6 +784,7 @@ typedef struct {
     wifi_scan_params_t  scan_params;
     wifi_vap_security_t security;
     mac_address_t       mac;
+    wifi_mld_info_sta_t mld_info;
 } __attribute__((packed)) wifi_back_haul_sta_t;
 
 #define WIFI_AP_MAX_SSID_LEN    33
@@ -803,6 +820,7 @@ typedef struct {
     BOOL   network_initiated_greylist;
     BOOL   mcast2ucast;                    /**< True if 'multicast to unicast' feature is enabled for this VAP, false otherwise */
     BOOL   connected_building_enabled;
+    wifi_mld_info_ap_t mld_info;
 } __attribute__((packed)) wifi_front_haul_bss_t;
 
 #define WIFI_BRIDGE_NAME_LEN  32

@@ -65,6 +65,11 @@ typedef struct _wifi_channelMap_t {
     wifi_channelState_t ch_state;
 } wifi_channelMap_t;
 
+typedef struct {
+    USHORT punct_bitmap; /* a bitmap of disabled 20 MHz channels */
+    UCHAR punct_acs_threshold;
+} __attribute__((packed)) wifi_radio_11be_puncturing_info_t;
+
 /**
  * @brief Wifi Radio Operation Parameters
  */
@@ -80,6 +85,7 @@ typedef struct {
     wifi_ieee80211Variant_t variant;                    /**< The radio operating mode */
     UINT csa_beacon_count;                              /**< Specifies how long CSA need to be announced. */
     wifi_countrycode_type_t countryCode;                /**< The country code. */
+    UINT regDomain;                                     /**< The regulatory domain. */
     wifi_operating_env_t operatingEnvironment;          /**< The wifi Operating environment */
     wifi_channelMap_t channel_map[64];
     BOOL DCSEnabled;                                    /**< set DCSEnabled to TRUE to enable DCS. */
@@ -106,6 +112,7 @@ typedef struct {
     BOOL DfsEnabled;
     BOOL DfsEnabledBootup;
     BOOL EcoPowerDown;
+    wifi_radio_11be_puncturing_info_t puncturingInfo;
 } __attribute__((packed)) wifi_radio_operationParam_t;
 
 /**
