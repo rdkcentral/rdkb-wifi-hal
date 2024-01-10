@@ -1061,7 +1061,7 @@ typedef INT (* wifi_hal_frame_hook_fn_t)(INT ap_index, wifi_mgmtFrameType_t type
 */
 void wifi_hal_register_frame_hook(wifi_hal_frame_hook_fn_t hook_fn);
 
-/**
+/*
 * @brief Gets the Ap Associated Device list for client MAC addresses
 *
 * @param[in]  apIndex                Access Point index
@@ -1084,8 +1084,8 @@ INT wifi_getApAssociatedDevice(INT apIndex, mac_address_t *opDeviceMacAddArray, 
 /**
  * @brief This function enables or disables CSI engine data for a specific STA on a VAP
  * 
- * If the MAC address is NULL, enable argument MUST be FALSE, otherwise function MUST return failure.
- * If the MAC address is NULL, data engine for all STA(s) need to be disabled on this VAP
+ * If the MAC address is NULL(00:00:00:00:00:00), enable argument MUST be FALSE, otherwise function MUST return failure.
+ * If the MAC address is NULL(00:00:00:00:00:00), data engine for all STA(s) need to be disabled on this VAP
  *
  * @param[in] apIndex  Index of VAP
  * @param[in] sta      MAC address of the station associated in this VAP for which engine is being enabled/disabled
@@ -1146,7 +1146,7 @@ INT wifi_enableCSIEngine(INT apIndex, mac_address_t sta, BOOL enable);
  */
 INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 
-/**
+/*
 * @brief This function will manually removes any client that has an active wi-fi 
 * association with this VAP.
 *  
@@ -1163,7 +1163,27 @@ INT wifi_getRadioVapInfoMap(wifi_radio_index_t index, wifi_vap_info_map_t *map);
 * @note This function must not suspend and must not invoke any blocking system
 * calls. It should probably just send a message to a driver event handler task.
 */
-INT wifi_kickAssociatedDevice(INT apIndex, wifi_device_t *device);
+/*INT wifi_kickAssociatedDevice(INT apIndex, wifi_device_t *device);*/
+
+/* wifi_kickApAssociatedDevice() function */
+/**
+* @brief Manually removes any active wi-fi association with the device specified on this access point.
+*
+* @param[in] apIndex     Access Point index
+* @param[in] client_mac  Client device MAC address
+*
+* @return The status of the operation
+* @retval RETURN_OK if successful
+* @retval RETURN_ERR if any error is detected
+*
+* @execution Synchronous
+* @sideeffect None
+*
+* @note This function must not suspend and must not invoke any blocking system
+* calls. It should probably just send a message to a driver event handler task.
+*
+*/
+INT wifi_kickApAssociatedDevice(INT apIndex, mac_address_t client_mac); 
 
 /**
 * @brief Callback to receive 802.11 management frames

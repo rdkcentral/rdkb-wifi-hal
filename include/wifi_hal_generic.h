@@ -73,6 +73,10 @@ extern "C"{
 #define ENABLE   1
 #endif
 
+#ifndef RETURN_ERR
+#define RETURN_ERR   -1
+#endif
+
 #define WIFI_HAL_SUCCESS             0
 #define WIFI_HAL_ERROR              -1
 #define WIFI_HAL_INTERNAL_ERROR     -2
